@@ -1,0 +1,205 @@
+import React, { useState, useEffect } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
+import { DeleteOutlined, Edit} from '@mui/icons-material';
+import { FacilityDeleteService, FetchFacilitiyService } from '../../../services/LoginPageService';
+import { FacilityListToolbar } from './facility-list-toolbars';
+import FacilityModal from './FacilityModalComponent';
+import { Link, useLocation } from 'react-router-dom';
+import NotificationBar from '../../notification/ServiceNotificationBar';
+import { useUserAccess } from '../../../context/UserAccessProvider';
+
+export function FacilityListResults(props) {
+  
+  const branchColumns = [
+    {
+      field: 'facilityName',
+      headerName: 'Branch Name',
+      width: 170,
+      type: 'actions',
+      getActions: (params) => {
+        return [
+          <LinkTo selectedRow={params.row} />
+        ];
+      }
+    },
+    {
+      field: 'latitude',
+      headerName: 'Latitude',
+      width: 170
+    },
+    {
+      field: 'longitude',
+      headerName: 'Longitude',
+      width: 170
+    },
+    {
+      field: 'totalBuildings',
+      headerName: 'Total buildings',
+      width: 230,
+    },
+    {
+      field: 'totalAssets',
+      headerName: 'Total Assets',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 160,
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 150,
+      cellClassName: 'actions',
+      getActions: (params) => {
+        return [
+          <EditData selectedRow={params.row}/>,
+          <DeleteData selectedRow={params.row} />
+        ];
+      },
+    },
+  ];
+
+  const [open, setOpen] = useState(false);
+  const [isAddButton, setIsAddButton] = useState(true);
+  const [editData, setEditData] = useState([]);
+  const [dataList, setDataList] = useState([]);
+  const [isLoading, setGridLoading] = useState(false);
+  const routeStateObject = useLocation();
+  const { location_id, branch_id } = routeStateObject.state;
+  const [refreshData, setRefreshData] = useState(false);
+  const moduleAccess = useUserAccess()('location');
+  
+  const [openNotification, setNotification] = useState({
+    status: false,
+    type: 'error',
+    message: ''
+  });
+
+  useEffect(() => {
+    setGridLoading(true);
+    FetchFacilitiyService({
+      location_id,
+      branch_id
+    }, handleSuccess, handleException);
+  },[refreshData]);
+
+  const handleSuccess = (dataObject) => {
+    setGridLoading(false);
+    setDataList(dataObject.data);
+    const newArray = dataObject.data?dataObject.data.map((item) => {
+      let coordinates = item.coordinates?item.coordinates.replaceAll('"', '').split(','): [];
+      console.log(coordinates);
+
+      return{
+        'id': item.id,
+        'name': item.facilityName,
+        'position': {
+          'lat': parseFloat(coordinates[0]),
+          'lng': parseFloat(coordinates[1])
+        }
+      };
+    })
+      :
+      [];
+    props.setLocationCoordinationList(newArray);
+    console.log(newArray);
+  };
+  
+  const handleException = (errorObject) => {
+  };
+
+  const deletehandleSuccess = (dataObject) => {
+    setNotification({
+      status: true,
+      type: 'success',
+      message: dataObject.message
+    });
+    setRefreshData((oldvalue)=>{
+      return !oldvalue;
+    });
+    setTimeout(() => {
+      handleClose();
+    }, 5000);
+  };
+  
+  const deletehandleException = (errorObject, errorMessage) => {
+    setNotification({
+      status: true,
+      type: 'error',
+      message: errorMessage
+    });
+  };
+
+  const LinkTo = (props) => {
+    return (<Link
+      to={`${props.selectedRow.facilityName}`}
+      state={{
+        location_id,
+        branch_id,
+        facility_id: props.selectedRow.id
+      }}>
+      {props.selectedRow.facilityName}
+    </Link>);
+  };
+
+  const EditData = (props) => {
+    return (
+      moduleAccess.edit && 
+      <Edit onClick={() => {
+        setIsAddButton(false);
+        setEditData(props.selectedRow);
+        setOpen(true);
+      }} />);
+  };
+
+  const DeleteData = (props) => {
+    return moduleAccess.delete && <DeleteOutlined onClick={()=> {
+      FacilityDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+    }}/>;
+  };
+
+  const handleClose = () => {
+    setNotification({
+      status: false,
+      type: '',
+      message: ''
+    });
+  };
+
+  return (
+    <div style={{ height: 400, width: '100%' }}>
+      <FacilityListToolbar 
+        setOpen={setOpen}
+        setIsAddButton={setIsAddButton}
+        setEditData={setEditData}
+        userAccess={moduleAccess}
+      />
+      <DataGrid
+        rows={dataList}
+        columns={branchColumns}
+        pageSize={5}
+        loading={isLoading}
+        rowsPerPageOptions={[5]}
+        checkboxSelection
+        disableSelectionOnClick
+        style={{maxHeight:80+'%'}}
+      />
+       
+      <FacilityModal
+        isAddButton={isAddButton}
+        editData={editData}
+        open={open}
+        setOpen={setOpen}
+        locationId ={location_id}
+        branchId={branch_id}
+        setRefreshData={setRefreshData}
+      />
+      <NotificationBar
+        handleClose={handleClose}
+        notificationContent={openNotification.message}
+        openNotification={openNotification.status}
+        type={openNotification.type} 
+      />
+    </div>
+  );
+}
