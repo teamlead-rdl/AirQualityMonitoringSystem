@@ -343,6 +343,10 @@ export const SensorDeployAddService = (data, successCallback, errorCallBack) => 
     return _fetchService('sensor/add', 'POST', data, successCallback, errorCallBack);
 }
 
+export const SensorDeployEditService = (data, successCallback, errorCallBack) => {
+    return _fetchService('sensor/' + (data.id) + '/update', 'POST', data, successCallback, errorCallBack);
+}
+
 export const SensorDeployDeleteService = (data, successCallback, errorCallBack) =>{
     return _fetchService('sensor/' + (data.id) + '/delete', 'DELETE', {}, successCallback, errorCallBack);
 }

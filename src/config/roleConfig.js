@@ -1,6 +1,7 @@
 export const sidebarConfig = {
     superadmin: ["Dashboard", "CustomerManagement", "UserManagement", "ChangePassword", "AddDevice", "DeviceLocation"],
-    admin: ["Dashboard", "Location", "UserManagement", "Vendor", "ChangePassword", "Device", "AddDevice", "DeviceLocation"],
+    systemspecialist: ["Dashboard", "Location", "UserManagement", "Vendor", "ChangePassword", "Device", "AddDevice", "DeviceLocation"],
+    admin: ["Dashboard", "Location", "UserManagement", "Vendor", "ChangePassword", "AddDevice", "DeviceLocation"],
     manager: ["Dashboard", "Location", "UserManagement", "Vendor", "ChangePassword", "Device", "AddDevice", "DeviceLocation"],
     user: ["Dashboard", "Location", "UserManagement", "ChangePassword", "Device", "AddDevice", "DeviceLocation"],
 }
@@ -8,6 +9,12 @@ export const sidebarConfig = {
 export const crudConfig = {
     dashboard: {
         superadmin: {
+            view: true,
+            add: true,
+            edit: true,
+            delete: true,
+        },
+        systemspecialist: {
             view: true,
             add: true,
             edit: true,
@@ -33,16 +40,22 @@ export const crudConfig = {
         }
     },
     location: {
-        admin: {
+        systemspecialist: {
             view: true,
             add: true,
             edit: true,
             delete: true,
         },
+        admin: {
+            view: true,
+            add: false,
+            edit: true,
+            delete: true,
+        },
         manager: {
             view: true,
-            add: true,
-            edit: true,
+            add: false,
+            edit: false,
             delete: false,
         },
         user: {
@@ -59,6 +72,12 @@ export const crudConfig = {
             edit: true,
             delete: true,
         },
+        systemspecialist: {
+            view: true,
+            add: true,
+            edit: true,
+            delete: true,
+        },
         admin: {
             view: true,
             add: true,
@@ -67,7 +86,7 @@ export const crudConfig = {
         },
         manager: {
             view: true,
-            add: true,
+            add: false,
             edit: true,
             delete: false,
         },
@@ -79,6 +98,12 @@ export const crudConfig = {
         }
     },
     vendor: {
+        systemspecialist: {
+            view: true,
+            add: false,
+            edit: true,
+            delete: true,
+        },
         admin: {
             view: true,
             add: true,
@@ -105,9 +130,15 @@ export const crudConfig = {
             edit: true,
             delete: true,
         },
+        systemspecialist: {
+            view: true,
+            add: true,
+            edit: true,
+            delete: true,
+        },
         admin: {
             view: true,
-            add: false,
+            add: true,
             edit: true,
             delete: true,
         },
@@ -131,15 +162,21 @@ export const crudConfig = {
             edit: true,
             delete: true,
         },
-        admin: {
+        systemspecialist: {
             view: true,
             add: true,
             edit: true,
             delete: true,
         },
+        admin: {
+            view: true,
+            add: false,
+            edit: true,
+            delete: true,
+        },
         manager: {
             view: true,
-            add: true,
+            add: false,
             edit: true,
             delete: false,
         },
@@ -151,9 +188,15 @@ export const crudConfig = {
         }
     },
     devicelocation: {
-        admin: {
+        systemspecialist: {
             view: true,
             add: true,
+            edit: true,
+            delete: true,
+        },
+        admin: {
+            view: true,
+            add: false,
             edit: true,
             delete: false,
         },

@@ -20,7 +20,7 @@ import Paper from '@mui/material/Paper';
 
 import { Box } from "@mui/system";
 
-import {CategoryFetchService, DeviceFetchService,SensorAddService,SensorCategoryFetchService, SensorDeployAddService, SensorFetchService } from "../../services/LoginPageService";
+import {CategoryFetchService, DeviceFetchService,SensorAddService,SensorCategoryFetchService, SensorDeployAddService, SensorDeployEditService, SensorFetchService } from "../../services/LoginPageService";
 import Analog from "./sensorType/AnalogComponent";
 import Modbus from "./sensorType/ModbusComponent";
 import Digital from "./sensorType/DigitalComponent";
@@ -38,7 +38,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-const DeviceAdd = ({locationDetails, labMap}) => {  
+const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpdate}) => {  
  
 
   const [location_id, setLocation_Id] = useState(16);
@@ -47,13 +47,13 @@ const DeviceAdd = ({locationDetails, labMap}) => {
   const [building_id, setBuildingId] = useState(1);
   const [category_id, setCategory_id] = useState("");  
   const [deviceCategory, setDeviceCategory] = useState("");
-  const [deviceId, setDeviceId] = useState("");
+  const [deviceId, setDeviceId] = useState(editData?.deviceId || "");
 
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState(editData?.categoryId || "");
   // const [sensorName, setSensorName] = useState("");
-  const [sensorTag, setSensorTag] = useState("");
+  const [sensorTag, setSensorTag] = useState(editData?.sensorTag || "");
   // const [sensorOutput, setSensorOutput] = useState("");
-
+  const [id, setId] = useState(editData?.id || '');
   const [categoryList, setCategoryList] = useState([]);
   const [sensorList, setSensorList] = useState([]);
   const [deviceList, setDeviceList] = useState([]);
@@ -74,55 +74,55 @@ const DeviceAdd = ({locationDetails, labMap}) => {
   const [maxThreshold, setmaxThreshold] = useState("");
   
   //------//
-  const [sensorCategoryId, setSensorCategoryId] = useState(""); 
-  const [sensorName, setSensorName] = useState("");
+  const [sensorCategoryId, setSensorCategoryId] = useState(editData?.sensorCategoryId || ""); 
+  const [sensorName, setSensorName] = useState(editData?.sensorName || "");
   const [manufacturer, setManufacturer] = useState("");
   const [partId, setPartId] = useState("");
-  const [sensorOutput, setSensorOutput] = useState("Digital");
+  const [sensorOutput, setSensorOutput] = useState(editData?.sensorOutput || "Digital");
   //-- Digital --/
-  const [digitalAlertType, setDigitalAlertType] = useState(""); 
-  const [digitalLowAlert, setDigitalLowAlert] = useState(""); 
-  const [digitalHighAlert, setDigitalHighAlert] = useState(""); 
+  const [digitalAlertType, setDigitalAlertType] = useState(editData?.digitalAlertType || ""); 
+  const [digitalLowAlert, setDigitalLowAlert] = useState(editData?.digitalLowAlert || ""); 
+  const [digitalHighAlert, setDigitalHighAlert] = useState(editData?.digitalHighAlert || ""); 
   //-----analog----//
-  const [sensorType, setSensorType] = useState("");
-  const [units, setUnits] = useState(""); 
-  const [minRatedReading, setMinRatedReading] = useState("");
-  const [minRatedReadingChecked, setMinRatedReadingChecked] = useState(false);
-  const [minRatedReadingScale, setMinRatedReadingScale] = useState("");
-  const [maxRatedReading, setMaxRatedReading] = useState("");
-  const [maxRatedReadingChecked, setMaxRatedReadingChecked] = useState(false);
-  const [maxRatedReadingScale, setMaxRatedReadingScale] = useState("");
+  const [sensorType, setSensorType] = useState(editData?.sensorType || "");
+  const [units, setUnits] = useState(editData?.units || ""); 
+  const [minRatedReading, setMinRatedReading] = useState(editData?.minRatedReading || "");
+  const [minRatedReadingChecked, setMinRatedReadingChecked] = useState(editData?.minRatedReadingChecked || '0');
+  const [minRatedReadingScale, setMinRatedReadingScale] = useState(editData?.minRatedReadingScale || "");
+  const [maxRatedReading, setMaxRatedReading] = useState(editData?.maxRatedReading || "");
+  const [maxRatedReadingChecked, setMaxRatedReadingChecked] = useState(editData?.maxRatedReadingChecked || '0');
+  const [maxRatedReadingScale, setMaxRatedReadingScale] = useState(editData?.maxRatedReadingScale || "");
   // -Modbus--------//
-  const [slaveId, setSlaveId] = useState(""); 
-  const [registerId, setRegisterId] = useState("");
-  const [length, setLength] = useState("");
-  const [registerType, setRegisterType] = useState("");
-  const [conversionType, setConversionType] = useState("");
-  const [ipAddress, setIpAddress] = useState("");
-  const [subnetMask, setSubnetMask] = useState("");
+  const [slaveId, setSlaveId] = useState(editData?.slaveId || ""); 
+  const [registerId, setRegisterId] = useState(editData?.registerId || "");
+  const [length, setLength] = useState(editData?.length || "");
+  const [registerType, setRegisterType] = useState(editData?.registerType || "");
+  const [conversionType, setConversionType] = useState(editData?.conversionType || "");
+  const [ipAddress, setIpAddress] = useState(editData?.ipAddress || "");
+  const [subnetMask, setSubnetMask] = useState(editData?.subnetMask || "");
   //---- polling type--------//
-  const [pollingIntervalType, setPollingIntervalType] = useState("");
+  const [pollingIntervalType, setPollingIntervalType] = useState(editData?.pollingIntervalType || "");
 
   // --- Critical Alert --- //
-  const [criticalMinValue, setCriticalMinValue] = useState(""); 
-  const [criticalMaxValue, setCriticalMaxValue] = useState("");
-  const [criticalAlertType, setCriticalAlertType] = useState("");
-  const [criticalLowAlert, setCriticalLowAlert] = useState(""); 
-  const [criticalHighAlert, setCriticalHighAlert] = useState(""); 
+  const [criticalMinValue, setCriticalMinValue] = useState(editData?.criticalMinValue || ""); 
+  const [criticalMaxValue, setCriticalMaxValue] = useState(editData?.criticalMaxValue || "");
+  const [criticalAlertType, setCriticalAlertType] = useState(editData?.criticalAlertType || "");
+  const [criticalLowAlert, setCriticalLowAlert] = useState(editData?.criticalLowAlert || ""); 
+  const [criticalHighAlert, setCriticalHighAlert] = useState(editData?.criticalHighAlert || ""); 
   
   // --- Warning Alert --- //
-  const [warningMinValue, setWarningMinValue] = useState(""); 
-  const [warningMaxValue, setWarningMaxValue] = useState("");
-  const [warningAlertType, setWarningAlertType] = useState("");
-  const [warningLowAlert, setWarningLowAlert] = useState(""); 
-  const [warningHighAlert, setWarningHighAlert] = useState(""); 
+  const [warningMinValue, setWarningMinValue] = useState(editData?.warningMinValue || ""); 
+  const [warningMaxValue, setWarningMaxValue] = useState(editData?.warningMaxValue || "");
+  const [warningAlertType, setWarningAlertType] = useState(editData?.warningAlertType || "");
+  const [warningLowAlert, setWarningLowAlert] = useState(editData?.warningLowAlert || ""); 
+  const [warningHighAlert, setWarningHighAlert] = useState(editData?.warningHighAlert || ""); 
 
   // --- Out-of-Range Alert --- //
-  const [outofrangeMinValue, setOutofrangeMinValue] = useState(""); 
-  const [outofrangeMaxValue, setOutofrangeMaxValue] = useState("");
-  const [outofrangeAlertType, setOutofrangeAlertType] = useState("");
-  const [outofrangeLowAlert, setOutofrangeLowAlert] = useState(""); 
-  const [outofrangeHighAlert, setOutofrangeHighAlert] = useState(""); 
+  const [outofrangeMinValue, setOutofrangeMinValue] = useState(editData?.outofrangeMinValue || ""); 
+  const [outofrangeMaxValue, setOutofrangeMaxValue] = useState(editData?.outofrangeMaxValue || "");
+  const [outofrangeAlertType, setOutofrangeAlertType] = useState(editData?.outofrangeAlertType || "");
+  const [outofrangeLowAlert, setOutofrangeLowAlert] = useState(editData?.outofrangeLowAlert || ""); 
+  const [outofrangeHighAlert, setOutofrangeHighAlert] = useState(editData?.outofrangeHighAlert || ""); 
 
   //-- Throttling ---//
   const [open, setOpen] = useState(false);
@@ -202,6 +202,10 @@ const DeviceAdd = ({locationDetails, labMap}) => {
   const loadData = () => {
     CategoryFetchService(categoryHandleSuccess,handleException);
     SensorCategoryFetchService(sensorCategoryHandleSuccess,handleException);
+    {editData?.deviceId && 
+      DeviceFetchService({...locationDetails, sensorCategoryId}, deviceHandleSuccess,handleException);
+      SensorFetchService(sensorCategoryId, sensorHandleSuccess,handleException);
+    }
   }
   
   const deviceChanged = (sensorCategoryId) => {
@@ -210,7 +214,50 @@ const DeviceAdd = ({locationDetails, labMap}) => {
   }
   const handleSubmit = async (e) =>{
     e.preventDefault();
-    
+    {isUpdate ?
+    SensorDeployEditService({...locationDetails, 
+      id,
+      categoryId,
+      deviceId,
+      sensorCategoryId,
+      sensorName,
+      sensorTag,
+      sensorOutput,
+      digitalAlertType,
+      digitalLowAlert,
+      digitalHighAlert,
+      sensorType,
+      units,
+      minRatedReading,
+      minRatedReadingChecked,
+      minRatedReadingScale,
+      maxRatedReading,
+      maxRatedReadingChecked,
+      maxRatedReadingScale,
+      slaveId,
+      registerId,
+      length,
+      registerType,
+      conversionType,
+      ipAddress,
+      subnetMask,
+      pollingIntervalType,
+      criticalMinValue,
+      criticalMaxValue,
+      criticalAlertType,
+      criticalLowAlert,
+      criticalHighAlert,
+      warningMinValue,
+      warningMaxValue,
+      warningAlertType,
+      warningLowAlert,
+      warningHighAlert,
+      outofrangeMinValue,
+      outofrangeMaxValue,
+      outofrangeAlertType,
+      outofrangeLowAlert,
+      outofrangeHighAlert}, sensorAddSuccess, senserAddException)
+      :
     SensorDeployAddService({...locationDetails, 
       categoryId,
       deviceId,
@@ -251,7 +298,8 @@ const DeviceAdd = ({locationDetails, labMap}) => {
       outofrangeMaxValue,
       outofrangeAlertType,
       outofrangeLowAlert,
-      outofrangeHighAlert}, sensorAddSuccess, senserAddException );
+      outofrangeHighAlert}, sensorAddSuccess, senserAddException )
+    }
   }  
 
   const sensorAddSuccess = (dataObject) => {
@@ -263,6 +311,8 @@ const DeviceAdd = ({locationDetails, labMap}) => {
     });  
     setTimeout(() => {
       resetForm();
+      handleClose();
+      setProgressStatus(1);
     }, 3000);
   };
   
@@ -341,6 +391,7 @@ const DeviceAdd = ({locationDetails, labMap}) => {
                           id="demo-simple-select"
                           value={categoryId}
                           required
+                          disabled={editData && true}
                           label="Device Category"                
                           onChange={(e) => {
                             deviceChanged(e.target.value);
@@ -371,6 +422,7 @@ const DeviceAdd = ({locationDetails, labMap}) => {
                           id="demo-simple-select"
                           value={deviceId}
                           required
+                          disabled={editData && true}
                           label="Device Name"                
                           onChange={(e) => {
                             setDeviceId(e.target.value);                            
@@ -401,6 +453,7 @@ const DeviceAdd = ({locationDetails, labMap}) => {
                         id="demo-simple-select"
                         value={sensorCategoryId}
                         required
+                        disabled={editData && true}
                         label="Sensor Category"                
                         onChange={(e) => {
                           setSensorCategoryId(e.target.value); 
@@ -420,109 +473,100 @@ const DeviceAdd = ({locationDetails, labMap}) => {
                     </FormControl>
                 </Box>
               </Grid>
-              <Grid  sx={{ mt: 0, padding:0 }}
-                item 
-                xs={12} sm={6} md={6} lg={6} xl={6} >        
-                  <Box>
-                    {/* <FormControl fullWidth margin="normal" sx={{marginTop:0}}>
-                        <InputLabel id="demo-simple-select-label">
-                          Sensor Name
-                        </InputLabel>
-                        <Select
-                        sx={{  }}
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={sensorName}
-                        label="Sensor Name"                
-                        onChange={(e) => {
-                          // deviceChanged(e.target.value);
-                          // setCategory_id(e.target.value);
-                          setSensorName(e.target.value);
-                        }}
-                        error={errorObject?.deviceCategory?.errorStatus}
-                        helperText={errorObject?.deviceCategory?.helperText} 
-                        >
-                        {sensorList.map((data) => {
-                            return (
-                                <MenuItem value={data.id}>{data.sensorName}</MenuItem>
-                            );
-                            })}
-                        </Select>
-                    </FormControl> */}
+                     
                   
-                  <Autocomplete
-                    id="asynchronous-demo"
-                    sx={{}}
-                    open={open}
-                    onOpen={() => {
-                      setOpen(true);
-                    }}
-                    onClose={() => {
-                      setOpen(false);
-                    }}
-                    // isOptionEqualToValue={(option, value) => option.id === value.id}
-                    isOptionEqualToValue={(option, value) => {
-                      
-                      return option.id === value.id
-                    }}
-                    getOptionLabel={(option) => {
-                      console.log(option);
-                      
-                      return option.sensorName
-                    }}
-                    options={sensorList}
-                    // loading={loading}
-                    onChange={(e, data)=>{
-                      console.log('value'+data.sensorName);
-                      setSensorName(data.id);
-                      setSensorOutput(data.sensorOutput);  
-                      setSensorType(data.sensorType);
-                      //--digital--//
-                      // setDigitalAlertType(option.digitalAlertType); 
-                      // setDigitalLowAlert(option.digitalLowAlert);
-                      // setDigitalHighAlert(option.digitalHighAlert);
-                      //-- analog --// 
-                      setUnits(data.units);
-                      setMinRatedReading(data.minRatedReading);
-                      setMinRatedReadingChecked(data.minRatedReadingChecked);
-                      setMinRatedReadingScale(data.minRatedReadingScale);
-                      setMaxRatedReading(data.maxRatedReading);
-                      setMaxRatedReadingChecked(data.maxRatedReadingChecked);
-                      setMaxRatedReadingScale(data.maxRatedReadingScale);
-                      //--modbus--/
-                      setIpAddress(data.ipAddress);
-                      setSubnetMask(data.subnetMask);
-                      setSlaveId(data.slaveId);
-                      setRegisterId(data.registerId);
-                      setLength(data.length);
-                      setRegisterType(data.registerType);
-                      setConversionType(data.conversionType);
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Sensor Name"
-                        required
-                        onKeyUp={(e)=>{
-                          setTimeout(()=>{
-                            SensorFetchService(sensorCategoryId, sensorHandleSuccess,handleException);
-                          },500);
-                        }}
-                        
-                        // InputProps={{
-                        //   ...params.InputProps,
-                        //   endAdornment: (
-                        //     <React.Fragment>
-                        //       {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                        //       {params.InputProps.endAdornment}
-                        //     </React.Fragment>
-                        //   ),
-                        // }}
-                      />
-                    )}
-                  />
-                  </Box>
-              </Grid>
+                    
+                  {editData ?
+                  <Grid   sx={{ mt: 0, padding:0 }}
+                  item 
+                  xs={12} sm={6} md={6} lg={6} xl={6}>
+                  <div className='rounded-md -space-y-px'>
+                    <TextField 
+                      value={editData?.sensorNameUnit}
+                      disabled
+                    fullWidth/>
+                    </div>  
+                    </Grid>
+                  :
+                  <Grid  sx={{ mt: 0, padding:0 }}
+                    item 
+                    xs={12} sm={6} md={6} lg={6} xl={6} > 
+                        <Box>
+                        <Autocomplete
+                          id="asynchronous-demo"
+                          sx={{}}
+                          open={open}
+                          value={sensorList[0]?.sensorName}
+                          onOpen={() => {
+                            setOpen(true);
+                          }}
+                          onClose={() => {
+                            setOpen(false);
+                          }}
+                          // isOptionEqualToValue={(option, value) => option.id === value.id}
+                          isOptionEqualToValue={(option, value) => {
+                            
+                            return option.id === value.id
+                          }}
+                          getOptionLabel={(option) => {
+                            console.log(option);
+                            
+                            return option.sensorName
+                          }}
+                          options={sensorList}
+                          // loading={loading}
+                          onChange={(e, data)=>{
+                            console.log('value'+data.sensorName);
+                            setSensorName(data.id);
+                            setSensorOutput(data.sensorOutput);  
+                            setSensorType(data.sensorType);
+                            //--digital--//
+                            // setDigitalAlertType(option.digitalAlertType); 
+                            // setDigitalLowAlert(option.digitalLowAlert);
+                            // setDigitalHighAlert(option.digitalHighAlert);
+                            //-- analog --// 
+                            setUnits(data.units);
+                            setMinRatedReading(data.minRatedReading);
+                            setMinRatedReadingChecked(data.minRatedReadingChecked);
+                            setMinRatedReadingScale(data.minRatedReadingScale);
+                            setMaxRatedReading(data.maxRatedReading);
+                            setMaxRatedReadingChecked(data.maxRatedReadingChecked);
+                            setMaxRatedReadingScale(data.maxRatedReadingScale);
+                            //--modbus--/
+                            setIpAddress(data.ipAddress);
+                            setSubnetMask(data.subnetMask);
+                            setSlaveId(data.slaveId);
+                            setRegisterId(data.registerId);
+                            setLength(data.length);
+                            setRegisterType(data.registerType);
+                            setConversionType(data.conversionType);
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Sensor Name"
+                              required
+                              onKeyUp={(e)=>{
+                                setTimeout(()=>{
+                                  SensorFetchService(sensorCategoryId, sensorHandleSuccess,handleException);
+                                },500);
+                              }}
+                              
+                              // InputProps={{
+                              //   ...params.InputProps,
+                              //   endAdornment: (
+                              //     <React.Fragment>
+                              //       {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                              //       {params.InputProps.endAdornment}
+                              //     </React.Fragment>
+                              //   ),
+                              // }}
+                            />
+                          )}
+                        />
+                        </Box>
+                  </Grid>
+                  }
                 <Grid   sx={{ mt: 0, padding:0 }}
                   item 
                   xs={12} sm={6} md={6} lg={6} xl={6}>
@@ -703,7 +747,8 @@ const DeviceAdd = ({locationDetails, labMap}) => {
                   sx={{ m: 2 }}
                   onClick={(e) => {                   
                     setErrorObject({}); 
-                    resetForm();                     
+                    resetForm(); 
+                    setProgressStatus && setProgressStatus(1);                    
                   }}
                 >
                   Cancel
@@ -714,7 +759,7 @@ const DeviceAdd = ({locationDetails, labMap}) => {
                   variant ="contained"
                   type = "submit"
                 > 
-                ADD
+                {isUpdate ? 'UPDATE' : 'ADD' }
               </Button> 
             </div>    
           </DialogContent>

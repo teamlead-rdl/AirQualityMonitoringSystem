@@ -42,7 +42,7 @@ import datalogger from "../images/datalogger.png";
 import { Paper } from "@mui/material";
 import NotificationBar from "../../notification/ServiceNotificationBar";
 import { useUserAccess } from "../../../context/UserAccessProvider";
-
+import SensorAdd from '../SensorAdd'
 
 function generate(element) {
     return [0,1,2].map((value) =>
@@ -69,7 +69,9 @@ const SensorModel = ({
 }) => {
   
     const moduleAccess = useUserAccess()('devicelocation');
-
+    const [progressStatus, setProgressStatus] = useState(1);
+    const [editData, setEditData] = useState('');
+    const [isUpdate, setIsUpdate] = useState(true);
     const [openNotification, setNotification] = useState({
         status: false,
         type: 'error',
@@ -136,8 +138,7 @@ const SensorModel = ({
       sx={{ "& .MuiDialog-paper": { width: "100%"}}}
       open={open}
     >
-
-    {console.log(analogSensorList?analogSensorList.length : 0)}
+        {progressStatus === 1 && <>
         <DialogTitle>Sensors for device</DialogTitle>
         <DialogContent>
           <Box sx={{ flexGrow: 1, width:'100%' , height:300}}>
@@ -170,6 +171,12 @@ const SensorModel = ({
                                             <ListItemText
                                                 primary={data.sensorTag}
                                                 secondary={data.sensorNameUnit}
+                                                onClick={()=>{
+                                                    console.log(data);
+                                                    setEditData(data);
+                                                    setProgressStatus(2);
+                                                }}
+                                                style={{cursor:'pointer'}}
                                             />
                                         </ListItem>)
                                     })
@@ -212,6 +219,12 @@ const SensorModel = ({
                                             <ListItemText
                                                 primary={data.sensorTag}
                                                 secondary={data.sensorNameUnit}
+                                                onClick={()=>{
+                                                    console.log(data);
+                                                    setEditData(data);
+                                                    setProgressStatus(2);
+                                                }}
+                                                style={{cursor:'pointer'}}
                                             />
                                         </ListItem>)
                                     })
@@ -254,6 +267,12 @@ const SensorModel = ({
                                             <ListItemText
                                                 primary={data.sensorTag}
                                                 secondary={data.sensorNameUnit}
+                                                onClick={()=>{
+                                                    console.log(data);
+                                                    setEditData(data);
+                                                    setProgressStatus(2);
+                                                }}
+                                                style={{cursor:'pointer'}}
                                             />
                                         </ListItem>)
                                     })
@@ -296,6 +315,11 @@ const SensorModel = ({
         openNotification={openNotification.status}
         type={openNotification.type} 
       />
+      </>}
+      {progressStatus === 2 && <div style={{textAlign:'center', padding:5}}>
+        
+        <SensorAdd isUpdate={isUpdate} editData={editData} locationDetails={locationDetails} setProgressStatus={setProgressStatus}/>
+      </div>}
     </Dialog>
   );
 };
