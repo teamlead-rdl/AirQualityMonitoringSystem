@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/ResearchAndDesignLabs/static/css/main.600a4404.css",
+    "main.js": "/ResearchAndDesignLabs/static/js/main.6dfef293.js",
+    "static/media/floorPlan.png": "/ResearchAndDesignLabs/static/media/floorPlan.47d4fece78e0a5062aeb.png",
+    "static/media/dataloger.gif": "/ResearchAndDesignLabs/static/media/dataloger.d9457bf8c01358576781.gif",
+    "static/media/dataloger1.gif": "/ResearchAndDesignLabs/static/media/dataloger1.610d1cdbe7e811a8291c.gif",
+    "static/media/building-real-estate-service-250x250.jpeg": "/ResearchAndDesignLabs/static/media/building-real-estate-service-250x250.ece375eb7c5ef11f5fd6.jpeg",
+    "static/media/dataloger2.gif": "/ResearchAndDesignLabs/static/media/dataloger2.341eb08d9e561f175f96.gif",
+    "static/media/cctv.gif": "/ResearchAndDesignLabs/static/media/cctv.779e54d6c5d9cb672412.gif",
+    "static/media/computer.gif": "/ResearchAndDesignLabs/static/media/computer.42adf7c732b2c6fb9cea.gif",
+    "static/media/departmentBlueprint.png": "/ResearchAndDesignLabs/static/media/departmentBlueprint.0896156f88f91b0ac68b.png",
+    "static/media/thermosensor.gif": "/ResearchAndDesignLabs/static/media/thermosensor.6373436ebf481c7b8de1.gif",
+    "static/media/fan.gif": "/ResearchAndDesignLabs/static/media/fan.8b45a1065b47077d5d9d.gif",
+    "static/media/placeholder.png": "/ResearchAndDesignLabs/static/media/placeholder.9fe8ba510362f045fc24.png",
+    "static/media/loginPageWallpaper.svg": "/ResearchAndDesignLabs/static/media/loginPageWallpaper.2e7a80674f341f9f55316a2d3236d31c.svg",
+    "static/media/logo.svg": "/ResearchAndDesignLabs/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/ResearchAndDesignLabs/index.html",
+    "main.600a4404.css.map": "/ResearchAndDesignLabs/static/css/main.600a4404.css.map",
+    "main.6dfef293.js.map": "/ResearchAndDesignLabs/static/js/main.6dfef293.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.600a4404.css",
+    "static/js/main.6dfef293.js"
+  ]
+}
