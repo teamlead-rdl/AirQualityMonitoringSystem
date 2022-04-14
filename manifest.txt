@@ -1,0 +1,23 @@
+Initial Version :
+
+- Single Login Form for all kind of users like 'admin', 'manager', 'user'.
+- Second Level Authentication for certain users by sending OTP into Email and Phone number.
+- Block 'users' for wrong password attempt more than five times.
+- User will get email containing of username and pasword when creating their account 
+- User will get email containing of username and new password when the account getting unblocked by the admin.
+- User can reset password password by confirming old password. 
+- Super Admin can add, edit, update the customer details.
+- Able to add Customer logo and theme color as well.
+- Super Admin can unblock blocked customers.
+
+- Admin can unblock blocked users.
+- Admin can add, edit, delete the User details.
+- Admin can add, edit, delete the Location details.
+- Admin can add, edit, delete the Branch details.
+- Admin can add, edit, delete the Facility details.
+- Admin can add, edit, delete the Building details.
+- Able to add coordination of Location, Branch, Facility, Building and locate it on google map.
+- Admin can add, edit, delete the Floor details.
+- Admin can add, edit, delete the Lab details.
+- Able to upload Floor and Lab image.
+- Able to add markers on coordinates of Labs and Floors on 'Lab' and 'Floor' image.
