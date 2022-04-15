@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import './App.css';
 import LoginPage from './pages/LoginPageComponent';
 import OneTimePassword from './pages/OneTimePasswordComponent';
