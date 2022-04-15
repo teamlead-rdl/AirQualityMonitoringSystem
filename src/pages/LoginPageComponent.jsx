@@ -80,13 +80,14 @@ const LoginPage = () => {
                 }, 3000);
             }).catch(error => {
                 setLoading(false);
-                error.errorObject.then(errorResponse => {
+                error?.errorObject?.then(errorResponse => {
                     setNotification({
                         status: true,
                         type: 'error',
                         message: errorResponse.error ? errorResponse.error : errorResponse.message
                     });
                 });
+                console.log(JSON.stringify(error));
             });
     }
 
