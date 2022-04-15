@@ -21,16 +21,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-        run: npm i
-
-      - name: Building the Application
-        uses: actions/checkout@v3
-        run: npm run build
+      - name: Install and Build
+        run: npm install && npm run build
 
       - name: Deploying the build
         uses: JamesIves/github-pages-deploy-action@4.1.1
