@@ -17,10 +17,8 @@ import {
 } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
-
 import { Box } from "@mui/system";
-
-import {CategoryFetchService, DeviceFetchService,SensorAddService,SensorCategoryFetchService, SensorDeployAddService, SensorDeployEditService, SensorFetchService } from "../../services/LoginPageService";
+import { CategoryFetchService, DeviceFetchService, SensorAddService, SensorCategoryFetchService, SensorDeployAddService, SensorDeployEditService, SensorFetchService } from "../../services/LoginPageService";
 import Analog from "./sensorType/AnalogComponent";
 import Modbus from "./sensorType/ModbusComponent";
 import Digital from "./sensorType/DigitalComponent";
@@ -37,10 +35,8 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-
 const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpdate}) => {  
  
-
   const [location_id, setLocation_Id] = useState(16);
   const [branch_id, setBranch_id] = useState(16);
   const [facility_id, setFacility_id] = useState(2);
@@ -48,20 +44,15 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
   const [category_id, setCategory_id] = useState("");  
   const [deviceCategory, setDeviceCategory] = useState("");
   const [deviceId, setDeviceId] = useState(editData?.deviceId || "");
-
   const [categoryId, setCategoryId] = useState(editData?.categoryId || "");
-  // const [sensorName, setSensorName] = useState("");
   const [sensorTag, setSensorTag] = useState(editData?.sensorTag || "");
-  // const [sensorOutput, setSensorOutput] = useState("");
   const [id, setId] = useState(editData?.id || '');
   const [categoryList, setCategoryList] = useState([]);
   const [sensorList, setSensorList] = useState([]);
   const [deviceList, setDeviceList] = useState([]);
   const [sensorCategoryList, setSensorCategoryList] = useState([]);
-
   const [alerts, setAlert] = useState("");
   const [alertTag, setAlertTag] = useState("");
-  // const [sensorType, setSensorType] = useState("");
   const [registerAddress, setRegisterAddress] = useState("");
   const [registerLength, setRegisterLength] = useState("");
   const [minReadingRage, setMinReadingRage] = useState("");
@@ -72,8 +63,6 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
   const [maxUnits, setMaxUnits] = useState("");
   const [minThreshold, setMinThreshold] = useState("");
   const [maxThreshold, setmaxThreshold] = useState("");
-  
-  //------//
   const [sensorCategoryId, setSensorCategoryId] = useState(editData?.sensorCategoryId || ""); 
   const [sensorName, setSensorName] = useState(editData?.sensorName || "");
   const [manufacturer, setManufacturer] = useState("");
@@ -102,30 +91,27 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
   const [subnetMask, setSubnetMask] = useState(editData?.subnetMask || "");
   //---- polling type--------//
   const [pollingIntervalType, setPollingIntervalType] = useState(editData?.pollingIntervalType || "");
-
   // --- Critical Alert --- //
   const [criticalMinValue, setCriticalMinValue] = useState(editData?.criticalMinValue || ""); 
   const [criticalMaxValue, setCriticalMaxValue] = useState(editData?.criticalMaxValue || "");
   const [criticalAlertType, setCriticalAlertType] = useState(editData?.criticalAlertType || "");
   const [criticalLowAlert, setCriticalLowAlert] = useState(editData?.criticalLowAlert || ""); 
   const [criticalHighAlert, setCriticalHighAlert] = useState(editData?.criticalHighAlert || ""); 
-  
   // --- Warning Alert --- //
   const [warningMinValue, setWarningMinValue] = useState(editData?.warningMinValue || ""); 
   const [warningMaxValue, setWarningMaxValue] = useState(editData?.warningMaxValue || "");
   const [warningAlertType, setWarningAlertType] = useState(editData?.warningAlertType || "");
   const [warningLowAlert, setWarningLowAlert] = useState(editData?.warningLowAlert || ""); 
   const [warningHighAlert, setWarningHighAlert] = useState(editData?.warningHighAlert || ""); 
-
   // --- Out-of-Range Alert --- //
   const [outofrangeMinValue, setOutofrangeMinValue] = useState(editData?.outofrangeMinValue || ""); 
   const [outofrangeMaxValue, setOutofrangeMaxValue] = useState(editData?.outofrangeMaxValue || "");
   const [outofrangeAlertType, setOutofrangeAlertType] = useState(editData?.outofrangeAlertType || "");
   const [outofrangeLowAlert, setOutofrangeLowAlert] = useState(editData?.outofrangeLowAlert || ""); 
   const [outofrangeHighAlert, setOutofrangeHighAlert] = useState(editData?.outofrangeHighAlert || ""); 
-
   //-- Throttling ---//
   const [open, setOpen] = useState(false);
+  const [errorObject, setErrorObject] = useState({});
   const loading = open && categoryList.length === 0 ;
 
   const [openNotification, setNotification] = useState({
@@ -134,8 +120,6 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
     message: ''
   });
 
-  const [errorObject, setErrorObject] = useState({});
-  
   const validateForNullValue = (value, type) => {
     AddCategoryValidate(value, type, setErrorObject)
   };
@@ -151,32 +135,6 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
   useEffect(() => {       
     loadData();  
   }, []);
-  
-  // useEffect(() => {
-  //   let active = true;
-
-  //   if (!loading) {
-  //     return undefined;
-  //   }
-
-  //   (async () => {
-  //     await sleep(1e3); // For demo purposes.
-
-  //     if (active) {
-  //       setCategoryList([...categoryList]);
-  //     }
-  //   })();
-
-  //   return () => {
-  //     active = false;
-  //   };
-  // }, [loading]);
-
-  // useEffect(() => {
-  //   if (!open) {
-  //     setCategoryList([]);
-  //   }
-  // }, [open]);
 
   function sleep(delay = 0) {
     return new Promise((resolve) => {
@@ -199,19 +157,21 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
   const sensorHandleSuccess = (dataObject) => {
     setSensorList(dataObject.data);  
   }
+
   const loadData = () => {
-    CategoryFetchService(categoryHandleSuccess,handleException);
-    SensorCategoryFetchService(sensorCategoryHandleSuccess,handleException);
+    CategoryFetchService(categoryHandleSuccess, handleException);
+    SensorCategoryFetchService(sensorCategoryHandleSuccess, handleException);
     {editData?.deviceId && 
-      DeviceFetchService({...locationDetails, sensorCategoryId}, deviceHandleSuccess,handleException);
-      SensorFetchService(sensorCategoryId, sensorHandleSuccess,handleException);
+      DeviceFetchService({...locationDetails, sensorCategoryId}, deviceHandleSuccess, handleException);
+      SensorFetchService(sensorCategoryId, sensorHandleSuccess, handleException);
     }
   }
   
   const deviceChanged = (sensorCategoryId) => {
     setCategoryId(sensorCategoryId);   
-    DeviceFetchService({...locationDetails, sensorCategoryId}, deviceHandleSuccess,handleException);
+    DeviceFetchService({...locationDetails, sensorCategoryId}, deviceHandleSuccess, handleException);
   }
+
   const handleSubmit = async (e) =>{
     e.preventDefault();
     {isUpdate ?
@@ -303,7 +263,6 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
   }  
 
   const sensorAddSuccess = (dataObject) => {
-    // console.log(JSON.stringify(data)); 
     setNotification({
       status: true,
       type: 'success',
@@ -317,7 +276,6 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
   };
   
   const senserAddException = (errorObject, errorMessage) => {
-    // console.log(JSON.stringify(errorObject));
     setNotification({
       status: true,
       type: 'error',
@@ -426,9 +384,7 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
                           label="Device Name"                
                           onChange={(e) => {
                             setDeviceId(e.target.value);                            
-                          }}
-                          // error={errorObject?.deviceName?.errorStatus}
-                          // helperText={errorObject?.deviceName?.helperText} 
+                          }} 
                           >
                           {deviceList.map((data) => {
                               return (
@@ -459,10 +415,7 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
                           setSensorCategoryId(e.target.value); 
                           setSensorList([]);   
                           // SensorFetchService(e.target.value, sensorHandleSuccess,handleException);
-
                         }}
-                        // error={errorObject?.deviceName?.errorStatus}
-                        // helperText={errorObject?.deviceName?.helperText} 
                         >
                         {sensorCategoryList.map((data) => {
                             return (
@@ -473,9 +426,6 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
                     </FormControl>
                 </Box>
               </Grid>
-                     
-                  
-                    
                   {editData ?
                   <Grid   sx={{ mt: 0, padding:0 }}
                   item 
@@ -503,7 +453,6 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
                           onClose={() => {
                             setOpen(false);
                           }}
-                          // isOptionEqualToValue={(option, value) => option.id === value.id}
                           isOptionEqualToValue={(option, value) => {
                             
                             return option.id === value.id
@@ -514,16 +463,11 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
                             return option.sensorName
                           }}
                           options={sensorList}
-                          // loading={loading}
                           onChange={(e, data)=>{
                             console.log('value'+data.sensorName);
                             setSensorName(data.id);
                             setSensorOutput(data.sensorOutput);  
                             setSensorType(data.sensorType);
-                            //--digital--//
-                            // setDigitalAlertType(option.digitalAlertType); 
-                            // setDigitalLowAlert(option.digitalLowAlert);
-                            // setDigitalHighAlert(option.digitalHighAlert);
                             //-- analog --// 
                             setUnits(data.units);
                             setMinRatedReading(data.minRatedReading);
@@ -551,16 +495,6 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
                                   SensorFetchService(sensorCategoryId, sensorHandleSuccess,handleException);
                                 },500);
                               }}
-                              
-                              // InputProps={{
-                              //   ...params.InputProps,
-                              //   endAdornment: (
-                              //     <React.Fragment>
-                              //       {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                              //       {params.InputProps.endAdornment}
-                              //     </React.Fragment>
-                              //   ),
-                              // }}
                             />
                           )}
                         />
@@ -589,7 +523,6 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
                       />
                     </div> 
                 </Grid>       
-                
                 <Grid   sx={{ mt: 0, padding:0 }}
                   item 
                   xs={12} sm={6} md={6} lg={6} xl={6}>
@@ -610,8 +543,6 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
                           onChange={(e) => {
                             setSensorOutput(e.target.value);   
                           }}
-                          // error={errorObject?.deviceName?.errorStatus}
-                          // helperText={errorObject?.deviceName?.helperText} 
                           >
                           <MenuItem value={"Digital"}>{"Digital"}</MenuItem>
                           <MenuItem value={"Analog"}>{"Analog"}</MenuItem>
@@ -622,7 +553,6 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
                 </Grid>
                 
             </Grid>    
-            {/* <Divider >-</Divider> */}
             {sensorOutput == 'Analog'? 
               <>
                 <Analog 
@@ -737,8 +667,6 @@ const DeviceAdd = ({locationDetails, labMap, setProgressStatus, editData, isUpda
                   digitalAlertType={digitalAlertType} setDigitalAlertType={setDigitalAlertType}
                   digitalLowAlert={digitalLowAlert} setDigitalLowAlert={setDigitalLowAlert}
                   digitalHighAlert={digitalHighAlert} setDigitalHighAlert={setDigitalHighAlert}
-
-                // alerts={alerts} setAlert={setAlert} alertTag={alertTag} setAlertTag={setAlertTag}
                 />
               </>
               }
