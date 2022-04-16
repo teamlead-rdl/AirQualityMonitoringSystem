@@ -6,10 +6,10 @@ import { BranchListResults } from './siteDetails/branch/branchList';
 import { Container } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import MapsMultiplePoints from './maps/mapsMultiplePoints';
+import ApplicationStore from '../utils/localStorageUtil';
 
 const Branch = () => {
   const [locationCoordinationList, setLocationCoordinationList] = useState([]);
-
   const { locationId } = useParams();
   return (
     <Container maxWidth={false} style={{ marginTop: 0 }}>
