@@ -10,6 +10,7 @@ import HorizontalLinearStepper from "./Device/DeviceSensor";
 import { Link, useLocation } from 'react-router-dom';
 import SensorAdd from './Device/SensorAdd'
 import { useUserAccess } from '../context/UserAccessProvider';
+import ApplicationStore from '../utils/localStorageUtil';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,6 +53,7 @@ const DeviceListResults = () => {
     const { location_id, branch_id, facility_id, building_id, floor_id, lab_id, buildingImg, floorMap} = routeStateObject.state;
     const labMap = routeStateObject.state.lab_map;
     const moduleAccess = useUserAccess()('devicelocation');
+    const { locationLabel, branchLabel, facilityLabel, buildingLabel } = ApplicationStore().getStorage('siteDetails');
     
     var pathList = routeStateObject.pathname.split('/').filter(x => x);
     var pathname = pathList.map((data, index)=>{
@@ -66,6 +68,14 @@ const DeviceListResults = () => {
                 <Link underline="hover" color="inherit" to="/Location">
                   Location
                 </Link>
+                {locationLabel ?
+                 <Typography
+                    underline="hover"
+                    color="inherit"
+                    >
+                    {pathname[1]}
+                  </Typography>
+               :
                 <Link
                   underline="hover"
                   color="inherit"
@@ -76,6 +86,15 @@ const DeviceListResults = () => {
                   >
                   {pathname[1]}
                 </Link>
+                }
+                {branchLabel?
+                <Typography
+                underline="hover"
+                color="inherit"
+                >
+                {pathname[2]}
+              </Typography>
+                :
                 <Link
                   underline="hover"
                   color="inherit"
@@ -87,6 +106,7 @@ const DeviceListResults = () => {
                   >
                   {pathname[2]}
                 </Link>
+                }
                 <Link
                   underline="hover"
                   color="inherit"

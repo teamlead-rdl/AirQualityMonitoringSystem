@@ -1,34 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";   
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import EditIcon from '@mui/icons-material/Edit';
 import { styled } from '@mui/material/styles';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SensorsIcon from '@mui/icons-material/Sensors';
-
-
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import { AddDeviceValidate } from "../../../validatation/locationValidation";
 import {
   DeviceAddService,
   DeviceEditService,
@@ -36,13 +20,9 @@ import {
   SensorDeployFetchService,
 } from "../../../services/LoginPageService";
 import DialogTitle from "@mui/material/DialogTitle";
-import computer from "../images/computer.png";
-import thermosensor from "../images/thermosensor.png";
-import datalogger from "../images/datalogger.png";
-import { Paper } from "@mui/material";
 import NotificationBar from "../../notification/ServiceNotificationBar";
 import { useUserAccess } from "../../../context/UserAccessProvider";
-
+import SensorAdd from '../SensorAdd'
 
 function generate(element) {
     return [0,1,2].map((value) =>
@@ -69,7 +49,9 @@ const SensorModel = ({
 }) => {
   
     const moduleAccess = useUserAccess()('devicelocation');
-
+    const [progressStatus, setProgressStatus] = useState(1);
+    const [editData, setEditData] = useState('');
+    const [isUpdate, setIsUpdate] = useState(true);
     const [openNotification, setNotification] = useState({
         status: false,
         type: 'error',
@@ -77,23 +59,19 @@ const SensorModel = ({
         });
 
   useEffect(() => {
-    //   setOpen(open);
       console.log(typeof(analogSensorList));
       console.log(analogSensorList);
     },[analogSensorList || digitalSensorList || modbusSensorList]);
 
   const [dense, setDense] = React.useState(false);
-  //const [secondary, setSecondary] = React.useState(false);
 
   const HandleSubmit = async (e) => {
     e.preventDefault();
-    // -- API call -- //
-    
     setOpen(false);
   };
 
   const deleteSensor = (id) =>{
-    SensorDeployDeleteService({id},handleSuccess, handleException);
+    SensorDeployDeleteService({id}, handleSuccess, handleException);
   }
 
   const handleSuccess = (dataObject) => {
@@ -136,8 +114,7 @@ const SensorModel = ({
       sx={{ "& .MuiDialog-paper": { width: "100%"}}}
       open={open}
     >
-
-    {console.log(analogSensorList?analogSensorList.length : 0)}
+        {progressStatus === 1 && <>
         <DialogTitle>Sensors for device</DialogTitle>
         <DialogContent>
           <Box sx={{ flexGrow: 1, width:'100%' , height:300}}>
@@ -148,7 +125,6 @@ const SensorModel = ({
                     </div>
                         <Demo>
                             <List dense={dense}>
-                                {/* {analogSensorList.length > 0? analogSensorList[0].sensorTag : ''}  */}
                                 {analogSensorList.length > 0? 
                                     analogSensorList.map((data, index)=>{
                                         console.log(data.sensorTag);
@@ -170,6 +146,11 @@ const SensorModel = ({
                                             <ListItemText
                                                 primary={data.sensorTag}
                                                 secondary={data.sensorNameUnit}
+                                                onClick={()=>{
+                                                    setEditData(data);
+                                                    setProgressStatus(2);
+                                                }}
+                                                style={{cursor:'pointer'}}
                                             />
                                         </ListItem>)
                                     })
@@ -212,6 +193,11 @@ const SensorModel = ({
                                             <ListItemText
                                                 primary={data.sensorTag}
                                                 secondary={data.sensorNameUnit}
+                                                onClick={()=>{
+                                                    setEditData(data);
+                                                    setProgressStatus(2);
+                                                }}
+                                                style={{cursor:'pointer'}}
                                             />
                                         </ListItem>)
                                     })
@@ -254,6 +240,11 @@ const SensorModel = ({
                                             <ListItemText
                                                 primary={data.sensorTag}
                                                 secondary={data.sensorNameUnit}
+                                                onClick={()=>{
+                                                    setEditData(data);
+                                                    setProgressStatus(2);
+                                                }}
+                                                style={{cursor:'pointer'}}
                                             />
                                         </ListItem>)
                                     })
@@ -269,7 +260,6 @@ const SensorModel = ({
                             </List>
                         </Demo>
                     </Grid>
-                    
                 </Grid>
             </Box>
             <Box>
@@ -283,11 +273,9 @@ const SensorModel = ({
                   >
                     Cancel
                   </Button>
-                
               </div>
             </div>
             </Box>
-            
         </DialogContent>
 
         <NotificationBar
@@ -296,6 +284,10 @@ const SensorModel = ({
         openNotification={openNotification.status}
         type={openNotification.type} 
       />
+      </>}
+      {progressStatus === 2 && <div style={{textAlign:'center', padding:5}}>
+        <SensorAdd isUpdate={isUpdate} editData={editData} locationDetails={locationDetails} setProgressStatus={setProgressStatus}/>
+      </div>}
     </Dialog>
   );
 };
