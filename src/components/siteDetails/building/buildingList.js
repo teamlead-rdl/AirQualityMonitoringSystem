@@ -8,6 +8,7 @@ import { Link, useLocation } from 'react-router-dom';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 import { Breadcrumbs, Typography } from '@mui/material';
+import ApplicationStore from '../../../utils/localStorageUtil';
 
 export function BuildingListResults(props) {
   
@@ -23,7 +24,6 @@ export function BuildingListResults(props) {
         ];
       }
     },
-
     {
       field: 'buildingTotalFloors',
       headerName: 'Total Floors',
@@ -66,6 +66,8 @@ export function BuildingListResults(props) {
   const [refreshData, setRefreshData] = useState(false);
   const moduleAccess = useUserAccess()('location');
 
+  const { locationLabel, branchLabel, facilityLabel, buildingLabel } = ApplicationStore().getStorage('siteDetails');
+  
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
@@ -79,6 +81,7 @@ export function BuildingListResults(props) {
       branch_id,
       facility_id,
     }, handleSuccess, handleException);
+    
   },[refreshData]);
 
   const handleSuccess = (dataObject) => {
@@ -164,6 +167,7 @@ export function BuildingListResults(props) {
         message: ''
     });
   }
+
   var pathList = routeStateObject.pathname.split('/').filter(x => x);
   var pathname = pathList.map((data, index)=>{
     let path = data.replace("%20", " ");
@@ -176,27 +180,46 @@ export function BuildingListResults(props) {
         <Link underline="hover" color="inherit" to="/Location">
           Location
         </Link>
-        <Link
-          underline="hover"
-          color="inherit"
-          to={"/Location/"+pathname[1]}
-          state={{
-            location_id
-          }}
-          >
-          {pathname[1]}
-        </Link>
-        <Link
-          underline="hover"
-          color="inherit"
-          to={"/Location/"+pathname[1]+"/"+pathname[2]}
-          state={{
-            location_id,
-            branch_id
-          }}
-          >
-          {pathname[2]}
-        </Link>
+        {locationLabel ? 
+          <Typography
+            underline="hover"
+            color="inherit"
+            >
+            {pathname[1]}
+          </Typography>
+        :
+          <Link
+            underline="hover"
+            color="inherit"
+            to={"/Location/"+pathname[1]}
+            state={{
+              location_id
+            }}
+            >
+            {pathname[1]}
+          </Link>
+        }
+        {
+          branchLabel ?
+            <Typography
+              underline="hover"
+              color="inherit"
+              >
+              {pathname[2]}
+            </Typography>
+          :
+          <Link
+            underline="hover"
+            color="inherit"
+            to={"/Location/"+pathname[1]+"/"+pathname[2]}
+            state={{
+              location_id,
+              branch_id
+            }}
+            >
+            {pathname[2]}
+          </Link>
+        }
         <Typography
           underline="hover"
           color="inherit"
@@ -204,38 +227,40 @@ export function BuildingListResults(props) {
           {pathname[3]}
         </Typography>
       </Breadcrumbs>
+
       <BuildingListToolbar 
         setOpen={setOpen}
         setIsAddButton={setIsAddButton}
         setEditData={setEditData}
         userAccess={moduleAccess}
       />
-        <DataGrid
-            rows={dataList}
-            columns={dataColumns}
-            pageSize={5}
-            loading={isLoading}
-            rowsPerPageOptions={[5]}
-            checkboxSelection
-            disableSelectionOnClick
-            style={{maxHeight:80+'%'}}
-        />
+      <DataGrid
+          rows={dataList}
+          columns={dataColumns}
+          pageSize={5}
+          loading={isLoading}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+          disableSelectionOnClick
+          style={{maxHeight:80+'%'}}
+      />
        
-       <BuildingModal
-          isAddButton={isAddButton}
-          editData={editData}
-          open={open}
-          setOpen={setOpen}
-          locationId = {location_id}
-          branchId = {branch_id}
-          facilityId = {facility_id}
-          setRefreshData={setRefreshData}
-        />
-        <NotificationBar
-        handleClose={handleClose}
-        notificationContent={openNotification.message}
-        openNotification={openNotification.status}
-        type={openNotification.type} 
+      <BuildingModal
+        isAddButton={isAddButton}
+        editData={editData}
+        open={open}
+        setOpen={setOpen}
+        locationId = {location_id}
+        branchId = {branch_id}
+        facilityId = {facility_id}
+        setRefreshData={setRefreshData}
+      />
+
+      <NotificationBar
+      handleClose={handleClose}
+      notificationContent={openNotification.message}
+      openNotification={openNotification.status}
+      type={openNotification.type} 
       />
     </div>
   );

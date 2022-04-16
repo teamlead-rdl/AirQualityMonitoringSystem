@@ -8,6 +8,7 @@ import FloorModal from './FloorModalComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 import { Breadcrumbs, Typography } from '@mui/material';
+import ApplicationStore from '../../../utils/localStorageUtil';
 
 export function FloorListResults({img}) {
   
@@ -59,7 +60,8 @@ export function FloorListResults({img}) {
   const { location_id, branch_id, facility_id, building_id, buildingImg} = routeStateObject.state;
   const [refreshData, setRefreshData] = useState(false);
   const moduleAccess = useUserAccess()('location');
-
+  const { locationLabel, branchLabel, facilityLabel, buildingLabel } = ApplicationStore().getStorage('siteDetails');
+  
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
@@ -157,6 +159,14 @@ export function FloorListResults({img}) {
         <Link underline="hover" color="inherit" to="/Location">
           Location
         </Link>
+        { locationLabel ?
+        <Typography
+          underline="hover"
+          color="inherit"
+          >
+          {pathname[1]}
+        </Typography>
+        :
         <Link
           underline="hover"
           color="inherit"
@@ -167,6 +177,15 @@ export function FloorListResults({img}) {
           >
           {pathname[1]}
         </Link>
+        }
+        {branchLabel ?
+        <Typography
+          underline="hover"
+          color="inherit"
+          >
+          {pathname[2]}
+        </Typography>
+        :
         <Link
           underline="hover"
           color="inherit"
@@ -178,6 +197,7 @@ export function FloorListResults({img}) {
           >
           {pathname[2]}
         </Link>
+        }
         <Link
           underline="hover"
           color="inherit"
@@ -197,35 +217,39 @@ export function FloorListResults({img}) {
           {pathname[4]}
         </Typography>
       </Breadcrumbs>
+
       <FloorListToolbar 
         setOpen={setOpen}
         setIsAddButton={setIsAddButton}
         setEditData={setEditData}
         userAccess={moduleAccess}
       /> 
-        <DataGrid
-            rows={dataList}
-            columns={dataColumns}
-            pageSize={5}
-            loading={isLoading}
-            rowsPerPageOptions={[5]}
-            checkboxSelection
-            disableSelectionOnClick
-            style={{maxHeight:80+'%'}}
-        />
-       <FloorModal
-          isAddButton={isAddButton}
-          editData={editData}
-          open={open}
-          setOpen={setOpen}
-          locationId = {location_id}
-          branchId = {branch_id}
-          facilityId = {facility_id}
-          buildingId = {building_id}
-          setRefreshData={setRefreshData}
-          src = {img}
-        />
-        <NotificationBar
+
+      <DataGrid
+          rows={dataList}
+          columns={dataColumns}
+          pageSize={5}
+          loading={isLoading}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+          disableSelectionOnClick
+          style={{maxHeight:80+'%'}}
+      />
+
+      <FloorModal
+        isAddButton={isAddButton}
+        editData={editData}
+        open={open}
+        setOpen={setOpen}
+        locationId = {location_id}
+        branchId = {branch_id}
+        facilityId = {facility_id}
+        buildingId = {building_id}
+        setRefreshData={setRefreshData}
+        src = {img}
+      />
+
+      <NotificationBar
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}

@@ -8,6 +8,7 @@ import { Link, useLocation } from 'react-router-dom';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 import { Breadcrumbs, Typography } from '@mui/material';
+import ApplicationStore from '../../../utils/localStorageUtil';
 
 export function LabListResults({img}) {
 
@@ -60,6 +61,7 @@ export function LabListResults({img}) {
   const { location_id, branch_id, facility_id, building_id, floor_id, buildingImg, floorMap} = routeStateObject.state;
   const [refreshData, setRefreshData] = useState(false);
   const moduleAccess = useUserAccess()('location');
+  const { locationLabel, branchLabel, facilityLabel, buildingLabel } = ApplicationStore().getStorage('siteDetails');
 
   const [openNotification, setNotification] = useState({
     status: false,
@@ -162,6 +164,14 @@ export function LabListResults({img}) {
         <Link underline="hover" color="inherit" to="/Location">
           Location
         </Link>
+        { locationLabel ?
+        <Typography
+          underline="hover"
+          color="inherit"
+          >
+          {pathname[1]}
+        </Typography>
+        :
         <Link
           underline="hover"
           color="inherit"
@@ -171,7 +181,15 @@ export function LabListResults({img}) {
           }}
           >
           {pathname[1]}
-        </Link>
+        </Link>}
+        {branchLabel?
+        <Typography
+          underline="hover"
+          color="inherit"
+          >
+          {pathname[2]}
+        </Typography>
+        :
         <Link
           underline="hover"
           color="inherit"
@@ -183,6 +201,8 @@ export function LabListResults({img}) {
           >
           {pathname[2]}
         </Link>
+        }
+
         <Link
           underline="hover"
           color="inherit"
@@ -216,12 +236,14 @@ export function LabListResults({img}) {
           {pathname[5]}
         </Typography>
       </Breadcrumbs>
+
       <LabListToolbar
         setOpen={setOpen}
         setIsAddButton={setIsAddButton}
         setEditData={setEditData}
         userAccess={moduleAccess}
       />
+
       <DataGrid
         rows={dataList}
         columns={dataColumns}
@@ -232,6 +254,7 @@ export function LabListResults({img}) {
         disableSelectionOnClick
         style={{ maxHeight: 80 + '%' }}
       />
+
       <LabModal
         isAddButton={isAddButton}
         editData={editData}
@@ -245,6 +268,7 @@ export function LabListResults({img}) {
         setRefreshData={setRefreshData}
         img = {img}
       />
+      
       <NotificationBar
         handleClose={handleClose}
         notificationContent={openNotification.message}
