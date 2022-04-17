@@ -24,7 +24,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - run: npm ci
+      - run: npm i
       - run: npm test
       - run: npm run build
+  
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Super-Linter
+        uses: github/super-linter@v4.9.2
+        env:
+          GITHUB_TOKEN: ${{ secret.GITHUB_TOKEN }}
