@@ -141,14 +141,18 @@ export function BranchListResults(props) {
         setIsAddButton(false);
         setEditData(props.selectedRow);
         setOpen(true);
-      }} />)
+      }} 
+      style={{cursor:'pointer'}}
+      />)
   }
 
   const DeleteData = (props) => {
     return moduleAccess.delete && <DeleteIcon onClick={()=>{
       console.log(props.selectedRow.id)
       BranchDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
-    }}/>
+    }}
+    style={{cursor:'pointer'}}
+    />
   }
   
   const handleClose = () => {
