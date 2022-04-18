@@ -7,6 +7,8 @@ import { AddSensorCategoryToolbar } from './AddSensorCategoryToolbar';
 import AddSensorModal from './AddSensorModal';
 import NotificationBar from '../../../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../../../context/UserAccessProvider';
+import { NotificationsActive } from '@mui/icons-material';
+import ConfigAlarm from './ConfigAlarm';
 
 export function AddSensorList() {
     const columns = [
@@ -20,7 +22,6 @@ export function AddSensorList() {
         headerName: 'Sensor Output',
         width: 300,
       },       
-    
       {
         field: 'actions',
         type: 'actions',
@@ -29,13 +30,16 @@ export function AddSensorList() {
         cellClassName: 'actions',
         getActions: (params) => {
           return [
-            <EditData selectedRow={params.row}/>,<DeleteData selectedRow={params.row} />
+            <EditData selectedRow={params.row}/>,
+            <SetAlarm selectedRow={params.row}/>,
+            <DeleteData selectedRow={params.row} />
           ];
         },
       },
     ];
 
     const [open, setOpen] = useState(false);
+    const [alertOpen, setAlertOpen] = useState(false);
     const [isAddButton, setIsAddButton] = useState(true);
     const [editCategory, setEditCategory] = useState([]);
     const [CategoryList, setCategoryList] = useState([]);   
@@ -70,6 +74,16 @@ export function AddSensorList() {
             setIsAddButton(false);
             setEditCategory(props.selectedRow);
             setOpen(true);
+        }} />)
+    }
+
+    const SetAlarm = (props) => {
+      return (moduleAccess.edit && 
+        <NotificationsActive style={{ cursor: "pointer" }}
+          onClick={(event) => {
+            event.stopPropagation();
+            // setEditCategory(props.selectedRow);
+            setAlertOpen(true);
         }} />)
     }
   
@@ -134,6 +148,9 @@ export function AddSensorList() {
             setOpen={setOpen}
             CategoryList={CategoryList}
             setRefreshData={setRefreshData}
+          />
+          <ConfigAlarm
+            open={alertOpen}
           />
           <NotificationBar
             handleClose={handleClose}
