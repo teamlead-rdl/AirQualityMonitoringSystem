@@ -280,7 +280,7 @@ const BuildingModal = ({open, setOpen, isAddButton, editData, locationId, branch
                                     />
                                 </div>
                                 <div className='rounded-md -space-y-px mb-2' style={{border:'2px black solid'}}>
-                                    <img src={previewBuilding} style={{width:'-webkit-fill-available'}} />
+                                    <img src={previewBuilding} style={{width:'-webkit-fill-available', maxHeight:300}} />
                                 </div>
                             </div>
                             <div className="w-full sm:float-right lg:float-left lg:w-3/5 pr-1">

@@ -150,13 +150,17 @@ export function FacilityListResults(props) {
         setIsAddButton(false);
         setEditData(props.selectedRow);
         setOpen(true);
-      }} />)
+      }} 
+      style={{cursor:'pointer'}}
+      />)
   }
 
   const DeleteData = (props) => {
     return moduleAccess.delete && <DeleteOutlined onClick={()=> {
-        FacilityDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
-    }}/>
+          FacilityDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+      }}
+    style={{cursor:'pointer'}}
+    />
   }
 
   const handleClose = () => {
