@@ -25,6 +25,5 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm i
       - run: npm run build
-      - run: gh-pages -d build
     env:
       CI: false
