@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/master/static/css/main.600a4404.css",
-    "main.js": "/master/static/js/main.6aa310ec.js",
-    "static/media/floorPlan.png": "/master/static/media/floorPlan.47d4fece78e0a5062aeb.png",
-    "static/media/dataloger.gif": "/master/static/media/dataloger.d9457bf8c01358576781.gif",
-    "static/media/dataloger1.gif": "/master/static/media/dataloger1.610d1cdbe7e811a8291c.gif",
-    "static/media/building-real-estate-service-250x250.jpeg": "/master/static/media/building-real-estate-service-250x250.ece375eb7c5ef11f5fd6.jpeg",
-    "static/media/dataloger2.gif": "/master/static/media/dataloger2.341eb08d9e561f175f96.gif",
-    "static/media/cctv.gif": "/master/static/media/cctv.779e54d6c5d9cb672412.gif",
-    "static/media/computer.gif": "/master/static/media/computer.42adf7c732b2c6fb9cea.gif",
-    "static/media/departmentBlueprint.png": "/master/static/media/departmentBlueprint.0896156f88f91b0ac68b.png",
-    "static/media/thermosensor.gif": "/master/static/media/thermosensor.6373436ebf481c7b8de1.gif",
-    "static/media/fan.gif": "/master/static/media/fan.8b45a1065b47077d5d9d.gif",
-    "static/media/placeholder.png": "/master/static/media/placeholder.9fe8ba510362f045fc24.png",
-    "static/media/loginPageWallpaper.svg": "/master/static/media/loginPageWallpaper.2e7a80674f341f9f55316a2d3236d31c.svg",
-    "static/media/logo.svg": "/master/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
-    "index.html": "/master/index.html",
-    "main.600a4404.css.map": "/master/static/css/main.600a4404.css.map",
-    "main.6aa310ec.js.map": "/master/static/js/main.6aa310ec.js.map"
+    "main.css": "/AirQualityMonitoringSystem/static/css/main.600a4404.css",
+    "main.js": "/AirQualityMonitoringSystem/static/js/main.c9b7eb09.js",
+    "static/media/floorPlan.png": "/AirQualityMonitoringSystem/static/media/floorPlan.47d4fece78e0a5062aeb.png",
+    "static/media/dataloger.gif": "/AirQualityMonitoringSystem/static/media/dataloger.d9457bf8c01358576781.gif",
+    "static/media/dataloger1.gif": "/AirQualityMonitoringSystem/static/media/dataloger1.610d1cdbe7e811a8291c.gif",
+    "static/media/building-real-estate-service-250x250.jpeg": "/AirQualityMonitoringSystem/static/media/building-real-estate-service-250x250.ece375eb7c5ef11f5fd6.jpeg",
+    "static/media/dataloger2.gif": "/AirQualityMonitoringSystem/static/media/dataloger2.341eb08d9e561f175f96.gif",
+    "static/media/cctv.gif": "/AirQualityMonitoringSystem/static/media/cctv.779e54d6c5d9cb672412.gif",
+    "static/media/computer.gif": "/AirQualityMonitoringSystem/static/media/computer.42adf7c732b2c6fb9cea.gif",
+    "static/media/departmentBlueprint.png": "/AirQualityMonitoringSystem/static/media/departmentBlueprint.0896156f88f91b0ac68b.png",
+    "static/media/thermosensor.gif": "/AirQualityMonitoringSystem/static/media/thermosensor.6373436ebf481c7b8de1.gif",
+    "static/media/fan.gif": "/AirQualityMonitoringSystem/static/media/fan.8b45a1065b47077d5d9d.gif",
+    "static/media/placeholder.png": "/AirQualityMonitoringSystem/static/media/placeholder.9fe8ba510362f045fc24.png",
+    "static/media/loginPageWallpaper.svg": "/AirQualityMonitoringSystem/static/media/loginPageWallpaper.2e7a80674f341f9f55316a2d3236d31c.svg",
+    "static/media/logo.svg": "/AirQualityMonitoringSystem/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/AirQualityMonitoringSystem/index.html",
+    "main.600a4404.css.map": "/AirQualityMonitoringSystem/static/css/main.600a4404.css.map",
+    "main.c9b7eb09.js.map": "/AirQualityMonitoringSystem/static/js/main.c9b7eb09.js.map"
   },
   "entrypoints": [
     "static/css/main.600a4404.css",
-    "static/js/main.6aa310ec.js"
+    "static/js/main.c9b7eb09.js"
   ]
 }
