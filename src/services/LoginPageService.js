@@ -381,3 +381,9 @@ export const DeviceConfigSetupAddService = (data, successCallback, errorCallBack
 export const DeviceConfigSetupFetchService = (data, successCallback, errorCallBack) => {
     return _fetchService('DeviceConfigSetup/'+ data.id +'/getDeviceConfigData', 'GET', {}, successCallback, errorCallBack);
 }
+
+// ----------- STEL & TWA setup -----------------------//
+
+export const StelEditService = (data, successCallback, errorCallBack) => {
+    return _fetchService('stel/' + (data.id) + '/update', 'POST', data, successCallback, errorCallBack);
+}

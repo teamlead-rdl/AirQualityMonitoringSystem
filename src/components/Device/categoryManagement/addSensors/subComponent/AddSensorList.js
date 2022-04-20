@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import { CategoryFetchService, CategoryDeleteService, SensorCategoryFetchService, SensorCategoryDeleteService, SensorFetchService, SensorListFetchService, SensorDeleteService } from '../../../../../services/LoginPageService';
+import { SensorListFetchService, SensorDeleteService } from '../../../../../services/LoginPageService';
 import { AddSensorCategoryToolbar } from './AddSensorCategoryToolbar';
 import AddSensorModal from './AddSensorModal';
 import NotificationBar from '../../../../notification/ServiceNotificationBar';
@@ -59,7 +59,6 @@ export function AddSensorList() {
     }
 
     const handleException = (errorObject) => {
-        console.log(JSON.stringify(errorObject));
     } 
     
     useEffect(() => {
@@ -82,7 +81,7 @@ export function AddSensorList() {
         <NotificationsActive style={{ cursor: "pointer" }}
           onClick={(event) => {
             event.stopPropagation();
-            // setEditCategory(props.selectedRow);
+            setEditCategory(props.selectedRow);
             setAlertOpen(true);
         }} />)
     }
@@ -151,6 +150,8 @@ export function AddSensorList() {
           />
           <ConfigAlarm
             open={alertOpen}
+            setOpen={setAlertOpen}
+            editData={editCategory}
           />
           <NotificationBar
             handleClose={handleClose}
