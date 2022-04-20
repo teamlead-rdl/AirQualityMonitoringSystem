@@ -150,13 +150,16 @@ export function BuildingListResults(props) {
         setIsAddButton(false);
         setEditData(props.selectedRow);
         setOpen(true);
-      }} />)
+      }} 
+      style={{cursor:'pointer'}}
+      />)
   }
 
   const DeleteData = (props) => {
     return moduleAccess.delete && <DeleteOutlined 
     onClick={()=> 
       BuildingDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException)}
+    style={{cursor:'pointer'}}
     />
   }
 

@@ -4,8 +4,6 @@
 name: Research and Design Lab
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 

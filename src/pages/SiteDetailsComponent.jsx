@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import Grid from '@mui/material/Grid';
-import { Breadcrumbs, Container, Typography } from '@mui/material'
+import { Container } from '@mui/material'
 import { LocationListResults } from '../components/siteDetails/location/locationList';
 import MapsMultiplePoints from '../components/maps/mapsMultiplePoints';
 import ApplicationStore from '../utils/localStorageUtil';
@@ -25,11 +25,6 @@ const SiteDetails = () => {
 
   return (
     <Container maxWidth={false} style={{marginTop:0}}>
-      <Breadcrumbs aria-label="breadcrumb">
-        <Typography underline="hover" color="inherit" >
-          Location
-        </Typography>
-      </Breadcrumbs>
       <Grid item sx={{ mt: 1 }}  xs={12} sm={12} md={12} lg={12} xl={12}>
         <LocationListResults setLocationCoordinationList={setLocationCoordinationList}/>
       </Grid>
