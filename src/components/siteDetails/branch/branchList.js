@@ -5,7 +5,6 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { BranchDeleteService, FetchBranchService } from '../../../services/LoginPageService';
 import { BranchListToolbar } from './branch-list-toolbars';
 import BranchModal from './BranchModalComponent';
-import { PlayArrow } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
@@ -79,7 +78,6 @@ export function BranchListResults(props) {
     setDataList(dataObject.data);
     const newArray = dataObject.data?dataObject.data.map((item) => {
       let coordinates = item.coordinates?item.coordinates.replaceAll('"', "").split(','): [];
-      console.log(coordinates);
 
       return{
         'id': item.id,
@@ -93,11 +91,9 @@ export function BranchListResults(props) {
       :
       [];
       props.setLocationCoordinationList(newArray);
-    console.log(newArray);
   }
   
   const handleException = (errorObject) => {
-    console.log(JSON.stringify(errorObject));
   }
 
   const deletehandleSuccess = (dataObject) => {
@@ -115,7 +111,6 @@ export function BranchListResults(props) {
   }
   
   const deletehandleException = (errorObject, errorMessage) => {
-    // console.log(JSON.stringify(errorObject));
     setNotification({
       status: true,
       type: 'error',
@@ -141,14 +136,17 @@ export function BranchListResults(props) {
         setIsAddButton(false);
         setEditData(props.selectedRow);
         setOpen(true);
-      }} />)
+      }} 
+      style={{cursor:'pointer'}}
+      />)
   }
 
   const DeleteData = (props) => {
     return moduleAccess.delete && <DeleteIcon onClick={()=>{
-      console.log(props.selectedRow.id)
       BranchDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
-    }}/>
+    }}
+    style={{cursor:'pointer'}}
+    />
   }
   
   const handleClose = () => {
