@@ -1,4 +1,4 @@
-import { validate } from '../utils/validateUtil';
+import validate from '../utils/validateUtil';
 
 const LocationFormValidate = (value, type, setErrorObject) => {
   switch (type) {

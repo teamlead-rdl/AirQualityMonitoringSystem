@@ -12,7 +12,7 @@ import {
   LocationAddService,
   LocationEditService,
 } from '../../../services/LoginPageService';
-import { LocationFormValidate, LocationAddFormValidate } from '../../../validatation/locationValidation';
+import { LocationFormValidate, LocationAddFormValidate } from '../../../validation/locationValidation';
 import MapsComponent from '../../maps/googleMapsComponent';
 
 import NotificationBar from '../../notification/ServiceNotificationBar';

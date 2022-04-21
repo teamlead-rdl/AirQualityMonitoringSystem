@@ -6,7 +6,7 @@ import { DeviceAddService, DeviceEditService } from '../../../services/LoginPage
 import DeviceAdd from '../DeviceAdd';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import DeviceLocationModal from '../deviceLocation/DeviceLocationModalComponent';
-import { AddCategoryValidate } from '../../../validatation/formValidation';
+import { AddCategoryValidate } from '../../../validation/formValidation';
 
 function DeviceModel({
   open,

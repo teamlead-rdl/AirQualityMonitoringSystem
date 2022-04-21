@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import {
   HashRouter as Router, Routes, Route, Outlet, Navigate,
@@ -21,7 +22,6 @@ import Floor from './components/FloorComponent';
 import Lab from './components/LabComponent';
 import UserResetPassword from './components/UserResetPassword';
 import AddDeviceSensor from './components/AddDeviceSensorComponent';
-
 import ApplicationStore from './utils/localStorageUtil';
 
 function ProtectedRoutes() {

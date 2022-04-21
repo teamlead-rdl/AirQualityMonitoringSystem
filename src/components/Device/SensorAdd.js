@@ -27,7 +27,7 @@ import Digital from './sensorType/DigitalComponent';
 import AnalogAlert from './sensorType/AnalogAlert';
 import ModbusAlert from './sensorType/ModbusAlert';
 import NotificationBar from '../notification/ServiceNotificationBar';
-import { AddCategoryValidate } from '../../validatation/formValidation';
+import { AddCategoryValidate } from '../../validation/formValidation';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

@@ -2,7 +2,7 @@ import {
   Checkbox, DialogContent, FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { AnalogSensorValidate } from '../../../validatation/formValidation';
+import { AnalogSensorValidate } from '../../../validation/formValidation';
 
 function Analog({
   errorObject, setErrorObject, disable, units, setUnits, minRatedReading, setMinRatedReading, sensorType, setSensorType,

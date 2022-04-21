@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { ReceiveOTPService, ValidateOTPService } from '../../services/LoginPageService';
-import { OTPvalidationValidate } from '../../validatation/formValidation';
+import { OTPvalidationValidate } from '../../validation/formValidation';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import ApplicationStore from '../../utils/localStorageUtil';
 

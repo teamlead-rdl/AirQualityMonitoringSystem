@@ -4,7 +4,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { FacilitiyAddService, FacilityEditService } from '../../../services/LoginPageService';
 import MapsComponent from '../../maps/googleMapsComponent';
-import { LocationFormValidate, FacilityAddFormValidate } from '../../../validatation/locationValidation';
+import { LocationFormValidate, FacilityAddFormValidate } from '../../../validation/locationValidation';
 
 import NotificationBar from '../../notification/ServiceNotificationBar';
 

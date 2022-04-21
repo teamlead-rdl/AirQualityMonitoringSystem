@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { LockClosedIcon } from '@heroicons/react/solid';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { OTPoptionValidate } from '../../validatation/formValidation';
+import { OTPoptionValidate } from '../../validation/formValidation';
 import { ReceiveOTPService } from '../../services/LoginPageService';
 import NotificationBar from '../notification/ServiceNotificationBar';
 

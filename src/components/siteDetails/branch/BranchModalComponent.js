@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { BranchAddService, BranchEditService } from '../../../services/LoginPageService';
-import { LocationFormValidate, BranchFormValidate } from '../../../validatation/locationValidation';
+import { LocationFormValidate, BranchFormValidate } from '../../../validation/locationValidation';
 import MapsComponent from '../../maps/googleMapsComponent';
 
 import NotificationBar from '../../notification/ServiceNotificationBar';

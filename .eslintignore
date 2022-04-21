@@ -2,6 +2,10 @@
 /node_modules
 /build
 /public
-/src
+/src/test
 /postcss.config.js
 /tailwind.config.js
+
+# To be fixed one after the other
+/src/components
+/src/pages

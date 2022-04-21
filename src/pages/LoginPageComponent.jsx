@@ -8,7 +8,7 @@ import AuthContext from '../context/AuthProvider';
 import { LoginService } from '../services/LoginPageService';
 import ApplicationStore from '../utils/localStorageUtil';
 import { useNavigate } from "react-router-dom";
-import { LoginFormValidate } from '../validatation/formValidation';
+import { LoginFormValidate } from '../validation/formValidation';
 import NotificationBar from '../components/notification/ServiceNotificationBar';
 
 const LoginPage = () => {

@@ -6,7 +6,7 @@ import {
   FetchBranchService, FetchFacilitiyService, FetchLocationService, UnblockUserService, UserAddService, UserUpdateService,
 } from '../../services/LoginPageService';
 import ApplicationStore from '../../utils/localStorageUtil';
-import { AddUserValidate } from '../../validatation/formValidation';
+import { AddUserValidate } from '../../validation/formValidation';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import ConfirmPassword from './passwordConfirmComponent';
 

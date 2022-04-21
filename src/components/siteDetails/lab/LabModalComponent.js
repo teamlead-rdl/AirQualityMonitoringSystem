@@ -3,10 +3,10 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { LabAddService, LabEditService } from '../../../services/LoginPageService';
-import { LocationFormValidate } from '../../../validatation/locationValidation';
+import { LocationFormValidate } from '../../../validation/locationValidation';
 import ImageMarkerComponent from './imageMarker';
 // import ImageMarkerComponent from '../../maps/imageMarker';
-import { LabFormValidate } from '../../../validatation/locationValidation';
+import { LabFormValidate } from '../../../validation/locationValidation';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import previewImage from '../../../images/chooseFile.png';
 

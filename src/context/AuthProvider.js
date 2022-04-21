@@ -1,8 +1,8 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
 const AuthContext = createContext({
   userAuthentication: '',
-  setUserAuthetication: (auth) => {},
+  setUserAuthetication: () => {},
 });
 
 export default AuthContext;

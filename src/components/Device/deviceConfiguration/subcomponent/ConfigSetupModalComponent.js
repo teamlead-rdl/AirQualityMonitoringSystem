@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
 import { ConfigSetupAddService, ConfigSetupEditService } from '../../../../services/LoginPageService';
-import { AddVendorValidate } from '../../../../validatation/locationValidation';
+import { AddVendorValidate } from '../../../../validation/locationValidation';
 import NotificationBar from '../../../notification/ServiceNotificationBar';
 
 function ConfigSetupModal({

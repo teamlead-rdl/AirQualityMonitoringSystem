@@ -1,13 +1,12 @@
+/* eslint-disable max-len */
 /* eslint-disable no-useless-escape */
-export function validate(typeToValidate, valueToValidate) {
+export default function validate(typeToValidate, valueToValidate) {
   switch (typeToValidate) {
   case 'email':
     return (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
       .test(valueToValidate);
   case 'password':
     return valueToValidate.length > 4;
-  case 'emailId':
-    return (/^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$|^$/).test(valueToValidate);
   case 'otp':
     return (/^$|\s+/).test(valueToValidate);
   case 'employeeId':
@@ -17,6 +16,7 @@ export function validate(typeToValidate, valueToValidate) {
   case 'phone':
     return (/^[789]\d{9}$/).test(valueToValidate);
   case 'phoneNo':
+  case 'phoneNumber':
     return (/^[789]\d{9}$|^$/).test(valueToValidate);
   case 'fullName':
     return (/^[a-zA-Z][a-zA-Z.\s]+$/).test(valueToValidate);
@@ -26,13 +26,10 @@ export function validate(typeToValidate, valueToValidate) {
     return (/^(?!\s*$).+/).test(valueToValidate);
   case 'customerTheme':
     return (/^(?!\s*$).+/).test(valueToValidate);
-
   case 'vendorName':
     return (/^[a-zA-Z][a-zA-Z.\s]+$/).test(valueToValidate);
   case 'companyCode':
     return (/^(?!\s*$).+/).test(valueToValidate);
-  case 'phoneNumber':
-    return (/^[789]\d{9}$|^$/).test(valueToValidate);
   case 'emailId':
     return (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
       .test(valueToValidate);

@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { GridBody } from '@mui/x-data-grid';
 import { Box } from '@mui/system';
 import Grid from '@mui/material/Grid';
-import { AddVendorValidate } from '../../../../validatation/locationValidation';
+import { AddVendorValidate } from '../../../../validation/locationValidation';
 import {
   ConfigSetupEditService, ConfigSetupFetchService, DeviceConfigSetupAddService, DeviceConfigSetupFetchService,
 } from '../../../../services/LoginPageService';

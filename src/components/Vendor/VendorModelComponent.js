@@ -4,7 +4,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import DialogActions from '@mui/material/DialogActions';
 import { VendorAddService, VendorEditService } from '../../services/LoginPageService';
-import { AddVendorValidate } from '../../validatation/locationValidation';
+import { AddVendorValidate } from '../../validation/locationValidation';
 import NotificationBar from '../notification/ServiceNotificationBar';
 
 function VendorModel({

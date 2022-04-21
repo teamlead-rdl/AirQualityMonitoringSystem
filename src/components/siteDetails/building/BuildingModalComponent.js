@@ -6,7 +6,7 @@ import {
   BuildingAddService, BuildingEditService, FacilitiyAddService, FacilityEditService, LocationAddService, LocationEditService,
 } from '../../../services/LoginPageService';
 import MapsComponent from '../../maps/googleMapsComponent';
-import { LocationFormValidate } from '../../../validatation/locationValidation';
+import { LocationFormValidate } from '../../../validation/locationValidation';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import chooseFile from '../../../images/chooseFile.png';
 import previewImage from '../../../images/chooseFile.png';

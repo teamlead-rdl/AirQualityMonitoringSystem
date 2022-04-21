@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { CustomerAddService, CustomerEditService, UnblockUserService } from '../../services/LoginPageService';
-import { AddCustomerValidate } from '../../validatation/formValidation';
+import { AddCustomerValidate } from '../../validation/formValidation';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import previewImage from '../../images/chooseFile.png';
 

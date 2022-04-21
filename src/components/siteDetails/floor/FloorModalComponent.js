@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { FloorAddService, FloorEditService } from '../../../services/LoginPageService';
-import { LocationFormValidate } from '../../../validatation/locationValidation';
+import { LocationFormValidate } from '../../../validation/locationValidation';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import ImageMarkerComponent from './imageMarker';
 import previewImage from '../../../images/chooseFile.png';

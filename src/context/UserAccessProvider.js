@@ -9,10 +9,10 @@ export function useUserAccess() {
 }
 
 export function UserAccessProvider({ children }) {
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
   const requestAccess = (moduleToAccess) => {
-    const config = crudConfig;
     const { userDetails } = ApplicationStore().getStorage('userDetails');
-    const moduleConfig = config[moduleToAccess.toLowerCase()];
+    const moduleConfig = crudConfig[moduleToAccess.toLowerCase()];
     const userAccess = moduleConfig[userDetails.userRole.toLowerCase()];
     return userAccess;
   };

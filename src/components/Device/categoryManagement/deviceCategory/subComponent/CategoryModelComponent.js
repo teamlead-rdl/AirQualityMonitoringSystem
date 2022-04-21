@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DialogActions from '@mui/material/DialogActions';
-import { AddCategoryValidate } from '../../../../../validatation/formValidation';
+import { AddCategoryValidate } from '../../../../../validation/formValidation';
 import { CategoryAddService, CategoryEditService } from '../../../../../services/LoginPageService';
 import NotificationBar from '../../../../notification/ServiceNotificationBar';
 

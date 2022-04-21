@@ -12,7 +12,7 @@ import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { PasswordResetService, LogoutService } from '../services/LoginPageService';
-import { PasswordResetValidate } from '../validatation/formValidation';
+import { PasswordResetValidate } from '../validation/formValidation';
 import ApplicationStore from '../utils/localStorageUtil';
 import NotificationBar from './notification/ServiceNotificationBar';
 

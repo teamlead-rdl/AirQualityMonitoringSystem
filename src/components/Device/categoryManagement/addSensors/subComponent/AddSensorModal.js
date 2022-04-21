@@ -4,7 +4,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import DialogActions from '@mui/material/DialogActions';
 import { Box } from '@mui/system';
-import { AddCategoryValidate } from '../../../../../validatation/formValidation';
+import { AddCategoryValidate } from '../../../../../validation/formValidation';
 import {
   CategoryAddService, CategoryEditService, SensorCategoryAddService, SensorCategoryEditService, SensorCategoryFetchService,
 } from '../../../../../services/LoginPageService';

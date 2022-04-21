@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import { AddCategoryValidate, AnalogSensorValidate } from '../../../validatation/formValidation';
+import { AddCategoryValidate, AnalogSensorValidate } from '../../../validation/formValidation';
 
 function AnalogAlert({
   errorObject, setErrorObject,

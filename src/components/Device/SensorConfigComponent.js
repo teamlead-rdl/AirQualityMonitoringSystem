@@ -25,7 +25,7 @@ import {
 import Analog from './sensorType/AnalogComponent';
 import Modbus from './sensorType/ModbusComponent';
 import NotificationBar from '../notification/ServiceNotificationBar';
-import { AddCategoryValidate } from '../../validatation/formValidation';
+import { AddCategoryValidate } from '../../validation/formValidation';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

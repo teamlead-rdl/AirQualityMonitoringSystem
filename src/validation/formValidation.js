@@ -1,4 +1,4 @@
-import { validate } from '../utils/validateUtil';
+import validate from '../utils/validateUtil';
 
 const LoginFormValidate = (value, type, setErrorObject) => {
   if (type === 'email') {
@@ -102,6 +102,7 @@ const OTPvalidationValidate = (value, setErrorObject) => {
     };
   });
 };
+
 const AddUserValidate = (value, type, setErrorObject) => {
   switch (type) {
   case 'email': setErrorObject((oldErrorState) => {
@@ -183,6 +184,7 @@ const AddUserValidate = (value, type, setErrorObject) => {
   default: break;
   }
 };
+
 const AddCustomerValidate = (value, type, setErrorObject) => {
   switch (type) {
   case 'email': setErrorObject((oldErrorState) => {
@@ -321,6 +323,7 @@ const AddCustomerValidate = (value, type, setErrorObject) => {
   default: break;
   }
 };
+
 const PasswordResetValidate = (value, type, setErrorObject) => {
   switch (type) {
   case 'oldPassword': setErrorObject((oldErrorState) => {
@@ -655,6 +658,7 @@ const AddCategoryValidate = (value, type, setErrorObject) => {
   default: break;
   }
 };
+
 const AnalogSensorValidate = (value, type, setErrorObject) => {
   switch (type) {
   case 'units': setErrorObject((oldErrorState) => {
@@ -1059,6 +1063,14 @@ const AnalogSensorValidate = (value, type, setErrorObject) => {
   default: break;
   }
 };
+
 export {
-  LoginFormValidate, OTPoptionValidate, OTPvalidationValidate, AddUserValidate, AddCustomerValidate, PasswordResetValidate, AddCategoryValidate, AnalogSensorValidate,
+  LoginFormValidate,
+  OTPoptionValidate,
+  OTPvalidationValidate,
+  AddUserValidate,
+  AddCustomerValidate,
+  PasswordResetValidate,
+  AddCategoryValidate,
+  AnalogSensorValidate,
 };

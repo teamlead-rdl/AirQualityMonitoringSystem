@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { AddDeviceLocationService, EditDeviceLocationService } from '../../../services/LoginPageService';
-import { LocationFormValidate } from '../../../validatation/locationValidation';
+import { LocationFormValidate } from '../../../validation/locationValidation';
 import ImageMarkerComponent from './imageMarker';
 import floorPlan from '../../../images/departmentBlueprint.png';
 

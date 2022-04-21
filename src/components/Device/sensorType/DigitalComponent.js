@@ -2,7 +2,7 @@ import {
   DialogContent, FormControl, Grid, InputLabel, MenuItem, Select, TextField,
 } from '@mui/material';
 import React from 'react';
-import { AddCategoryValidate } from '../../../validatation/formValidation';
+import { AddCategoryValidate } from '../../../validation/formValidation';
 
 function Digital({
   errorObject, setErrorObject, digitalAlertType, setDigitalAlertType, digitalLowAlert, setDigitalLowAlert,
