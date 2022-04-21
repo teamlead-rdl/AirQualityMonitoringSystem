@@ -2,16 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import { Link } from 'react-router-dom';
 import { FetchLocationService, LocationDeleteService } from '../../../services/LoginPageService';
 import { LocationListToolbar } from './location-list-toolbars';
 import LocationModal from './LocationModalComponent';
-import { Link } from 'react-router-dom';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 
-export function LocationListResults({setLocationCoordinationList}) {
-
-  
+export function LocationListResults({ setLocationCoordinationList }) {
   const [open, setOpen] = useState(false);
   const [isAddButton, setIsAddButton] = useState(true);
   const [editState, setEditState] = useState([]);
@@ -19,24 +17,22 @@ export function LocationListResults({setLocationCoordinationList}) {
   const [isLoading, setGridLoading] = useState(true);
   const [refreshData, setRefreshData] = useState(false);
   const moduleAccess = useUserAccess()('location');
-  
+
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
-    message: ''
+    message: '',
   });
-  
+
   const columns = [
     {
       field: 'stateName',
       headerName: 'Location Name',
       width: 270,
       type: 'actions',
-      getActions: (params) => {
-        return [
-          <LinkTo selectedRow={params.row} />
-        ];
-      }
+      getActions: (params) => [
+        <LinkTo selectedRow={params.row} />,
+      ],
     },
     {
       field: 'totalBuildings',
@@ -56,12 +52,10 @@ export function LocationListResults({setLocationCoordinationList}) {
       headerName: 'Actions',
       width: 100,
       cellClassName: 'actions',
-      getActions: (params) => {
-        return [
-          <EditData selectedRow={params.row} />,
-           <DeleteData selectedRow={params.row} />,
-        ];
-      },
+      getActions: (params) => [
+        <EditData selectedRow={params.row} />,
+        <DeleteData selectedRow={params.row} />,
+      ],
     },
   ];
   useEffect(() => {
@@ -72,84 +66,86 @@ export function LocationListResults({setLocationCoordinationList}) {
   const handleSuccess = (dataObject) => {
     setGridLoading(false);
     setDataList(dataObject.data);
-    const newArray = dataObject.data?dataObject.data.map((item) => {
-      let coordinates = item.coordinates?item.coordinates.replaceAll('"', "").split(','): [];
-      console.log(coordinates);
-
-      return{
-        'id': item.id,
-        'name': item.stateName,
-        'position': {
-          'lat': parseFloat(coordinates[0]),
-          'lng': parseFloat(coordinates[1])
-        }
-      }
+    const newArray = dataObject.data ? dataObject.data.map((item) => {
+      const coordinates = item.coordinates ? item.coordinates.replaceAll('"', '').split(',') : [];
+      return {
+        id: item.id,
+        name: item.stateName,
+        position: {
+          lat: parseFloat(coordinates[0]),
+          lng: parseFloat(coordinates[1]),
+        },
+      };
     })
-      :
-      [];
+      : [];
     setLocationCoordinationList(newArray);
-    console.log(newArray);
-  }
+  };
 
   const handleException = (errorObject) => {
-  }
+  };
 
   const deletehandleSuccess = (dataObject) => {
     setNotification({
       status: true,
       type: 'success',
-      message: dataObject.message
+      message: dataObject.message,
     });
-    setRefreshData((oldvalue)=>{
-        return !oldvalue;
-    });
+    setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
     }, 5000);
-  }
+  };
 
   const deletehandleException = (errorObject, errorMessage) => {
     setNotification({
       status: true,
       type: 'error',
-      message: errorMessage
-  });
-  }
+      message: errorMessage,
+    });
+  };
 
-  const LinkTo = (props) => {
-    return (<Link
-      to={`${props.selectedRow.stateName}`}
-      state={{ location_id: props.selectedRow.id}}>
-      {props.selectedRow.stateName}
-    </Link>)
-  }
-
-  const EditData = (props) => {
+  function LinkTo(props) {
     return (
-      moduleAccess.edit && 
-      <EditIcon onClick={() => {
-        setIsAddButton(false);
-        setEditState(props.selectedRow);
-        setOpen(true);
-        }} 
-        style={{cursor:'pointer'}}
-      />)
+      <Link
+        to={`${props.selectedRow.stateName}`}
+        state={{ location_id: props.selectedRow.id }}
+      >
+        {props.selectedRow.stateName}
+      </Link>
+    );
   }
 
-  const DeleteData = (props) => {
-    return moduleAccess.delete && <DeleteIcon onClick={() => 
-      LocationDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException)} 
-      style={{cursor:'pointer'}}
-    />
+  function EditData(props) {
+    return (
+      moduleAccess.edit
+      && (
+        <EditIcon
+          onClick={() => {
+            setIsAddButton(false);
+            setEditState(props.selectedRow);
+            setOpen(true);
+          }}
+          style={{ cursor: 'pointer' }}
+        />
+      ));
+  }
+
+  function DeleteData(props) {
+    return moduleAccess.delete && (
+      <DeleteIcon
+        onClick={() => LocationDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException)}
+        style={{ cursor: 'pointer' }}
+      />
+    );
   }
 
   const handleClose = () => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: false,
+      type: '',
+      message: '',
     });
-  }
+  };
 
   return (
     <div style={{ height: 400, width: '100%' }}>
@@ -167,7 +163,7 @@ export function LocationListResults({setLocationCoordinationList}) {
         rowsPerPageOptions={[5]}
         checkboxSelection
         disableSelectionOnClick
-        style={{ maxHeight: 70 + '%' }}
+        style={{ maxHeight: `${70}%` }}
       />
       <LocationModal
         isAddButton={isAddButton}
@@ -180,7 +176,7 @@ export function LocationListResults({setLocationCoordinationList}) {
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
-        type={openNotification.type} 
+        type={openNotification.type}
       />
     </div>
   );

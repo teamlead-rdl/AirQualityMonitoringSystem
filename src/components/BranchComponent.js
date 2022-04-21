@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import MapsComponent from './maps/googleMapsComponent';
-import { BranchListResults } from './siteDetails/branch/branchList';
 import { Container } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
+import MapsComponent from './maps/googleMapsComponent';
+import { BranchListResults } from './siteDetails/branch/branchList';
 import MapsMultiplePoints from './maps/mapsMultiplePoints';
 import ApplicationStore from '../utils/localStorageUtil';
 
-const Branch = () => {
+function Branch() {
   const [locationCoordinationList, setLocationCoordinationList] = useState([]);
   const { locationId } = useParams();
   return (
     <Container maxWidth={false} style={{ marginTop: 0 }}>
       <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
-        <BranchListResults locationId={locationId} setLocationCoordinationList={setLocationCoordinationList}/>
+        <BranchListResults locationId={locationId} setLocationCoordinationList={setLocationCoordinationList} />
       </Grid>
       <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
-        <MapsMultiplePoints 
+        <MapsMultiplePoints
           width="100%"
           height="50vh"
           markers={locationCoordinationList}
@@ -26,7 +26,7 @@ const Branch = () => {
         />
       </Grid>
     </Container>
-  )
+  );
 }
 
-export default Branch
+export default Branch;

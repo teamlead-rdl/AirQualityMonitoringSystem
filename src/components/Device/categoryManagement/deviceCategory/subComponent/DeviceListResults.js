@@ -1,16 +1,18 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { Container } from '@mui/material';
 import CategoryManagementComponent from './CategoryComponent';
 import DeviceLocation from '../../../../DeviceLocationComponent';
-import { Container } from '@mui/material';
 import AddDeviceListResults from '../../../subComponent/AddDeviceListResults';
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const {
+    children, value, index, ...other
+  } = props;
   return (
     <div
       role="tabpanel"
@@ -26,14 +28,14 @@ function TabPanel(props) {
       )}
     </div>
   );
-} 
+}
 
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-      
+
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -41,21 +43,20 @@ function a11yProps(index) {
   };
 }
 
-const DeviceListResults = () => {    
+function DeviceListResults() {
+  const [value, setValue] = React.useState(0);
 
-    const [value, setValue] = React.useState(0);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
-    const handleChange = (event, newValue) => {
-      setValue(newValue);
-    };
-      
-    return (
-      <div className="container mx-auto" style={{marginTop:0, padding: 0}}> 
-        <Container maxWidth={false} style={{padding:0, marginTop:0}}>  
-          <CategoryManagementComponent />
-        </Container>
-      </div>
-    )
+  return (
+    <div className="container mx-auto" style={{ marginTop: 0, padding: 0 }}>
+      <Container maxWidth={false} style={{ padding: 0, marginTop: 0 }}>
+        <CategoryManagementComponent />
+      </Container>
+    </div>
+  );
 }
 
-export default DeviceListResults
+export default DeviceListResults;

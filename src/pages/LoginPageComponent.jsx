@@ -87,7 +87,6 @@ const LoginPage = () => {
                         message: errorResponse.error ? errorResponse.error : errorResponse.message
                     });
                 });
-                console.log(JSON.stringify(error));
             });
     }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   DialogContent,
@@ -11,16 +11,16 @@ import {
   MenuItem,
   Grid,
 
-} from "@mui/material";
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 
-import { Box } from "@mui/system";
+import { Box } from '@mui/system';
 
-import { CategoryFetchService, DeviceAddService } from "../../services/LoginPageService";
-import DeviceLocationModal from "./deviceLocation/DeviceLocationModalComponent";
-import NotificationBar from "../notification/ServiceNotificationBar";
-import { AddCategoryValidate } from "../../validatation/formValidation";
+import { CategoryFetchService, DeviceAddService } from '../../services/LoginPageService';
+import DeviceLocationModal from './deviceLocation/DeviceLocationModalComponent';
+import NotificationBar from '../notification/ServiceNotificationBar';
+import { AddCategoryValidate } from '../../validatation/formValidation';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -30,38 +30,36 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-
-const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
-  const [id, setId] = useState("");
-  const [deviceName, setDeviceName] = useState("");
-  const [deviceCategory, setDeviceCategory] = useState("");
+function DeviceAdd({ locationDetails, labMap, deviceData }) {
+  const [id, setId] = useState('');
+  const [deviceName, setDeviceName] = useState('');
+  const [deviceCategory, setDeviceCategory] = useState('');
   const [deviceImage, setDeviceImage] = useState({});
-  const [deviceTag, setDeviceTag] = useState("");
-  const [macAddress, setMacAddress] = useState("");
-  const [firmwareVersion, setFirmwareVersion] = useState("");
-  const [pollingPriority, setPollingPriority] = useState("");
-  const [nonPollingPriority, setNonPollingPriority] = useState("");
+  const [deviceTag, setDeviceTag] = useState('');
+  const [macAddress, setMacAddress] = useState('');
+  const [firmwareVersion, setFirmwareVersion] = useState('');
+  const [pollingPriority, setPollingPriority] = useState('');
+  const [nonPollingPriority, setNonPollingPriority] = useState('');
   const [floorCords, setFloorCords] = useState('');
-  const [category_id, setCategory_id] = useState("");
+  const [category_id, setCategory_id] = useState('');
   const [categoryList, setCategoryList] = useState([]);
   const [openModel, setOpenModel] = useState(false);
   const [errorObject, setErrorObject] = useState({});
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
-    message: ''
+    message: '',
   });
 
   const validateForNullValue = (value, type) => {
-    AddCategoryValidate(value, type, setErrorObject)
+    AddCategoryValidate(value, type, setErrorObject);
   };
 
   const handleSuccess = (dataObject) => {
-    // console.log(JSON.stringify(dataObject));
     setNotification({
       status: true,
       type: 'success',
-      message: dataObject.message
+      message: dataObject.message,
     });
 
     setTimeout(() => {
@@ -71,14 +69,11 @@ const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
   };
 
   const handleException = (errorObject, errorMessage) => {
-    console.log(JSON.stringify(errorObject));
     setNotification({
       status: true,
       type: 'error',
-      message: errorMessage
+      message: errorMessage,
     });
-    
-    
   };
 
   useEffect(() => {
@@ -87,11 +82,11 @@ const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
 
   const categoryHandleSuccess = (dataObject) => {
     setCategoryList(dataObject.data);
-  }
+  };
 
   const loadCategory = () => {
     CategoryFetchService(categoryHandleSuccess, handleException);
-  }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -105,41 +100,48 @@ const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
       pollingPriority,
       nonPollingPriority,
       floorCords,
-      ...locationDetails
+      ...locationDetails,
     }, handleSuccess, handleException);
-  }
+  };
 
   const resetForm = () => {
-    setFirmwareVersion("");
-    setPollingPriority("");
-    setNonPollingPriority("");
-    setDeviceName("");
-    setMacAddress("");
-    setDeviceTag("");
+    setFirmwareVersion('');
+    setPollingPriority('');
+    setNonPollingPriority('');
+    setDeviceName('');
+    setMacAddress('');
+    setDeviceTag('');
     setDeviceImage({});
-    setFloorCords("");
-    setCategory_id("");
-   };
+    setFloorCords('');
+    setCategory_id('');
+  };
 
   const handleClose = () => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: false,
+      type: '',
+      message: '',
     });
-  }
+  };
   return (
     <>
       <form className="p-0 w-full" onSubmit={handleSubmit}>
         <DialogContent sx={{ px: 0, p: 0 }}>
-          <Grid container 
-          spacing={1}
+          <Grid
+            container
+            spacing={1}
           >
-            <Grid sx={{ mt:1 }}
+            <Grid
+              sx={{ mt: 1 }}
               item
-              xs={12} sm={6} md={6} lg={6} xl={6} >
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+            >
               <Box sx={{ minWidth: 200 }}>
-                <FormControl fullWidth margin="normal" sx={{marginTop:0}}>
+                <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
                   <InputLabel id="demo-simple-select-label">
                     Device Category
                   </InputLabel>
@@ -156,42 +158,52 @@ const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
                     error={errorObject?.deviceCategory?.errorStatus}
                     helperText={errorObject?.deviceCategory?.helperText}
                   >
-                    {categoryList.map((data) => {
-                      return (
-                        <MenuItem value={data.id}>{data.categoryName}</MenuItem>
-                      );
-                    })}
+                    {categoryList.map((data) => (
+                      <MenuItem value={data.id}>{data.categoryName}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Box>
             </Grid>
-            <Grid sx={{ mt: 1, padding: 0 }}
+            <Grid
+              sx={{ mt: 1, padding: 0 }}
               item
-              xs={12} sm={6} md={6} lg={6} xl={6}>
-                <TextField
-                  sx={{marginTop:0}}
-                  value={deviceName}
-                  onBlur={() => validateForNullValue(deviceName, "deviceName")}
-                  onChange={(e) => {
-                    setDeviceName(e.target.value);
-                  }}
-                  margin="normal"
-                  required
-                  id="outlined-required"
-                  label="Name of the device"
-                  fullWidth
-                  error={errorObject?.deviceName?.errorStatus}
-                  helperText={errorObject?.deviceName?.helperText}
-                  autoComplete="off"
-                />
-            </Grid>
-            <Grid sx={{ mt: 0, padding: 0 }}
-              item
-              xs={12} sm={6} md={6} lg={6} xl={6}>
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+            >
               <TextField
-                sx={{marginTop:0}}
+                sx={{ marginTop: 0 }}
+                value={deviceName}
+                onBlur={() => validateForNullValue(deviceName, 'deviceName')}
+                onChange={(e) => {
+                  setDeviceName(e.target.value);
+                }}
+                margin="normal"
+                required
+                id="outlined-required"
+                label="Name of the device"
+                fullWidth
+                error={errorObject?.deviceName?.errorStatus}
+                helperText={errorObject?.deviceName?.helperText}
+                autoComplete="off"
+              />
+            </Grid>
+            <Grid
+              sx={{ mt: 0, padding: 0 }}
+              item
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+            >
+              <TextField
+                sx={{ marginTop: 0 }}
                 value={deviceTag}
-                onBlur={() => validateForNullValue(deviceTag, "deviceTag")}
+                onBlur={() => validateForNullValue(deviceTag, 'deviceTag')}
                 onChange={(e) => {
                   setDeviceTag(e.target.value);
                 }}
@@ -205,13 +217,19 @@ const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
                 helperText={errorObject?.deviceTag?.helperText}
               />
             </Grid>
-            <Grid sx={{ mt: 0, padding: 0 }}
+            <Grid
+              sx={{ mt: 0, padding: 0 }}
               item
-              xs={12} sm={6} md={6} lg={6} xl={6}>
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+            >
               <TextField
-                sx={{marginTop:0}}
+                sx={{ marginTop: 0 }}
                 value={macAddress}
-                onBlur={() => validateForNullValue(macAddress, "macAddress")}
+                onBlur={() => validateForNullValue(macAddress, 'macAddress')}
                 onChange={(e) => {
                   setMacAddress(e.target.value);
                 }}
@@ -225,13 +243,19 @@ const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
                 helperText={errorObject?.macAddress?.helperText}
               />
             </Grid>
-            <Grid sx={{ mt: 0, padding: 0 }}
+            <Grid
+              sx={{ mt: 0, padding: 0 }}
               item
-              xs={12} sm={6} md={6} lg={6} xl={6}>
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+            >
               <TextField
-                sx={{marginTop:0}}
+                sx={{ marginTop: 0 }}
                 value={firmwareVersion}
-                onBlur={() => validateForNullValue(firmwareVersion, "firmwareVersion")}
+                onBlur={() => validateForNullValue(firmwareVersion, 'firmwareVersion')}
                 onChange={(e) => {
                   setFirmwareVersion(e.target.value);
                 }}
@@ -245,17 +269,23 @@ const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
                 helperText={errorObject?.firmwareVersion?.helperText}
               />
             </Grid>
-            <Grid sx={{ mt: 0, padding: 0 }}
+            <Grid
+              sx={{ mt: 0, padding: 0 }}
               item
-              xs={12} sm={6} md={6} lg={6} xl={6}>
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+            >
               <TextField
-                sx={{marginTop:0}}
+                sx={{ marginTop: 0 }}
                 margin="normal"
                 fullWidth
                 label="Photo of Device"
-                autoComplete='off'
+                autoComplete="off"
                 required
-                onBlur={() => { validateForNullValue(deviceImage, 'deviceImage') }}
+                onBlur={() => { validateForNullValue(deviceImage, 'deviceImage'); }}
                 onChange={(e) => {
                   if (e.target.files && e.target.files.length > 0) {
                     setDeviceImage(e.target.files[0]);
@@ -265,32 +295,38 @@ const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
                       if (reader.readyState === 2) {
                         setDeviceImage(reader.result);
                       }
-                    }
+                    };
                     reader.readAsDataURL(e.target.files[0]);
                   }
                 }}
                 InputLabelProps={{ shrink: true }}
                 type="file"
                 inputProps={{
-                  accept: "image/png",
+                  accept: 'image/png',
                 }}
                 error={errorObject?.deviceImage?.errorStatus}
                 helperText={errorObject?.deviceImage?.helperText}
               />
             </Grid>
-            <Grid sx={{ mt: 0, padding: 0 }}
+            <Grid
+              sx={{ mt: 0, padding: 0 }}
               item
-              xs={12} sm={6} md={6} lg={6} xl={6}>
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+            >
               <TextField
-                sx={{marginTop:0}}
+                sx={{ marginTop: 0 }}
                 value={pollingPriority}
-                type='time'
-                onBlur={() => validateForNullValue(pollingPriority, "pollingPriority")}
+                type="time"
+                onBlur={() => validateForNullValue(pollingPriority, 'pollingPriority')}
                 onChange={(e) => {
                   setPollingPriority(e.target.value);
                 }}
                 InputLabelProps={{
-                  shrink:true
+                  shrink: true,
                 }}
                 margin="normal"
                 required
@@ -302,19 +338,25 @@ const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
                 helperText={errorObject?.pollingPriority?.helperText}
               />
             </Grid>
-            <Grid sx={{ mt: 0, padding: 0 }}
+            <Grid
+              sx={{ mt: 0, padding: 0 }}
               item
-              xs={12} sm={6} md={6} lg={6} xl={6}>
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+            >
               <TextField
-                sx={{marginTop:0}}
+                sx={{ marginTop: 0 }}
                 value={nonPollingPriority}
-                type='time'
-                onBlur={() => validateForNullValue(nonPollingPriority, "nonPollingPriority")}
+                type="time"
+                onBlur={() => validateForNullValue(nonPollingPriority, 'nonPollingPriority')}
                 onChange={(e) => {
                   setNonPollingPriority(e.target.value);
                 }}
                 InputLabelProps={{
-                  shrink:true
+                  shrink: true,
                 }}
                 margin="normal"
                 required
@@ -327,19 +369,22 @@ const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
               />
             </Grid>
             <Grid container justify="flex-end">
-              <div className="float-right">
-                
-              </div>
+              <div className="float-right" />
             </Grid>
           </Grid>
-          <Grid sx={{ mt: 0, padding: 0 }}
+          <Grid
+            sx={{ mt: 0, padding: 0 }}
             item
-            xs={12} sm={12} md={12} lg={12} xl={12}
-            style={{textAlignLast: 'right'}}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            xl={12}
+            style={{ textAlignLast: 'right' }}
           >
-             <div >
+            <div>
               <Button
-                sx={{ m: 2}}
+                sx={{ m: 2 }}
                 onClick={(e) => {
                   setOpenModel(true);
                 }}
@@ -348,13 +393,18 @@ const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
               </Button>
             </div>
           </Grid>
-          <Grid sx={{ mt: 0, padding: 0 }}
+          <Grid
+            sx={{ mt: 0, padding: 0 }}
             item
-            xs={12} sm={12} md={12} lg={12} xl={12}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            xl={12}
           >
             <div className="mt-0 ml-2 float-right">
               <Button
-                sx={{ m: 2}}
+                sx={{ m: 2 }}
                 onClick={(e) => {
                   setErrorObject({});
                   resetForm();
@@ -364,13 +414,13 @@ const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
               </Button>
               <Button
                 disabled={
-                  errorObject?.deviceCategory?.errorStatus ||
-                  errorObject?.deviceName?.errorStatus ||
-                  errorObject?.deviceTag?.errorStatus ||
-                  errorObject?.macAddress?.errorStatus ||
-                  errorObject?.firmwareVersion?.errorStatus||
-                  errorObject?.pollingPriority?.errorStatus ||
-                  errorObject?.nonPollingPriority?.errorStatus 
+                  errorObject?.deviceCategory?.errorStatus
+                  || errorObject?.deviceName?.errorStatus
+                  || errorObject?.deviceTag?.errorStatus
+                  || errorObject?.macAddress?.errorStatus
+                  || errorObject?.firmwareVersion?.errorStatus
+                  || errorObject?.pollingPriority?.errorStatus
+                  || errorObject?.nonPollingPriority?.errorStatus
                 }
                 sx={{ m: 2 }}
                 size="large"
@@ -398,10 +448,10 @@ const DeviceAdd = ({ locationDetails, labMap, deviceData }) => {
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
-        type={openNotification.type} 
+        type={openNotification.type}
       />
     </>
   );
-};
+}
 
 export default DeviceAdd;

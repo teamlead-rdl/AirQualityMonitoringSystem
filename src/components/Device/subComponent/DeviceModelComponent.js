@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { DialogContent, TextField, Box, Dialog, DialogTitle, Button, Select, FormControl, MenuItem, InputLabel, Grid } from "@mui/material";
-import { DeviceAddService, DeviceEditService } from "../../../services/LoginPageService";
-import DeviceAdd from "../DeviceAdd";
-import NotificationBar from "../../notification/ServiceNotificationBar";
-import DeviceLocationModal from "../deviceLocation/DeviceLocationModalComponent";
-import { AddCategoryValidate } from "../../../validatation/formValidation";
+import React, { useState, useEffect } from 'react';
+import {
+  DialogContent, TextField, Box, Dialog, DialogTitle, Button, Select, FormControl, MenuItem, InputLabel, Grid,
+} from '@mui/material';
+import { DeviceAddService, DeviceEditService } from '../../../services/LoginPageService';
+import DeviceAdd from '../DeviceAdd';
+import NotificationBar from '../../notification/ServiceNotificationBar';
+import DeviceLocationModal from '../deviceLocation/DeviceLocationModalComponent';
+import { AddCategoryValidate } from '../../../validatation/formValidation';
 
-const DeviceModel = ({
+function DeviceModel({
   open,
   setOpen,
   isAddButton,
@@ -14,18 +16,18 @@ const DeviceModel = ({
   categoryData,
   locationDetails,
   labMap,
-  setRefreshData
-}) => {
-  const [id, setId] = useState("");
-  const [deviceName, setDeviceName] = useState("");
-  const [deviceTag, setDeviceTag] = useState("");
-  const [firmwareVersion, setFirmwareVersion] = useState("");
+  setRefreshData,
+}) {
+  const [id, setId] = useState('');
+  const [deviceName, setDeviceName] = useState('');
+  const [deviceTag, setDeviceTag] = useState('');
+  const [firmwareVersion, setFirmwareVersion] = useState('');
   const [macAddress, setMacAddress] = useState('');
-  const [category_id, setCategory_id] = useState("");
+  const [category_id, setCategory_id] = useState('');
   const [categoryList, setCategoryList] = useState([]);
   const [deviceImage, setDeviceImage] = useState({});
-  const [pollingPriority, setPollingPriority] = useState("");
-  const [nonPollingPriority, setNonPollingPriority] = useState("");
+  const [pollingPriority, setPollingPriority] = useState('');
+  const [nonPollingPriority, setNonPollingPriority] = useState('');
   const [floorCords, setFloorCords] = useState('');
   const [previewImage, setPreviewImage] = useState();
   const [errorObject, setErrorObject] = useState({});
@@ -33,26 +35,26 @@ const DeviceModel = ({
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
-    message: ''
+    message: '',
   });
 
   useEffect(() => {
-      setOpen(open);
-      loadData();
-    }, [deviceData, categoryData]);
+    setOpen(open);
+    loadData();
+  }, [deviceData, categoryData]);
 
   const loadData = () => {
-    setId(deviceData.id || "");
-    setDeviceName(deviceData.deviceName || "");
-    setDeviceTag(deviceData.deviceTag || "");
-    setMacAddress(deviceData.macAddress || "");
-    setFirmwareVersion(deviceData.firmwareVersion || "");
-    setPollingPriority(deviceData.pollingPriority || "");
-    setNonPollingPriority(deviceData.nonPollingPriority || ""); 
-    setFloorCords(deviceData.floorCords || ""); 
+    setId(deviceData.id || '');
+    setDeviceName(deviceData.deviceName || '');
+    setDeviceTag(deviceData.deviceTag || '');
+    setMacAddress(deviceData.macAddress || '');
+    setFirmwareVersion(deviceData.firmwareVersion || '');
+    setPollingPriority(deviceData.pollingPriority || '');
+    setNonPollingPriority(deviceData.nonPollingPriority || '');
+    setFloorCords(deviceData.floorCords || '');
     setCategoryList(categoryData || []);
-    setCategory_id(deviceData.category_id || "");
-    setPreviewImage("http://varmatrix.com/Aqms/blog/public/"+deviceData.deviceImage || "");
+    setCategory_id(deviceData.category_id || '');
+    setPreviewImage(`http://varmatrix.com/Aqms/blog/public/${deviceData.deviceImage}` || '');
   };
 
   const validateForNullValue = (value, type) => {
@@ -63,11 +65,9 @@ const DeviceModel = ({
     setNotification({
       status: true,
       type: 'success',
-      message: dataObject.message
+      message: dataObject.message,
     });
-    setRefreshData((oldvalue)=>{
-      return !oldvalue;
-    });
+    setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
       setOpen(false);
@@ -75,11 +75,10 @@ const DeviceModel = ({
   };
 
   const handleException = (errorObject, errorMessage) => {
-    // console.log(JSON.stringify(errorObject));
     setNotification({
       status: true,
       type: 'error',
-      message: errorMessage
+      message: errorMessage,
     });
   };
 
@@ -98,10 +97,10 @@ const DeviceModel = ({
           pollingPriority,
           nonPollingPriority,
           floorCords,
-          ...locationDetails
+          ...locationDetails,
         },
         handleSuccess,
-        handleException
+        handleException,
       );
     } else {
       await DeviceEditService(
@@ -116,32 +115,32 @@ const DeviceModel = ({
           pollingPriority,
           nonPollingPriority,
           floorCords,
-          ...locationDetails
+          ...locationDetails,
         },
         handleSuccess,
-        handleException
+        handleException,
       );
     }
   };
 
   const handleClose = () => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: false,
+      type: '',
+      message: '',
     });
-  }
+  };
   return (
     <Dialog
-      fullWidth={true}
+      fullWidth
       maxWidth="md"
-      sx={{ "& .MuiDialog-paper": { width: "95%", maxHeight: "95%" } }}
+      sx={{ '& .MuiDialog-paper': { width: '95%', maxHeight: '95%' } }}
       open={open}
     >
-      <DialogTitle>{isAddButton ? "Add Device" : "Edit Device"}</DialogTitle>
+      <DialogTitle>{isAddButton ? 'Add Device' : 'Edit Device'}</DialogTitle>
       <DialogContent>
         <form onSubmit={HandleSubmit}>
-          <div className='rounded-md -space-y-px '>
+          <div className="rounded-md -space-y-px ">
             <Box sx={{ minWidth: 250 }}>
               <FormControl fullWidth margin="normal">
                 <InputLabel id="demo-simple-select-label">
@@ -160,20 +159,18 @@ const DeviceModel = ({
                   error={errorObject?.deviceCategory?.errorStatus}
                   helperText={errorObject?.deviceCategory?.helperText}
                 >
-                  {categoryList.map((data) => {
-                    return (
-                      <MenuItem value={data.id}>{data.categoryName}</MenuItem>
-                    );
-                  })}
+                  {categoryList.map((data) => (
+                    <MenuItem value={data.id}>{data.categoryName}</MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Box>
 
           </div>
-          <div className='rounded-md -space-y-px'>
+          <div className="rounded-md -space-y-px">
             <TextField
               value={deviceName}
-              onBlur={() => validateForNullValue(deviceName, "deviceName")}
+              onBlur={() => validateForNullValue(deviceName, 'deviceName')}
               onChange={(e) => {
                 setDeviceName(e.target.value);
               }}
@@ -187,10 +184,10 @@ const DeviceModel = ({
               autoComplete="off"
             />
           </div>
-          <div className='rounded-md -space-y-px'>
+          <div className="rounded-md -space-y-px">
             <TextField
               value={deviceTag}
-              onBlur={() => validateForNullValue(deviceTag, "deviceTag")}
+              onBlur={() => validateForNullValue(deviceTag, 'deviceTag')}
               onChange={(e) => {
                 setDeviceTag(e.target.value);
                 // setPreviewImage(e.target.value);
@@ -205,10 +202,10 @@ const DeviceModel = ({
               helperText={errorObject?.deviceTag?.helperText}
             />
           </div>
-          <div className='rounded-md -space-y-px'>
+          <div className="rounded-md -space-y-px">
             <TextField
               value={macAddress}
-              onBlur={() => validateForNullValue(macAddress, "macAddress")}
+              onBlur={() => validateForNullValue(macAddress, 'macAddress')}
               onChange={(e) => {
                 setMacAddress(e.target.value);
               }}
@@ -222,12 +219,10 @@ const DeviceModel = ({
               helperText={errorObject?.macAddress?.helperText}
             />
           </div>
-          <div className='rounded-md -space-y-px'>
+          <div className="rounded-md -space-y-px">
             <TextField
               value={firmwareVersion}
-              onBlur={() =>
-                validateForNullValue(firmwareVersion, "firmwareVersion")
-              }
+              onBlur={() => validateForNullValue(firmwareVersion, 'firmwareVersion')}
               onChange={(e) => {
                 setFirmwareVersion(e.target.value);
               }}
@@ -240,22 +235,34 @@ const DeviceModel = ({
               helperText={errorObject?.firmwareVersion?.helperText}
             />
           </div>
-          <Grid sx={{ mt: 1, padding: 0 }}
-              container
-              xs={12} sm={12} md={12} lg={12} xl={12}>
-            <Grid sx={{ mt: 0, padding: 0 }}
+          <Grid
+            sx={{ mt: 1, padding: 0 }}
+            container
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            xl={12}
+          >
+            <Grid
+              sx={{ mt: 0, padding: 0 }}
               item
-              xs={12} sm={6} md={6} lg={6} xl={6}>
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+            >
               <TextField
-                sx={{marginTop:0}}
+                sx={{ marginTop: 0 }}
                 value={pollingPriority}
-                type='time'
-                onBlur={() => validateForNullValue(pollingPriority, "pollingPriority")}
+                type="time"
+                onBlur={() => validateForNullValue(pollingPriority, 'pollingPriority')}
                 onChange={(e) => {
                   setPollingPriority(e.target.value);
                 }}
                 InputLabelProps={{
-                  shrink:true
+                  shrink: true,
                 }}
                 margin="normal"
                 required
@@ -264,22 +271,28 @@ const DeviceModel = ({
                 autoComplete="off"
                 fullWidth
                 error={errorObject?.pollingPriority?.errorStatus}
-                helperText={errorObject?.pollingPriority  ?.helperText}
+                helperText={errorObject?.pollingPriority?.helperText}
               />
             </Grid>
-            <Grid sx={{ mt: 0, padding: 0 }}
+            <Grid
+              sx={{ mt: 0, padding: 0 }}
               item
-              xs={12} sm={6} md={6} lg={6} xl={6}>
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+            >
               <TextField
-                sx={{marginTop:0}}
+                sx={{ marginTop: 0 }}
                 value={nonPollingPriority}
-                type='time'
-                onBlur={() => validateForNullValue(nonPollingPriority, "nonPollingPriority")}
+                type="time"
+                onBlur={() => validateForNullValue(nonPollingPriority, 'nonPollingPriority')}
                 onChange={(e) => {
                   setNonPollingPriority(e.target.value);
                 }}
                 InputLabelProps={{
-                  shrink:true
+                  shrink: true,
                 }}
                 margin="normal"
                 required
@@ -292,54 +305,68 @@ const DeviceModel = ({
               />
             </Grid>
           </Grid>
-          <Grid sx={{ mt: 0, padding: 0 }}
-              container
-              xs={12} sm={12} md={12} lg={12} xl={12}>
-                 <Grid sx={{ mt: 0, padding: 0 }}
-                  item
-                  xs={12} sm={9} md={9} lg={9} xl={9}>
-                    <TextField
-                      sx={{marginTop:0}}
-                      margin="normal"
-                      fullWidth
-                      label="Photo of Device"
-                      autoComplete='off'
-                      onBlur={() => { validateForNullValue(deviceImage, 'deviceImage') }}
-                      onChange={(e) => {
-                        if (e.target.files && e.target.files.length > 0) {
-                          setDeviceImage(e.target.files[0]);
+          <Grid
+            sx={{ mt: 0, padding: 0 }}
+            container
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            xl={12}
+          >
+            <Grid
+              sx={{ mt: 0, padding: 0 }}
+              item
+              xs={12}
+              sm={9}
+              md={9}
+              lg={9}
+              xl={9}
+            >
+              <TextField
+                sx={{ marginTop: 0 }}
+                margin="normal"
+                fullWidth
+                label="Photo of Device"
+                autoComplete="off"
+                onBlur={() => { validateForNullValue(deviceImage, 'deviceImage'); }}
+                onChange={(e) => {
+                  if (e.target.files && e.target.files.length > 0) {
+                    setDeviceImage(e.target.files[0]);
 
-                          const reader = new FileReader();
-                          reader.onload = () => {
-                            if (reader.readyState === 2) {
-                              setDeviceImage(reader.result);
-                              setPreviewImage(reader.result);
-                            }
-                          }
-                          reader.readAsDataURL(e.target.files[0]);
-                        }
-                      }}
-                      InputLabelProps={{ shrink: true }}
-                      type="file"
-                      inputProps={{
-                        accept: "image/png",
-                      }}
-                      error={errorObject?.deviceImage?.errorStatus}
-                      helperText={errorObject?.deviceImage?.helperText}
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12} sm={3} md={3} lg={3} xl={3}
-                    >
-                          <img src={previewImage} 
-                          // style={{width:'-webkit-fill-available'}} 
-                          />
-                      {/* <div className='rounded-md -space-y-px mb-2' style={{border:'2px black solid'}}>
-                      </div> */}
-                    </Grid>
-              
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                      if (reader.readyState === 2) {
+                        setDeviceImage(reader.result);
+                        setPreviewImage(reader.result);
+                      }
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                  }
+                }}
+                InputLabelProps={{ shrink: true }}
+                type="file"
+                inputProps={{
+                  accept: 'image/png',
+                }}
+                error={errorObject?.deviceImage?.errorStatus}
+                helperText={errorObject?.deviceImage?.helperText}
+              />
             </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={3}
+              md={3}
+              lg={3}
+              xl={3}
+            >
+              <img src={previewImage} />
+              {/* <div className='rounded-md -space-y-px mb-2' style={{border:'2px black solid'}}>
+                      </div> */}
+            </Grid>
+
+          </Grid>
           <div className="float-right">
             <div className="rounded-md -space-y-px">
               <Button
@@ -352,45 +379,51 @@ const DeviceModel = ({
               >
                 Cancel
               </Button>
-              <Button 
-                sx={{ m: 2 }} 
+              <Button
+                sx={{ m: 2 }}
                 type="submit"
                 disabled={
-                  errorObject?.deviceName?.errorStatus || 
-                  errorObject?.deviceTag?.errorStatus || 
-                  errorObject?.macAddress?.errorStatus || 
-                  errorObject?.firmwareVersion?.errorStatus ||
-                  errorObject?.pollingPriority?.errorStatus || 
-                  errorObject?.nonPollingPriority?.errorStatus}
+                  errorObject?.deviceName?.errorStatus
+                  || errorObject?.deviceTag?.errorStatus
+                  || errorObject?.macAddress?.errorStatus
+                  || errorObject?.firmwareVersion?.errorStatus
+                  || errorObject?.pollingPriority?.errorStatus
+                  || errorObject?.nonPollingPriority?.errorStatus
+                }
               >
-                {isAddButton ? "Add" : "Update"}
+                {isAddButton ? 'Add' : 'Update'}
               </Button>
             </div>
           </div>
         </form>
-        <Grid sx={{ mt: 0, padding: 0 }}
-            item
-            xs={12} sm={12} md={12} lg={12} xl={12}
-            style={{textAlignLast: 'right'}}
-          >
-             <div >
-              <Button
-                sx={{ m: 2}}
-                onClick={(e) => {
-                  setOpenModel(true);
-                }}
-              >
-                Locate Device
-              </Button>
-            </div>
-          </Grid>
+        <Grid
+          sx={{ mt: 0, padding: 0 }}
+          item
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          xl={12}
+          style={{ textAlignLast: 'right' }}
+        >
+          <div>
+            <Button
+              sx={{ m: 2 }}
+              onClick={(e) => {
+                setOpenModel(true);
+              }}
+            >
+              Locate Device
+            </Button>
+          </div>
+        </Grid>
         {/* <DeviceAdd locationDetails={locationDetails} labMap={labMap} deviceData={deviceData} setOpen={setOpen}/> */}
       </DialogContent>
       <NotificationBar
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
-        type={openNotification.type} 
+        type={openNotification.type}
       />
       <DeviceLocationModal
         open={openModel}
@@ -401,6 +434,6 @@ const DeviceModel = ({
       />
     </Dialog>
   );
-};
+}
 
 export default DeviceModel;

@@ -1,63 +1,65 @@
-import { Checkbox, DialogContent, FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField } from "@mui/material";
-import React, { useState } from "react";
-import { AnalogSensorValidate } from "../../../validatation/formValidation";
+import {
+  Checkbox, DialogContent, FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField,
+} from '@mui/material';
+import React, { useState } from 'react';
+import { AnalogSensorValidate } from '../../../validatation/formValidation';
 
-const Analog = ({errorObject, setErrorObject, disable, units, setUnits, minRatedReading, setMinRatedReading, sensorType, setSensorType,
-  minRatedReadingChecked, setMinRatedReadingChecked, 
-  minRatedReadingScale, setMinRatedReadingScale, 
-  maxRatedReading, setMaxRatedReading, 
-  maxRatedReadingChecked, setMaxRatedReadingChecked, 
-  maxRatedReadingScale, setMaxRatedReadingScale}) => {
-
+function Analog({
+  errorObject, setErrorObject, disable, units, setUnits, minRatedReading, setMinRatedReading, sensorType, setSensorType,
+  minRatedReadingChecked, setMinRatedReadingChecked,
+  minRatedReadingScale, setMinRatedReadingScale,
+  maxRatedReading, setMaxRatedReading,
+  maxRatedReadingChecked, setMaxRatedReadingChecked,
+  maxRatedReadingScale, setMaxRatedReadingScale,
+}) {
   // const [errorObject, setErrorObject] = useState({});
   const validateForNullValue = (value, type) => {
-    //validating
-    AnalogSensorValidate(value, type, setErrorObject)
+    // validating
+    AnalogSensorValidate(value, type, setErrorObject);
   };
   return (
     <DialogContent sx={{ px: 0, p: 0 }}>
       <Grid container spacing={1}>
         <Grid
-            sx={{ mt: 0, padding: 0 }}
-            item
-            xs={12}
-            sm={2}
-            md={2}
-            lg={2}
-            xl={2}
-            >
-            <div className="rounded-md -space-y-px mt-2 ml-3">
-              Output type :
-            </div>
+          sx={{ mt: 0, padding: 0 }}
+          item
+          xs={12}
+          sm={2}
+          md={2}
+          lg={2}
+          xl={2}
+        >
+          <div className="rounded-md -space-y-px mt-2 ml-3">
+            Output type :
+          </div>
         </Grid>
         <Grid
-            sx={{ mt: 0, padding: 0 }}
-            item
-            xs={12}
-            sm={10}
-            md={10}
-            lg={10}
-            xl={10}
-            >
-            <div className="rounded-md -space-y-px">
+          sx={{ mt: 0, padding: 0 }}
+          item
+          xs={12}
+          sm={10}
+          md={10}
+          lg={10}
+          xl={10}
+        >
+          <div className="rounded-md -space-y-px">
             <FormControl className="float-left" disabled={disable || false} required>
-                <RadioGroup
-                    row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    name="row-radio-buttons-group"
-                    value={sensorType}
-                    onChange={(e)=>{
-                      setSensorType(e.target.value);
-                    }}
-                    
-                >
-                    <FormControlLabel value="4-20v" control={<Radio required={true}/>} label="4-20v" />
-                    <FormControlLabel value="0-10v" control={<Radio required={true}/>} label="0-10v" />
-                </RadioGroup>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                value={sensorType}
+                onChange={(e) => {
+                  setSensorType(e.target.value);
+                }}
+              >
+                <FormControlLabel value="4-20v" control={<Radio required />} label="4-20v" />
+                <FormControlLabel value="0-10v" control={<Radio required />} label="0-10v" />
+              </RadioGroup>
             </FormControl>
-            </div>
+          </div>
         </Grid>
-       
+
         <Grid
           sx={{ mt: 0, padding: 0 }}
           item
@@ -67,12 +69,12 @@ const Analog = ({errorObject, setErrorObject, disable, units, setUnits, minRated
           lg={3}
           xl={3}
         >
-        <div className="rounded-md -space-y-px">
+          <div className="rounded-md -space-y-px">
             <TextField
               sx={{ marginTop: 0 }}
               disabled={disable || false}
               value={units}
-              onBlur={() => validateForNullValue(units, "units")}
+              onBlur={() => validateForNullValue(units, 'units')}
               onChange={(e) => {
                 setUnits(e.target.value);
               }}
@@ -102,7 +104,7 @@ const Analog = ({errorObject, setErrorObject, disable, units, setUnits, minRated
               value={minRatedReading}
               disabled={disable || false}
               type="number"
-              onBlur={() => validateForNullValue(minRatedReading, "minRatedReading")}
+              onBlur={() => validateForNullValue(minRatedReading, 'minRatedReading')}
               onChange={(e) => {
                 setMinRatedReading(e.target.value);
               }}
@@ -116,10 +118,10 @@ const Analog = ({errorObject, setErrorObject, disable, units, setUnits, minRated
               autoComplete="off"
             />
           </div>
-         
+
         </Grid>
         <Grid
-          sx={{ mt: 0, padding: 0, alignSelf:'center' }}
+          sx={{ mt: 0, padding: 0, alignSelf: 'center' }}
           item
           xs={12}
           sm={0.5}
@@ -128,12 +130,12 @@ const Analog = ({errorObject, setErrorObject, disable, units, setUnits, minRated
           xl={1}
         >
           <div className="rounded-md -space-y-px flex">
-              <Checkbox 
-                checked={minRatedReadingChecked == 0 ? false : true} 
-                onChange={(e)=>{
-                  setMinRatedReadingChecked(e.target.checked);
-                }}
-              />
+            <Checkbox
+              checked={minRatedReadingChecked != 0}
+              onChange={(e) => {
+                setMinRatedReadingChecked(e.target.checked);
+              }}
+            />
           </div>
         </Grid>
         <Grid
@@ -145,13 +147,13 @@ const Analog = ({errorObject, setErrorObject, disable, units, setUnits, minRated
           lg={3}
           xl={3}
         >
-        <div className="rounded-md -space-y-px">
+          <div className="rounded-md -space-y-px">
             <TextField
               sx={{ marginTop: 0 }}
               value={minRatedReadingScale}
-              disabled={minRatedReadingChecked == 0 ? true : false}
+              disabled={minRatedReadingChecked == 0}
               type="number"
-              onBlur={() => validateForNullValue(minRatedReadingScale, "minRatedReadingScale")}
+              onBlur={() => validateForNullValue(minRatedReadingScale, 'minRatedReadingScale')}
               onChange={(e) => {
                 setMinRatedReadingScale(e.target.value);
               }}
@@ -175,9 +177,7 @@ const Analog = ({errorObject, setErrorObject, disable, units, setUnits, minRated
           lg={3}
           xl={3}
         >
-          <div className="rounded-md -space-y-px">
-
-          </div>
+          <div className="rounded-md -space-y-px" />
         </Grid>
         <Grid
           sx={{ mt: 0, padding: 0 }}
@@ -194,7 +194,7 @@ const Analog = ({errorObject, setErrorObject, disable, units, setUnits, minRated
               value={maxRatedReading}
               disabled={disable || false}
               type="number"
-              onBlur={() => validateForNullValue(maxRatedReading, "maxRatedReading")}
+              onBlur={() => validateForNullValue(maxRatedReading, 'maxRatedReading')}
               onChange={(e) => {
                 setMaxRatedReading(e.target.value);
               }}
@@ -210,7 +210,7 @@ const Analog = ({errorObject, setErrorObject, disable, units, setUnits, minRated
           </div>
         </Grid>
         <Grid
-          sx={{ mt: 0, padding: 0, alignSelf:'center' }}
+          sx={{ mt: 0, padding: 0, alignSelf: 'center' }}
           item
           xs={12}
           sm={0.5}
@@ -219,12 +219,12 @@ const Analog = ({errorObject, setErrorObject, disable, units, setUnits, minRated
           xl={1}
         >
           <div className="rounded-md -space-y-px flex">
-              <Checkbox 
-                checked={maxRatedReadingChecked == 0 ? false : true }
-                onChange={(e)=>{
-                  setMaxRatedReadingChecked(e.target.checked);
-                }}
-              />
+            <Checkbox
+              checked={maxRatedReadingChecked != 0}
+              onChange={(e) => {
+                setMaxRatedReadingChecked(e.target.checked);
+              }}
+            />
           </div>
         </Grid>
         <Grid
@@ -236,13 +236,13 @@ const Analog = ({errorObject, setErrorObject, disable, units, setUnits, minRated
           lg={3}
           xl={3}
         >
-        <div className="rounded-md -space-y-px">
+          <div className="rounded-md -space-y-px">
             <TextField
               sx={{ marginTop: 0 }}
               value={maxRatedReadingScale}
-              disabled={maxRatedReadingChecked == 0 ? true : false}
+              disabled={maxRatedReadingChecked == 0}
               type="number"
-              onBlur={() => validateForNullValue(maxRatedReadingScale, "maxRatedReadingScale")}
+              onBlur={() => validateForNullValue(maxRatedReadingScale, 'maxRatedReadingScale')}
               onChange={(e) => {
                 setMaxRatedReadingScale(e.target.value);
               }}
@@ -260,6 +260,6 @@ const Analog = ({errorObject, setErrorObject, disable, units, setUnits, minRated
       </Grid>
     </DialogContent>
   );
-};
+}
 
 export default Analog;

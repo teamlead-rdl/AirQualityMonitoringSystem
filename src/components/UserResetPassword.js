@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Button,
   DialogContent,
@@ -6,30 +6,30 @@ import {
   InputAdornment,
   TextField,
   Typography,
-} from "@mui/material";
-import { PasswordResetValidate } from "../validatation/formValidation";
-import { PasswordResetService } from "../services/LoginPageService";
-import { Box } from "@mui/system";
-import { LogoutService } from "../services/LoginPageService";
-import { useNavigate } from "react-router-dom";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import ApplicationStore from '../utils/localStorageUtil';
-import NotificationBar from '../components/notification/ServiceNotificationBar';
+} from '@mui/material';
+import { Box } from '@mui/system';
 
-const UserResetPassword = (props) => {
+import { useNavigate } from 'react-router-dom';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { PasswordResetService, LogoutService } from '../services/LoginPageService';
+import { PasswordResetValidate } from '../validatation/formValidation';
+import ApplicationStore from '../utils/localStorageUtil';
+import NotificationBar from './notification/ServiceNotificationBar';
+
+function UserResetPassword(props) {
   const navigate = useNavigate();
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showOldPassword, setShowOldpassword] = useState(false);
   const [showNewPassword, setShowNewpassword] = useState(false);
   const [errorObject, setErrorObject] = useState({});
   const [openNotification, setNotification] = useState({
     status: false,
     type: '',
-    message: ''
+    message: '',
   });
-  
+
   const validateForNullValue = (value, type) => {
     PasswordResetValidate(value, type, setErrorObject);
   };
@@ -38,7 +38,7 @@ const UserResetPassword = (props) => {
     setNotification({
       status: true,
       type: 'success',
-      message: 'Password has been successfully updated. Please relogin.'
+      message: 'Password has been successfully updated. Please relogin.',
     });
     setTimeout(() => {
       LogoutService(logoutSuccessCallback, logoutErrorCallBack);
@@ -46,20 +46,19 @@ const UserResetPassword = (props) => {
   };
 
   const handleException = (errorStatus, errorMessage) => {
-      setNotification({
-          status: true,
-          type: 'error',
-          message: errorMessage
-      });
+    setNotification({
+      status: true,
+      type: 'error',
+      message: errorMessage,
+    });
   };
 
   const logoutSuccessCallback = (data) => {
     ApplicationStore().setStorage('userDetails', '');
-    navigate(`/login`);
+    navigate('/login');
   };
 
   const logoutErrorCallBack = (errorObject) => {
-    console.log(JSON.stringify(errorObject));
   };
 
   const handleSubmit = (e) => {
@@ -67,9 +66,9 @@ const UserResetPassword = (props) => {
 
     if (newPassword !== confirmPassword) {
       setErrorObject((oldData) => {
-        let status = {
+        const status = {
           errorStatus: true,
-          helperText: "Password does not matched",
+          helperText: 'Password does not matched',
         };
         return {
           ...oldData,
@@ -83,20 +82,20 @@ const UserResetPassword = (props) => {
 
   const handleNotificationClose = () => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: false,
+      type: '',
+      message: '',
     });
-  }
+  };
 
   const resetForm = () => {
-    setOldPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+    setOldPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
     setErrorObject({});
     setShowOldpassword(false);
     setShowNewpassword(false);
-  }
+  };
   return (
     <div className="w-full max-w-lg" style={{ marginTop: props.padding || 0 }}>
       <form
@@ -106,11 +105,11 @@ const UserResetPassword = (props) => {
         <DialogContent sx={{ px: 1, p: 1 }}>
           <Box
             sx={{
-              mb: "1px",
-              alignItems: "center",
-              display: "flex",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
+              mb: '1px',
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
             }}
           >
             <Typography sx={{ m: 1 }} variant="h5">
@@ -127,7 +126,7 @@ const UserResetPassword = (props) => {
               value={oldPassword}
               required
               onBlur={() => {
-                validateForNullValue(oldPassword, "oldPassword");
+                validateForNullValue(oldPassword, 'oldPassword');
                 setShowOldpassword(false);
               }}
               onChange={(e) => {
@@ -148,7 +147,7 @@ const UserResetPassword = (props) => {
                   >
                     {showOldPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
-                </InputAdornment>
+                              </InputAdornment>,
               }}
             />
           </div>
@@ -161,7 +160,7 @@ const UserResetPassword = (props) => {
               value={newPassword}
               required
               onBlur={() => {
-                validateForNullValue(newPassword, "newPassword");
+                validateForNullValue(newPassword, 'newPassword');
                 setShowNewpassword(false);
               }}
               onChange={(e) => {
@@ -182,7 +181,7 @@ const UserResetPassword = (props) => {
                   >
                     {showNewPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
-                </InputAdornment>
+                              </InputAdornment>,
               }}
             />
 
@@ -196,9 +195,7 @@ const UserResetPassword = (props) => {
               fullWidth
               required
               value={confirmPassword}
-              onBlur={() =>
-                validateForNullValue(confirmPassword, "confirmPassword")
-              }
+              onBlur={() => validateForNullValue(confirmPassword, 'confirmPassword')}
               onChange={(e) => {
                 setConfirmPassword(e.target.value);
               }}
@@ -215,9 +212,9 @@ const UserResetPassword = (props) => {
             </Button>
             <Button
               disabled={
-                errorObject?.confirmPassword?.errorStatus ||
-                errorObject?.newPassword?.errorStatus ||
-                errorObject?.oldPassword?.errorStatus
+                errorObject?.confirmPassword?.errorStatus
+                || errorObject?.newPassword?.errorStatus
+                || errorObject?.oldPassword?.errorStatus
               }
               type="submit"
             >
@@ -230,9 +227,10 @@ const UserResetPassword = (props) => {
         handleClose={handleNotificationClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
-        type={openNotification.type} />
+        type={openNotification.type}
+      />
     </div>
   );
-};
+}
 
 export default UserResetPassword;

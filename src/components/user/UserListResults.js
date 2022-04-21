@@ -3,8 +3,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import UserModal from './UserModalComponent';
-import { UserListToolbar } from './UserListToolbar';
-import { FetchUserService, UnblockUserService, UserDeleteService } from '../../services/LoginPageService';
+import UserListToolbar from './UserListToolbar';
+import { FetchUserService, UserDeleteService } from '../../services/LoginPageService';
 import ConfirmPassword from './passwordConfirmComponent';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../context/UserAccessProvider';
@@ -14,7 +14,7 @@ export function UserListResults() {
     {
       field: 'employeeId',
       headerName: 'Employee Id',
-      width: 110
+      width: 110,
     },
     {
       field: 'name',
@@ -45,12 +45,10 @@ export function UserListResults() {
       headerName: 'Actions',
       width: 100,
       cellClassName: 'actions',
-      getActions: (params) => {
-        return [
-          <EditData selectedRow={params.row} />,
-          <DeleteData selectedRow={params.row} />
-        ];
-      },
+      getActions: (params) => [
+        <EditData selectedRow={params.row} />,
+        <DeleteData selectedRow={params.row} />,
+      ],
     },
   ];
 
@@ -60,7 +58,7 @@ export function UserListResults() {
   const [userList, setUserList] = useState([]);
   const [isLoading, setGridLoading] = useState(true);
   const [id, setId] = useState('');
-  const [password, setConfirmPassword] = useState('')
+  const [password, setConfirmPassword] = useState('');
   const [btnReset, setBtnReset] = useState(false);
   const [refreshData, setRefreshData] = useState(false);
   const moduleAccess = useUserAccess()('usermanagement');
@@ -68,77 +66,79 @@ export function UserListResults() {
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
-    message: ''
+    message: '',
   });
   const handleSuccess = (dataObject) => {
     setGridLoading(false);
     setUserList(dataObject?.data || []);
-  }
-  
+  };
+
   const handleException = (errorObject) => {
-    console.log(JSON.stringify(errorObject));
-  }
+  };
 
   useEffect(() => {
     FetchUserService(handleSuccess, handleException);
   }, [refreshData]);
 
-  const EditData = (props) => {
-    return ( moduleAccess.edit && 
-      <EditIcon onClick={(event) => {
-        event.stopPropagation();
-        setIsAddButton(false);
-        setEditUser(props.selectedRow);
-        setOpen(true);
-      }} 
-      style={{cursor: 'pointer'}}
-      />)
+  function EditData(props) {
+    return (moduleAccess.edit
+      && (
+        <EditIcon
+          onClick={(event) => {
+            event.stopPropagation();
+            setIsAddButton(false);
+            setEditUser(props.selectedRow);
+            setOpen(true);
+          }}
+          style={{ cursor: 'pointer' }}
+        />
+      ));
   }
-  const DeleteData = (props) => {
-    return moduleAccess.delete &&  <DeleteIcon onClick={()=>{
-      setId(props.selectedRow.id);
-      setBtnReset(true);
-    }}
-    style={{cursor: 'pointer'}}
-    />
+  function DeleteData(props) {
+    return moduleAccess.delete && (
+      <DeleteIcon
+        onClick={() => {
+          setId(props.selectedRow.id);
+          setBtnReset(true);
+        }}
+        style={{ cursor: 'pointer' }}
+      />
+    );
   }
 
   const passwordSubmit = async (e) => {
     e.preventDefault();
-    UserDeleteService({ password, id},passwordValidationSuccess,passwordValidationException);
+    UserDeleteService({ password, id }, passwordValidationSuccess, passwordValidationException);
     setBtnReset(false);
-  }
+  };
   const passwordValidationSuccess = (dataObject) => {
     setNotification({
       status: true,
       type: 'success',
-      message: dataObject.message
+      message: dataObject.message,
     });
-    setRefreshData((oldvalue)=>{
-        return !oldvalue;
-    });
-  }
+    setRefreshData((oldvalue) => !oldvalue);
+  };
 
   const passwordValidationException = (errorObject, errorMessage) => {
-    console.log(JSON.stringify(errorObject));
     setNotification({
       status: true,
       type: 'error',
-      message: errorMessage
+      message: errorMessage,
     });
   };
 
   const handleClose = () => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: false,
+      type: '',
+      message: '',
     });
-  }
+  };
 
   return (
     <div style={{ height: 400, width: '100%' }}>
-      <UserListToolbar 
+      <UserListToolbar
         setIsAddButton={setIsAddButton}
         setEditUser={setEditUser}
         setOpen={setOpen}
@@ -161,17 +161,17 @@ export function UserListResults() {
         setOpen={setOpen}
         setRefreshData={setRefreshData}
       />
-      <ConfirmPassword 
+      <ConfirmPassword
         open={btnReset}
-        passwordSubmit={passwordSubmit} 
-        setConfirmPassword={setConfirmPassword} 
+        passwordSubmit={passwordSubmit}
+        setConfirmPassword={setConfirmPassword}
         setBtnReset={setBtnReset}
       />
       <NotificationBar
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
-        type={openNotification.type} 
+        type={openNotification.type}
       />
     </div>
   );

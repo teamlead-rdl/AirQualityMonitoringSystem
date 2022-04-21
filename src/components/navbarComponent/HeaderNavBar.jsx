@@ -65,7 +65,6 @@ const HeaderNavBar = (props, { defaultActive, }) => {
     };
 
     const logoutErrorCallBack = (errorObject) => {
-        console.log(JSON.stringify(errorObject));
     };
 
     const hamBurgerMenu = () => {
@@ -160,7 +159,6 @@ const HeaderNavBar = (props, { defaultActive, }) => {
                                 // .then(response =>
                                 //     response.json()
                                 // ).then(data => {
-                                //     console.log(data);
                                 //     localStorage.clear();
                                 //     navigate(`/login`);
                                 // })

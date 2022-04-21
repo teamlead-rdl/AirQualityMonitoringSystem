@@ -1,31 +1,33 @@
-import { useEffect, useState } from "react";
-import { TextField, Card, CardContent, Grid, Button } from "@mui/material";
-import { LockClosedIcon } from "@heroicons/react/solid";
+import { useEffect, useState } from 'react';
+import {
+  TextField, Card, CardContent, Grid, Button,
+} from '@mui/material';
+import { LockClosedIcon } from '@heroicons/react/solid';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { OTPoptionValidate } from '../../validatation/formValidation';
 import { ReceiveOTPService } from '../../services/LoginPageService';
 import NotificationBar from '../notification/ServiceNotificationBar';
-import LoadingButton from '@mui/lab/LoadingButton';
 
-const OTPoption = (props) => {
-  const [email, setUserEmail] = useState("");
-  const [mobileno, setUserPhone] = useState("");
+function OTPoption(props) {
+  const [email, setUserEmail] = useState('');
+  const [mobileno, setUserPhone] = useState('');
   const [errorObject, setErrorObject] = useState({});
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
-    message: ''
+    message: '',
   });
 
   useEffect(() => {
-    if(email) {
+    if (email) {
       setSubmitDisabled(false);
     }
-    if(mobileno){
+    if (mobileno) {
       setSubmitDisabled(false);
     }
-  },[email, mobileno])
+  }, [email, mobileno]);
 
   const validateForNullValue = (value, type) => {
     OTPoptionValidate(value, type, setErrorObject);
@@ -37,29 +39,29 @@ const OTPoption = (props) => {
     setNotification({
       status: true,
       type: 'success',
-      message: "OTP has been sent to the above email/phone no."
+      message: 'OTP has been sent to the above email/phone no.',
     });
     setLoading(false);
     setTimeout(() => {
       props.progress(2);
     }, 3000);
-  }
+  };
 
   const handleClose = () => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: false,
+      type: '',
+      message: '',
     });
     setLoading(false);
-  }
+  };
   const handleException = (statusCode, errorMessage) => {
     setNotification({
       status: true,
       type: 'error',
-      message: errorMessage
+      message: errorMessage,
     });
-  }
+  };
   const onSubmit = (event) => {
     event.preventDefault();
     // if (email && mobileno) {
@@ -70,11 +72,11 @@ const OTPoption = (props) => {
     //   });
     //   return false;
     // } else {
-      setLoading(true);
-      ReceiveOTPService({ email, mobileno }, handleSuccess, handleException);
+    setLoading(true);
+    ReceiveOTPService({ email, mobileno }, handleSuccess, handleException);
     // }
   };
-  
+
   return (
     <Grid
       container
@@ -82,7 +84,7 @@ const OTPoption = (props) => {
       direction="column"
       alignItems="center"
       justify="center"
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: '100vh' }}
     >
       <Card
         variant="outlined"
@@ -95,7 +97,7 @@ const OTPoption = (props) => {
                 <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
                   AUTHENTICATION
                 </h2>
-                <p className="mt-2 text-center text-sm text-gray-600"></p>
+                <p className="mt-2 text-center text-sm text-gray-600" />
               </div>
               <form className="mt-8 space-y-6" onSubmit={onSubmit}>
                 <div className="rounded-md shadow-sm -space-y-px">
@@ -108,7 +110,7 @@ const OTPoption = (props) => {
                       className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
                       autoComplete="off"
                       value={email}
-                      onBlur={() => validateForNullValue(email, "email")}
+                      onBlur={() => validateForNullValue(email, 'email')}
                       onChange={(e) => {
                         setUserEmail(e.target.value);
                       }}
@@ -130,7 +132,7 @@ const OTPoption = (props) => {
                       autoComplete="off"
                       value={mobileno}
                       // disabled={true}
-                      onBlur={() => validateForNullValue(mobileno, "phone")}
+                      onBlur={() => validateForNullValue(mobileno, 'phone')}
                       onChange={(e) => {
                         setUserPhone(e.target.value);
                       }}
@@ -141,17 +143,17 @@ const OTPoption = (props) => {
                 </div>
                 <div>
                   <LoadingButton
-                      type="submit"
-                      loading={loading}
-                      loadingPosition="end"
-                      variant="contained"
-                      className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-white-500 hover:bg-red-100 focus:outline focus:ring-2 focus:ring-offset-2 focus:ring-red-100 outline outline-offset-2 outline-2 outline-red-500"
-                      disabled={submitDisabled || errorObject?.emailId?.errorStatus || errorObject?.phone?.errorStatus}
+                    type="submit"
+                    loading={loading}
+                    loadingPosition="end"
+                    variant="contained"
+                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-white-500 hover:bg-red-100 focus:outline focus:ring-2 focus:ring-offset-2 focus:ring-red-100 outline outline-offset-2 outline-2 outline-red-500"
+                    disabled={submitDisabled || errorObject?.emailId?.errorStatus || errorObject?.phone?.errorStatus}
                   >
-                      <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                          <LockClosedIcon className="h-5 w-5 text-white-500 group-hover:text-red-500 r-red" />
-                      </span>
-                      Get OTP
+                    <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                      <LockClosedIcon className="h-5 w-5 text-white-500 group-hover:text-red-500 r-red" />
+                    </span>
+                    Get OTP
                   </LoadingButton>
                 </div>
               </form>
@@ -163,8 +165,9 @@ const OTPoption = (props) => {
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
-        type={openNotification.type} />
+        type={openNotification.type}
+      />
     </Grid>
   );
-};
+}
 export default OTPoption;

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import ImageMarker, { Marker } from 'react-image-marker';
+import styled from 'styled-components';
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
+import { Button } from '@mui/material';
 import buildingPointerRight from '../../images/icons/right.png';
 import buildingPointerLeft from '../../images/icons/left.png';
 import building from '../../images/building-real-estate-service-250x250.jpeg';
 import floorPointer from '../../images/icons/placeholder.png';
 import floorPlan from '../../images/floorPlan.png';
-import styled from 'styled-components';
-import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
-import { Button } from '@mui/material';
 
-const ImageMarkerComponent = () => {
+function ImageMarkerComponent() {
   const ImageMarkerWrapper = styled.div`
     display: inline-block;
     font-size: 1em;
@@ -30,15 +30,14 @@ const ImageMarkerComponent = () => {
     overflow: scroll;
     padding: 1px;
   `;
-  const [markers, setMarkers] = useState([])
-  const [markerShape, setMarkerShape] = useState(buildingPointerLeft)
-  const CustomMarker = (props) => {
-    console.log(props);
+  const [markers, setMarkers] = useState([]);
+  const [markerShape, setMarkerShape] = useState(buildingPointerLeft);
+  function CustomMarker(props) {
     return (
-      <img src={markerShape} alt="Pointer" width="50" height="50"></img>
+      <img src={markerShape} alt="Pointer" width="50" height="50" />
       // <img src={floorPointer} alt="Pointer" width="20" height="20"></img>
     );
-  };
+  }
   return (
     // ------------------------------------------------------------------------------------------------------------------------
     // Building Plan
@@ -53,22 +52,28 @@ const ImageMarkerComponent = () => {
         />
       </ImageMarkerWrapper>
       <MarkerResetWrapper>
-        <Button variant="contained" endIcon={<HistoryOutlinedIcon />}
+        <Button
+          variant="contained"
+          endIcon={<HistoryOutlinedIcon />}
           onClick={() => {
-            setMarkers([])
-          }}>
+            setMarkers([]);
+          }}
+        >
           Reset the Pointer
         </Button>
-        <Button variant="contained" endIcon={<HistoryOutlinedIcon />}
+        <Button
+          variant="contained"
+          endIcon={<HistoryOutlinedIcon />}
           onClick={() => {
-            setMarkerShape(buildingPointerRight)
-          }}>
+            setMarkerShape(buildingPointerRight);
+          }}
+        >
           Toggle Pointer Shape
         </Button>
       </MarkerResetWrapper>
     </div>
     // ------------------------------------------------------------------------------------------------------------------------
-    // Floor Plan 
+    // Floor Plan
     // <div class="container mx-auto outline-black">
     //   <ImageMarkerWrapper>
     //     <ImageMarker
@@ -88,7 +93,7 @@ const ImageMarkerComponent = () => {
     //     </Button>
     //   </MarkerResetWrapper>
     // </div>
-  )
+  );
 }
 
-export default ImageMarkerComponent
+export default ImageMarkerComponent;
