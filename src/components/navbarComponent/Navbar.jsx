@@ -113,7 +113,6 @@ const Navbar = () => {
   };
 
   const logoutErrorCallBack = (errorObject) => {
-    console.log(JSON.stringify(errorObject));
   };
   const handleNotificationClose = () => {
     setNotification({

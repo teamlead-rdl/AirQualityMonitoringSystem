@@ -1,16 +1,18 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import DeviceLocation from '../../../../DeviceLocationComponent';
 import { Container } from '@mui/material';
+import DeviceLocation from '../../../../DeviceLocationComponent';
 import CategoryManagementComponent from '../../deviceCategory/subComponent/CategoryComponent';
 import SensorCategoryManagement from './SensorCategoryManagement';
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const {
+    children, value, index, ...other
+  } = props;
   return (
     <div
       role="tabpanel"
@@ -26,14 +28,14 @@ function TabPanel(props) {
       )}
     </div>
   );
-} 
+}
 
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-      
+
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -41,21 +43,20 @@ function a11yProps(index) {
   };
 }
 
-const SensorListResult = () => {    
+function SensorListResult() {
+  const [value, setValue] = React.useState(0);
 
-    const [value, setValue] = React.useState(0);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
-    const handleChange = (event, newValue) => {
-      setValue(newValue);
-    };
-      
-    return (
-      <div className="container mx-auto" style={{marginTop:0, padding: 0}}> 
-        <Container maxWidth={false} style={{padding:0, marginTop:0}}>  
-          <SensorCategoryManagement />
-        </Container>
-      </div>
-    )
+  return (
+    <div className="container mx-auto" style={{ marginTop: 0, padding: 0 }}>
+      <Container maxWidth={false} style={{ padding: 0, marginTop: 0 }}>
+        <SensorCategoryManagement />
+      </Container>
+    </div>
+  );
 }
 
-export default SensorListResult
+export default SensorListResult;

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import ConfigSetupModal from "./ConfigSetupModalComponent";
-import {ConfigSetupListToolbar} from "./ConfigSetupListToolbar";
+import ConfigSetupModal from './ConfigSetupModalComponent';
+import { ConfigSetupListToolbar } from './ConfigSetupListToolbar';
 import { ConfigSetupFetchService, ConfigSetupDeleteService } from '../../../../services/LoginPageService';
 import NotificationBar from '../../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../../context/UserAccessProvider';
@@ -13,45 +13,43 @@ export function ConfigSetupListResults() {
     {
       field: 'id',
       headerName: 'Id',
-      width: 80
+      width: 80,
     },
     {
       field: 'accessPointName',
       headerName: 'Access Point Name',
       width: 170,
-    },       
+    },
     {
       field: 'ftpAccountName',
       headerName: 'FTP Account Name',
       width: 170,
-    },    
+    },
     {
       field: 'port',
       headerName: 'Port',
       width: 170,
-    },    
+    },
     {
       field: 'serverUrl',
       headerName: 'Server Url',
       width: 170,
-    },  
+    },
     {
       field: 'apn',
       headerName: 'APN',
       width: 170,
-    },    
+    },
     {
       field: 'actions',
       type: 'actions',
       headerName: 'Actions',
       width: 100,
       cellClassName: 'actions',
-      getActions: (params) => {
-        return [
-          <EditData selectedRow={params.row} />,
-          <DeleteData selectedRow={params.row} />
-        ];
-      },
+      getActions: (params) => [
+        <EditData selectedRow={params.row} />,
+        <DeleteData selectedRow={params.row} />,
+      ],
     },
   ];
 
@@ -66,22 +64,24 @@ export function ConfigSetupListResults() {
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
-    message: ''
+    message: '',
   });
 
   const handleSuccess = (dataObject) => {
     setGridLoading(false);
     setConfigSetupList(dataObject?.data || []);
-  }
-  
-  const handleException = (errorObject) => {
-    console.log(JSON.stringify(errorObject));
-  }
+  };
 
-  const DeleteData = (props) => {
-    return moduleAccess.delete &&  <DeleteIcon onClick={()=>{       
-        ConfigSetupDeleteService(props.selectedRow,  deletehandleSuccess, deletehandleException);
-    }}/>
+  const handleException = (errorObject) => {
+  };
+
+  function DeleteData(props) {
+    return moduleAccess.delete && (
+      <DeleteIcon onClick={() => {
+        ConfigSetupDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+      }}
+      />
+    );
   }
 
   useEffect(() => {
@@ -92,49 +92,50 @@ export function ConfigSetupListResults() {
     setNotification({
       status: true,
       type: 'success',
-      message: dataObject.message
+      message: dataObject.message,
     });
-    setRefreshData((oldvalue)=>{
-      return !oldvalue;
-    });
-  }
-  
+    setRefreshData((oldvalue) => !oldvalue);
+  };
+
   const deletehandleException = (errorObject, errorMessage) => {
     setNotification({
       status: true,
       type: 'error',
-      message: errorMessage
+      message: errorMessage,
     });
-  }
-  
-  const EditData = (props) => {
-    return ( moduleAccess.edit && 
-      <EditIcon onClick={(event) => {
-        event.stopPropagation();
-        setIsAddButton(false);
-        setEditConfigSetup(props.selectedRow);
-        setOpen(true);
-      }} />)
+  };
+
+  function EditData(props) {
+    return (moduleAccess.edit
+      && (
+        <EditIcon onClick={(event) => {
+          event.stopPropagation();
+          setIsAddButton(false);
+          setEditConfigSetup(props.selectedRow);
+          setOpen(true);
+        }}
+        />
+      ));
   }
 
   const handleClose = () => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: false,
+      type: '',
+      message: '',
     });
-  }
+  };
 
   return (
-    <div style={{ height: 400, width: '100%' }}>     
-     <ConfigSetupListToolbar 
-         setIsAddButton={setIsAddButton}
-         setEditConfigSetup={setEditConfigSetup}
-         setOpen={setOpen}
-         editConfigSetup={editConfigSetup} 
-         userAccess={moduleAccess}
-      /> 
-     
+    <div style={{ height: 400, width: '100%' }}>
+      <ConfigSetupListToolbar
+        setIsAddButton={setIsAddButton}
+        setEditConfigSetup={setEditConfigSetup}
+        setOpen={setOpen}
+        editConfigSetup={editConfigSetup}
+        userAccess={moduleAccess}
+      />
+
       <DataGrid
         rows={configSetupList}
         columns={columns}
@@ -143,8 +144,8 @@ export function ConfigSetupListResults() {
         rowsPerPageOptions={[5]}
         checkboxSelection
         disableSelectionOnClick
-      />      
-      <ConfigSetupModal     
+      />
+      <ConfigSetupModal
         isAddButton={isAddButton}
         configSetupData={editConfigSetup}
         open={open}
@@ -155,7 +156,7 @@ export function ConfigSetupListResults() {
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
-        type={openNotification.type} 
+        type={openNotification.type}
       />
     </div>
   );

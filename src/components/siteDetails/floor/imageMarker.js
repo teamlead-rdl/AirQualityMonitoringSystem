@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import ImageMarker, { Marker } from 'react-image-marker';
+import styled from 'styled-components';
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
+import { Button } from '@mui/material';
 import buildingPointerRight from '../../../images/icons/right.png';
 import buildingPointerLeft from '../../../images/icons/left.png';
 import building from '../../../images/building-real-estate-service-250x250.jpeg';
 import floorPointer from '../../../images/icons/placeholder.png';
 import floorPlan from '../../../images/floorPlan.png';
-import styled from 'styled-components';
-import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
-import { Button } from '@mui/material';
 
-const ImageMarkerComponent = (props) => {
-  let { setFloorCoordinations, floorCords, height, src } = props;
-  let coordinates = floorCords.replaceAll('"', "").split(',');
-  let top = parseFloat(coordinates[0]);
-  let left = parseFloat(coordinates[1]);
-  let pointerDirection = coordinates[2];
+function ImageMarkerComponent(props) {
+  const {
+    setFloorCoordinations, floorCords, height, src,
+  } = props;
+  const coordinates = floorCords.replaceAll('"', '').split(',');
+  const top = parseFloat(coordinates[0]);
+  const left = parseFloat(coordinates[1]);
+  const pointerDirection = coordinates[2];
 
   const ImageMarkerWrapper = styled.div`
   height: 100%;
@@ -24,45 +26,37 @@ const ImageMarkerComponent = (props) => {
     width: 100%;
   `;
   const [markers, setMarkers] = useState([{
-      top: top || 10,
-      left: left || 20,
+    top: top || 10,
+    left: left || 20,
   }]);
 
   const [direction, setDirection] = useState(pointerDirection || false);
   const [markerShape, setMarkerShape] = useState();
 
-  useEffect(()=>{
-    if(direction == 'false'){
-      setMarkerShape(()=>buildingPointerRight);
+  useEffect(() => {
+    if (direction == 'false') {
+      setMarkerShape(() => buildingPointerRight);
+    } else {
+      setMarkerShape(() => buildingPointerLeft);
     }
-    else{
-      setMarkerShape(()=>buildingPointerLeft)
-    }
-  },[]);
-  
-  const CustomMarker = (props) => {
-    console.log(props.floorCords);
-    console.log(coordinates);
-    console.log(direction);
-    setFloorCoordinations(props, direction);
-    
-    return (
-      <img src={markerShape} alt="Pointer" width="50" height="50"></img>
-    );
-  };
+  }, []);
 
-  const toggleDirection = () =>{
-    setDirection(prevdirection=>{
-      return prevdirection == 'false' ? true : false
-    });
-    if(direction){
+  function CustomMarker(props) {
+    setFloorCoordinations(props, direction);
+
+    return (
+      <img src={markerShape} alt="Pointer" width="50" height="50" />
+    );
+  }
+
+  const toggleDirection = () => {
+    setDirection((prevdirection) => prevdirection == 'false');
+    if (direction) {
       setMarkerShape(buildingPointerLeft);
-    }
-    else{
+    } else {
       setMarkerShape(buildingPointerRight);
     }
-    
-  }
+  };
   return (
     // ------------------------------------------------------------------------------------------------------------------------
     // Building Plan
@@ -77,30 +71,34 @@ const ImageMarkerComponent = (props) => {
           markerComponent={CustomMarker}
         />
       </ImageMarkerWrapper>
-      
+
       <MarkerResetWrapper>
-        <Button variant="contained" className="float-right w-full w-1/2" endIcon={<HistoryOutlinedIcon />}
+        <Button
+          variant="contained"
+          className="float-right w-full w-1/2"
+          endIcon={<HistoryOutlinedIcon />}
           onClick={() => {
             setMarkers([]);
-            setMarkerShape()
-          }}>
+            setMarkerShape();
+          }}
+        >
           Reset the Pointer
         </Button>
-        <Button variant="contained" className="float-left w-full w-1/2" endIcon={<HistoryOutlinedIcon />}
+        <Button
+          variant="contained"
+          className="float-left w-full w-1/2"
+          endIcon={<HistoryOutlinedIcon />}
           onClick={() => {
-            setMarkerShape((prevMarker) => {
-              return prevMarker == buildingPointerLeft ? buildingPointerRight : buildingPointerLeft
-            })
-            setDirection(prevdirection=>{
-              return prevdirection == 'false' ? 'true' : 'false'
-            });
-          }}>
+            setMarkerShape((prevMarker) => (prevMarker == buildingPointerLeft ? buildingPointerRight : buildingPointerLeft));
+            setDirection((prevdirection) => (prevdirection == 'false' ? 'true' : 'false'));
+          }}
+        >
           Toggle Pointer Shape
         </Button>
       </MarkerResetWrapper>
     </div>
-   
-  )
+
+  );
 }
 
-export default ImageMarkerComponent
+export default ImageMarkerComponent;

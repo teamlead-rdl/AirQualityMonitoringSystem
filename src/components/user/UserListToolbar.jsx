@@ -1,11 +1,13 @@
-import React from 'react';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import {
+  Box,
+  Typography,
+} from '@mui/material';
+
 import Stack from '@mui/material/Stack';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
-export function SensorCategorytoolbar(props) {
+export default function UserListToolbar(props) {
   return (
     <Box
       sx={{
@@ -17,24 +19,27 @@ export function SensorCategorytoolbar(props) {
       }}
     >
       <Typography
-        sx={{ m: 0 }}
+        sx={{ m: 1 }}
         variant="h5"
       >
-        Sensor Category
+        User Management
       </Typography>
       {props.userAccess.add && (
-        <Box
-          sx={{ m: 0 }}
-          onClick={() => {
-            props.setIsAddButton(true);
-            props.setEditCategory([]);
-            props.setOpen(true);
-          }}
-        >
+        <Box sx={{ m: 1 }}>
           <Stack direction="row" spacing={2}>
-            <Fab variant="extended" size="medium" color="primary" aria-label="add">
+            <Fab
+              variant="extended"
+              size="medium"
+              color="primary"
+              aria-label="add"
+              onClick={() => {
+                props.setIsAddButton(true);
+                props.setEditUser([]);
+                props.setOpen(true);
+              }}
+            >
               <AddIcon sx={{ mr: 1 }} />
-              Add Category
+              Add User
             </Fab>
           </Stack>
         </Box>

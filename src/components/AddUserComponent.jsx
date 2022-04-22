@@ -50,7 +50,6 @@ const AddUser = () => {
   }
   
   const handleException = (errorObject) => {
-    console.log(JSON.stringify(errorObject));
   }
 
   useEffect(()=>{
@@ -106,7 +105,6 @@ const AddUser = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                    {people.map((person)=>(
                      <tr key={person.id}>
-                      {console.log(person.id)}
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="ml-4">
@@ -179,12 +177,10 @@ const AddUser = () => {
         .then(response =>
             response.json()
         ).then(data => {
-            // console.log(data);
             return data;
         }).catch(error => {
             return error;
         });
-        console.log(response);
         }}
       >
         View User List

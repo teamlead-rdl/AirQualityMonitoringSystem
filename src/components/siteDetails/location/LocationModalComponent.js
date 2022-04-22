@@ -6,21 +6,23 @@ import {
   TextField,
   Box,
   Grid,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import {
   LocationAddService,
   LocationEditService,
-} from "../../../services/LoginPageService";
-import { LocationFormValidate } from "../../../validatation/locationValidation";
-import MapsComponent from "../../maps/googleMapsComponent";
-import { LocationAddFormValidate } from "../../../validatation/locationValidation";
-import NotificationBar from "../../notification/ServiceNotificationBar";
+} from '../../../services/LoginPageService';
+import { LocationFormValidate, LocationAddFormValidate } from '../../../validation/locationValidation';
+import MapsComponent from '../../maps/googleMapsComponent';
 
-const LocationModal = ({ open, setOpen, isAddButton, locationData, setRefreshData }) => {
-  const [stateName, setStateName] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [latitude, setLatitude] = useState("");
+import NotificationBar from '../../notification/ServiceNotificationBar';
+
+function LocationModal({
+  open, setOpen, isAddButton, locationData, setRefreshData,
+}) {
+  const [stateName, setStateName] = useState('');
+  const [longitude, setLongitude] = useState('');
+  const [latitude, setLatitude] = useState('');
   const [locationId, setLocationId] = useState(19);
   const [errorObject, setErrorObject] = useState({});
 
@@ -30,8 +32,8 @@ const LocationModal = ({ open, setOpen, isAddButton, locationData, setRefreshDat
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
-    message: ''
-    });
+    message: '',
+  });
 
   useEffect(() => {
     if (locationData) {
@@ -42,29 +44,29 @@ const LocationModal = ({ open, setOpen, isAddButton, locationData, setRefreshDat
 
   const loaddata = () => {
     const coordinates = locationData.coordinates
-      ? locationData.coordinates.split(",")
-      : ["", ""];
+      ? locationData.coordinates.split(',')
+      : ['', ''];
     setLongitude(coordinates[0]);
     setLatitude(coordinates[1]);
-    setStateName(locationData.stateName || "");
-    setLocationId(locationData.id || "");
+    setStateName(locationData.stateName || '');
+    setLocationId(locationData.id || '');
     setMarkerLng(parseFloat(coordinates[0]));
     setMarkerLat(parseFloat(coordinates[1]));
   };
   const clearForm = () => {
-    setStateName("");
-    setLongitude("");
-    setLatitude("");
-    setLocationId("");
+    setStateName('');
+    setLongitude('');
+    setLatitude('');
+    setLocationId('');
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (longitude == "" || latitude == "") {
+    if (longitude == '' || latitude == '') {
       setErrorObject((oldErrorState) => {
         let status = {};
         status = {
           errorStatus: true,
-          helperText: "Please choose the points in Map",
+          helperText: 'Please choose the points in Map',
         };
         return {
           ...oldErrorState,
@@ -72,50 +74,46 @@ const LocationModal = ({ open, setOpen, isAddButton, locationData, setRefreshDat
         };
       });
     } else {
-      const coordinates = JSON.stringify(longitude + "," + latitude).replaceAll(
+      const coordinates = JSON.stringify(`${longitude},${latitude}`).replaceAll(
         '"',
-        ""
+        '',
       );
 
       if (isAddButton) {
         await LocationAddService(
           { stateName, coordinates },
           handleSuccess,
-          handleException
+          handleException,
         );
       } else {
         await LocationEditService(
           { stateName, coordinates, locationId },
           handleSuccess,
-          handleException
+          handleException,
         );
       }
-      
     }
   };
 
   const handleSuccess = (dataObject) => {
     setNotification({
-        status: true,
-        type: 'success',
-        message: dataObject.message
-      });
-      setRefreshData((oldvalue)=>{
-          return !oldvalue;
-      });
-      setTimeout(() => {
-        handleClose();
-        setOpen(false);
-        setErrorObject({});
-      }, 5000);
-  }
+      status: true,
+      type: 'success',
+      message: dataObject.message,
+    });
+    setRefreshData((oldvalue) => !oldvalue);
+    setTimeout(() => {
+      handleClose();
+      setOpen(false);
+      setErrorObject({});
+    }, 5000);
+  };
 
   const handleException = (errorObject, errorMessage) => {
-    // console.log(JSON.stringify(errorObject));
     setNotification({
-        status: true,
-        type: 'error',
-        message: errorMessage
+      status: true,
+      type: 'error',
+      message: errorMessage,
     });
     setErrorObject({});
   };
@@ -133,20 +131,20 @@ const LocationModal = ({ open, setOpen, isAddButton, locationData, setRefreshDat
 
   const handleClose = () => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: false,
+      type: '',
+      message: '',
     });
-  }
+  };
 
   return (
     <Dialog
-      sx={{ "& .MuiDialog-paper": { minWidth: "80%" } }}
+      sx={{ '& .MuiDialog-paper': { minWidth: '80%' } }}
       maxWidth="sm"
       open={open}
     >
       <DialogTitle>
-        {isAddButton ? "Add Location" : "Edit Location"}
+        {isAddButton ? 'Add Location' : 'Edit Location'}
       </DialogTitle>
       <DialogContent>
         <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
@@ -166,7 +164,7 @@ const LocationModal = ({ open, setOpen, isAddButton, locationData, setRefreshDat
                       className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
                       required
                       onBlur={() => {
-                        validateForNullValue(stateName, "stateName");
+                        validateForNullValue(stateName, 'stateName');
                       }}
                       onChange={(e) => {
                         setStateName(e.target.value);
@@ -191,7 +189,7 @@ const LocationModal = ({ open, setOpen, isAddButton, locationData, setRefreshDat
                       // onBlur={() =>validateForNullValue(customerName, 'fullName')}
                       onChange={(e) => {
                         setLatitude(e.target.value);
-                        alert("Changed");
+                        alert('Changed');
                       }}
                       autoComplete="off"
                       error={errorObject?.coordinates?.errorStatus}
@@ -229,7 +227,7 @@ const LocationModal = ({ open, setOpen, isAddButton, locationData, setRefreshDat
                   </div>
                 </div>
                 <div className="w-full sm:float-right lg:float-left lg:w-3/5 pr-1">
-                  <Grid item xs={4} sm={4} md={4} lg={4}></Grid>
+                  <Grid item xs={4} sm={4} md={4} lg={4} />
                   <MapsComponent
                     onMarkerDrop={onMapClick}
                     longitude={markerLng}
@@ -244,11 +242,11 @@ const LocationModal = ({ open, setOpen, isAddButton, locationData, setRefreshDat
                 <Button
                   type="submit"
                   disabled={
-                    errorObject?.coordinates?.errorStatus ||
-                    errorObject?.stateName?.errorStatus
+                    errorObject?.coordinates?.errorStatus
+                    || errorObject?.stateName?.errorStatus
                   }
                 >
-                  {isAddButton ? "Add" : "Update"}
+                  {isAddButton ? 'Add' : 'Update'}
                 </Button>
                 <Button
                   onClick={(e) => {
@@ -268,10 +266,10 @@ const LocationModal = ({ open, setOpen, isAddButton, locationData, setRefreshDat
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
-        type={openNotification.type} 
+        type={openNotification.type}
       />
     </Dialog>
   );
-};
+}
 
 export default LocationModal;

@@ -6,12 +6,12 @@ import { Grid } from '@mui/material';
 function MapsComponent(props) {
     
     const mapContainerStyle = {
-        height: props.height || "50vh",   // "350px"
-        width: props.width // "420px"
+        height: props.height || "50vh",
+        width: props.width,
     }
     const [position, setPosition] = useState({
-        lat: props.longitude || 37.772,                          // 37.772
-        lng: props.latitude || -122.214                         // -122.214
+        lat: props.longitude || 37.772,
+        lng: props.latitude || -122.214,
     });
     const onMarkerDragEnd = (event) => {
         props.onMarkerDrop(event);
@@ -19,7 +19,6 @@ function MapsComponent(props) {
         //     lat: event.latLng.lat(),
         //     lng: event.latLng.lng()
         // });
-        // console.log("new position " + JSON.stringify(position))
     };
     const customBuildingIcon = {
         url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
@@ -44,7 +43,7 @@ function MapsComponent(props) {
                 />
                 <InfoWindow
                     position={{ lat: (position.lat + 0.0018), lng: position.lng }}
-                    onPositionChanged={() => { console.log("Position has changed!") }}
+                    onPositionChanged={() => {}}
                 >
                     <div>
                         <span style={{ padding: 0, margin: 0 }}>{props.stateName || 'New Location Here'}</span>

@@ -46,7 +46,6 @@ const HomePageComponent = () => {
     })
   }
   const handleException = (errorObject) => {
-    console.log(errorObject);
   }
   return (
     <div className="home">

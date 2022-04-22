@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import ImageMarker, { Marker } from 'react-image-marker';
+import styled from 'styled-components';
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
+import { Button } from '@mui/material';
 import buildingPointerRight from '../../../images/icons/right.png';
 import buildingPointerLeft from '../../../images/icons/left.png';
 import building from '../../../images/departmentBlueprint.png';
 import floorPointer from '../../../images/icons/placeholder.png';
 import floorPlan from '../../../images/floorPlan.png';
-import styled from 'styled-components';
-import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
-import { Button } from '@mui/material';
 
-const ImageMarkerComponent = (props) => {
-  let { setFloorCoordinations, floorCords, deviceIcon } = props;
-  let coordinates = floorCords.replaceAll('"', "").split(',');
-  let top = parseFloat(coordinates[0]);
-  let left = parseFloat(coordinates[1]);
+function ImageMarkerComponent(props) {
+  const { setFloorCoordinations, floorCords, deviceIcon } = props;
+  const coordinates = floorCords.replaceAll('"', '').split(',');
+  const top = parseFloat(coordinates[0]);
+  const left = parseFloat(coordinates[1]);
 
   const ImageMarkerWrapper = styled.div`
     width: 100%;
@@ -27,27 +27,30 @@ const ImageMarkerComponent = (props) => {
   const [markers, setMarkers] = useState([]);
 
   const [markerShape, setMarkerShape] = useState(floorPointer);
-  useEffect(()=>{
+  useEffect(() => {
     setMarkers([{
       top: top || 10,
       left: left || 20,
     }]);
-  },[floorCords]);
-  
-  const CustomMarker = (props) => {
+  }, [floorCords]);
+
+  function CustomMarker(props) {
     setFloorCoordinations(props);
-    
+
     return (
-      <img 
-      src={deviceIcon? require(`../../../images/deviceIcons/${deviceIcon}.gif`) : require(`../../../images/deviceIcons/computer.png`) }
-      srcSet={deviceIcon? require(`../../../images/deviceIcons/${deviceIcon}.gif`) : require(`../../../images/deviceIcons/computer.png`) }
-      alt="Pointer" width="40" height="40"></img>
+      <img
+        src={deviceIcon ? require(`../../../images/deviceIcons/${deviceIcon}.gif`) : require('../../../images/deviceIcons/computer.png')}
+        srcSet={deviceIcon ? require(`../../../images/deviceIcons/${deviceIcon}.gif`) : require('../../../images/deviceIcons/computer.png')}
+        alt="Pointer"
+        width="40"
+        height="40"
+      />
     );
-  };
+  }
 
   return (
     <div className="container mx-auto outline-black">
-      <ImageMarkerWrapper style={{height:60+'vh'}}>
+      <ImageMarkerWrapper style={{ height: `${60}vh` }}>
         <ImageMarker
           extraClass="imageMapperMaxSize"
           src={props.src || building}
@@ -57,19 +60,23 @@ const ImageMarkerComponent = (props) => {
         />
       </ImageMarkerWrapper>
       <MarkerResetWrapper>
-        <Button variant="contained" className="float-right w-full w-1/2" endIcon={<HistoryOutlinedIcon />}
+        <Button
+          variant="contained"
+          className="float-right w-full w-1/2"
+          endIcon={<HistoryOutlinedIcon />}
           onClick={() => {
             setMarkers([]);
-          }}>
+          }}
+        >
           Reset the Pointer
         </Button>
       </MarkerResetWrapper>
     </div>
-   
-  )
+
+  );
 }
 
-export default ImageMarkerComponent
+export default ImageMarkerComponent;
 // import React, { useEffect, useState } from 'react';
 // import ImageMarker, { Marker } from 'react-image-marker';
 // import buildingPointerRight from '../../../images/icons/right.png';
@@ -102,8 +109,6 @@ export default ImageMarkerComponent
 //   const [markerShape, setMarkerShape] = useState(floorPointer);
 
 //   const CustomMarker = (props) => {
-//     console.log(props.floorCords);
-//     console.log(coordinates);
 //     setFloorCoordinations(props);
 //         return (
 //       <img src={markerShape} alt="Pointer" width="20" height="20"></img>
@@ -124,7 +129,7 @@ export default ImageMarkerComponent
 //           markerComponent={CustomMarker}
 //         />
 //       </ImageMarkerWrapper>
-      
+
 //       <MarkerResetWrapper>
 //         <Button variant="contained" className="float-right w-full w-1/2" endIcon={<HistoryOutlinedIcon />}
 //           onClick={() => {
@@ -134,7 +139,7 @@ export default ImageMarkerComponent
 //         </Button>
 //       </MarkerResetWrapper>
 //     </div>
-   
+
 //   )
 // }
 

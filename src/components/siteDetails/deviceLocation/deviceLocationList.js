@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import { DeleteDeviceLocationService, FetchCategoryService, FetchDeviceLocationService, FetchLocationService, LocationDeleteService } from '../../../services/LoginPageService';
+import {
+  DeleteDeviceLocationService, FetchCategoryService, FetchDeviceLocationService, FetchLocationService, LocationDeleteService,
+} from '../../../services/LoginPageService';
 import DeviceLocationModal from './DeviceLocationModalComponent';
 import { DeviceLocationListToolbar } from './deviceLocation-list-toolbars';
 
 export function DeviceLocationListResults() {
-  
-
   const columns = [
     {
       field: 'assetTag',
       headerName: 'Asset Name',
-      width: 250
+      width: 250,
     },
     {
       field: 'deviceIcon',
@@ -33,14 +33,11 @@ export function DeviceLocationListResults() {
       headerName: 'Actions',
       width: 100,
       cellClassName: 'actions',
-    
 
-      getActions: (params) => {
-        return [
-          <EditData selectedRow={params.row}/>,
-          <DeleteData selectedRow={params.row} />
-        ];
-      },
+      getActions: (params) => [
+        <EditData selectedRow={params.row} />,
+        <DeleteData selectedRow={params.row} />,
+      ],
     },
   ];
 
@@ -52,69 +49,67 @@ export function DeviceLocationListResults() {
   const [categoryList, setCategoryList] = useState([]);
   const [isLoading, setGridLoading] = useState(true);
 
-
   const handleSuccess = (dataObject) => {
     setGridLoading(false);
     setDataList(dataObject.data);
-    console.log(dataList);
-  }
-  
+  };
+
   const handleException = (errorObject) => {
-    // console.log(JSON.stringify(errorObject));
-  }
+  };
 
   const deletehandleSuccess = (dataObject) => {
-    // console.log(dataList);
-  }
-  
+  };
+
   const deletehandleException = (errorObject) => {
-    // console.log(JSON.stringify(errorObject));
-  }
+  };
 
   const categoryhandleSuccess = (dataObject) => {
     setCategoryList(dataObject.data);
-  }
-  
+  };
+
   const categoryhandleException = (errorObject) => {
-    console.log(JSON.stringify(errorObject));
-  }
+  };
   useEffect(() => {
     FetchDeviceLocationService(handleSuccess, handleException);
     FetchCategoryService(categoryhandleSuccess, categoryhandleException);
   }, []);
 
-  const EditData = (props) => {
+  function EditData(props) {
     return (
       <EditIcon onClick={() => {
         setIsAddButton(false);
         setEditState(props.selectedRow);
         setOpen(true);
-      }} />)
+      }}
+      />
+    );
   }
 
-  const DeleteData = (props) => {
-    return <DeleteIcon onClick={()=>{
-      console.log(props.selectedRow.id);
-      DeleteDeviceLocationService(deletehandleSuccess, deletehandleException,props.selectedRow);
-    }}/>
+  function DeleteData(props) {
+    return (
+      <DeleteIcon onClick={() => {
+        DeleteDeviceLocationService(deletehandleSuccess, deletehandleException, props.selectedRow);
+      }}
+      />
+    );
   }
 
   return (
     <div style={{ height: 400, width: '100%' }}>
-      <DeviceLocationListToolbar 
+      <DeviceLocationListToolbar
         setOpen={setOpen}
         setIsAddButton={setIsAddButton}
         setEditCustomer={setEditState}
-      />  
+      />
       <DataGrid
-          rows={dataList}
-          columns={columns}
-          pageSize={5}
-          loading={isLoading}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
-          disableSelectionOnClick
-          style={{maxHeight:70+'%'}}
+        rows={dataList}
+        columns={columns}
+        pageSize={5}
+        loading={isLoading}
+        rowsPerPageOptions={[5]}
+        checkboxSelection
+        disableSelectionOnClick
+        style={{ maxHeight: `${70}%` }}
       />
       <DeviceLocationModal
         isAddButton={isAddButton}
