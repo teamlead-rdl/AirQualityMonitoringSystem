@@ -192,7 +192,6 @@ function BuildingModal({
                       autoComplete="off"
                       error={errorObject?.buildingTotalFloors?.errorStatus}
                       helperText={errorObject?.buildingTotalFloors?.helperText}
-
                     />
                   </div>
                   <div className="rounded-md -space-y-px mb-2">

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import { Link, useLocation } from 'react-router-dom';
 import { Breadcrumbs, Typography } from '@mui/material';
 import { BranchDeleteService, FetchBranchService } from '../../../services/LoginPageService';
 import { BranchListToolbar } from './branch-list-toolbars';
 import BranchModal from './BranchModalComponent';
+import { Link, useLocation } from 'react-router-dom';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 
@@ -82,7 +82,7 @@ export function BranchListResults(props) {
           lng: parseFloat(coordinates[1]),
         },
       };
-    })
+    })  
       : [];
     props.setLocationCoordinationList(newArray);
   };
