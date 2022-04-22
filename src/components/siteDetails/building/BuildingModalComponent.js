@@ -131,175 +131,178 @@ function BuildingModal({
       maxWidth="sm"
       open={open}
     >
-      <DialogTitle>
-        {isAddButton ? 'Add Building' : 'Edit Building'}
-      </DialogTitle>
-      <DialogContent>
-        <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md  -space-y-px ">
-            <div className="container mx-auto outline-black">
-              <div className="inline">
-                <div className="w-full sm:float-left lg:w-2/5  pr-3 pl-3">
-                  <div className="rounded-md -space-y-px mb-2">
-                    <TextField
-                      fullWidth
-                      sx={{ mb: 1 }}
-                      label="Building Name"
-                      type="text"
-                      value={buildingName}
-                      variant="outlined"
-                      placeholder="Please enter Building name"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
-                      required
-                      onBlur={() => validateForNullValue(buildingName, 'buildingName')}
-                      onChange={(e) => { setBuildingName(e.target.value); }}
-                      autoComplete="off"
-                      error={errorObject?.buildingName?.errorStatus}
-                      helperText={errorObject?.buildingName?.helperText}
-                    />
-                  </div>
-                  <div className="rounded-md -space-y-px mb-2">
-                    <TextField
-                      fullWidth
-                      sx={{ mb: 1 }}
-                      label="Description"
-                      type="text"
-                      value={buildingDescription}
-                      variant="outlined"
-                      placeholder="Please enter description"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
-                      required
-                      onBlur={() => validateForNullValue(buildingDescription, 'buildingDescription')}
-                      onChange={(e) => { setBuildingDescription(e.target.value); }}
-                      autoComplete="off"
-                      error={errorObject?.buildingDescription?.errorStatus}
-                      helperText={errorObject?.buildingDescription?.helperText}
-                    />
-                  </div>
-                  <div className="rounded-md -space-y-px mb-2">
-                    <TextField
-                      fullWidth
-                      sx={{ mb: 1 }}
-                      label="Total Floors"
-                      type="number"
-                      value={buildingTotalFloors}
-                      variant="outlined"
-                      placeholder="Please enter total number of floors"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
-                      required
-                      onBlur={() => validateForNullValue(buildingTotalFloors, 'buildingTotalFloors')}
-                      onChange={(e) => { setBuildingTotalFloors(e.target.value); }}
-                      autoComplete="off"
-                      error={errorObject?.buildingTotalFloors?.errorStatus}
-                      helperText={errorObject?.buildingTotalFloors?.helperText}
-                    />
-                  </div>
-                  <div className="rounded-md -space-y-px mb-2">
-                    <TextField
-                      variant="filled"
-                      fullWidth
-                      sx={{ mb: 1 }}
-                      label="Longitude"
-                      type="text"
-                      disabled
-                      value={longitude}
-                      variant="outlined"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
-                      required
-                      onChange={(e) => { setLongitude(e.target.value); }}
-                      autoComplete="off"
-                      error={errorObject?.coordinates?.errorStatus}
-                      helperText={errorObject?.coordinates?.helperText}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </div>
-                  <div className="rounded-md -space-y-px mb-2">
-                    <TextField
-                      fullWidth
-                      sx={{ mb: 1 }}
-                      label="Latitude"
-                      type="text"
-                      disabled
-                      value={latitude}
-                      variant="outlined"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
-                      required
-                      onChange={(e) => { setLatitude(e.target.value); }}
-                      autoComplete="off"
-                      error={errorObject?.coordinates?.errorStatus}
-                      helperText={errorObject?.coordinates?.helperText}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </div>
-                  <div className="rounded-md -space-y-px mb-2">
-                    <TextField
-                      fullWidth
-                      sx={{ mb: 1 }}
-                      label="Building Tag"
-                      type="text"
-                      value={buildingTag}
-                      variant="outlined"
-                      placeholder="Please enter Building Tag"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
-                      required
-                      onBlur={() => validateForNullValue(buildingTag, 'buildingTag')}
-                      onChange={(e) => { setBuildingTag(e.target.value); }}
-                      autoComplete="off"
-                      error={errorObject?.buildingTag?.errorStatus}
-                      helperText={errorObject?.buildingTag?.helperText}
-                    />
-                  </div>
-                  <div className="rounded-md -space-y-px mb-2">
-                    <TextField
-                      fullWidth
-                      required={!!isAddButton}
-                      label="building Image"
-                      onBlur={() => {
-                        validateForNullValue(buildingImg, 'buildingImg');
-                      }}
-                      onChange={(e) => {
-                        if (e.target.files && e.target.files.length > 0) {
-                          setBuildingImg(e.target.files[0]);
-                          const reader = new FileReader();
-                          reader.onload = () => {
-                            if (reader.readyState === 2) {
-                              setBuildingImg(reader.result);
-                              setPreviewBuilding(reader.result);
-                            }
-                          };
-                          reader.readAsDataURL(e.target.files[0]);
-                        }
-                      }}
-                      InputLabelProps={{ shrink: true }}
-                      type="file"
-                      inputProps={{
-                        accept: 'image/png',
-                      }}
-                      error={errorObject?.buildingImg?.errorStatus}
-                      helperText={errorObject?.buildingImg?.helperText}
-                    />
-                  </div>
-                  <div className="rounded-md -space-y-px mb-2" style={{ border: '2px black solid' }}>
-                    <img src={previewBuilding} style={{ width: '-webkit-fill-available', maxHeight: 300 }} />
-                  </div>
+        <DialogTitle>
+            {isAddButton ? "Add Building" : "Edit Building"}
+        </DialogTitle>
+        <DialogContent>
+          <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
+                <div className="rounded-md  -space-y-px ">
+                    <div className="container mx-auto outline-black">
+                        <div className="inline">
+                            <div className="w-full sm:float-left lg:w-2/5  pr-3 pl-3">
+                                <div className='rounded-md -space-y-px mb-2'>
+                                    <TextField
+                                        fullWidth
+                                        sx={{mb:1}}
+                                        label="Building Name"
+                                        type="text"
+                                        value={buildingName}
+                                        variant="outlined"
+                                        placeholder="Please enter Building name"
+                                        className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                                        required
+                                        onBlur={() =>validateForNullValue(buildingName, 'buildingName')}
+                                        onChange={(e) => {setBuildingName(e.target.value)}}
+                                        autoComplete="off"
+                                        error={errorObject?.buildingName?.errorStatus}
+                                        helperText={errorObject?.buildingName?.helperText}
+                                    />
+                                </div>
+                                <div className='rounded-md -space-y-px mb-2'>
+                                    <TextField
+                                        fullWidth
+                                        sx={{mb:1}}
+                                        label="Description"
+                                        type="text"
+                                        value={buildingDescription}
+                                        variant="outlined"
+                                        placeholder="Please enter description"
+                                        className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                                        required
+                                        onBlur={() =>validateForNullValue(buildingDescription, 'buildingDescription')}
+                                        onChange={(e) => {setBuildingDescription(e.target.value)}}
+                                        autoComplete="off"
+                                        error={errorObject?.buildingDescription?.errorStatus}
+                                        helperText={errorObject?.buildingDescription?.helperText}
+                                    />
+                                </div>
+                                <div className='rounded-md -space-y-px mb-2'>
+                                    <TextField
+                                        fullWidth
+                                        sx={{mb:1}}
+                                        label="Total Floors"
+                                        type="number"
+                                        value={buildingTotalFloors}
+                                        variant="outlined"
+                                        placeholder="Please enter total number of floors"
+                                        className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                                        required
+                                        onBlur={() =>validateForNullValue(buildingTotalFloors, 'buildingTotalFloors')}
+                                        onChange={(e) => {setBuildingTotalFloors(e.target.value)}}
+                                        autoComplete="off"
+                                        error={errorObject?.buildingTotalFloors?.errorStatus}
+                                        helperText={errorObject?.buildingTotalFloors?.helperText}
+                                        
+                                    />
+                                </div>
+                                <div className='rounded-md -space-y-px mb-2'>
+                                    <TextField
+                                        variant="filled"
+                                        fullWidth
+                                        sx={{mb:1}}
+                                        label="Longitude"
+                                        type="text"
+                                        disabled
+                                        value={longitude}
+                                        variant="outlined"
+                                        className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                                        required
+                                        onChange={(e) => {setLongitude(e.target.value)}}
+                                        autoComplete="off"
+                                        error={errorObject?.coordinates?.errorStatus}
+                                        helperText={errorObject?.coordinates?.helperText}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </div>
+                                <div className='rounded-md -space-y-px mb-2'>
+                                    <TextField
+                                        fullWidth
+                                        sx={{mb:1}}
+                                        label="Latitude"
+                                        type="text"
+                                        disabled
+                                        value={latitude}
+                                        variant="outlined"
+                                        className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                                        required
+                                        onChange={(e) => {setLatitude(e.target.value)}}
+                                        autoComplete="off"
+                                        error={errorObject?.coordinates?.errorStatus}
+                                        helperText={errorObject?.coordinates?.helperText}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </div>
+                                <div className='rounded-md -space-y-px mb-2'>
+                                    <TextField
+                                        fullWidth
+                                        sx={{mb:1}}
+                                        label="Building Tag"
+                                        type="text"
+                                        value={buildingTag}
+                                        variant="outlined"
+                                        placeholder="Please enter Building Tag"
+                                        className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                                        required
+                                        onBlur={() =>validateForNullValue(buildingTag, 'buildingTag')}
+                                        onChange={(e) => {setBuildingTag(e.target.value)}}
+                                        autoComplete="off"
+                                        error={errorObject?.buildingTag?.errorStatus}
+                                        helperText={errorObject?.buildingTag?.helperText}
+                                    />
+                                </div>
+                                <div className='rounded-md -space-y-px mb-2'>
+                                    <TextField 
+                                        fullWidth
+                                        required = {isAddButton? true: false}
+                                        label="building Image"
+                                        onBlur={() => {
+                                            validateForNullValue(buildingImg, 'buildingImg');
+                                        }}
+                                        onChange={(e) => {
+                                            if(e.target.files && e.target.files.length > 0){
+                                                setBuildingImg(e.target.files[0]);
+                                                const reader = new FileReader();
+                                                reader.onload = () =>{
+                                                    if(reader.readyState === 2){
+                                                        setBuildingImg(reader.result);
+                                                        setPreviewBuilding(reader.result);
+                                                    }
+                                                }
+                                                reader.readAsDataURL(e.target.files[0]);
+                                            }
+                                        }}
+                                        InputLabelProps={{ shrink: true }}
+                                        type="file"
+                                        inputProps={{
+                                            accept:"image/png"
+                                        }}
+                                        error={errorObject?.buildingImg?.errorStatus}
+                                        helperText={errorObject?.buildingImg?.helperText}
+                                    />
+                                </div>
+                                <div className='rounded-md -space-y-px mb-2' style={{border:'2px black solid'}}>
+                                    <img src={previewBuilding} style={{width:'-webkit-fill-available', maxHeight:300}} />
+                                </div>
+                            </div>
+                            <div className="w-full sm:float-right lg:float-left lg:w-3/5 pr-1">
+                                <Grid item xs={4} sm={4} md={4} lg={4}>
+                                    
+                                </Grid>
+                                <MapsComponent 
+                                    height = '65vh'
+                                    width = '100%'
+                                    onMarkerDrop={onMapClick}
+                                    longitude = {markerLng}
+                                    latitude = {markerLat}
+                                    stateName ={editData.buildingName}
+                                />
+                                    
+                            </div>
                 </div>
-                <div className="w-full sm:float-right lg:float-left lg:w-3/5 pr-1">
-                  <Grid item xs={4} sm={4} md={4} lg={4} />
-                  <MapsComponent
-                    height="65vh"
-                    width="100%"
-                    onMarkerDrop={onMapClick}
-                    longitude={markerLng}
-                    latitude={markerLat}
-                    stateName={editData.buildingName}
-                  />
-
-                </div>
-
               </div>
             </div>
             <div className="float-right">
@@ -334,5 +337,4 @@ function BuildingModal({
     </Dialog>
   );
 }
-
 export default BuildingModal;

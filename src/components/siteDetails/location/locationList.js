@@ -117,26 +117,21 @@ export function LocationListResults({ setLocationCoordinationList }) {
 
   function EditData(props) {
     return (
-      moduleAccess.edit
-      && (
-        <EditIcon
-          onClick={() => {
-            setIsAddButton(false);
-            setEditState(props.selectedRow);
-            setOpen(true);
-          }}
-          style={{ cursor: 'pointer' }}
-        />
-      ));
+      moduleAccess.edit && 
+      <EditIcon onClick={() => {
+        setIsAddButton(false);
+        setEditState(props.selectedRow);
+        setOpen(true);
+        }} 
+        style={{cursor:'pointer'}}
+      />)
   }
 
-  function DeleteData(props) {
-    return moduleAccess.delete && (
-      <DeleteIcon
-        onClick={() => LocationDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException)}
-        style={{ cursor: 'pointer' }}
-      />
-    );
+  const DeleteData = (props) => {
+    return moduleAccess.delete && <DeleteIcon onClick={() => 
+      LocationDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException)} 
+      style={{cursor:'pointer'}}
+    />
   }
 
   const handleClose = () => {
