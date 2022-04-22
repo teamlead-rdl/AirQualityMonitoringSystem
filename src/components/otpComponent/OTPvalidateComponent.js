@@ -1,39 +1,41 @@
-import { useEffect, useRef, useState } from "react";
-import { LockClosedIcon } from "@heroicons/react/solid";
-import { Typography, Grid, CardContent, TextField, Card, Button, Snackbar, Alert } from "@mui/material";
-import { ReceiveOTPService, ValidateOTPService } from './../../services/LoginPageService';
-import { OTPvalidationValidate } from './../../validatation/formValidation';
-import { useNavigate } from "react-router-dom";
-import NotificationBar from "../notification/ServiceNotificationBar";
-import ApplicationStore from "../../utils/localStorageUtil";
+import { useEffect, useRef, useState } from 'react';
+import { LockClosedIcon } from '@heroicons/react/solid';
+import {
+  Typography, Grid, CardContent, TextField, Card, Button, Snackbar, Alert,
+} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { ReceiveOTPService, ValidateOTPService } from '../../services/LoginPageService';
+import { OTPvalidationValidate } from '../../validation/formValidation';
+import NotificationBar from '../notification/ServiceNotificationBar';
+import ApplicationStore from '../../utils/localStorageUtil';
 
 // var email = "ra******@rdltech.in";
 
-const OTPvalidate = (props) => {
+function OTPvalidate(props) {
   const navigate = useNavigate();
-  const [email,setEmail] = useState('');
+  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [otp1, setOtp1] = useState("");
-  const [otp2, setOtp2] = useState("");
-  const [otp3, setOtp3] = useState("");
-  const [otp4, setOtp4] = useState("");
+  const [otp1, setOtp1] = useState('');
+  const [otp2, setOtp2] = useState('');
+  const [otp3, setOtp3] = useState('');
+  const [otp4, setOtp4] = useState('');
   const otp1Ref = useRef(null);
   const otp2Ref = useRef(null);
   const otp3Ref = useRef(null);
-  const otp4Ref = useRef(null); 
-  const validateRef = useRef(null); 
+  const otp4Ref = useRef(null);
+  const validateRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [errorObject, setErrorObject] = useState({});
-  const [isButtonDisabled,setButtonDisabled] =useState(false);
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
-    message: ''
+    message: '',
   });
-  useEffect(()=>{
+  useEffect(() => {
     setEmail(props.email);
     setPhone(props.phone);
-  })
+  });
   const validateForNullValue = (value) => {
     OTPvalidationValidate(value, setErrorObject);
   };
@@ -42,31 +44,30 @@ const OTPvalidate = (props) => {
     setNotification({
       status: true,
       type: 'success',
-      message: "User Authentication Successfull..!"
+      message: 'User Authentication Successfull..!',
     });
     setTimeout(() => {
       const { userDetails } = ApplicationStore().getStorage('userDetails');
-      if(userDetails.forcePasswordReset === '0'){
-        navigate(`/`);
-      }
-      else{
-        navigate(`/passwordReset`);
+      if (userDetails.forcePasswordReset === '0') {
+        navigate('/');
+      } else {
+        navigate('/passwordReset');
       }
     }, 3000);
-  }
-  
+  };
+
   const handleException = (errorObject, errorMessage) => {
     setNotification({
       status: true,
       type: 'error',
-      message: errorMessage
+      message: errorMessage,
     });
-  }
+  };
 
   const onSubmit = (event) => {
     event.preventDefault();
     const otpGen = otp1 + otp2 + otp3 + otp4;
-    ValidateOTPService({otp: otpGen, email: props.email, phone: props.phone}, handleSuccess, handleException);
+    ValidateOTPService({ otp: otpGen, email: props.email, phone: props.phone }, handleSuccess, handleException);
   };
 
   const onButtonResend = () => {
@@ -76,39 +77,39 @@ const OTPvalidate = (props) => {
     otp3Ref.current.value = '';
     otp4Ref.current.value = '';
     setButtonDisabled(true);
-    setTimeout(()=>setButtonDisabled(false),60000);
-    ReceiveOTPService({email: props.email, mobileno :props.phone }, handleResetSuccess, handleResetException);
+    setTimeout(() => setButtonDisabled(false), 60000);
+    ReceiveOTPService({ email: props.email, mobileno: props.phone }, handleResetSuccess, handleResetException);
   };
 
   const handleResetSuccess = (data) => {
     setNotification({
       status: true,
       type: 'success',
-      message: "OTP has been sent to the above email/phone no."
+      message: 'OTP has been sent to the above email/phone no.',
     });
-  }
-  
+  };
+
   const handleResetException = (statusCode, errorMessage) => {
     setNotification({
       status: true,
       type: 'error',
-      message: errorMessage
+      message: errorMessage,
     });
-  }
+  };
 
   const handleClose = () => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: false,
+      type: '',
+      message: '',
     });
-  }
+  };
 
   const textFieldStyle = {
     padding: 7,
-    fontSize: "1rem",
-    width: "3rem",
-    height: "3rem",
+    fontSize: '1rem',
+    width: '3rem',
+    height: '3rem',
   };
 
   return (
@@ -118,7 +119,7 @@ const OTPvalidate = (props) => {
       direction="column"
       alignItems="center"
       justify="center"
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: '100vh' }}
     >
       <Card
         variant="outlined"
@@ -131,9 +132,8 @@ const OTPvalidate = (props) => {
                 <h2 className="mt-6 text-center text-2xl font-extrabold text-gray-900">
                   Please Enter the OTP
                 </h2>
-                <h5 className="mt-6 text-center  font-extrabold text-gray-900">
-                </h5>
-                <p className="mt-2 text-center text-sm text-gray-600"></p>
+                <h5 className="mt-6 text-center  font-extrabold text-gray-900" />
+                <p className="mt-2 text-center text-sm text-gray-600" />
               </div>
               <form className="mt-8 space-y-6" onSubmit={onSubmit}>
                 <div className="rounded-md shadow-sm -space-y-px">
@@ -145,7 +145,7 @@ const OTPvalidate = (props) => {
                       inputRef={otp1Ref}
                       inputProps={{
                         style: textFieldStyle,
-                        tabIndex: '1'
+                        tabIndex: '1',
                       }}
                       onInput={(e) => {
                         e.target.value = Math.max(0, parseInt(e.target.value))
@@ -154,7 +154,7 @@ const OTPvalidate = (props) => {
                       }}
                       onChange={(e) => {
                         setOtp1(e.target.value);
-                        {otp1Ref.current.value == '' ? otp1Ref.current.focus() : otp2Ref.current.focus()}
+                        { otp1Ref.current.value == '' ? otp1Ref.current.focus() : otp2Ref.current.focus(); }
                       }}
                       onBlur={() => validateForNullValue(otp1)}
                       error={errorObject?.otp?.errorStatus}
@@ -164,10 +164,10 @@ const OTPvalidate = (props) => {
                       type="number"
                       id="otp2"
                       variant="outlined"
-                      inputRef = {otp2Ref}
+                      inputRef={otp2Ref}
                       inputProps={{
                         style: textFieldStyle,
-                        tabIndex: '2'
+                        tabIndex: '2',
                       }}
                       onInput={(e) => {
                         e.target.value = Math.max(0, parseInt(e.target.value))
@@ -176,7 +176,7 @@ const OTPvalidate = (props) => {
                       }}
                       onChange={(e) => {
                         setOtp2(e.target.value);
-                        {otp2Ref.current.value == '' ? otp1Ref.current.focus() : otp3Ref.current.focus()}
+                        { otp2Ref.current.value == '' ? otp1Ref.current.focus() : otp3Ref.current.focus(); }
                       }}
                       onBlur={() => validateForNullValue(otp2)}
                       error={errorObject?.otp?.errorStatus}
@@ -185,11 +185,11 @@ const OTPvalidate = (props) => {
                     <TextField
                       type="number"
                       id="otp3"
-                      inputRef = {otp3Ref}
+                      inputRef={otp3Ref}
                       variant="outlined"
                       inputProps={{
                         style: textFieldStyle,
-                        tabIndex: '3'
+                        tabIndex: '3',
                       }}
                       onInput={(e) => {
                         e.target.value = Math.max(0, parseInt(e.target.value))
@@ -198,7 +198,7 @@ const OTPvalidate = (props) => {
                       }}
                       onChange={(e) => {
                         setOtp3(e.target.value);
-                        {otp3Ref.current.value == '' ? otp2Ref.current.focus() : otp4Ref.current.focus()}
+                        { otp3Ref.current.value == '' ? otp2Ref.current.focus() : otp4Ref.current.focus(); }
                       }}
                       onBlur={() => validateForNullValue(otp3)}
                       error={errorObject?.otp?.errorStatus}
@@ -208,10 +208,10 @@ const OTPvalidate = (props) => {
                       type="number"
                       id="otp4"
                       variant="outlined"
-                      inputRef = {otp4Ref}
+                      inputRef={otp4Ref}
                       inputProps={{
                         style: textFieldStyle,
-                        tabIndex: '4'
+                        tabIndex: '4',
                       }}
                       onInput={(e) => {
                         e.target.value = Math.max(0, parseInt(e.target.value))
@@ -220,7 +220,7 @@ const OTPvalidate = (props) => {
                       }}
                       onChange={(e) => {
                         setOtp4(e.target.value);
-                        {otp4Ref.current.value == '' ? otp3Ref.current.focus() : validateRef.current.focus()}
+                        { otp4Ref.current.value == '' ? otp3Ref.current.focus() : validateRef.current.focus(); }
                       }}
                       onBlur={() => validateForNullValue(otp4)}
                       error={errorObject?.otp?.errorStatus}
@@ -229,7 +229,7 @@ const OTPvalidate = (props) => {
                 </div>
                 <div>
                   <Button
-                    ref = {validateRef}
+                    ref={validateRef}
                     type="submit"
                     variant="outlined"
                     className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black bg-white-500 hover:bg-red-100 focus:outline focus:ring-2 focus:ring-offset-2 focus:ring-red-100 outline outline-offset-2 outline-2 outline-red-500"
@@ -262,14 +262,14 @@ const OTPvalidate = (props) => {
                     Change the authentication option?
                     <Button
                       type="button"
-                      onClick={()=>{props.progress(1)}}
+                      onClick={() => { props.progress(1); }}
                       className="border border-transparent hover:bg-red-100 bold"
                     >
                       Go Back
                     </Button>
                   </Typography>
                 </div>
-                
+
               </form>
             </div>
           </div>
@@ -279,8 +279,9 @@ const OTPvalidate = (props) => {
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
-        type={openNotification.type} />
+        type={openNotification.type}
+      />
     </Grid>
   );
-};
+}
 export default OTPvalidate;

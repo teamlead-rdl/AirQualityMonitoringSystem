@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   DialogContent,
@@ -9,11 +9,11 @@ import {
   TextField,
   MenuItem,
   Grid,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
 
-import { Box } from "@mui/system";
+import { Box } from '@mui/system';
 
 import {
   CategoryFetchService,
@@ -21,52 +21,54 @@ import {
   SensorAddService,
   SensorCategoryFetchService,
   SensorEditService,
-} from "../../services/LoginPageService";
-import Analog from "./sensorType/AnalogComponent";
-import Modbus from "./sensorType/ModbusComponent";
-import NotificationBar from "../notification/ServiceNotificationBar";
-import { AddCategoryValidate } from "../../validatation/formValidation";
+} from '../../services/LoginPageService';
+import Analog from './sensorType/AnalogComponent';
+import Modbus from './sensorType/ModbusComponent';
+import NotificationBar from '../notification/ServiceNotificationBar';
+import { AddCategoryValidate } from '../../validation/formValidation';
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: "center",
+  textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
 
-const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRefreshData}) => {
+function SensorConfig({
+  locationDetails, setOpen, editData, isAddButton, setRefreshData,
+}) {
   const [location_id, setLocation_Id] = useState(16);
   const [branch_id, setBranch_id] = useState(16);
   const [facility_id, setFacility_id] = useState(2);
   const [building_id, setBuildingId] = useState(1);
-  const [category_id, setCategory_id] = useState("");
-  const [deviceCategory, setDeviceCategory] = useState("");
-  const [device_id, setDevice_id] = useState("");
-  //------//
-  const [id, setId] = useState(editData.id || "");
-  const [sensorCategoryId, setSensorCategoryId] = useState(editData.sensorCategoryId || "");
-  const [sensorName, setSensorName] = useState(editData.sensorName || "");
-  const [manufacturer, setManufacturer] = useState(editData.manufacturer|| "");
-  const [partId, setPartId] = useState(editData.partId || "");
-  const [sensorOutput, setSensorOutput] = useState(editData.sensorOutput || "Digital");
-  //-----analog----//
-  const [sensorType, setSensorType] = useState(editData.sensorType || "");
-  const [units, setUnits] = useState(editData.units || "");
-  const [minRatedReading, setMinRatedReading] = useState(editData.minRatedReading ||"");
+  const [category_id, setCategory_id] = useState('');
+  const [deviceCategory, setDeviceCategory] = useState('');
+  const [device_id, setDevice_id] = useState('');
+  // ------//
+  const [id, setId] = useState(editData.id || '');
+  const [sensorCategoryId, setSensorCategoryId] = useState(editData.sensorCategoryId || '');
+  const [sensorName, setSensorName] = useState(editData.sensorName || '');
+  const [manufacturer, setManufacturer] = useState(editData.manufacturer || '');
+  const [partId, setPartId] = useState(editData.partId || '');
+  const [sensorOutput, setSensorOutput] = useState(editData.sensorOutput || 'Digital');
+  // -----analog----//
+  const [sensorType, setSensorType] = useState(editData.sensorType || '');
+  const [units, setUnits] = useState(editData.units || '');
+  const [minRatedReading, setMinRatedReading] = useState(editData.minRatedReading || '');
   const [minRatedReadingChecked, setMinRatedReadingChecked] = useState(editData.minRatedReadingChecked || 0);
-  const [minRatedReadingScale, setMinRatedReadingScale] = useState(editData.minRatedReadingScale ||"");
-  const [maxRatedReading, setMaxRatedReading] = useState(editData.maxRatedReading || "");
+  const [minRatedReadingScale, setMinRatedReadingScale] = useState(editData.minRatedReadingScale || '');
+  const [maxRatedReading, setMaxRatedReading] = useState(editData.maxRatedReading || '');
   const [maxRatedReadingChecked, setMaxRatedReadingChecked] = useState(editData.maxRatedReadingChecked || 0);
-  const [maxRatedReadingScale, setMaxRatedReadingScale] = useState(editData.maxRatedReadingScale || "");
+  const [maxRatedReadingScale, setMaxRatedReadingScale] = useState(editData.maxRatedReadingScale || '');
   // -Modbus--------//
-  const [slaveId, setSlaveId] = useState(editData.slaveId || "");
-  const [registerId, setRegisterId] = useState(editData.registerId || "");
-  const [length, setLength] = useState(editData.length || "");
-  const [registerType, setRegisterType] = useState(editData.registerType || "");
-  const [conversionType, setConversionType] = useState(editData.conversionType || "");
-  const [ipAddress, setIpAddress] = useState(editData.ipAddress ||"");
-  const [subnetMask, setSubnetMask] = useState(editData.subnetMask || "");
+  const [slaveId, setSlaveId] = useState(editData.slaveId || '');
+  const [registerId, setRegisterId] = useState(editData.registerId || '');
+  const [length, setLength] = useState(editData.length || '');
+  const [registerType, setRegisterType] = useState(editData.registerType || '');
+  const [conversionType, setConversionType] = useState(editData.conversionType || '');
+  const [ipAddress, setIpAddress] = useState(editData.ipAddress || '');
+  const [subnetMask, setSubnetMask] = useState(editData.subnetMask || '');
 
   const [categoryList, setCategoryList] = useState([]);
   const [deviceList, setDeviceList] = useState([]);
@@ -75,22 +77,20 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
-    message: ''
+    message: '',
   });
 
   const [errorObject, setErrorObject] = useState({});
 
   const validateForNullValue = (value, type) => {
-    //validating
-    AddCategoryValidate(value, type, setErrorObject)
+    // validating
+    AddCategoryValidate(value, type, setErrorObject);
   };
 
   const handleSuccess = (data) => {
-    console.log(JSON.stringify(data));
   };
 
   const handleException = (errorObject) => {
-    console.log(JSON.stringify(errorObject));
   };
 
   useEffect(() => {
@@ -116,8 +116,9 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    {isAddButton ?
-      SensorAddService({...locationDetails, 
+    { isAddButton
+      ? SensorAddService({
+        ...locationDetails,
         sensorCategoryId,
         sensorName,
         manufacturer,
@@ -137,10 +138,11 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
         registerType,
         conversionType,
         ipAddress,
-        subnetMask}, sensorAddSuccess, senserAddException )
-      :
-      SensorEditService({...locationDetails,
-        id, 
+        subnetMask,
+      }, sensorAddSuccess, senserAddException)
+      : SensorEditService({
+        ...locationDetails,
+        id,
         sensorCategoryId,
         sensorName,
         manufacturer,
@@ -160,21 +162,19 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
         registerType,
         conversionType,
         ipAddress,
-        subnetMask}, sensorAddSuccess, senserAddException );
+        subnetMask,
+      }, sensorAddSuccess, senserAddException);
     }
     // SensorAddService({...locationDetails, category_id, sensor_id, device_id, sensorName, sensorOutput, registerAddress, registerLength, maxThreshold, minThreshold, maxUnits, maxScale, maxReadingRage, minUnits, minScale, minReadingRage, sensorType, alerts, alertTag}, sensorAddSuccess, senserAddException );
   };
 
   const sensorAddSuccess = (dataObject) => {
-    // console.log(JSON.stringify(dataObject));
     setNotification({
       status: true,
       type: 'success',
-      message: dataObject.message
+      message: dataObject.message,
     });
-    setRefreshData((oldvalue)=>{
-      return !oldvalue;
-    });
+    setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
       setOpen(false);
@@ -182,27 +182,26 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
   };
 
   const senserAddException = (errorObject, errorMessage) => {
-    // console.log(JSON.stringify(errorObject));
     setNotification({
       status: true,
       type: 'error',
-      message: errorMessage
+      message: errorMessage,
     });
   };
 
   const handleClose = () => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: false,
+      type: '',
+      message: '',
     });
-  }
+  };
   return (
     <div className="w-full" style={{ marginTop: 0 }}>
       <form className="mt-0 p-0 w-full" onSubmit={handleSubmit}>
         <DialogContent sx={{ px: 0, p: 5 }}>
           <Typography sx={{ m: 0 }} variant="h5">
-            {isAddButton? "Add Sensor" : "Edit Sensor"}
+            {isAddButton ? 'Add Sensor' : 'Edit Sensor'}
           </Typography>
           <Grid container spacing={1} sx={{ mt: 0 }}>
             <Grid
@@ -232,11 +231,9 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
                     // error={errorObject?.deviceName?.errorStatus}
                     // helperText={errorObject?.deviceName?.helperText}
                   >
-                    {sensorCategoryList.map((data) => {
-                      return (
-                        <MenuItem value={data.id}>{data.sensorName}</MenuItem>
-                      );
-                    })}
+                    {sensorCategoryList.map((data) => (
+                      <MenuItem value={data.id}>{data.sensorName}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Box>
@@ -254,7 +251,7 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
                 <TextField
                   sx={{ marginTop: 0 }}
                   value={sensorName}
-                  onBlur={() => validateForNullValue(sensorName, "sensorName")}
+                  onBlur={() => validateForNullValue(sensorName, 'sensorName')}
                   onChange={(e) => {
                     setSensorName(e.target.value);
                   }}
@@ -282,7 +279,7 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
                 <TextField
                   sx={{ marginTop: 0 }}
                   value={manufacturer}
-                  onBlur={() => validateForNullValue(manufacturer, "manufacturer")}
+                  onBlur={() => validateForNullValue(manufacturer, 'manufacturer')}
                   onChange={(e) => {
                     setManufacturer(e.target.value);
                   }}
@@ -310,7 +307,7 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
                 <TextField
                   sx={{ marginTop: 0 }}
                   value={partId}
-                  onBlur={() => validateForNullValue(partId, "partId")}
+                  onBlur={() => validateForNullValue(partId, 'partId')}
                   onChange={(e) => {
                     setPartId(e.target.value);
                   }}
@@ -352,17 +349,17 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
                     // error={errorObject?.deviceName?.errorStatus}
                     // helperText={errorObject?.deviceName?.helperText}
                   >
-                    <MenuItem value={"Digital"}>{"Digital"}</MenuItem>
-                    <MenuItem value={"Analog"}>{"Analog"}</MenuItem>
-                    <MenuItem value={"Modbus"}>{"Modbus"}</MenuItem>
+                    <MenuItem value="Digital">Digital</MenuItem>
+                    <MenuItem value="Analog">Analog</MenuItem>
+                    <MenuItem value="Modbus">Modbus</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
             </Grid>
           </Grid>
-          {sensorOutput == "Analog" ? (
-            <Analog 
-              errorObject= {errorObject}
+          {sensorOutput == 'Analog' ? (
+            <Analog
+              errorObject={errorObject}
               setErrorObject={setErrorObject}
               units={units}
               setUnits={setUnits}
@@ -381,9 +378,9 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
               maxRatedReadingScale={maxRatedReadingScale}
               setMaxRatedReadingScale={setMaxRatedReadingScale}
             />
-          ) : sensorOutput == "Modbus" ? (
+          ) : sensorOutput == 'Modbus' ? (
             <Modbus
-              errorObject= {errorObject}
+              errorObject={errorObject}
               setErrorObject={setErrorObject}
               units={units}
               setUnits={setUnits}
@@ -417,7 +414,7 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
               setSubnetMask={setSubnetMask}
             />
           ) : (
-            ""
+            ''
           )}
           <div className="float-right">
             <Button
@@ -435,21 +432,21 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
               variant="contained"
               type="submit"
               disabled={
-                errorObject?.sensorName?.errorStatus || 
-                errorObject?.manufacturer?.errorStatus ||
-                errorObject?.partId?.errorStatus || 
-                errorObject?.units?.errorStatus ||
-                errorObject?.minRatedReading?.errorStatus || 
-                errorObject?.minRatedReadingScale?.errorStatus ||
-                errorObject?.maxRatedReading?.errorStatus || 
-                errorObject?.maxRatedReadingScale?.errorStatus ||
-                errorObject?.ipAddress?.errorStatus || 
-                errorObject?.subnetMask?.errorStatus ||
-                errorObject?.slaveId?.errorStatus || 
-                errorObject?.registerId?.errorStatus
+                errorObject?.sensorName?.errorStatus
+                || errorObject?.manufacturer?.errorStatus
+                || errorObject?.partId?.errorStatus
+                || errorObject?.units?.errorStatus
+                || errorObject?.minRatedReading?.errorStatus
+                || errorObject?.minRatedReadingScale?.errorStatus
+                || errorObject?.maxRatedReading?.errorStatus
+                || errorObject?.maxRatedReadingScale?.errorStatus
+                || errorObject?.ipAddress?.errorStatus
+                || errorObject?.subnetMask?.errorStatus
+                || errorObject?.slaveId?.errorStatus
+                || errorObject?.registerId?.errorStatus
               }
             >
-            {isAddButton? "ADD" : "UPDATE"}
+              {isAddButton ? 'ADD' : 'UPDATE'}
             </Button>
           </div>
         </DialogContent>
@@ -458,10 +455,10 @@ const SensorConfig = ({ locationDetails, setOpen, editData , isAddButton,  setRe
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
-        type={openNotification.type} 
+        type={openNotification.type}
       />
     </div>
   );
-};
+}
 
 export default SensorConfig;

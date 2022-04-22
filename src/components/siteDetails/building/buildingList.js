@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { PlayArrow, Edit, DeleteOutlined } from '@mui/icons-material';
+import { Link, useLocation } from 'react-router-dom';
+import { Breadcrumbs, Typography } from '@mui/material';
 import { BuildingDeleteService, BuildingFetchService } from '../../../services/LoginPageService';
 import { BuildingListToolbar } from './building-list-toolbars';
 import BuildingModal from './BuildingModalComponent';
-import { Link, useLocation } from 'react-router-dom';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
-import { Breadcrumbs, Typography } from '@mui/material';
 import ApplicationStore from '../../../utils/localStorageUtil';
 
 export function BuildingListResults(props) {
-  
   const dataColumns = [
     {
       field: 'buildingName',
       headerName: 'Building Name',
       width: 170,
       type: 'actions',
-      getActions: (params) => {
-        return [
-          <LinkTo selectedRow={params.row} />
-        ];
-      }
+      getActions: (params) => [
+        <LinkTo selectedRow={params.row} />,
+      ],
     },
     {
       field: 'buildingTotalFloors',
@@ -47,12 +44,10 @@ export function BuildingListResults(props) {
       headerName: 'Actions',
       width: 100,
       cellClassName: 'actions',
-      getActions: (params) => {
-        return [
-          <EditData selectedRow={params.row}/>,
-          <DeleteData selectedRow={params.row} />
-        ];
-      },
+      getActions: (params) => [
+        <EditData selectedRow={params.row} />,
+        <DeleteData selectedRow={params.row} />,
+      ],
     },
   ];
 
@@ -66,12 +61,14 @@ export function BuildingListResults(props) {
   const [refreshData, setRefreshData] = useState(false);
   const moduleAccess = useUserAccess()('location');
 
-  const { locationLabel, branchLabel, facilityLabel, buildingLabel } = ApplicationStore().getStorage('siteDetails');
-  
+  const {
+    locationLabel, branchLabel, facilityLabel, buildingLabel,
+  } = ApplicationStore().getStorage('siteDetails');
+
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
-    message: ''
+    message: '',
   });
 
   useEffect(() => {
@@ -81,69 +78,68 @@ export function BuildingListResults(props) {
       branch_id,
       facility_id,
     }, handleSuccess, handleException);
-    
-  },[refreshData]);
+  }, [refreshData]);
 
   const handleSuccess = (dataObject) => {
     setGridLoading(false);
     setDataList(dataObject.data);
-    const newArray = dataObject.data?dataObject.data.map((item) => {
-      let coordinates = item.coordinates?item.coordinates.replaceAll('"', "").split(','): [];
+    const newArray = dataObject.data ? dataObject.data.map((item) => {
+      const coordinates = item.coordinates ? item.coordinates.replaceAll('"', '').split(',') : [];
 
-      return{
-        'id': item.id,
-        'name': item.facilityName,
-        'position': {
-          'lat': parseFloat(coordinates[0]),
-          'lng': parseFloat(coordinates[1])
-        }
-      }
+      return {
+        id: item.id,
+        name: item.facilityName,
+        position: {
+          lat: parseFloat(coordinates[0]),
+          lng: parseFloat(coordinates[1]),
+        },
+      };
     })
-      :
-      [];
-      props.setLocationCoordinationList(newArray);
-  }
-  
+      : [];
+    props.setLocationCoordinationList(newArray);
+  };
+
   const handleException = (errorObject) => {
-  }
+  };
 
   const deletehandleSuccess = (dataObject) => {
     setNotification({
       status: true,
       type: 'success',
-      message: dataObject.message
+      message: dataObject.message,
     });
-    setRefreshData((oldvalue)=>{
-        return !oldvalue;
-    });
+    setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
     }, 5000);
-  }
-  
+  };
+
   const deletehandleException = (errorObject, errorMessage) => {
     setNotification({
       status: true,
       type: 'error',
-      message: errorMessage
-  });
+      message: errorMessage,
+    });
+  };
+
+  function LinkTo(props) {
+    return (
+      <Link
+        to={`${props.selectedRow.buildingName}`}
+        state={{
+          location_id,
+          branch_id,
+          facility_id,
+          building_id: props.selectedRow.id,
+          buildingImg: props.selectedRow.buildingImg,
+        }}
+      >
+        {props.selectedRow.buildingName}
+      </Link>
+    );
   }
 
-  const LinkTo = (props) => {
-    return (<Link
-      to={`${props.selectedRow.buildingName}`}
-      state={{
-        location_id,
-        branch_id,
-        facility_id,
-        building_id: props.selectedRow.id,
-        buildingImg: props.selectedRow.buildingImg
-      }}>
-      {props.selectedRow.buildingName}
-    </Link>)
-  }
-
-  const EditData = (props) => {
+  function EditData(props) {
     return (
       moduleAccess.edit && 
       <Edit onClick={() => {
@@ -165,17 +161,17 @@ export function BuildingListResults(props) {
 
   const handleClose = () => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: false,
+      type: '',
+      message: '',
     });
-  }
+  };
 
-  var pathList = routeStateObject.pathname.split('/').filter(x => x);
-  var pathname = pathList.map((data, index)=>{
-    let path = data.replace("%20", " ");
-    return(path)
-  })
+  const pathList = routeStateObject.pathname.split('/').filter((x) => x);
+  const pathname = pathList.map((data, index) => {
+    const path = data.replace('%20', ' ');
+    return (path);
+  });
 
   return (
     <div style={{ height: 400, width: '100%' }}>
@@ -183,87 +179,92 @@ export function BuildingListResults(props) {
         <Link underline="hover" color="inherit" to="/Location">
           Location
         </Link>
-        {locationLabel ? 
-          <Typography
-            underline="hover"
-            color="inherit"
-            >
-            {pathname[1]}
-          </Typography>
-        :
-          <Link
-            underline="hover"
-            color="inherit"
-            to={"/Location/"+pathname[1]}
-            state={{
-              location_id
-            }}
-            >
-            {pathname[1]}
-          </Link>
-        }
-        {
-          branchLabel ?
+        {locationLabel
+          ? (
             <Typography
               underline="hover"
               color="inherit"
-              >
-              {pathname[2]}
-            </Typography>
-          :
-          <Link
-            underline="hover"
-            color="inherit"
-            to={"/Location/"+pathname[1]+"/"+pathname[2]}
-            state={{
-              location_id,
-              branch_id
-            }}
             >
-            {pathname[2]}
-          </Link>
+              {pathname[1]}
+            </Typography>
+          )
+          : (
+            <Link
+              underline="hover"
+              color="inherit"
+              to={`/Location/${pathname[1]}`}
+              state={{
+                location_id,
+              }}
+            >
+              {pathname[1]}
+            </Link>
+          )}
+        {
+          branchLabel
+            ? (
+              <Typography
+                underline="hover"
+                color="inherit"
+              >
+                {pathname[2]}
+              </Typography>
+            )
+            : (
+              <Link
+                underline="hover"
+                color="inherit"
+                to={`/Location/${pathname[1]}/${pathname[2]}`}
+                state={{
+                  location_id,
+                  branch_id,
+                }}
+              >
+                {pathname[2]}
+              </Link>
+            )
         }
         <Typography
           underline="hover"
           color="inherit"
-          >
+        >
           {pathname[3]}
         </Typography>
       </Breadcrumbs>
 
-      <BuildingListToolbar 
+      <BuildingListToolbar
         setOpen={setOpen}
         setIsAddButton={setIsAddButton}
         setEditData={setEditData}
         userAccess={moduleAccess}
       />
       <DataGrid
-          rows={dataList}
-          columns={dataColumns}
-          pageSize={5}
-          loading={isLoading}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
-          disableSelectionOnClick
-          style={{maxHeight:80+'%'}}
+        rows={dataList}
+        columns={dataColumns}
+        pageSize={5}
+        loading={isLoading}
+        rowsPerPageOptions={[5]}
+        checkboxSelection
+        disableSelectionOnClick
+        style={{ maxHeight: `${80}%` }}
       />
-       
+
       <BuildingModal
         isAddButton={isAddButton}
         editData={editData}
         open={open}
         setOpen={setOpen}
-        locationId = {location_id}
-        branchId = {branch_id}
-        facilityId = {facility_id}
+        locationId={location_id}
+        branchId={branch_id}
+        facilityId={facility_id}
         setRefreshData={setRefreshData}
       />
 
       <NotificationBar
-      handleClose={handleClose}
-      notificationContent={openNotification.message}
-      openNotification={openNotification.status}
-      type={openNotification.type} 
+        handleClose={handleClose}
+        notificationContent={openNotification.message}
+        openNotification={openNotification.status}
+        type={openNotification.type}
       />
     </div>
   );

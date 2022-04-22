@@ -5,36 +5,40 @@ import Stack from '@mui/material/Stack';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 
-export const SensorCategorytoolbar = (props) => (
+export function SensorCategorytoolbar(props) {
+  return (
     <Box
       sx={{
         mb: '10px',
         alignItems: 'center',
         display: 'flex',
         justifyContent: 'space-between',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
       }}
     >
       <Typography
         sx={{ m: 0 }}
         variant="h5"
       >
-      Sensor Category
+        Sensor Category
       </Typography>
-      {props.userAccess.add && <Box sx={{ m: 0 }}
-        onClick={()=>{
+      {props.userAccess.add && (
+        <Box
+          sx={{ m: 0 }}
+          onClick={() => {
             props.setIsAddButton(true);
             props.setEditCategory([]);
             props.setOpen(true);
-        }}
-      >
-        <Stack direction="row" spacing={2}>
-          <Fab variant="extended" size="medium" color="primary" aria-label="add">
-            <AddIcon sx={{ mr: 1 }} 
-            />
-            Add Category
-          </Fab>
-        </Stack>
-      </Box>}
+          }}
+        >
+          <Stack direction="row" spacing={2}>
+            <Fab variant="extended" size="medium" color="primary" aria-label="add">
+              <AddIcon sx={{ mr: 1 }} />
+              Add Category
+            </Fab>
+          </Stack>
+        </Box>
+      )}
     </Box>
-);
+  );
+}

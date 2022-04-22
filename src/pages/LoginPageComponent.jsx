@@ -8,7 +8,7 @@ import AuthContext from '../context/AuthProvider';
 import { LoginService } from '../services/LoginPageService';
 import ApplicationStore from '../utils/localStorageUtil';
 import { useNavigate } from "react-router-dom";
-import { LoginFormValidate } from '../validatation/formValidation';
+import { LoginFormValidate } from '../validation/formValidation';
 import NotificationBar from '../components/notification/ServiceNotificationBar';
 
 const LoginPage = () => {
@@ -80,7 +80,7 @@ const LoginPage = () => {
                 }, 3000);
             }).catch(error => {
                 setLoading(false);
-                error.errorObject.then(errorResponse => {
+                error?.errorObject?.then(errorResponse => {
                     setNotification({
                         status: true,
                         type: 'error',

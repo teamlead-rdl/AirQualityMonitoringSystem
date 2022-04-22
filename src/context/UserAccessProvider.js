@@ -5,21 +5,21 @@ import { crudConfig } from '../config/roleConfig';
 const UserAccessContext = createContext();
 
 export function useUserAccess() {
-    return useContext(UserAccessContext)
+  return useContext(UserAccessContext);
 }
 
 export function UserAccessProvider({ children }) {
-    const requestAccess = (moduleToAccess) => {
-        const config = crudConfig;
-        const { userDetails } = ApplicationStore().getStorage("userDetails");
-        const moduleConfig = config[moduleToAccess.toLowerCase()];
-        const userAccess = moduleConfig[userDetails.userRole.toLowerCase()];
-        return userAccess;
-    }
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
+  const requestAccess = (moduleToAccess) => {
+    const { userDetails } = ApplicationStore().getStorage('userDetails');
+    const moduleConfig = crudConfig[moduleToAccess.toLowerCase()];
+    const userAccess = moduleConfig[userDetails.userRole.toLowerCase()];
+    return userAccess;
+  };
 
-    return (
-        <UserAccessContext.Provider value={requestAccess}>
-            {children}
-        </UserAccessContext.Provider>
-    )
-};
+  return (
+    <UserAccessContext.Provider value={requestAccess}>
+      {children}
+    </UserAccessContext.Provider>
+  );
+}

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import {
+  CategoryFetchService, CategoryDeleteService, SensorCategoryFetchService, SensorCategoryDeleteService, SensorFetchService, SensorListFetchService, SensorDeleteService,
+} from '../../../../../services/LoginPageService';
 import { SensorListFetchService, SensorDeleteService } from '../../../../../services/LoginPageService';
 import { AddSensorCategoryToolbar } from './AddSensorCategoryToolbar';
 import AddSensorModal from './AddSensorModal';
@@ -47,19 +50,27 @@ export function AddSensorList() {
     const [refreshData, setRefreshData] = useState(false);
     const moduleAccess = useUserAccess()('device');
 
-    const [openNotification, setNotification] = useState({
-      status: false,
-      type: 'error',
-      message: ''
-    });
+  const [open, setOpen] = useState(false);
+  const [isAddButton, setIsAddButton] = useState(true);
+  const [editCategory, setEditCategory] = useState([]);
+  const [CategoryList, setCategoryList] = useState([]);
+  const [isLoading, setGridLoading] = useState(true);
+  const [refreshData, setRefreshData] = useState(false);
+  const moduleAccess = useUserAccess()('device');
 
-    const handleSuccess = (dataObject) => {
-        setGridLoading(false);
-        setCategoryList(dataObject.data);
-    }
+  const [openNotification, setNotification] = useState({
+    status: false,
+    type: 'error',
+    message: '',
+  });
 
-    const handleException = (errorObject) => {
-    } 
+  const handleSuccess = (dataObject) => {
+    setGridLoading(false);
+    setCategoryList(dataObject.data);
+  };
+
+  const handleException = (errorObject) => {
+  }; 
     
     useEffect(() => {
       SensorListFetchService(handleSuccess, handleException)
@@ -103,18 +114,11 @@ export function AddSensorList() {
       setRefreshData((oldvalue)=>{
         return !oldvalue;
     });
+    setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
     }, 5000);
-    }
-    
-    const deletehandleException = (errorObject, errorMessage) => {
-      setNotification({
-        status: true,
-        type: 'error',
-        message: errorMessage
-      });
-    }
+  };
 
     const handleClose = () => {
       setNotification({

@@ -4,9 +4,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import CustomerModal from './CustomerModalComponent';
 import { CustomerListToolbar } from './customer-list-toolbar';
-import { CustomerDeleteService, FetchCustomerService } from './../../services/LoginPageService';
+import { CustomerDeleteService, FetchCustomerService } from '../../services/LoginPageService';
 import NotificationBar from '../notification/ServiceNotificationBar';
-import ConfirmPassword from '../../components/user/passwordConfirmComponent'
+import ConfirmPassword from '../user/passwordConfirmComponent';
+
 export function CustomerListResults() {
   const columns = [
     {
@@ -17,7 +18,7 @@ export function CustomerListResults() {
     {
       field: 'customerId',
       headerName: 'Company Code',
-      width: 110
+      width: 110,
     },
     {
       field: 'email',
@@ -52,11 +53,9 @@ export function CustomerListResults() {
       width: 100,
       cellClassName: 'actions',
       disableClickEventBubbling: true,
-      getActions: (params) => {
-        return [
-          <EditData selectedRow={params.row}/>,<DeleteData selectedRow={params.row} />
-        ];
-      },
+      getActions: (params) => [
+        <EditData selectedRow={params.row} />, <DeleteData selectedRow={params.row} />,
+      ],
     },
   ];
 
@@ -66,85 +65,87 @@ export function CustomerListResults() {
   const [customerList, setCustomerList] = useState([]);
   const [isLoading, setGridLoading] = useState(true);
   const [id, setId] = useState('');
-  const [password, setConfirmPassword] = useState('')
+  const [password, setConfirmPassword] = useState('');
   const [btnReset, setBtnReset] = useState(false);
   const [refreshData, setRefreshData] = useState(false);
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
-    message: ''
+    message: '',
   });
 
   const handleSuccess = (dataObject) => {
     setGridLoading(false);
     setCustomerList(dataObject.data);
-  }
-  
+  };
+
   const handleException = (errorObject) => {
-    console.log(JSON.stringify(errorObject));
-  }
+  };
 
   useEffect(() => {
-    FetchCustomerService(handleSuccess, handleException)
+    FetchCustomerService(handleSuccess, handleException);
   }, [refreshData]);
 
   const passwordSubmit = async (e) => {
     e.preventDefault();
-    CustomerDeleteService({ password, id}, passwordValidationSuccess, passwordValidationException);
+    CustomerDeleteService({ password, id }, passwordValidationSuccess, passwordValidationException);
     setBtnReset(false);
-  }
+  };
 
   const passwordValidationSuccess = (dataObject) => {
     setNotification({
       status: true,
       type: 'success',
-      message: dataObject.message
+      message: dataObject.message,
     });
-    setRefreshData((oldvalue)=>{
-        return !oldvalue;
-    });
-  }
+    setRefreshData((oldvalue) => !oldvalue);
+  };
 
   const passwordValidationException = (errorObject, errorMessage) => {
-    console.log(JSON.stringify(errorObject));
     setNotification({
       status: true,
       type: 'error',
-      message: errorMessage
+      message: errorMessage,
     });
   };
 
-  const EditData = (props) => {
+  function EditData(props) {
     return (
-      <EditIcon style={{ cursor: "pointer" }}
+      <EditIcon
+        style={{ cursor: 'pointer' }}
         onClick={(event) => {
           event.stopPropagation();
           setIsAddButton(false);
           setEditCustomer(props.selectedRow);
           setOpen(true);
-      }} />)
+        }}
+      />
+    );
   }
 
-  const DeleteData = (props) => {
-    console.log(props.selectedRow);
-    return <DeleteIcon onClick={()=>{
-      setId(props.selectedRow.id);
-      setBtnReset(true);
-    }}
-    style={{cursor: 'pointer'}}/>
+  function DeleteData(props) {
+    return (
+      <DeleteIcon
+        onClick={() => {
+          setId(props.selectedRow.id);
+          setBtnReset(true);
+        }}
+        style={{ cursor: 'pointer' }}
+      />
+    );
   }
 
   const handleClose = () => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: false,
+      type: '',
+      message: '',
     });
-  }
+  };
 
   return (
     <div style={{ height: 400, width: '100%' }}>
-      <CustomerListToolbar 
+      <CustomerListToolbar
         setIsAddButton={setIsAddButton}
         setEditCustomer={setEditCustomer}
         setOpen={setOpen}
@@ -158,10 +159,10 @@ export function CustomerListResults() {
         checkboxSelection
         disableSelectionOnClick
       />
-      <ConfirmPassword 
+      <ConfirmPassword
         open={btnReset}
-        passwordSubmit={passwordSubmit} 
-        setConfirmPassword={setConfirmPassword} 
+        passwordSubmit={passwordSubmit}
+        setConfirmPassword={setConfirmPassword}
         setBtnReset={setBtnReset}
       />
       <CustomerModal
@@ -175,7 +176,7 @@ export function CustomerListResults() {
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
-        type={openNotification.type} 
+        type={openNotification.type}
       />
     </div>
   );

@@ -1,130 +1,135 @@
-import { Button, Dialog, DialogContent, DialogTitle, TextField , Box, Grid} from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { BuildingAddService, BuildingEditService, FacilitiyAddService, FacilityEditService, LocationAddService, LocationEditService } from '../../../services/LoginPageService';
-import MapsComponent from '../../maps/googleMapsComponent'
-import { LocationFormValidate } from '../../../validatation/locationValidation';
+import {
+  Button, Dialog, DialogContent, DialogTitle, TextField, Box, Grid,
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import {
+  BuildingAddService, BuildingEditService, FacilitiyAddService, FacilityEditService, LocationAddService, LocationEditService,
+} from '../../../services/LoginPageService';
+import MapsComponent from '../../maps/googleMapsComponent';
+import { LocationFormValidate } from '../../../validation/locationValidation';
 import NotificationBar from '../../notification/ServiceNotificationBar';
-import chooseFile from '../../../images/chooseFile.png'
-import previewImage from '../../../images/chooseFile.png'
+import chooseFile from '../../../images/chooseFile.png';
+import previewImage from '../../../images/chooseFile.png';
 
 // import ImageMarkerComponent from './imageMarker';
 
-const BuildingModal = ({open, setOpen, isAddButton, editData, locationId, branchId, facilityId, setRefreshData}) => {
+function BuildingModal({
+  open, setOpen, isAddButton, editData, locationId, branchId, facilityId, setRefreshData,
+}) {
+  const [buildingName, setBuildingName] = useState('');
+  const [buildingDescription, setBuildingDescription] = useState('');
+  const [buildingTotalFloors, setBuildingTotalFloors] = useState('');
+  const [longitude, setLongitude] = useState('');
+  const [latitude, setLatitude] = useState('');
+  const [buildingImg, setBuildingImg] = useState({});
+  const [buildingTag, setBuildingTag] = useState('');
+  const [location_id, setLocationId] = useState(locationId);
+  const [branch_id, setBranchId] = useState(branchId);
+  const [facility_id, setFacilityId] = useState(facilityId);
+  const [buildingId, setBuildingId] = useState('');
+  const [previewBuilding, setPreviewBuilding] = useState('');
+  const [errorObject, setErrorObject] = useState({});
+  const [openNotification, setNotification] = useState({
+    status: false,
+    type: 'error',
+    message: '',
+  });
+  const [markerLat, setMarkerLat] = useState(0);
+  const [markerLng, setMarkerLng] = useState(0);
 
-    const [buildingName, setBuildingName] = useState('');
-    const [buildingDescription, setBuildingDescription] = useState('');
-    const [buildingTotalFloors, setBuildingTotalFloors] = useState('');
-    const [longitude, setLongitude] = useState('');
-    const [latitude, setLatitude] = useState('');
-    const [buildingImg, setBuildingImg] = useState({});
-    const [buildingTag, setBuildingTag] = useState('');
-    const [location_id, setLocationId] = useState(locationId);
-    const [branch_id, setBranchId] = useState(branchId);
-    const [facility_id, setFacilityId] = useState(facilityId);
-    const [buildingId, setBuildingId] = useState('');
-    const [previewBuilding, setPreviewBuilding] = useState('');
-    const [errorObject, setErrorObject] = useState({});
-    const [openNotification, setNotification] = useState({
-        status: false,
-        type: 'error',
-        message: ''
-    });
-    const [markerLat, setMarkerLat] =useState(0);
-    const [markerLng, setMarkerLng] =useState(0);
+  useEffect(() => {
+    if (editData) {
+      setOpen(open);
+      loaddata();
+    }
+  }, [editData]);
 
-    useEffect(()=>{
-        if (editData) {
-            setOpen(open);
-            loaddata();
-        }
-    },[editData]);
+  const loaddata = () => {
+    const coordinates = editData.coordinates ? editData.coordinates.split(',') : ['', ''];
+    setBuildingName(editData.buildingName || '');
+    setBuildingDescription(editData.buildingDescription || '');
+    setLongitude(coordinates[0]);
+    setLatitude(coordinates[1]);
+    setBuildingId(editData.id || '');
+    setBuildingTag(editData.buildingTag || '');
+    setBuildingTotalFloors(editData.buildingTotalFloors || '');
+    setPreviewBuilding(editData.buildingImg ? `http://varmatrix.com/Aqms/blog/public/${editData.buildingImg}` : previewImage);
+    setMarkerLng(parseFloat(coordinates[0]));
+    setMarkerLat(parseFloat(coordinates[1]));
+  };
 
-    const loaddata = () =>{
-        const coordinates = editData.coordinates ? editData.coordinates.split(',') : ['',''];
-        setBuildingName(editData.buildingName ||'');
-        setBuildingDescription(editData.buildingDescription ||'');
-        setLongitude(coordinates[0]);
-        setLatitude(coordinates[1]);
-        setBuildingId(editData.id || '');
-        setBuildingTag(editData.buildingTag || '');
-        setBuildingTotalFloors(editData.buildingTotalFloors || '');
-        setPreviewBuilding(editData.buildingImg?"http://varmatrix.com/Aqms/blog/public/"+editData.buildingImg : previewImage);
-        setMarkerLng(parseFloat(coordinates[0]));
-        setMarkerLat(parseFloat(coordinates[1]));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (longitude == '' || latitude == '') {
+      setErrorObject((oldErrorState) => {
+        let status = {};
+        status = {
+          errorStatus: true,
+          helperText: 'Please choose the points in Map',
+        };
+        return {
+          ...oldErrorState,
+          coordinates: status,
+        };
+      });
+    } else {
+      const coordinates = JSON.stringify(`${longitude},${latitude}`).replaceAll('"', '');
+      if (isAddButton) {
+        await BuildingAddService({
+          buildingName, buildingDescription, buildingTotalFloors, buildingImg, coordinates, location_id, branch_id, facility_id, buildingTag,
+        }, handleSuccess, handleException);
+      } else {
+        await BuildingEditService({
+          buildingName, buildingDescription, buildingTotalFloors, buildingImg, coordinates, location_id, branch_id, facility_id, buildingTag, buildingId,
+        }, handleSuccess, handleException);
+      }
     }
-   
-    const handleSubmit = async (e) =>{
-        e.preventDefault();
-        if(longitude == '' || latitude == ''){
-            setErrorObject(oldErrorState => {
-                let status = {}
-                status = {
-                    errorStatus: true,
-                    helperText: 'Please choose the points in Map'
-                }
-                return {
-                    ...oldErrorState,
-                    coordinates: status
-                }
-            });
-        }
-        else{
-            const coordinates = JSON.stringify(longitude+","+latitude).replaceAll('"', "");
-            if (isAddButton) {
-                await BuildingAddService({ buildingName, buildingDescription, buildingTotalFloors, buildingImg, coordinates, location_id, branch_id, facility_id, buildingTag}, handleSuccess, handleException);
-            } else {
-                await BuildingEditService({ buildingName, buildingDescription, buildingTotalFloors, buildingImg, coordinates, location_id, branch_id, facility_id, buildingTag, buildingId}, handleSuccess, handleException);
-            }
-        }
-    }
+  };
 
-    const handleSuccess = (dataObject) => {
-        setNotification({
-            status: true,
-            type: 'success',
-            message: dataObject.message
-          });
-          setRefreshData((oldvalue)=>{
-              return !oldvalue;
-          });
-          setTimeout(() => {
-            handleClose();
-            setOpen(false);
-            setErrorObject({});
-          }, 5000);
-    }
-    
-    const handleException = (errorObject, errorMessage) => {
-        // console.log(JSON.stringify(errorObject));
-        setNotification({
-            status: true,
-            type: 'error',
-            message: errorMessage
-        });
-        setErrorObject({});
-    }
-    const onMapClick = (e)=>{
-        delete errorObject.coordinates;
-        setLongitude(e.latLng.lat());
-        setLatitude(e.latLng.lng());
-    }
-    const validateForNullValue = (value, type) => {
-        LocationFormValidate(value, type, setErrorObject);
-      };
-
-    const handleClose = () => {
+  const handleSuccess = (dataObject) => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: true,
+      type: 'success',
+      message: dataObject.message,
     });
-    }
+    setRefreshData((oldvalue) => !oldvalue);
+    setTimeout(() => {
+      handleClose();
+      setOpen(false);
+      setErrorObject({});
+    }, 5000);
+  };
+
+  const handleException = (errorObject, errorMessage) => {
+    setNotification({
+      status: true,
+      type: 'error',
+      message: errorMessage,
+    });
+    setErrorObject({});
+  };
+  const onMapClick = (e) => {
+    delete errorObject.coordinates;
+    setLongitude(e.latLng.lat());
+    setLatitude(e.latLng.lng());
+  };
+  const validateForNullValue = (value, type) => {
+    LocationFormValidate(value, type, setErrorObject);
+  };
+
+  const handleClose = () => {
+    setNotification({
+      status: false,
+      type: '',
+      message: '',
+    });
+  };
 
   return (
     <Dialog
-        sx={{ "& .MuiDialog-paper": { minWidth: '80%'} }}
-        maxWidth="sm"
-        open={open}
+      sx={{ '& .MuiDialog-paper': { minWidth: '80%' } }}
+      maxWidth="sm"
+      open={open}
     >
         <DialogTitle>
             {isAddButton ? "Add Building" : "Edit Building"}
@@ -297,40 +302,39 @@ const BuildingModal = ({open, setOpen, isAddButton, editData, locationId, branch
                                 />
                                     
                             </div>
-
-                        </div>
-                    </div>
-                    <div className="float-right">
-                        <div className="rounded-md -space-y-px mt-5 mb-3">
-                            <Button 
-                                type="submit"
-                                disabled={errorObject?.buildingName?.errorStatus || errorObject?.buildingDescription?.errorStatus || errorObject?.buildingTotalFloors?.errorStatus || errorObject?.buildingTag?.errorStatus || 
-                                    errorObject?.coordinates?.errorStatus || errorObject?.stateName?.errorStatus}
-                            >
-                                {isAddButton ? "Add" : "Update"}
-                            </Button>
-                            <Button 
-                                onClick={(e)=>{
-                                    setOpen(false);
-                                    setErrorObject({});
-                                    loaddata();
-                                }}
-                                >
-                                Cancel
-                            </Button>
-                        </div>
-                    </div>
                 </div>
-          </form> 
-        </DialogContent>
-        <NotificationBar
+              </div>
+            </div>
+            <div className="float-right">
+              <div className="rounded-md -space-y-px mt-5 mb-3">
+                <Button
+                  type="submit"
+                  disabled={errorObject?.buildingName?.errorStatus || errorObject?.buildingDescription?.errorStatus || errorObject?.buildingTotalFloors?.errorStatus || errorObject?.buildingTag?.errorStatus
+                                    || errorObject?.coordinates?.errorStatus || errorObject?.stateName?.errorStatus}
+                >
+                  {isAddButton ? 'Add' : 'Update'}
+                </Button>
+                <Button
+                  onClick={(e) => {
+                    setOpen(false);
+                    setErrorObject({});
+                    loaddata();
+                  }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </DialogContent>
+      <NotificationBar
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
-        type={openNotification.type} 
+        type={openNotification.type}
       />
     </Dialog>
-  )
+  );
 }
-
-export default BuildingModal
+export default BuildingModal;

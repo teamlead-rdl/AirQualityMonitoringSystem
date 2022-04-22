@@ -1,22 +1,28 @@
-import { Autocomplete, Button, Dialog, DialogContent, DialogTitle, FormControl, Grid, Input, InputLabel, MenuItem, Select, TextField } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { FetchBranchService, FetchFacilitiyService, FetchLocationService, UnblockUserService, UserAddService, UserDeleteService, UserUpdateService } from '../../services/LoginPageService';
+import {
+  Autocomplete, Button, Dialog, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, TextField,
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import {
+  FetchBranchService, FetchFacilitiyService, FetchLocationService, UnblockUserService, UserAddService, UserUpdateService,
+} from '../../services/LoginPageService';
 import ApplicationStore from '../../utils/localStorageUtil';
-import { AddUserValidate } from '../../validatation/formValidation';
+import { AddUserValidate } from '../../validation/formValidation';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import ConfirmPassword from './passwordConfirmComponent';
 
-const UserModal = ({ open, setOpen, isAddButton, userData, setRefreshData }) => {
+function UserModal({
+  open, setOpen, isAddButton, userData, setRefreshData,
+}) {
   const { userDetails } = ApplicationStore().getStorage('userDetails');
-  const [isSuperAdmin, setIsSuperadmin] = useState(userDetails?userDetails.userRole == "superAdmin"? true : false : true);
+  const isSuperAdmin = userDetails ? userDetails.userRole === 'superAdmin' : true;
 
   const [id, setId] = useState('');
   const [empId, setEmployeeId] = useState('');
   const [email, setEmailId] = useState('');
   const [phoneNo, setPhone] = useState('');
-  const [empRole, setRole] = useState(isSuperAdmin? 'superAdmin' : 'User');
+  const [empRole, setRole] = useState(isSuperAdmin ? 'superAdmin' : 'User');
   const [empName, setFullName] = useState('');
-  const [companyCode, setCompanyCode] = useState(''); 
+  const [companyCode, setCompanyCode] = useState('');
   const [location_id, setLocationId] = useState('');
   const [branch_id, setBranchId] = useState('');
   const [facility_id, setFacilityId] = useState('');
@@ -27,7 +33,7 @@ const UserModal = ({ open, setOpen, isAddButton, userData, setRefreshData }) => 
   const [locationOpen, setLocationOpen] = useState('');
   const [branchOpen, setBranchOpen] = useState('');
   const [facilityOpen, setFacilityOpen] = useState('');
-  
+
   const [password, setConfirmPassword] = useState('');
   const [btnReset, setBtnReset] = useState(false);
   const [errorObject, setErrorObject] = useState({});
@@ -35,7 +41,7 @@ const UserModal = ({ open, setOpen, isAddButton, userData, setRefreshData }) => 
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
-    message: ''
+    message: '',
   });
 
   useEffect(() => {
@@ -50,7 +56,11 @@ const UserModal = ({ open, setOpen, isAddButton, userData, setRefreshData }) => 
     setEmployeeId(userData?.employeeId || '');
     setEmailId(userData?.email || '');
     setPhone(userData?.mobileno || '');
-    { isSuperAdmin ? setRole(userData?.user_role || 'superAdmin') : setRole(userData?.user_role || 'User') }
+    if (isSuperAdmin) {
+      setRole(userData?.user_role || 'superAdmin');
+    } else {
+      setRole(userData?.user_role || 'User');
+    }
     setFullName(userData?.name || '');
     setCompanyCode(userData?.companyCode || '');
     setLocationId(userData.location_id || '');
@@ -60,292 +70,254 @@ const UserModal = ({ open, setOpen, isAddButton, userData, setRefreshData }) => 
 
   const validateForNullValue = (value, type) => {
     AddUserValidate(value, type, setErrorObject);
-  }
+  };
 
-  const handleSuccess = (errorObject) => {
+  const handleSuccess = (resErrorObject) => {
     setNotification({
       status: true,
       type: 'success',
-      message: errorObject.message
+      message: resErrorObject.message,
     });
-    setRefreshData((oldvalue)=>{
-        return !oldvalue;
-    });
-    setTimeout(()=>{
+    setRefreshData((oldvalue) => !oldvalue);
+    setTimeout(() => {
       handleClose();
       setOpen(false);
       setErrorObject({});
-    },3000);
-  }
+    }, 3000);
+  };
 
-  const handleException = (errorObject, errorMessage) => {
+  const handleException = (resErrorObject, errorMessage) => {
     setNotification({
       status: true,
       type: 'error',
-      message: errorMessage
+      message: errorMessage,
     });
-  }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (isAddButton) {
-      await UserAddService({ location_id, branch_id, facility_id, empId, email, phoneNo, empRole, empName }, handleSuccess, handleException);
+      await UserAddService({
+        location_id, branch_id, facility_id, empId, email, phoneNo, empRole, empName,
+      }, handleSuccess, handleException);
     } else {
-      await UserUpdateService({ location_id, branch_id, facility_id, empId, email, phoneNo, empRole, empName, id }, handleSuccess, handleException);
+      await UserUpdateService({
+        location_id, branch_id, facility_id, empId, email, phoneNo, empRole, empName, id,
+      }, handleSuccess, handleException);
     }
-  }
+  };
 
   const passwordSubmit = async (e) => {
     e.preventDefault();
-    UnblockUserService({email, password, id},passwordValidationSuccess,passwordValidationException);
+    UnblockUserService(
+      { email, password, id },
+      passwordValidationSuccess,
+      passwordValidationException,
+    );
     setBtnReset(false);
-  }
+  };
   const passwordValidationSuccess = (dataObject) => {
     setNotification({
       status: true,
       type: 'success',
-      message: dataObject.message
+      message: dataObject.message,
     });
-    setTimeout(()=>{
+    setTimeout(() => {
       handleClose();
-    },5000);
-  }
+    }, 5000);
+  };
 
-  const passwordValidationException = (errorObject, errorMessage) => {
-    console.log(JSON.stringify(errorObject));
+  const passwordValidationException = (resErrorObject, errorMessage) => {
     setNotification({
       status: true,
       type: 'error',
-      message: errorMessage
+      message: errorMessage,
     });
-    setTimeout(()=>{
+    setTimeout(() => {
       handleClose();
-    },5000);
+    }, 5000);
   };
 
   const handleClose = () => {
     setNotification({
-        status: false,
-        type: '',
-        message: ''
+      status: false,
+      type: '',
+      message: '',
     });
-  }
+  };
 
   const locationHandleSuccess = (dataObject) => {
-    setLocationList(dataObject.data);  
-  }
-
-  const locationHandleException = (errorObject) => {
-    console.log(JSON.stringify(errorObject));
+    setLocationList(dataObject.data);
   };
+
+  const locationHandleException = () => {};
 
   const branchHandleSuccess = (dataObject) => {
-    setBranchList(dataObject.data);  
-  }
-
-  const branchHandleException = (errorObject) => {
-    console.log(JSON.stringify(errorObject));
+    setBranchList(dataObject.data);
   };
+
+  const branchHandleException = () => {};
+
   const facilityHandleSuccess = (dataObject) => {
-    setFacilityList(dataObject.data);  
-  }
-
-  const facilityHandleException = (errorObject) => {
-    console.log(JSON.stringify(errorObject));
+    setFacilityList(dataObject.data);
   };
+
+  const facilityHandleException = () => {};
+
   return (
     <Dialog
-      sx={{ "& .MuiDialog-paper": { minWidth: '80%' } }}
+      sx={{ '& .MuiDialog-paper': { minWidth: '80%' } }}
       maxWidth="sm"
       open={open}
     >
       <DialogTitle>
-        {isAddButton ? "Add User" : "Edit User"}
+        {isAddButton ? 'Add User' : 'Edit User'}
       </DialogTitle>
       <DialogContent>
         <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md  -space-y-px">
-            {isSuperAdmin ? '' :
-          <Grid container spacing={1} sx={{ mt: 0, mb:2 }}>
-            <Grid
-              sx={{ mt: 0, padding: 0 }}
-              item
-              xs={12}
-              sm={12}
-              md={4}
-              lg={4}
-              xl={4}
-            >
-              <div className="rounded-md -space-y-px">
-                <Autocomplete
-                  id="asynchronous-demo"
-                  sx={{}}
-                  open={locationOpen}
-                  onOpen={() => {
-                    setLocationOpen(true);
-                  }}
-                  onClose={() => {
-                    setLocationOpen(false);
-                  }}
-                  // isOptionEqualToValue={(option, value) => option.id === value.id}
-                  isOptionEqualToValue={(option, value) => {
-                    
-                    return option.id === value.id
-                  }}
-                  getOptionLabel={(option) => {
-                    console.log(option);
-                    
-                    return option.stateName
-                  }}
-                  options={locationList}
-                  // loading={loading}
-                  onChange={(e, data)=>{
-                    setLocationId(data.id);
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Location Name"
-                      onKeyUp={(e)=>{
-                        setTimeout(()=>{
-                          FetchLocationService(locationHandleSuccess,locationHandleException);
-                        },500);
-                      }}
-                      
-                      // InputProps={{
-                      //   ...params.InputProps,
-                      //   endAdornment: (
-                      //     <React.Fragment>
-                      //       {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                      //       {params.InputProps.endAdornment}
-                      //     </React.Fragment>
-                      //   ),
-                      // }}
-                    />
-                    )}
-                />
-              </div>
-            </Grid>
-            <Grid
-              sx={{ mt: 0, padding: 0 }}
-              item
-              xs={12}
-              sm={12}
-              md={4}
-              lg={4}
-              xl={4}
-            >
-              <div className="rounded-md -space-y-px">
-                <Autocomplete
-                id="asynchronous-demo"
-                sx={{}}
-                open={branchOpen}
-                onOpen={() => {
-                  setBranchOpen(true);
-                }}
-                onClose={() => {
-                  setBranchOpen(false);
-                }}
-                // isOptionEqualToValue={(option, value) => option.id === value.id}
-                isOptionEqualToValue={(option, value) => {
-                  
-                  return option.id === value.id
-                }}
-                getOptionLabel={(option) => {
-                  console.log(option);
-                  
-                  return option.branchName
-                }}
-                options={branchList}
-                // loading={loading}
-                onChange={(e, data)=>{
-                  setBranchId(data.id);
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Branch Name"
-                    onKeyUp={(e)=>{
-                      setTimeout(()=>{
-                        FetchBranchService( {location_id}, branchHandleSuccess,branchHandleException);
-                      },500);
-                    }}
-                    
-                    // InputProps={{
-                    //   ...params.InputProps,
-                    //   endAdornment: (
-                    //     <React.Fragment>
-                    //       {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                    //       {params.InputProps.endAdornment}
-                    //     </React.Fragment>
-                    //   ),
-                    // }}
-                  />
-                  )}
-                />
-              </div>
-            </Grid>
-            <Grid
-              sx={{ mt: 0, padding: 0 }}
-              item
-              xs={12}
-              sm={12}
-              md={4}
-              lg={4}
-              xl={4}
-              >
-                <div className="rounded-md -space-y-px">
-                  <Autocomplete
-                  id="asynchronous-demo"
-                  sx={{}}
-                  open={facilityOpen}
-                  onOpen={() => {
-                    setFacilityOpen(true);
-                  }}
-                  onClose={() => {
-                    setFacilityOpen(false);
-                  }}
-                  // isOptionEqualToValue={(option, value) => option.id === value.id}
-                  isOptionEqualToValue={(option, value) => {
-                    
-                    return option.id === value.id
-                  }}
-                  getOptionLabel={(option) => {
-                    console.log(option);
-                    
-                    return option.facilityName
-                  }}
-                  options={facilityList}
-                  // loading={loading}
-                  onChange={(e, data)=>{
-                    setFacilityId(data.id);
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Facility Name"
-                      onKeyUp={(e)=>{
-                        setTimeout(()=>{
-                          FetchFacilitiyService( {location_id, branch_id}, facilityHandleSuccess,facilityHandleException);
-                        },500);
-                      }}
-                      
-                      // InputProps={{
-                      //   ...params.InputProps,
-                      //   endAdornment: (
-                      //     <React.Fragment>
-                      //       {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                      //       {params.InputProps.endAdornment}
-                      //     </React.Fragment>
-                      //   ),
-                      // }}
-                    />
-                    )}
-                  />
-                </div>
-            </Grid>
-          </Grid> }
-            <div className='rounded-md -space-y-px mb-2'>
+            {isSuperAdmin ? ''
+              : (
+                <Grid container spacing={1} sx={{ mt: 0, mb: 2 }}>
+                  <Grid
+                    sx={{ mt: 0, padding: 0 }}
+                    item
+                    xs={12}
+                    sm={12}
+                    md={4}
+                    lg={4}
+                    xl={4}
+                  >
+                    <div className="rounded-md -space-y-px">
+                      <Autocomplete
+                        id="asynchronous-demo"
+                        sx={{}}
+                        open={locationOpen}
+                        onOpen={() => {
+                          setLocationOpen(true);
+                        }}
+                        onClose={() => {
+                          setLocationOpen(false);
+                        }}
+                        // isOptionEqualToValue={(option, value) => option.id === value.id}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        getOptionLabel={(option) => {
+                          return option.stateName;
+                        }}
+                        options={locationList}
+                        // loading={loading}
+                        onChange={(e, data) => {
+                          setLocationId(data.id);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Location Name"
+                            onKeyUp={() => {
+                              setTimeout(() => {
+                                FetchLocationService(locationHandleSuccess, locationHandleException);
+                              }, 500);
+                            }}
+                          />
+                        )}
+                      />
+                    </div>
+                  </Grid>
+                  <Grid
+                    sx={{ mt: 0, padding: 0 }}
+                    item
+                    xs={12}
+                    sm={12}
+                    md={4}
+                    lg={4}
+                    xl={4}
+                  >
+                    <div className="rounded-md -space-y-px">
+                      <Autocomplete
+                        id="asynchronous-demo"
+                        sx={{}}
+                        open={branchOpen}
+                        onOpen={() => {
+                          setBranchOpen(true);
+                        }}
+                        onClose={() => {
+                          setBranchOpen(false);
+                        }}
+                        // isOptionEqualToValue={(option, value) => option.id === value.id}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        getOptionLabel={(option) => {
+                          return option.branchName;
+                        }}
+                        options={branchList}
+                        // loading={loading}
+                        onChange={(e, data) => {
+                          setBranchId(data.id);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Branch Name"
+                            onKeyUp={() => {
+                              setTimeout(() => {
+                                FetchBranchService({ location_id }, branchHandleSuccess, branchHandleException);
+                              }, 500);
+                            }}
+                          />
+                        )}
+                      />
+                    </div>
+                  </Grid>
+                  <Grid
+                    sx={{ mt: 0, padding: 0 }}
+                    item
+                    xs={12}
+                    sm={12}
+                    md={4}
+                    lg={4}
+                    xl={4}
+                  >
+                    <div className="rounded-md -space-y-px">
+                      <Autocomplete
+                        id="asynchronous-demo"
+                        sx={{}}
+                        open={facilityOpen}
+                        onOpen={() => {
+                          setFacilityOpen(true);
+                        }}
+                        onClose={() => {
+                          setFacilityOpen(false);
+                        }}
+                        // isOptionEqualToValue={(option, value) => option.id === value.id}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        getOptionLabel={(option) => {
+                          return option.facilityName;
+                        }}
+                        options={facilityList}
+                        // loading={loading}
+                        onChange={(e, data) => {
+                          setFacilityId(data.id);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Facility Name"
+                            onKeyUp={() => {
+                              setTimeout(() => {
+                                FetchFacilitiyService(
+                                  { location_id, branch_id },
+                                  facilityHandleSuccess,
+                                  facilityHandleException,
+                                );
+                              }, 500);
+                            }}
+                          />
+                        )}
+                      />
+                    </div>
+                  </Grid>
+                </Grid>
+              ) }
+            <div className="rounded-md -space-y-px mb-2">
               <TextField
                 sx={{ mb: 2 }}
                 label="Employee Id"
@@ -353,17 +325,20 @@ const UserModal = ({ open, setOpen, isAddButton, userData, setRefreshData }) => 
                 value={empId}
                 variant="outlined"
                 placeholder="Employee Id"
-                className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                className="mb-2 appearance-none rounded-none
+                relative block w-full px-3 py-2 border border-gray-300
+                placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none
+                focus:ring-red-500 focus:border-red-500  sm:text-sm"
                 required
                 onBlur={() => validateForNullValue(empId, 'employeeId')}
-                onChange={(e) => { setEmployeeId(e.target.value) }}
+                onChange={(e) => { setEmployeeId(e.target.value); }}
                 autoComplete="off"
                 error={errorObject?.employeeId?.errorStatus}
                 helperText={errorObject?.employeeId?.helperText}
               />
             </div>
             <div className="rounded-md -space-y-px">
-              <div className='mb-2'>
+              <div className="mb-2">
                 <TextField
                   sx={{ mb: 2 }}
                   label="Email Id"
@@ -371,10 +346,13 @@ const UserModal = ({ open, setOpen, isAddButton, userData, setRefreshData }) => 
                   value={email}
                   variant="outlined"
                   placeholder="Email Id"
-                  className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                  className="mb-2 appearance-none rounded-none relative
+                  block w-full px-3 py-2 border border-gray-300 placeholder-gray-500
+                  text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500
+                  focus:border-red-500  sm:text-sm"
                   required
-                  onBlur={() => { validateForNullValue(email, 'email') }}
-                  onChange={(e) => { setEmailId(e.target.value) }}
+                  onBlur={() => { validateForNullValue(email, 'email'); }}
+                  onChange={(e) => { setEmailId(e.target.value); }}
                   autoComplete="off"
                   error={errorObject?.emailId?.errorStatus}
                   helperText={errorObject?.emailId?.helperText}
@@ -382,7 +360,7 @@ const UserModal = ({ open, setOpen, isAddButton, userData, setRefreshData }) => 
               </div>
             </div>
             <div className="rounded-md -space-y-px">
-              <div className='mb-2'>
+              <div className="mb-2">
                 <TextField
                   sx={{ mb: 2 }}
                   label="Phone"
@@ -390,10 +368,12 @@ const UserModal = ({ open, setOpen, isAddButton, userData, setRefreshData }) => 
                   value={phoneNo}
                   variant="outlined"
                   placeholder="Phone number"
-                  className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                  className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2
+                  border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md
+                  focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
                   required
                   onBlur={() => validateForNullValue(phoneNo, 'phone')}
-                  onChange={(e) => { setPhone(e.target.value) }}
+                  onChange={(e) => { setPhone(e.target.value); }}
                   autoComplete="off"
                   error={errorObject?.phone?.errorStatus}
                   helperText={errorObject?.phone?.helperText}
@@ -401,7 +381,7 @@ const UserModal = ({ open, setOpen, isAddButton, userData, setRefreshData }) => 
               </div>
             </div>
             <div className="rounded-md -space-y-px">
-              <div className='mb-2'>
+              <div className="mb-2">
                 <TextField
                   sx={{ mb: 2 }}
                   label="Full Name"
@@ -409,7 +389,9 @@ const UserModal = ({ open, setOpen, isAddButton, userData, setRefreshData }) => 
                   value={empName}
                   variant="outlined"
                   placeholder="Full Name"
-                  className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                  className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2
+                  border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md
+                  focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
                   required
                   onBlur={() => validateForNullValue(empName, 'fullName')}
                   onChange={(e) => setFullName(e.target.value)}
@@ -420,56 +402,66 @@ const UserModal = ({ open, setOpen, isAddButton, userData, setRefreshData }) => 
               </div>
             </div>
             <div className="rounded-md -space-y-px">
-              <div className='mb-2'>
+              <div className="mb-2">
                 <FormControl sx={{ mb: 2 }} fullWidth>
                   <InputLabel id="demo-simple-select-label">Role</InputLabel>
-                  {isSuperAdmin? 
-                    <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={empRole}
-                    label="Role"
-                    onChange={(e) => {
-                      setRole(e.target.value);
-                      }}
-                    >
-                      <MenuItem value={'superAdmin'}>Super Admin</MenuItem>
-                    </Select>
-                    :
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={empRole}
-                      label="Role"
-                      onChange={(e) => {
-                        setRole(e.target.value);
-                      }}
-                    >
-                      <MenuItem value={'User'}>User</MenuItem>
-                      <MenuItem value={'Manager'}>Manager</MenuItem>
-                      <MenuItem value={'Admin'}>Admin</MenuItem>
-                    </Select> 
-                   }
+                  {isSuperAdmin
+                    ? (
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={empRole}
+                        label="Role"
+                        onChange={(e) => {
+                          setRole(e.target.value);
+                        }}
+                      >
+                        <MenuItem value="superAdmin">Super Admin</MenuItem>
+                      </Select>
+                    )
+                    : (
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={empRole}
+                        label="Role"
+                        onChange={(e) => {
+                          setRole(e.target.value);
+                        }}
+                      >
+                        <MenuItem value="User">User</MenuItem>
+                        <MenuItem value="Manager">Manager</MenuItem>
+                        <MenuItem value="Admin">Admin</MenuItem>
+                      </Select>
+                    )}
                 </FormControl>
               </div>
             </div>
             <div className="rounded-md -space-y-px float-right">
-              {isAddButton ? '' :
-                <Button
-                  onClick={() => {
-                    setBtnReset(true)
-                  }}>
-                  Reset Password
-                </Button>
-              }
+              {isAddButton ? ''
+                : (
+                  <Button
+                    onClick={() => {
+                      setBtnReset(true);
+                    }}
+                  >
+                    Reset Password
+                  </Button>
+                )}
               <Button
                 type="submit"
-                disabled={errorObject?.employeeId?.errorStatus || errorObject?.emailId?.errorStatus || errorObject?.phone?.errorStatus || errorObject?.role?.errorStatus || errorObject?.fullName?.errorStatus}
+                disabled={
+                  errorObject?.employeeId?.errorStatus
+                  || errorObject?.emailId?.errorStatus
+                  || errorObject?.phone?.errorStatus
+                  || errorObject?.role?.errorStatus
+                  || errorObject?.fullName?.errorStatus
+                }
               >
-                {isAddButton ? "Add" : "Update"}
+                {isAddButton ? 'Add' : 'Update'}
               </Button>
               <Button
-                onClick={(e) => {
+                onClick={() => {
                   setOpen(false);
                   setErrorObject({});
                   loaddata();
@@ -481,20 +473,20 @@ const UserModal = ({ open, setOpen, isAddButton, userData, setRefreshData }) => 
           </div>
         </form>
       </DialogContent>
-      <ConfirmPassword 
+      <ConfirmPassword
         open={btnReset}
-        passwordSubmit={passwordSubmit} 
-        setConfirmPassword={setConfirmPassword} 
+        passwordSubmit={passwordSubmit}
+        setConfirmPassword={setConfirmPassword}
         setBtnReset={setBtnReset}
       />
       <NotificationBar
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
-        type={openNotification.type} 
+        type={openNotification.type}
       />
     </Dialog>
   );
 }
 
-export default UserModal
+export default UserModal;
