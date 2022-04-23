@@ -237,105 +237,101 @@ export const ConfigSetupDeleteService = (data, successCallback, errorCallBack) =
 
 export const DeviceConfigSetupAddService = (data, successCallback, errorCallBack) => _fetchService('DeviceConfigSetup/add', 'POST', data, successCallback, errorCallBack);
 
-export const VendorDeleteService = (data, successCallback, errorCallBack) => {
-    return _fetchService('vendor/'+data.id+'/delete', 'DELETE', {}, successCallback, errorCallBack);
-}
+// export const VendorEditService = (data, successCallback, errorCallBack) => {
+//     return _fetchService('vendor/'+(data.id)+'/update', 'POST', data, successCallback, errorCallBack);
+// }
 
-export const VendorEditService = (data, successCallback, errorCallBack) => { 
-    return _fetchService('vendor/'+(data.id)+'/update', 'POST', data, successCallback, errorCallBack);
-}
+// export const FetchVendorService = (successCallback, errorCallBack) => {
+//     return _fetchService('vendor', 'GET', {}, successCallback, errorCallBack);
+// }
 
-export const FetchVendorService = (successCallback, errorCallBack) => {
-    return _fetchService('vendor', 'GET', {}, successCallback, errorCallBack);
-}
+// export const VendorAddService = (data, successCallback, errorCallBack) => {
+//     return _fetchService('vendor/add', 'POST', data, successCallback, errorCallBack);
+// }
 
-export const VendorAddService = (data, successCallback, errorCallBack) => {
-    return _fetchService('vendor/add', 'POST', data, successCallback, errorCallBack);
-}
+// ------- Sensor category ---------------//
+// export const SensorCategoryFetchService = (successCallback, errorCallBack) => {
+//     return _fetchService('sensorCategory', 'GET', {}, successCallback, errorCallBack);
+// }
 
-//------- Sensor category ---------------//
-export const SensorCategoryFetchService = (successCallback, errorCallBack) => {
-    return _fetchService('sensorCategory', 'GET', {}, successCallback, errorCallBack);
-}
+// export const SensorCategoryAddService = (data, successCallback, errorCallBack) => {
+//     return _fetchService('sensorCategory/add', 'POST', data, successCallback, errorCallBack);
+// }
 
-export const SensorCategoryAddService = (data, successCallback, errorCallBack) => {
-    return _fetchService('sensorCategory/add', 'POST', data, successCallback, errorCallBack);
-}
+// export const SensorCategoryEditService = (data, successCallback, errorCallBack) => {
+//     return _fetchService('sensorCategory/' + (data.id) + '/update', 'POST', data, successCallback, errorCallBack);
+// }
 
-export const SensorCategoryEditService = (data, successCallback, errorCallBack) => {
-    return _fetchService('sensorCategory/' + (data.id) + '/update', 'POST', data, successCallback, errorCallBack);
-}
+// export const SensorCategoryDeleteService = (data, successCallback, errorCallBack) =>{
+//     return _fetchService('sensorCategory/' + (data.id) + '/delete', 'DELETE', {}, successCallback, errorCallBack);
+// }
+// --------------- Sensor Adding ---------------------//
 
-export const SensorCategoryDeleteService = (data, successCallback, errorCallBack) =>{
-    return _fetchService('sensorCategory/' + (data.id) + '/delete', 'DELETE', {}, successCallback, errorCallBack);
-}
-//--------------- Sensor Adding ---------------------//
+// export const SensorAddService = (data, successCallback, errorCallBack) => {
+//     return _fetchService('sensorUnit/add', 'POST', data, successCallback, errorCallBack);
+// }
 
-export const SensorAddService = (data, successCallback, errorCallBack) => {
-    return _fetchService('sensorUnit/add', 'POST', data, successCallback, errorCallBack);
-}
+// export const SensorEditService = (data, successCallback, errorCallBack) => {
+//     return _fetchService('sensorUnit/' + (data.id) + '/update', 'POST', data, successCallback, errorCallBack);
+// }
+// export const SensorFetchService = (data, successCallback, errorCallBack) => {
+//     return _fetchService('sensorUnit/'+data, 'GET', {}, successCallback, errorCallBack);
+// }
 
-export const SensorEditService = (data, successCallback, errorCallBack) => {
-    return _fetchService('sensorUnit/' + (data.id) + '/update', 'POST', data, successCallback, errorCallBack);
-}
-export const SensorFetchService = (data, successCallback, errorCallBack) => {
-    return _fetchService('sensorUnit/'+data, 'GET', {}, successCallback, errorCallBack);
-}
+// export const SensorDeleteService = (data, successCallback, errorCallBack) =>{
+//     return _fetchService('sensorUnit/' + (data.id) + '/delete', 'DELETE', {}, successCallback, errorCallBack);
+// }
 
-export const SensorDeleteService = (data, successCallback, errorCallBack) =>{
-    return _fetchService('sensorUnit/' + (data.id) + '/delete', 'DELETE', {}, successCallback, errorCallBack);
-}
+// export const SensorListFetchService = (successCallback, errorCallBack) => {
+//     return _fetchService('sensorUnit', 'GET', {}, successCallback, errorCallBack);
+// }
 
-export const SensorListFetchService = (successCallback, errorCallBack) => {
-    return _fetchService('sensorUnit', 'GET', {}, successCallback, errorCallBack);
-}
+// ------------ Sensor deploying ------------------//
+// export const SensorDeployAddService = (data, successCallback, errorCallBack) => {
+//     return _fetchService('sensor/add', 'POST', data, successCallback, errorCallBack);
+// }
 
-//------------ Sensor deploying ------------------//
-export const SensorDeployAddService = (data, successCallback, errorCallBack) => {
-    return _fetchService('sensor/add', 'POST', data, successCallback, errorCallBack);
-}
+// export const SensorDeployEditService = (data, successCallback, errorCallBack) => {
+//     return _fetchService('sensor/' + (data.id) + '/update', 'POST', data, successCallback, errorCallBack);
+// }
 
-export const SensorDeployEditService = (data, successCallback, errorCallBack) => {
-    return _fetchService('sensor/' + (data.id) + '/update', 'POST', data, successCallback, errorCallBack);
-}
+// export const SensorDeployDeleteService = (data, successCallback, errorCallBack) =>{
+//     return _fetchService('sensor/' + (data.id) + '/delete', 'DELETE', {}, successCallback, errorCallBack);
+// }
 
-export const SensorDeployDeleteService = (data, successCallback, errorCallBack) =>{
-    return _fetchService('sensor/' + (data.id) + '/delete', 'DELETE', {}, successCallback, errorCallBack);
-}
+// export const SensorDeployFetchService = (data, successCallback, errorCallBack) => {
+//     return _fetchService('search', 'POST', data, successCallback, errorCallBack);
+// }
+// ------------ Config setup ------------------//
 
-export const SensorDeployFetchService = (data, successCallback, errorCallBack) => {
-    return _fetchService('search', 'POST', data, successCallback, errorCallBack);
-}
-//------------ Config setup ------------------//
+// export const ConfigSetupFetchService = (successCallback, errorCallBack) => {
+//     return _fetchService('configSetup', 'GET', {}, successCallback, errorCallBack);
+// }
 
-export const ConfigSetupFetchService = (successCallback, errorCallBack) => {
-    return _fetchService('configSetup', 'GET', {}, successCallback, errorCallBack);
-}
+// export const ConfigSetupAddService = (data, successCallback, errorCallBack) => {
+//     return _fetchService('configSetup/add', 'POST', data, successCallback, errorCallBack);
+// }
 
-export const ConfigSetupAddService = (data, successCallback, errorCallBack) => {
-    return _fetchService('configSetup/add', 'POST', data, successCallback, errorCallBack);
-}
+// export const ConfigSetupEditService = (data, successCallback, errorCallBack) => {
+//     return _fetchService('configSetup/' + (data.id) + '/update', 'POST', data, successCallback, errorCallBack);
+// }
 
-export const ConfigSetupEditService = (data, successCallback, errorCallBack) => {
-    return _fetchService('configSetup/' + (data.id) + '/update', 'POST', data, successCallback, errorCallBack);
-}
+// export const ConfigSetupDeleteService = (data, successCallback, errorCallBack) =>{
+//     return _fetchService('configSetup/' + (data.id) + '/delete', 'DELETE', {}, successCallback, errorCallBack);
+// }
 
-export const ConfigSetupDeleteService = (data, successCallback, errorCallBack) =>{
-    return _fetchService('configSetup/' + (data.id) + '/delete', 'DELETE', {}, successCallback, errorCallBack);
-}
+// ------------ Device Config setup ------------------//
 
-//------------ Device Config setup ------------------//
-
-export const DeviceConfigSetupAddService = (data, successCallback, errorCallBack) => {
-    return _fetchService('DeviceConfigSetup/add', 'POST', data, successCallback, errorCallBack);
-}
+// export const DeviceConfigSetupAddService = (data, successCallback, errorCallBack) => {
+//     return _fetchService('DeviceConfigSetup/add', 'POST', data, successCallback, errorCallBack);
+// }
 
 export const DeviceConfigSetupFetchService = (data, successCallback, errorCallBack) => {
-    return _fetchService('DeviceConfigSetup/'+ data.id +'/getDeviceConfigData', 'GET', {}, successCallback, errorCallBack);
-}
+  return _fetchService(`DeviceConfigSetup/${data.id}/getDeviceConfigData`, 'GET', {}, successCallback, errorCallBack);
+};
 
 // ----------- STEL & TWA setup -----------------------//
 
 export const StelEditService = (data, successCallback, errorCallBack) => {
-    return _fetchService('stel/' + (data.id) + '/update', 'POST', data, successCallback, errorCallBack);
-}
+  return _fetchService(`stel/${data.id}/update`, 'POST', data, successCallback, errorCallBack);
+};

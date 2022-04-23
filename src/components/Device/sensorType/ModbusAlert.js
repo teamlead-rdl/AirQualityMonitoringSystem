@@ -1,7 +1,6 @@
 import {
   DialogContent, FormControl, Grid, InputLabel, MenuItem, Select, TextField,
 } from '@mui/material';
-import { Box } from '@mui/system';
 import React from 'react';
 
 function ModbusAlert({
@@ -48,6 +47,8 @@ function ModbusAlert({
               onChange={(e) => {
                 setPollingIntervalType(e.target.value);
               }}
+              // error={errorObject?.deviceName?.errorStatus}
+              // helperText={errorObject?.deviceName?.helperText}
             >
               <MenuItem value="Priority">Priority</MenuItem>
               <MenuItem value="NonPriority">Non Priority</MenuItem>
@@ -55,7 +56,7 @@ function ModbusAlert({
           </FormControl>
         </Grid>
       </Grid>
-      <Grid container spacing={1} sx={{ mt: 1 }}>
+      <Grid container spacing={1} sx={{ mt: 0 }}>
         <Grid
           sx={{ mt: 0, padding: 0 }}
           item
@@ -129,10 +130,10 @@ function ModbusAlert({
           sx={{ mt: 0, padding: 0 }}
           item
           xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
+          sm={4}
+          md={4}
+          lg={4}
+          xl={4}
         >
           <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
             <InputLabel id="demo-simple-select-label">
@@ -146,6 +147,8 @@ function ModbusAlert({
               onChange={(e) => {
                 setCriticalAlertType(e.target.value);
               }}
+              // error={errorObject?.deviceName?.errorStatus}
+              // helperText={errorObject?.deviceName?.helperText}
             >
               <MenuItem value="High">High</MenuItem>
               <MenuItem value="Low">Low</MenuItem>
@@ -154,94 +157,96 @@ function ModbusAlert({
           </FormControl>
         </Grid>
         <Grid
-          sx={{ mt: 0, padding: 0 }}
+          sx={{ mt: 0, padding: 0, display: 'flex' }}
           item
           xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-          style={{ float: 'right' }}
+          sm={8}
+          md={8}
+          lg={8}
+          xl={8}
+          // style={{float:'right'}}
         >
+          <Grid
+            container
+            spacing={1}
+          >
 
-          {criticalAlertType == 'Low' || criticalAlertType == 'Both'
-            ? (
-              <Grid
-                sx={{ mt: 0, padding: 0 }}
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-              >
-                <div className="rounded-md -space-y-px">
-                  <TextField
-                    sx={{ marginTop: 0 }}
-                    value={criticalLowAlert}
-                    // onBlur={() => validateForNullValue(alertTag, "alertTag")}
-                    onChange={(e) => {
-                      setCriticalLowAlert(e.target.value);
-                    }}
-                    margin="normal"
-                    required
-                    id="outlined-required"
-                    label="Low alert message"
-                    fullWidth
-                    // error={errorObject?.deviceName?.errorStatus}
-                    // helperText={errorObject?.deviceName?.helperText}
-                    autoComplete="off"
-                  />
-                </div>
-              </Grid>
-            )
-            : ''}
-          {criticalAlertType == 'Both' || criticalAlertType == 'High'
-            ? (
-              <Grid
-                sx={{ mt: 0, padding: 0 }}
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-              >
-                <div className="rounded-md -space-y-px">
-                  <TextField
-                    sx={{ marginTop: 0 }}
-                    value={criticalHighAlert}
-                    // onBlur={() => validateForNullValue(alertTag, "alertTag")}
-                    onChange={(e) => {
-                      setCriticalHighAlert(e.target.value);
-                    }}
-                    margin="normal"
-                    required
-                    id="outlined-required"
-                    label="High alert message"
-                    fullWidth
-                    // error={errorObject?.deviceName?.errorStatus}
-                    // helperText={errorObject?.deviceName?.helperText}
-                    autoComplete="off"
-                  />
-                </div>
-              </Grid>
-            )
-            : ''}
+            {criticalAlertType === 'Low' || criticalAlertType === 'Both'
+              ? (
+                <Grid
+                  sx={{ mt: 0, padding: 0 }}
+                  item
+                  xs={12}
+                  sm={6}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                >
+                  <div className="rounded-md -space-y-px">
+                    <TextField
+                      sx={{ marginTop: 0 }}
+                      value={criticalLowAlert}
+                      // onBlur={() => validateForNullValue(alertTag, "alertTag")}
+                      onChange={(e) => {
+                        setCriticalLowAlert(e.target.value);
+                      }}
+                      margin="normal"
+                      required
+                      id="outlined-required"
+                      label="Low alert message"
+                      fullWidth
+                      // error={errorObject?.deviceName?.errorStatus}
+                      // helperText={errorObject?.deviceName?.helperText}
+                      autoComplete="off"
+                    />
+                  </div>
+                </Grid>
+              )
+              : ''}
+            {criticalAlertType === 'Both' || criticalAlertType === 'High'
+              ? (
+                <Grid
+                  sx={{ mt: 0, padding: 0 }}
+                  item
+                  xs={12}
+                  sm={6}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                >
+                  <div className="rounded-md -space-y-px">
+                    <TextField
+                      sx={{ marginTop: 0 }}
+                      value={criticalHighAlert}
+                      // onBlur={() => validateForNullValue(alertTag, "alertTag")}
+                      onChange={(e) => {
+                        setCriticalHighAlert(e.target.value);
+                      }}
+                      margin="normal"
+                      required
+                      id="outlined-required"
+                      label="High alert message"
+                      fullWidth
+                      // error={errorObject?.deviceName?.errorStatus}
+                      // helperText={errorObject?.deviceName?.helperText}
+                      autoComplete="off"
+                    />
+                  </div>
+                </Grid>
+              )
+              : ''}
+          </Grid>
         </Grid>
-        <Grid
-          sx={{ mt: 0, padding: 0 }}
+        {/* <Grid
+          sx={{ mt: 0, padding:0 }}
           item
-          xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-        >
-          <div className="rounded-md -space-y-px" />
-        </Grid>
+          xs={12} sm={6} md={6} lg={6} xl={6}>
+          <div className='rounded-md -space-y-px'>
+
+          </div>
+        </Grid> */}
       </Grid>
-      <Grid container spacing={1} sx={{ mt: 1 }}>
+      <Grid container spacing={1} sx={{ mt: 0 }}>
         <Grid
           sx={{ mt: 0, padding: 0 }}
           item
@@ -315,10 +320,10 @@ function ModbusAlert({
           sx={{ mt: 0, padding: 0 }}
           item
           xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
+          sm={4}
+          md={4}
+          lg={4}
+          xl={4}
         >
           <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
             <InputLabel id="demo-simple-select-label">
@@ -332,6 +337,8 @@ function ModbusAlert({
               onChange={(e) => {
                 setWarningAlertType(e.target.value);
               }}
+              // error={errorObject?.deviceName?.errorStatus}
+              // helperText={errorObject?.deviceName?.helperText}
             >
               <MenuItem value="High">High</MenuItem>
               <MenuItem value="Low">Low</MenuItem>
@@ -340,80 +347,87 @@ function ModbusAlert({
           </FormControl>
         </Grid>
         <Grid
-          sx={{ mt: 0, padding: 0 }}
+          sx={{ mt: 0, padding: 0, display: 'flex' }}
           item
           xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-          style={{ float: 'right' }}
+          sm={8}
+          md={8}
+          lg={8}
+          xl={8}
+          style={{
+            // float:'right'
+          }}
         >
+          <Grid
+            container
+            spacing={1}
+          >
 
-          {warningAlertType == 'Low' || warningAlertType == 'Both'
-            ? (
-              <Grid
-                sx={{ mt: 0, padding: 0 }}
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-              >
-                <div className="rounded-md -space-y-px">
-                  <TextField
-                    sx={{ marginTop: 0 }}
-                    value={warningLowAlert}
-                    // onBlur={() => validateForNullValue(alertTag, "alertTag")}
-                    onChange={(e) => {
-                      setWarningLowAlert(e.target.value);
-                    }}
-                    margin="normal"
-                    required
-                    id="outlined-required"
-                    label="Low alert message"
-                    fullWidth
-                    // error={errorObject?.deviceName?.errorStatus}
-                    // helperText={errorObject?.deviceName?.helperText}
-                    autoComplete="off"
-                  />
-                </div>
-              </Grid>
-            )
-            : ''}
-          {warningAlertType == 'High' || warningAlertType == 'Both'
-            ? (
-              <Grid
-                sx={{ mt: 0, padding: 0 }}
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-              >
-                <div className="rounded-md -space-y-px">
-                  <TextField
-                    sx={{ marginTop: 0 }}
-                    value={warningHighAlert}
-                    // onBlur={() => validateForNullValue(alertTag, "alertTag")}
-                    onChange={(e) => {
-                      setWarningHighAlert(e.target.value);
-                    }}
-                    margin="normal"
-                    required
-                    id="outlined-required"
-                    label="High alert message"
-                    fullWidth
-                    // error={errorObject?.deviceName?.errorStatus}
-                    // helperText={errorObject?.deviceName?.helperText}
-                    autoComplete="off"
-                  />
-                </div>
-              </Grid>
-            )
-            : ''}
+            {warningAlertType === 'Low' || warningAlertType === 'Both'
+              ? (
+                <Grid
+                  sx={{ mt: 0, padding: 0 }}
+                  item
+                  xs={12}
+                  sm={6}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                >
+                  <div className="rounded-md -space-y-px">
+                    <TextField
+                      sx={{ marginTop: 0 }}
+                      value={warningLowAlert}
+                      // onBlur={() => validateForNullValue(alertTag, "alertTag")}
+                      onChange={(e) => {
+                        setWarningLowAlert(e.target.value);
+                      }}
+                      margin="normal"
+                      required
+                      id="outlined-required"
+                      label="Low alert message"
+                      fullWidth
+                      // error={errorObject?.deviceName?.errorStatus}
+                      // helperText={errorObject?.deviceName?.helperText}
+                      autoComplete="off"
+                    />
+                  </div>
+                </Grid>
+              )
+              : ''}
+            {warningAlertType === 'High' || warningAlertType === 'Both'
+              ? (
+                <Grid
+                  sx={{ mt: 0, padding: 0 }}
+                  item
+                  xs={12}
+                  sm={6}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                >
+                  <div className="rounded-md -space-y-px">
+                    <TextField
+                      sx={{ marginTop: 0 }}
+                      value={warningHighAlert}
+                      // onBlur={() => validateForNullValue(alertTag, "alertTag")}
+                      onChange={(e) => {
+                        setWarningHighAlert(e.target.value);
+                      }}
+                      margin="normal"
+                      required
+                      id="outlined-required"
+                      label="High alert message"
+                      fullWidth
+                      // error={errorObject?.deviceName?.errorStatus}
+                      // helperText={errorObject?.deviceName?.helperText}
+                      autoComplete="off"
+                    />
+                  </div>
+                </Grid>
+              )
+              : ''}
+          </Grid>
         </Grid>
         <Grid
           sx={{ mt: 0, padding: 0 }}
@@ -427,7 +441,7 @@ function ModbusAlert({
           <div className="rounded-md -space-y-px" />
         </Grid>
       </Grid>
-      <Grid container spacing={1} sx={{ mt: 1 }}>
+      <Grid container spacing={1} sx={{ mt: 0 }}>
         <Grid
           sx={{ mt: 0, padding: 0 }}
           item
@@ -501,10 +515,10 @@ function ModbusAlert({
           sx={{ mt: 0, padding: 0 }}
           item
           xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
+          sm={4}
+          md={4}
+          lg={4}
+          xl={4}
         >
           <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
             <InputLabel id="demo-simple-select-label">
@@ -518,6 +532,8 @@ function ModbusAlert({
               onChange={(e) => {
                 setOutofrangeAlertType(e.target.value);
               }}
+              // error={errorObject?.deviceName?.errorStatus}
+              // helperText={errorObject?.deviceName?.helperText}
             >
               <MenuItem value="High">High</MenuItem>
               <MenuItem value="Low">Low</MenuItem>
@@ -526,79 +542,87 @@ function ModbusAlert({
           </FormControl>
         </Grid>
         <Grid
-          sx={{ mt: 0, padding: 0 }}
+          sx={{ mt: 0, padding: 0, display: 'flex' }}
           item
           xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-          style={{ float: 'right' }}
+          sm={8}
+          md={8}
+          lg={8}
+          xl={8}
+          style={{
+            // float:'right'
+          }}
         >
-          {outofrangeAlertType == 'Low' || outofrangeAlertType == 'Both'
-            ? (
-              <Grid
-                sx={{ mt: 0, padding: 0 }}
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-              >
-                <div className="rounded-md -space-y-px">
-                  <TextField
-                    sx={{ marginTop: 0 }}
-                    value={outofrangeLowAlert}
-                    // onBlur={() => validateForNullValue(alertTag, "alertTag")}
-                    onChange={(e) => {
-                      setOutofrangeLowAlert(e.target.value);
-                    }}
-                    margin="normal"
-                    required
-                    id="outlined-required"
-                    label="Low alert message"
-                    fullWidth
-                    // error={errorObject?.deviceName?.errorStatus}
-                    // helperText={errorObject?.deviceName?.helperText}
-                    autoComplete="off"
-                  />
-                </div>
-              </Grid>
-            )
-            : ''}
-          {outofrangeAlertType == 'High' || outofrangeAlertType == 'Both'
-            ? (
-              <Grid
-                sx={{ mt: 0, padding: 0 }}
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-              >
-                <div className="rounded-md -space-y-px">
-                  <TextField
-                    sx={{ marginTop: 0 }}
-                    value={outofrangeHighAlert}
-                    // onBlur={() => validateForNullValue(alertTag, "alertTag")}
-                    onChange={(e) => {
-                      setOutofrangeHighAlert(e.target.value);
-                    }}
-                    margin="normal"
-                    required
-                    id="outlined-required"
-                    label="High alert message"
-                    fullWidth
-                    // error={errorObject?.deviceName?.errorStatus}
-                    // helperText={errorObject?.deviceName?.helperText}
-                    autoComplete="off"
-                  />
-                </div>
-              </Grid>
-            )
-            : ''}
+          <Grid
+            container
+            spacing={1}
+          >
+
+            {outofrangeAlertType === 'Low' || outofrangeAlertType === 'Both'
+              ? (
+                <Grid
+                  sx={{ mt: 0, padding: 0 }}
+                  item
+                  xs={12}
+                  sm={6}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                >
+                  <div className="rounded-md -space-y-px">
+                    <TextField
+                      sx={{ marginTop: 0 }}
+                      value={outofrangeLowAlert}
+                      // onBlur={() => validateForNullValue(alertTag, "alertTag")}
+                      onChange={(e) => {
+                        setOutofrangeLowAlert(e.target.value);
+                      }}
+                      margin="normal"
+                      required
+                      id="outlined-required"
+                      label="Low alert message"
+                      fullWidth
+                      // error={errorObject?.deviceName?.errorStatus}
+                      // helperText={errorObject?.deviceName?.helperText}
+                      autoComplete="off"
+                    />
+                  </div>
+                </Grid>
+              )
+              : ''}
+            {outofrangeAlertType === 'High' || outofrangeAlertType === 'Both'
+              ? (
+                <Grid
+                  sx={{ mt: 0, padding: 0 }}
+                  item
+                  xs={12}
+                  sm={6}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                >
+                  <div className="rounded-md -space-y-px">
+                    <TextField
+                      sx={{ marginTop: 0 }}
+                      value={outofrangeHighAlert}
+                      // onBlur={() => validateForNullValue(alertTag, "alertTag")}
+                      onChange={(e) => {
+                        setOutofrangeHighAlert(e.target.value);
+                      }}
+                      margin="normal"
+                      required
+                      id="outlined-required"
+                      label="High alert message"
+                      fullWidth
+                      // error={errorObject?.deviceName?.errorStatus}
+                      // helperText={errorObject?.deviceName?.helperText}
+                      autoComplete="off"
+                    />
+                  </div>
+                </Grid>
+              )
+              : ''}
+          </Grid>
 
         </Grid>
         <Grid

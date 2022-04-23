@@ -2,24 +2,16 @@ import React, { useState, useEffect } from 'react';
 import {
   Button,
   DialogContent,
-  IconButton,
-  InputAdornment,
   InputLabel, Select,
-  Typography,
   FormControl,
   TextField,
   MenuItem,
   Grid,
-  Divider,
   Autocomplete,
-  CircularProgress,
-
+  Box,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import { Box } from '@mui/system';
 import {
-  CategoryFetchService, DeviceFetchService, SensorAddService, SensorCategoryFetchService, SensorDeployAddService, SensorDeployEditService, SensorFetchService,
+  CategoryFetchService, DeviceFetchService, SensorCategoryFetchService, SensorDeployAddService, SensorDeployEditService, SensorFetchService,
 } from '../../services/LoginPageService';
 import Analog from './sensorType/AnalogComponent';
 import Modbus from './sensorType/ModbusComponent';
@@ -28,48 +20,22 @@ import AnalogAlert from './sensorType/AnalogAlert';
 import ModbusAlert from './sensorType/ModbusAlert';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import { AddCategoryValidate } from '../../validation/formValidation';
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+import StelTWA from './sensorType/StelTWAComponent';
 
 function DeviceAdd({
-  locationDetails, labMap, setProgressStatus, editData, isUpdate,
+  locationDetails, setProgressStatus, editData, isUpdate,
 }) {
-  const [location_id, setLocation_Id] = useState(16);
-  const [branch_id, setBranch_id] = useState(16);
-  const [facility_id, setFacility_id] = useState(2);
-  const [building_id, setBuildingId] = useState(1);
-  const [category_id, setCategory_id] = useState('');
-  const [deviceCategory, setDeviceCategory] = useState('');
+  const id = editData?.id || '';
   const [deviceId, setDeviceId] = useState(editData?.deviceId || '');
   const [categoryId, setCategoryId] = useState(editData?.categoryId || '');
   const [sensorTag, setSensorTag] = useState(editData?.sensorTag || '');
-  const [id, setId] = useState(editData?.id || '');
   const [categoryList, setCategoryList] = useState([]);
   const [sensorList, setSensorList] = useState([]);
   const [deviceList, setDeviceList] = useState([]);
   const [sensorCategoryList, setSensorCategoryList] = useState([]);
   const [alerts, setAlert] = useState('');
-  const [alertTag, setAlertTag] = useState('');
-  const [registerAddress, setRegisterAddress] = useState('');
-  const [registerLength, setRegisterLength] = useState('');
-  const [minReadingRage, setMinReadingRage] = useState('');
-  const [minScale, setMinScale] = useState('');
-  const [minUnits, setMinUnits] = useState('');
-  const [maxReadingRage, setMaxReadingRage] = useState('');
-  const [maxScale, setMaxScale] = useState('');
-  const [maxUnits, setMaxUnits] = useState('');
-  const [minThreshold, setMinThreshold] = useState('');
-  const [maxThreshold, setmaxThreshold] = useState('');
   const [sensorCategoryId, setSensorCategoryId] = useState(editData?.sensorCategoryId || '');
   const [sensorName, setSensorName] = useState(editData?.sensorName || '');
-  const [manufacturer, setManufacturer] = useState('');
-  const [partId, setPartId] = useState('');
   const [sensorOutput, setSensorOutput] = useState(editData?.sensorOutput || 'Digital');
   // -- Digital --/
   const [digitalAlertType, setDigitalAlertType] = useState(editData?.digitalAlertType || '');
@@ -112,10 +78,36 @@ function DeviceAdd({
   const [outofrangeAlertType, setOutofrangeAlertType] = useState(editData?.outofrangeAlertType || '');
   const [outofrangeLowAlert, setOutofrangeLowAlert] = useState(editData?.outofrangeLowAlert || '');
   const [outofrangeHighAlert, setOutofrangeHighAlert] = useState(editData?.outofrangeHighAlert || '');
+
+  // ---- STEL & TWA ----------//
+  const [alarm, setAlarm] = useState(editData?.alarm || '');
+
+  const [isAQI, setIsAQI] = useState(editData?.isAQI || false);
+  const [isStel, setIsStel] = useState(editData?.isStel || false);
+  const [stelDuration, setStelDuration] = useState(editData?.stelDuration || '');
+  const [stelType, setStelType] = useState(editData?.stelType || 'ppm');
+  const [stelLimit, setStelLimit] = useState(editData?.stelLimit || 0);
+  const [stelAlert, setStelAlert] = useState(editData?.stelAlert || '');
+  const [twaDuration, setTwaDuration] = useState(editData?.twaDuration || '');
+  const [twaType, setTwaType] = useState(editData?.twaType || 'ppm');
+  const [twaLimit, setTwaLimit] = useState(editData?.twaLimit || 0);
+  const [twaAlert, setTwaAlert] = useState(editData?.twaAlert || '');
+
+  const [parmGoodMinScale, setParmGoodMinScale] = useState(editData?.parmGoodMinScale || '');
+  const [parmGoodMaxScale, setParmGoodMaxScale] = useState(editData?.parmGoodMaxScale || '');
+  const [parmSatisfactoryMinScale, setParmSatisfactoryMinScale] = useState(editData?.parmSatisfactoryMinScale || '');
+  const [parmSatisfactoryMaxScale, setParmSatisfactoryMaxScale] = useState(editData?.parmSatisfactoryMaxScale || '');
+  const [parmModerateMinScale, setParmModerateMinScale] = useState(editData?.parmModerateMinScale || '');
+  const [parmModerateMaxScale, setParmModerateMaxScale] = useState(editData?.parmModerateMaxScale || '');
+  const [parmPoorMinScale, setParmPoorMinScale] = useState(editData?.parmPoorMinScale || '');
+  const [parmPoorMaxScale, setParmPoorMaxScale] = useState(editData?.parmPoorMaxScale || '');
+  const [parmVeryPoorMinScale, setParmVeryPoorMinScale] = useState(editData?.parmVeryPoorMinScale || '');
+  const [parmVeryPoorMaxScale, setParmVeryPoorMaxScale] = useState(editData?.parmVeryPoorMaxScale || '');
+  const [parmSevereMinScale, setParmSevereMinScale] = useState(editData?.parmSevereMinScale || '');
+  const [parmSevereMaxScale, setParmSevereMaxScale] = useState(editData?.parmSevereMaxScale || '');
   // -- Throttling ---//
   const [open, setOpen] = useState(false);
   const [errorObject, setErrorObject] = useState({});
-  const loading = open && categoryList.length === 0;
 
   const [openNotification, setNotification] = useState({
     status: false,
@@ -127,21 +119,12 @@ function DeviceAdd({
     AddCategoryValidate(value, type, setErrorObject);
   };
 
-  const handleSuccess = (data) => {
-  };
-
-  const handleException = (errorObject) => {
+  const handleException = () => {
   };
 
   useEffect(() => {
     loadData();
   }, []);
-
-  function sleep(delay = 0) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, delay);
-    });
-  }
 
   const categoryHandleSuccess = (dataObject) => {
     setCategoryList(dataObject.data);
@@ -162,12 +145,11 @@ function DeviceAdd({
   const loadData = () => {
     CategoryFetchService(categoryHandleSuccess, handleException);
     SensorCategoryFetchService(sensorCategoryHandleSuccess, handleException);
-    { editData?.deviceId
-      && DeviceFetchService({ ...locationDetails, sensorCategoryId }, deviceHandleSuccess, handleException);
+    /* eslint-disable-next-line */
+    editData?.deviceId && DeviceFetchService({ ...locationDetails, sensorCategoryId }, deviceHandleSuccess, handleException);
     SensorFetchService(sensorCategoryId, sensorHandleSuccess, handleException);
-    }
   };
-
+  /* eslint-disable-next-line */
   const deviceChanged = (sensorCategoryId) => {
     setCategoryId(sensorCategoryId);
     DeviceFetchService({ ...locationDetails, sensorCategoryId }, deviceHandleSuccess, handleException);
@@ -175,7 +157,8 @@ function DeviceAdd({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    { isUpdate
+    /* eslint-disable-next-line */
+    isUpdate
       ? SensorDeployEditService({
         ...locationDetails,
         id,
@@ -219,6 +202,29 @@ function DeviceAdd({
         outofrangeAlertType,
         outofrangeLowAlert,
         outofrangeHighAlert,
+        alarm,
+        isAQI,
+        isStel,
+        stelDuration,
+        stelType,
+        stelLimit,
+        stelAlert,
+        twaDuration,
+        twaType,
+        twaLimit,
+        twaAlert,
+        parmGoodMinScale,
+        parmGoodMaxScale,
+        parmSatisfactoryMinScale,
+        parmSatisfactoryMaxScale,
+        parmModerateMinScale,
+        parmModerateMaxScale,
+        parmPoorMinScale,
+        parmPoorMaxScale,
+        parmVeryPoorMinScale,
+        parmVeryPoorMaxScale,
+        parmSevereMinScale,
+        parmSevereMaxScale,
       }, sensorAddSuccess, senserAddException)
       : SensorDeployAddService({
         ...locationDetails,
@@ -262,8 +268,30 @@ function DeviceAdd({
         outofrangeAlertType,
         outofrangeLowAlert,
         outofrangeHighAlert,
+        alarm,
+        isAQI,
+        isStel,
+        stelDuration,
+        stelType,
+        stelLimit,
+        stelAlert,
+        twaDuration,
+        twaType,
+        twaLimit,
+        twaAlert,
+        parmGoodMinScale,
+        parmGoodMaxScale,
+        parmSatisfactoryMinScale,
+        parmSatisfactoryMaxScale,
+        parmModerateMinScale,
+        parmModerateMaxScale,
+        parmPoorMinScale,
+        parmPoorMaxScale,
+        parmVeryPoorMinScale,
+        parmVeryPoorMaxScale,
+        parmSevereMinScale,
+        parmSevereMaxScale,
       }, sensorAddSuccess, senserAddException);
-    }
   };
 
   const sensorAddSuccess = (dataObject) => {
@@ -279,7 +307,7 @@ function DeviceAdd({
     }, 3000);
   };
 
-  const senserAddException = (errorObject, errorMessage) => {
+  const senserAddException = (resErrorObject, errorMessage) => {
     setNotification({
       status: true,
       type: 'error',
@@ -367,9 +395,11 @@ function DeviceAdd({
                     error={errorObject?.deviceCategory?.errorStatus}
                     helperText={errorObject?.deviceCategory?.helperText}
                   >
-                    {categoryList.map((data) => (
-                      <MenuItem value={data.id}>{data.categoryName}</MenuItem>
-                    ))}
+                    {categoryList.map((data) => {
+                      return (
+                        <MenuItem value={data.id}>{data.categoryName}</MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Box>
@@ -400,9 +430,11 @@ function DeviceAdd({
                       setDeviceId(e.target.value);
                     }}
                   >
-                    {deviceList.map((data) => (
-                      <MenuItem value={data.id}>{data.deviceName}</MenuItem>
-                    ))}
+                    {deviceList.map((data) => {
+                      return (
+                        <MenuItem value={data.id}>{data.deviceName}</MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Box>
@@ -432,12 +464,13 @@ function DeviceAdd({
                     onChange={(e) => {
                       setSensorCategoryId(e.target.value);
                       setSensorList([]);
-                      // SensorFetchService(e.target.value, sensorHandleSuccess,handleException);
                     }}
                   >
-                    {sensorCategoryList.map((data) => (
-                      <MenuItem value={data.id}>{data.sensorName}</MenuItem>
-                    ))}
+                    {sensorCategoryList.map((data) => {
+                      return (
+                        <MenuItem value={data.id}>{data.sensorName}</MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Box>
@@ -484,7 +517,9 @@ function DeviceAdd({
                       onClose={() => {
                         setOpen(false);
                       }}
-                      isOptionEqualToValue={(option, value) => option.id === value.id}
+                      isOptionEqualToValue={(option, value) => {
+                        return option.id === value.id;
+                      }}
                       getOptionLabel={(option) => {
                         return option.sensorName;
                       }}
@@ -509,13 +544,37 @@ function DeviceAdd({
                         setLength(data.length);
                         setRegisterType(data.registerType);
                         setConversionType(data.conversionType);
+                        // -- STEL&TWA -- //
+                        setAlarm(data.alarm);
+                        setIsAQI(data.isAQI);
+                        setIsStel(data.isStel);
+                        setStelDuration(data.stelDuration);
+                        setStelType(data.stelType);
+                        setStelLimit(data.stelLimit);
+                        setStelAlert(data.stelAlert);
+                        setTwaDuration(data.twaDuration);
+                        setTwaType(data.twaType);
+                        setTwaLimit(data.twaLimit);
+                        setTwaAlert(data.twaAlert);
+                        setParmGoodMinScale(data.parmGoodMinScale);
+                        setParmGoodMaxScale(data.parmGoodMaxScale);
+                        setParmSatisfactoryMinScale(data.parmSatisfactoryMinScale);
+                        setParmSatisfactoryMaxScale(data.parmSatisfactoryMaxScale);
+                        setParmModerateMinScale(data.parmModerateMinScale);
+                        setParmModerateMaxScale(data.parmModerateMaxScale);
+                        setParmPoorMinScale(data.parmPoorMinScale);
+                        setParmPoorMaxScale(data.parmPoorMaxScale);
+                        setParmVeryPoorMinScale(data.parmVeryPoorMinScale);
+                        setParmVeryPoorMaxScale(data.parmVeryPoorMaxScale);
+                        setParmSevereMinScale(data.parmSevereMinScale);
+                        setParmSevereMaxScale(data.parmSevereMaxScale);
                       }}
                       renderInput={(params) => (
                         <TextField
                           {...params}
                           label="Sensor Name"
                           required
-                          onKeyUp={(e) => {
+                          onKeyUp={() => {
                             setTimeout(() => {
                               SensorFetchService(sensorCategoryId, sensorHandleSuccess, handleException);
                             }, 500);
@@ -568,7 +627,7 @@ function DeviceAdd({
                   fullWidth
                   margin="normal"
                   sx={{ marginTop: 0 }}
-                  disabled // disable after complition of edit part
+                  disabled
                 >
                   <InputLabel id="demo-simple-select-label">
                     Sensor Output
@@ -591,9 +650,85 @@ function DeviceAdd({
                 </FormControl>
               </Box>
             </Grid>
-
           </Grid>
-          {sensorOutput == 'Analog'
+          <Grid container spacing={1} sx={{ mt: 0 }}>
+            <Grid
+              sx={{ mt: 0, padding: 0, alignSelf: 'center' }}
+              item
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+            >
+              <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
+                <InputLabel id="demo-simple-select-label3">Alarm Type</InputLabel>
+                <Select
+                  sx={{ marginTop: 0 }}
+                  labelId="demo-simple-select-label3"
+                  id="demo-simple-select3"
+                  value={alarm}
+                  label="Alarm Type"
+                  required
+                  onChange={(e) => {
+                    setAlarm(e.target.value);
+                  }}
+                >
+                  <MenuItem value="Latch">Latch</MenuItem>
+                  <MenuItem value="UnLatch">UnLatch</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <StelTWA
+            disable
+            isStel={isStel}
+            setIsStel={setIsStel}
+            isAQI={isAQI}
+            setIsAQI={setIsAQI}
+            stelDuration={stelDuration}
+            setStelDuration={setStelDuration}
+            stelType={stelType}
+            setStelType={setStelType}
+            stelLimit={stelLimit}
+            setStelLimit={setStelLimit}
+            stelAlert={stelAlert}
+            setStelAlert={setStelAlert}
+            twaDuration={twaDuration}
+            setTwaDuration={setTwaDuration}
+            twaType={twaType}
+            setTwaType={setTwaType}
+            twaLimit={twaLimit}
+            setTwaLimit={setTwaLimit}
+            twaAlert={twaAlert}
+            setTwaAlert={setTwaAlert}
+            parmGoodMinScale={parmGoodMinScale}
+            setParmGoodMinScale={setParmGoodMinScale}
+            parmGoodMaxScale={parmGoodMaxScale}
+            setParmGoodMaxScale={setParmGoodMaxScale}
+            parmSatisfactoryMinScale={parmSatisfactoryMinScale}
+            setParmSatisfactoryMinScale={setParmSatisfactoryMinScale}
+            parmSatisfactoryMaxScale={parmSatisfactoryMaxScale}
+            setParmSatisfactoryMaxScale={setParmSatisfactoryMaxScale}
+            parmModerateMinScale={parmModerateMinScale}
+            setParmModerateMinScale={setParmModerateMinScale}
+            parmModerateMaxScale={parmModerateMaxScale}
+            setParmModerateMaxScale={setParmModerateMaxScale}
+            parmPoorMinScale={parmPoorMinScale}
+            setParmPoorMinScale={setParmPoorMinScale}
+            parmPoorMaxScale={parmPoorMaxScale}
+            setParmPoorMaxScale={setParmPoorMaxScale}
+            parmVeryPoorMinScale={parmVeryPoorMinScale}
+            setParmVeryPoorMinScale={setParmVeryPoorMinScale}
+            parmVeryPoorMaxScale={parmVeryPoorMaxScale}
+            setParmVeryPoorMaxScale={setParmVeryPoorMaxScale}
+            parmSevereMinScale={parmSevereMinScale}
+            setParmSevereMinScale={setParmSevereMinScale}
+            parmSevereMaxScale={parmSevereMaxScale}
+            setParmSevereMaxScale={setParmSevereMaxScale}
+          />
+          {/* eslint-disable-next-line */}
+          {sensorOutput === 'Analog'
             ? (
               <>
                 <Analog
@@ -632,7 +767,6 @@ function DeviceAdd({
                   setCriticalLowAlert={setCriticalLowAlert}
                   criticalHighAlert={criticalHighAlert}
                   setCriticalHighAlert={setCriticalHighAlert}
-
                   warningMinValue={warningMinValue}
                   setWarningMinValue={setWarningMinValue}
                   warningMaxValue={warningMaxValue}
@@ -643,7 +777,6 @@ function DeviceAdd({
                   setWarningLowAlert={setWarningLowAlert}
                   warningHighAlert={warningHighAlert}
                   setWarningHighAlert={setWarningHighAlert}
-
                   outofrangeMinValue={outofrangeMinValue}
                   setOutofrangeMinValue={setOutofrangeMinValue}
                   outofrangeMaxValue={outofrangeMaxValue}
@@ -659,7 +792,7 @@ function DeviceAdd({
                 />
               </>
             )
-            : sensorOutput == 'Modbus'
+            : sensorOutput === 'Modbus'
               ? (
                 <>
                   <Modbus
@@ -710,7 +843,6 @@ function DeviceAdd({
                     setCriticalLowAlert={setCriticalLowAlert}
                     criticalHighAlert={criticalHighAlert}
                     setCriticalHighAlert={setCriticalHighAlert}
-
                     warningMinValue={warningMinValue}
                     setWarningMinValue={setWarningMinValue}
                     warningMaxValue={warningMaxValue}
@@ -721,7 +853,6 @@ function DeviceAdd({
                     setWarningLowAlert={setWarningLowAlert}
                     warningHighAlert={warningHighAlert}
                     setWarningHighAlert={setWarningHighAlert}
-
                     outofrangeMinValue={outofrangeMinValue}
                     setOutofrangeMinValue={setOutofrangeMinValue}
                     outofrangeMaxValue={outofrangeMaxValue}
@@ -749,13 +880,15 @@ function DeviceAdd({
                   setDigitalHighAlert={setDigitalHighAlert}
                 />
               )}
+
           <div className="float-right">
             <Button
               sx={{ m: 2 }}
-              onClick={(e) => {
+              onClick={() => {
                 setErrorObject({});
                 resetForm();
-                setProgressStatus && setProgressStatus(1);
+                /* eslint-disable-next-line */
+                setProgressStatus && (setProgressStatus(1));
               }}
             >
               Cancel
