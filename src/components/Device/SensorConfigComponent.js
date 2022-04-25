@@ -62,7 +62,6 @@ function SensorConfig({
   const [subnetMask, setSubnetMask] = useState(editData.subnetMask || '');
 
   // const [categoryList, setCategoryList] = useState([]);
-  // const [deviceList, setDeviceList] = useState([]);
   const [sensorCategoryList, setSensorCategoryList] = useState([]);
 
   // --- Alarm --- //
@@ -104,35 +103,17 @@ function SensorConfig({
     AddCategoryValidate(value, type, setErrorObject);
   };
 
-  // const handleSuccess = (data) => {
-  // };
-
-  const handleException = () => {
+  /* eslint-disable-next-line */
+  const handleException = (errorObject) => {
   };
 
   useEffect(() => {
     loadData();
   }, []);
 
-  // const isStelHandleChange = () => {
-  //   setIsStel((oldvalue) => {
-  //     return !oldvalue;
-  //   });
-  // };
-
-  // const isAQIHandleChange = () => {
-  //   setIsAQI((oldvalue) => {
-  //     return !oldvalue;
-  //   });
-  // };
-
   const categoryHandleSuccess = () => {
     // setCategoryList(dataObject.data);
   };
-
-  // const deviceHandleSuccess = (dataObject) => {
-  //   setDeviceList(dataObject.data);
-  // };
 
   const sensorCategoryHandleSuccess = (dataObject) => {
     setSensorCategoryList(dataObject.data);
@@ -146,7 +127,7 @@ function SensorConfig({
   const handleSubmit = async (e) => {
     e.preventDefault();
     /* eslint-disable-next-line */
-    isAddButton
+    { isAddButton
       ? SensorAddService({
         ...locationDetails,
         sensorCategoryId,
@@ -240,9 +221,11 @@ function SensorConfig({
         parmSevereMinScale,
         parmSevereMaxScale,
       }, sensorAddSuccess, senserAddException);
+    }
   };
 
   const sensorAddSuccess = (dataObject) => {
+    // console.log(JSON.stringify(dataObject));
     setNotification({
       status: true,
       type: 'success',
@@ -258,6 +241,7 @@ function SensorConfig({
   };
   /* eslint-disable-next-line */
   const senserAddException = (errorObject, errorMessage) => {
+    // console.log(JSON.stringify(errorObject));
     setNotification({
       status: true,
       type: 'error',
@@ -424,6 +408,8 @@ function SensorConfig({
                         onChange={(e) => {
                           setAlarm(e.target.value);
                         }}
+                      // error={errorObject?.deviceName?.errorStatus}
+                      // helperText={errorObject?.deviceName?.helperText}
                       >
                         <MenuItem value="Latch">Latch</MenuItem>
                         <MenuItem value="UnLatch">UnLatch</MenuItem>
@@ -464,7 +450,7 @@ function SensorConfig({
                     </Box>
                   </Grid>
                 </Grid>
-                {{/* eslint-disable-next-line */}}
+                {/* eslint-disable-next-line */}
                 {sensorOutput === 'Analog' ? (
                   <Analog
                     errorObject={errorObject}
@@ -1438,7 +1424,7 @@ function SensorConfig({
               </Button>
             </Grid>
           </Grid>
-          {nextPage === false
+          {nextPage === true
             ? ''
             : (
               <div className="float-right">
