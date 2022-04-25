@@ -109,9 +109,7 @@ export function AddSensorList() {
       type: 'success',
       message: dataObject.message,
     });
-    setRefreshData((oldvalue) => {
-      return !oldvalue;
-    });
+    setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
     }, 5000);
