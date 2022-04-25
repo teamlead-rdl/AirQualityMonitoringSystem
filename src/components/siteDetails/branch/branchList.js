@@ -126,14 +126,17 @@ export function BranchListResults(props) {
 
   function EditData(props) {
     return (
-      moduleAccess.edit && 
-      <EditIcon onClick={() => {
-        setIsAddButton(false);
-        setEditData(props.selectedRow);
-        setOpen(true);
-      }} 
-      style={{cursor:'pointer'}}
-      />)
+      moduleAccess.edit
+      && (
+        <EditIcon
+          onClick={() => {
+            setIsAddButton(false);
+            setEditData(props.selectedRow);
+            setOpen(true);
+          }}
+          style={{ cursor: 'pointer' }}
+        />
+      ));
   }
 
   const DeleteData = (props) => {

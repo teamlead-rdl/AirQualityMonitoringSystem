@@ -623,7 +623,6 @@ function ModbusAlert({
               )
               : ''}
           </Grid>
-
         </Grid>
         <Grid
           sx={{ mt: 0, padding: 0 }}

@@ -112,6 +112,7 @@ export function AddSensorList() {
     setRefreshData((oldvalue) => {
       return !oldvalue;
     });
+    setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
     }, 5000);
