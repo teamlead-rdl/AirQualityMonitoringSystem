@@ -1415,7 +1415,7 @@ function SensorConfig({
                 onClick={() => {
                   setNextPage((oldValue) => {
                     /* eslint-disable-next-line */
-                    oldValue === true ? setNextButton('Next') : setNextButton('Back');
+                    oldValue === true ? setNextButton('Back') : setNextButton('Next');
                     return !oldValue;
                   });
                 }}
