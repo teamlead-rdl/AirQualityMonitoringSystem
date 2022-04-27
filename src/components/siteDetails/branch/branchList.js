@@ -141,7 +141,6 @@ export function BranchListResults(props) {
 
   const DeleteData = (props) => {
     return moduleAccess.delete && <DeleteIcon onClick={()=>{
-      console.log(props.selectedRow.id)
       BranchDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
     }}
     style={{cursor:'pointer'}}
@@ -186,7 +185,6 @@ export function BranchListResults(props) {
         disableSelectionOnClick
         style={{ maxHeight: `${80}%` }}
       />
-
       <BranchModal
         isAddButton={isAddButton}
         editData={editData}

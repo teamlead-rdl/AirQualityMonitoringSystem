@@ -23,7 +23,6 @@ const SiteDetails = () => {
     } else if(location_id) {
       return navigate(`${locationLabel}`, { state: { location_id }}); 
     }
-    console.log(locationCoordinationList[0]?.position.lat);
     setCenterLat(locationCoordinationList[0]?.position.lat);
     setCenterLng(locationCoordinationList[0]?.position.lng);
   }, [locationCoordinationList]);

@@ -27,7 +27,7 @@ function Branch() {
           width="100%"
           height="50vh"
           markers={locationCoordinationList}
-          zoom={7}
+          zoom={6}
           center={{ lat: centerLat, lng: centerLng }}
         />
       </Grid>
