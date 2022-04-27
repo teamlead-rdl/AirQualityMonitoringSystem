@@ -23,14 +23,27 @@ function AddDeviceListResults(props) {
     {
       field: 'deviceCategory',
       headerName: 'Device Category',
-      width: 220,
+      width: 120,
     },
     {
       field: 'deviceTag',
       headerName: 'Device Tag',
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
-      width: 100,
+      width: 150,
+    },
+    {
+      field: 'deviceMode',
+      type: 'actions',
+      headerName: 'Status',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 80,
+      cellClassName: 'actions',
+      disableClickEventBubbling: true,
+      getActions: (params) => [
+        <ChangeMode selectedRow={params.row} />,
+      ],
     },
     {
       field: 'firmwareVersion',
@@ -61,12 +74,12 @@ function AddDeviceListResults(props) {
   const [deviceList, setDeviceList] = useState([]);
   const [categoryList, setCategoryList] = useState('');
   const [isLoading, setGridLoading] = useState(true);
-  const {
-    location_id, branch_id, facility_id, building_id, floor_id, lab_id,
-  } = props.locationDetails;
+  // const {
+  //   location_id, branch_id, facility_id, building_id, floor_id, lab_id,
+  // } = props.locationDetails;
   const [sensorOpen, setSensorOpen] = useState(false);
   const [configSetupOpen, setConfigSetupOpen] = useState(false);
-  const [editConfigSetup, setEditConfigSetup] = useState([]);
+  // const [editConfigSetup, setEditConfigSetup] = useState([]);
 
   const [analogSensorList, setAnalogSensorList] = useState([]);
   const [digitalSensorList, setDigitalSensorList] = useState([]);
@@ -84,7 +97,7 @@ function AddDeviceListResults(props) {
     setDeviceList(dataObject.data);
   };
 
-  const handleException = (errorObject) => {
+  const handleException = () => {
   };
 
   useEffect(() => {
@@ -98,7 +111,22 @@ function AddDeviceListResults(props) {
   const loadCategory = () => {
     CategoryFetchService(categoryHandleSuccess, handleException);
   };
-
+  /* eslint-disable-next-line */
+  function ChangeMode(props) {
+    return (moduleAccess.edit
+      && (
+        <EditIcon
+          style={{ cursor: 'pointer' }}
+          onClick={(event) => {
+            event.stopPropagation();
+            setIsAddButton(false);
+            setEditDevice(props.selectedRow);
+            setOpen(true);
+          }}
+        />
+      ));
+  }
+  /* eslint-disable-next-line */
   function EditData(props) {
     return (moduleAccess.edit
       && (
@@ -113,7 +141,7 @@ function AddDeviceListResults(props) {
         />
       ));
   }
-
+  /* eslint-disable-next-line */
   function DeleteData(props) {
     return moduleAccess.delete && (
       <DeleteIcon onClick={() => {
@@ -122,6 +150,7 @@ function AddDeviceListResults(props) {
       />
     );
   }
+  /* eslint-disable-next-line */
   function SensorsData(props) {
     return (
       <SensorsIcon
@@ -145,9 +174,9 @@ function AddDeviceListResults(props) {
     setSensorOpen(true);
   };
 
-  const fetchSenosorListException = (dataObject, errorObject) => {
+  const fetchSenosorListException = () => {
   };
-
+  /* eslint-disable-next-line */
   function AppSettingsAltIconData(props) {
     return (moduleAccess.edit
       && (

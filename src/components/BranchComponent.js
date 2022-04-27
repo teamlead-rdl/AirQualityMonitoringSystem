@@ -10,7 +10,13 @@ import ApplicationStore from '../utils/localStorageUtil';
 
 function Branch() {
   const [locationCoordinationList, setLocationCoordinationList] = useState([]);
+  const [centerLat, setCenterLat] = useState(21.785);
+  const [centerLng, setCenterLng] = useState(72.91655655);
   const { locationId } = useParams();
+  useEffect(()=>{
+    setCenterLat(locationCoordinationList[0]?.position.lat);
+    setCenterLng(locationCoordinationList[0]?.position.lng);
+  }),[locationCoordinationList];
   return (
     <Container maxWidth={false} style={{ marginTop: 0 }}>
       <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
@@ -21,8 +27,8 @@ function Branch() {
           width="100%"
           height="50vh"
           markers={locationCoordinationList}
-          zoom={7}
-          center={{ lat: 12.921644363201798, lng: 74.86236071158463 }}
+          zoom={6}
+          center={{ lat: centerLat, lng: centerLng }}
         />
       </Grid>
     </Container>

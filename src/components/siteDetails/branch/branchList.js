@@ -139,15 +139,12 @@ export function BranchListResults(props) {
       ));
   }
 
-  function DeleteData(props) {
-    return moduleAccess.delete && (
-      <DeleteIcon
-        onClick={() => {
-          BranchDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
-        }}
-        style={{ cursor: 'pointer' }}
-      />
-    );
+  const DeleteData = (props) => {
+    return moduleAccess.delete && <DeleteIcon onClick={()=>{
+      BranchDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+    }}
+    style={{cursor:'pointer'}}
+    />
   }
 
   const handleClose = () => {
@@ -188,7 +185,6 @@ export function BranchListResults(props) {
         disableSelectionOnClick
         style={{ maxHeight: `${80}%` }}
       />
-
       <BranchModal
         isAddButton={isAddButton}
         editData={editData}

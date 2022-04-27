@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import {
-  CategoryFetchService, CategoryDeleteService, SensorCategoryFetchService, SensorCategoryDeleteService, SensorFetchService, SensorListFetchService, SensorDeleteService,
-} from '../../../../../services/LoginPageService';
+import { SensorListFetchService, SensorDeleteService } from '../../../../../services/LoginPageService';
 import { AddSensorCategoryToolbar } from './AddSensorCategoryToolbar';
 import AddSensorModal from './AddSensorModal';
 import NotificationBar from '../../../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../../../context/UserAccessProvider';
+// import ConfigAlarm from './ConfigAlarm';
 
 export function AddSensorList() {
   const columns = [
@@ -22,20 +21,24 @@ export function AddSensorList() {
       headerName: 'Sensor Output',
       width: 300,
     },
-
     {
       field: 'actions',
       type: 'actions',
       headerName: 'Actions',
       width: 100,
       cellClassName: 'actions',
-      getActions: (params) => [
-        <EditData selectedRow={params.row} />, <DeleteData selectedRow={params.row} />,
-      ],
+      getActions: (params) => {
+        return [
+          <EditData selectedRow={params.row} />,
+          // <SetAlarm selectedRow={params.row}/>,
+          <DeleteData selectedRow={params.row} />,
+        ];
+      },
     },
   ];
 
   const [open, setOpen] = useState(false);
+  // const [alertOpen, setAlertOpen] = useState(false);
   const [isAddButton, setIsAddButton] = useState(true);
   const [editCategory, setEditCategory] = useState([]);
   const [CategoryList, setCategoryList] = useState([]);
@@ -54,7 +57,7 @@ export function AddSensorList() {
     setCategoryList(dataObject.data);
   };
 
-  const handleException = (errorObject) => {
+  const handleException = () => {
   };
 
   useEffect(() => {
@@ -75,6 +78,20 @@ export function AddSensorList() {
           />
         ));
   }
+
+  // function SetAlarm(props) {
+  //   return (moduleAccess.edit
+  //       && (
+  //         <NotificationsActive
+  //           style={{ cursor: 'pointer' }}
+  //           onClick={(event) => {
+  //             event.stopPropagation();
+  //             setEditCategory(props.selectedRow);
+  //             setAlertOpen(true);
+  //           }}
+  //         />
+  //       ));
+  // }
 
   function DeleteData(props) {
     return moduleAccess.delete && (
@@ -138,6 +155,11 @@ export function AddSensorList() {
         CategoryList={CategoryList}
         setRefreshData={setRefreshData}
       />
+      {/* <ConfigAlarm
+            open={alertOpen}
+            setOpen={setAlertOpen}
+            editData={editCategory}
+          /> */}
       <NotificationBar
         handleClose={handleClose}
         notificationContent={openNotification.message}

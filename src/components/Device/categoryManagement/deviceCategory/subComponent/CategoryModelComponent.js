@@ -1,5 +1,5 @@
 import {
-  Button, Dialog, DialogContent, DialogTitle, FormControl, Input, InputLabel, MenuItem, Select, TextField,
+  Button, Dialog, DialogContent, DialogTitle, TextField,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DialogActions from '@mui/material/DialogActions';
@@ -58,12 +58,12 @@ function CategoryModel({
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (isAddButton) {
-      await CategoryAddService({ categoryName, categoryDescription }, handleSuccess, handleException);
+      CategoryAddService({ categoryName, categoryDescription }, handleSuccess, handleException);
     } else {
-      await CategoryEditService({ id, categoryName, categoryDescription }, handleSuccess, handleException);
+      CategoryEditService({ id, categoryName, categoryDescription }, handleSuccess, handleException);
     }
   };
 
