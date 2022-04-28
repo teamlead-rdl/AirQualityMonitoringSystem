@@ -13,6 +13,10 @@ import DeviceConfigSetupModal from '../deviceConfiguration/subcomponent/DeviceCo
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 
+import SpeedIcon from '@mui/icons-material/Speed';
+import BumpTestComponentModal from '../BumpTest/BumpTestComponentModal';
+
+
 function AddDeviceListResults(props) {
   const columns = [
     {
@@ -49,8 +53,9 @@ function AddDeviceListResults(props) {
       getActions: (params) => [
         <EditData selectedRow={params.row} />,
         <DeleteData selectedRow={params.row} />,
-        <SensorsData selectedRow={params.row} />,
+        <SensorsData selectedRow={params.row} />,        
         <AppSettingsAltIconData selectedRow={params.row} />,
+        <BumpTestData selectedRow = {params.row} />,        
       ],
     },
   ];
@@ -66,6 +71,7 @@ function AddDeviceListResults(props) {
   } = props.locationDetails;
   const [sensorOpen, setSensorOpen] = useState(false);
   const [configSetupOpen, setConfigSetupOpen] = useState(false);
+  const [bumpTestOpen, setBumpTestOpen] = useState(false);
   const [editConfigSetup, setEditConfigSetup] = useState([]);
 
   const [analogSensorList, setAnalogSensorList] = useState([]);
@@ -134,6 +140,23 @@ function AddDeviceListResults(props) {
       />
     );
   }
+
+  function BumpTestData(props) {
+    return (
+      <SpeedIcon
+        style={{ cursor: 'pointer' }}
+        onClick={(event) => {
+          event.stopPropagation();
+          setEditDevice(props.selectedRow);
+          setBumpTestOpen(true);
+        }}
+      />
+    );
+  }
+
+
+
+
   const fetchSensorList = (device_id) => {
     SensorDeployFetchService({ ...props.locationDetails, device_id }, fetchSenosorListSuccess, fetchSenosorListException);
   };
@@ -234,6 +257,12 @@ function AddDeviceListResults(props) {
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <BumpTestComponentModal
+        isAddButton={isAddButton}      
+        open={bumpTestOpen}
+        setOpen={setBumpTestOpen}
+        setRefreshData={setRefreshData}
       />
     </div>
   );
