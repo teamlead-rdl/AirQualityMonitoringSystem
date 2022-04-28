@@ -149,7 +149,7 @@ function BumpTestComponentModal({
                     label="Last Due Date"
                     defaultValue=""
                     fullWidth
-                    type="date"
+                    type="text"
                   
                     required               
                     // onBlur={() => validateForNullValue(categoryName, 'categoryName')}
@@ -157,7 +157,7 @@ function BumpTestComponentModal({
                     autoComplete="off"
                     // error={errorObject?.categoryName?.errorStatus}
                     // helperText={errorObject?.categoryName?.helperText}
-                    InputLabelProps={{shrink: true}}
+                    // InputLabelProps={{shrink: true}}
                 />
               </Grid> 
               <Grid
