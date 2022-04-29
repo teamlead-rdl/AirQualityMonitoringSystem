@@ -12,6 +12,9 @@ import SensorModel from './SensorModelComponent';
 import DeviceConfigSetupModal from '../deviceConfiguration/subcomponent/DeviceConfigSetupModalComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
+import { MenuItem, Select } from '@mui/material';
+import BumpTestComponentModal from './BumpTestComponentModal';
+import { PlayArrow, PlayDisabled, Science, Tune, Upgrade } from '@mui/icons-material';
 
 function AddDeviceListResults(props) {
   const columns = [
@@ -35,10 +38,10 @@ function AddDeviceListResults(props) {
     {
       field: 'deviceMode',
       type: 'actions',
-      headerName: 'Status',
+      headerName: 'Mode',
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
-      width: 80,
+      width: 180,
       cellClassName: 'actions',
       disableClickEventBubbling: true,
       getActions: (params) => [
@@ -66,9 +69,21 @@ function AddDeviceListResults(props) {
         <AppSettingsAltIconData selectedRow={params.row} />,
       ],
     },
+    {
+      field: 'status',
+      type: 'actions',
+      headerName: 'Status',
+      width: 100,
+      cellClassName: 'actions',
+      disableClickEventBubbling: true,
+      getActions: (params) => [
+        <ChangeStatus selectedRow={params.row} />,
+      ],
+    },
   ];
-
+  const [progressStatus, setProgressStatus] = useState(3);
   const [open, setOpen] = useState(false);
+  const [bumpTestOpen, setBumpTestOpen] = useState(false);
   const [isAddButton, setIsAddButton] = useState(true);
   const [editDevice, setEditDevice] = useState([]);
   const [deviceList, setDeviceList] = useState([]);
@@ -111,21 +126,66 @@ function AddDeviceListResults(props) {
   const loadCategory = () => {
     CategoryFetchService(categoryHandleSuccess, handleException);
   };
+
   /* eslint-disable-next-line */
   function ChangeMode(props) {
     return (moduleAccess.edit
       && (
-        <EditIcon
-          style={{ cursor: 'pointer' }}
-          onClick={(event) => {
-            event.stopPropagation();
-            setIsAddButton(false);
-            setEditDevice(props.selectedRow);
-            setOpen(true);
-          }}
-        />
+          <Select
+            sx={{
+              width:180,
+              "&.Mui-root .MuiOutlinedInput-root": {
+                border: "0px solid #484850",
+                borderRadius: "5px 5px 0 0"
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                border: "0px solid #484850",
+                borderRadius: "5px 5px 0 0"
+              },
+            }}
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={props.selectedRow.deviceMode}
+            label="Mode"
+            fullWidth
+            onChange={(e)=>{
+              switch(e.target.value){
+                case "calibration" : 
+                  setProgressStatus(3);
+                  setSensorOpen(true);
+                  break;
+                case "bumpTest" :
+                  setBumpTestOpen(true);
+                  break;
+                default : break;
+              }
+            }}
+          >
+            <MenuItem value="enabled">Enable</MenuItem>
+            <MenuItem value="disabled">Disable</MenuItem>
+            <MenuItem value="bumpTest">Bump Test</MenuItem>
+            <MenuItem value="calibration">Calibration</MenuItem>
+            <MenuItem value="firmwareUpgradation">Firmware Upgradation</MenuItem>
+            <MenuItem value="config">Configuration</MenuItem>
+          </Select>
       ));
   }
+  /* eslint-disable-next-line */
+  function ChangeStatus(props) {
+    switch(props.selectedRow.deviceMode){
+      case "calibration" : 
+        return <Upgrade/>
+      case "firmwareUpgradation" : 
+        return <Tune/>
+      case "disabled" : 
+        return <PlayDisabled/>
+      case "bumpTest" :
+        return <Science/>
+      default : 
+        return <PlayArrow/>
+    }
+  }
+
   /* eslint-disable-next-line */
   function EditData(props) {
     return (moduleAccess.edit
@@ -171,6 +231,7 @@ function AddDeviceListResults(props) {
     setAnalogSensorList(dataObject.Analog.data || []);
     setDigitalSensorList(dataObject.Digital.data || []);
     setModbusSensorList(dataObject.Modbas.data || []);
+    setProgressStatus(1);
     setSensorOpen(true);
   };
 
@@ -220,6 +281,7 @@ function AddDeviceListResults(props) {
       message: '',
     });
   };
+
   return (
     <div style={{ height: 300, width: '100%', padding: 0 }}>
       <DataGrid
@@ -250,6 +312,14 @@ function AddDeviceListResults(props) {
         device_id={editDevice.id}
         open={sensorOpen}
         setOpen={setSensorOpen}
+        setRefreshData={setRefreshData}
+        progressStatus={progressStatus}
+        setProgressStatus={setProgressStatus}
+      />
+      <BumpTestComponentModal
+        isAddButton={isAddButton}      
+        open={bumpTestOpen}
+        setOpen={setBumpTestOpen}
         setRefreshData={setRefreshData}
       />
       <DeviceConfigSetupModal
