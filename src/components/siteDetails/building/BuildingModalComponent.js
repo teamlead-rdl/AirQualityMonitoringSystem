@@ -8,12 +8,12 @@ import {
 import MapsComponent from '../../maps/googleMapsComponent';
 import { LocationFormValidate } from '../../../validation/locationValidation';
 import NotificationBar from '../../notification/ServiceNotificationBar';
-import previewImage from '../../../images/chooseFile.png';
+import previewImage from '../../../images/previewImage.png';
 
 // import ImageMarkerComponent from './imageMarker';
 
 function BuildingModal({
-  open, setOpen, isAddButton, editData, locationId, branchId, facilityId, setRefreshData,
+  open, setOpen, isAddButton, editData, locationId, branchId, facilityId, setRefreshData, locationCoordinationList
 }) {
   const location_id = locationId;
   const branch_id = branchId;
@@ -306,7 +306,7 @@ function BuildingModal({
                       InputLabelProps={{ shrink: true }}
                       type="file"
                       inputProps={{
-                        accept: 'image/png',
+                        accept: 'image/png, image/jpeg',
                       }}
                       error={errorObject?.buildingImg?.errorStatus}
                       helperText={errorObject?.buildingImg?.helperText}
@@ -325,6 +325,8 @@ function BuildingModal({
                     longitude={markerLng}
                     latitude={markerLat}
                     stateName={editData.buildingName}
+                    zoom={18}
+                    center={{ lat: locationCoordinationList[0]?.position.lat, lng:locationCoordinationList[0]?.position.lng}}
                   />
 
                 </div>

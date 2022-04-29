@@ -290,7 +290,6 @@ function AddDeviceListResults(props) {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
       />
       <DeviceModel

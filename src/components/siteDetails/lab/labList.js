@@ -260,7 +260,6 @@ export function LabListResults({ img }) {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
         style={{ maxHeight: `${80}%` }}
       />

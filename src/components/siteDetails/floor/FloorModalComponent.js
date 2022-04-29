@@ -6,7 +6,7 @@ import { FloorAddService, FloorEditService } from '../../../services/LoginPageSe
 import { LocationFormValidate } from '../../../validation/locationValidation';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import ImageMarkerComponent from './imageMarker';
-import previewImage from '../../../images/chooseFile.png';
+import previewImage from '../../../images/previewImage.png';
 
 function FloorModal({
   open, setOpen, isAddButton, editData, locationId, branchId, facilityId, buildingId, setRefreshData, src,
@@ -209,7 +209,7 @@ function FloorModal({
                       InputLabelProps={{ shrink: true }}
                       type="file"
                       inputProps={{
-                        accept: 'image/png',
+                        accept: 'image/png, image/jpeg',
                       }}
                       error={errorObject?.buildingImg?.errorStatus}
                       helperText={errorObject?.buildingImg?.helperText}

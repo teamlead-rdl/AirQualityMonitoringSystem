@@ -302,7 +302,7 @@ function DeviceAdd({ locationDetails, labMap, deviceData }) {
                 InputLabelProps={{ shrink: true }}
                 type="file"
                 inputProps={{
-                  accept: 'image/png',
+                  accept: 'image/png, image/jpeg',
                 }}
                 error={errorObject?.deviceImage?.errorStatus}
                 helperText={errorObject?.deviceImage?.helperText}

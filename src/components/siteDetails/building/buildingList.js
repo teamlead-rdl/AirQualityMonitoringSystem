@@ -248,7 +248,6 @@ export function BuildingListResults(props) {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
         style={{ maxHeight: `${80}%` }}
       />
@@ -262,6 +261,7 @@ export function BuildingListResults(props) {
         branchId={branch_id}
         facilityId={facility_id}
         setRefreshData={setRefreshData}
+        locationCoordinationList={props.locationCoordinationList}
       />
 
       <NotificationBar

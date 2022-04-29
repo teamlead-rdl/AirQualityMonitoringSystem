@@ -9,7 +9,7 @@ import LocationModal from './LocationModalComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 
-export function LocationListResults({ setLocationCoordinationList }) {
+export function LocationListResults({ locationCoordinationList, setLocationCoordinationList }) {
   const [open, setOpen] = useState(false);
   const [isAddButton, setIsAddButton] = useState(true);
   const [editState, setEditState] = useState([]);
@@ -161,7 +161,6 @@ export function LocationListResults({ setLocationCoordinationList }) {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
         style={{ maxHeight: `${70}%` }}
       />
@@ -171,6 +170,7 @@ export function LocationListResults({ setLocationCoordinationList }) {
         open={open}
         setOpen={setOpen}
         setRefreshData={setRefreshData}
+        locationCoordinationList={locationCoordinationList}
       />
       <NotificationBar
         handleClose={handleClose}

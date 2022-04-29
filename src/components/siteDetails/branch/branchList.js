@@ -181,7 +181,6 @@ export function BranchListResults(props) {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
         style={{ maxHeight: `${80}%` }}
       />
@@ -192,6 +191,7 @@ export function BranchListResults(props) {
         setOpen={setOpen}
         locationId={location_id}
         setRefreshData={setRefreshData}
+        locationCoordinationList={props.locationCoordinationList}
       />
       <NotificationBar
         handleClose={handleClose}

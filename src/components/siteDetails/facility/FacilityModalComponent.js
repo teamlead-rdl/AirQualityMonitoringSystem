@@ -9,7 +9,7 @@ import { LocationFormValidate, FacilityAddFormValidate } from '../../../validati
 import NotificationBar from '../../notification/ServiceNotificationBar';
 
 function FacilityModal({
-  open, setOpen, isAddButton, editData, locationId, branchId, setRefreshData,
+  open, setOpen, isAddButton, editData, locationId, branchId, setRefreshData, locationCoordinationList
 }) {
   const [facilityName, setFacilityName] = useState('');
   const [longitude, setLongitude] = useState('');
@@ -203,9 +203,10 @@ function FacilityModal({
                     longitude={markerLng}
                     latitude={markerLat}
                     stateName={editData.facilityName}
+                    zoom={11}
+                    center={{ lat: locationCoordinationList[0]?.position.lat, lng:locationCoordinationList[0]?.position.lng}}
                   />
                 </div>
-
               </div>
             </div>
             <div className="float-right">

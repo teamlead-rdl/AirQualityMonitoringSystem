@@ -20,7 +20,7 @@ function Branch() {
   return (
     <Container maxWidth={false} style={{ marginTop: 0 }}>
       <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
-        <BranchListResults locationId={locationId} setLocationCoordinationList={setLocationCoordinationList} />
+        <BranchListResults locationId={locationId} locationCoordinationList={locationCoordinationList} setLocationCoordinationList={setLocationCoordinationList} />
       </Grid>
       <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
         <MapsMultiplePoints

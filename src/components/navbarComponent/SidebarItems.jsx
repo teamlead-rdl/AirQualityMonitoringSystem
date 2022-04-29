@@ -91,12 +91,14 @@ function DrawerObject(props) {
       <div className="wrapper" style={{ display: 'flex' }}>
         <div className="items">
           <div className="">
-            <img
-              src={companyLogo}
-              alt=""
-              className="avatar"
-              style={{ width: 200, height: 50 }}
-            />
+            <Link to="Dashboard">
+              <img
+                src={companyLogo}
+                alt=""
+                className="avatar"
+                style={{ width: 200, height: 50 }}
+              />
+            </Link>
           </div>
         </div>
       </div>

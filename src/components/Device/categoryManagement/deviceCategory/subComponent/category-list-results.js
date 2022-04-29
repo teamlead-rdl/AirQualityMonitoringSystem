@@ -124,7 +124,6 @@ export function CategoryListResults() {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
       />
       <CategoryModel
