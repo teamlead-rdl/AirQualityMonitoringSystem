@@ -118,17 +118,17 @@ function DeviceConfigSetupModal({
 
   const Reset = (data) => {
     if (data == 'Custom') {
-      setAccessPointName('');
-      setSsId('');
-      setAccessPointPassword('');
-      setFtpAccountName('');
-      setUserName('');
-      setFtpPassword('');
-      setPort('');
-      setServerUrl('');
-      setFolderPath('');
-      setServiceProvider('');
-      setApn('');
+        setAccessPointName('');
+        setSsId('');
+        setAccessPointPassword('');
+        setFtpAccountName('');
+        setUserName('');
+        setFtpPassword('');
+        setPort('');
+        setServerUrl('');
+        setFolderPath('');
+        setServiceProvider('');
+        setApn('');
     }
   };
 
@@ -206,7 +206,12 @@ function DeviceConfigSetupModal({
                   id="asynchronous-demo"
                   sx={{}}
                   disabled={accessType == 'Custom'}
-                  isOptionEqualToValue={(option, value) => option.id === value.id}
+                  isOptionEqualToValue={(option, value) => {
+                    
+                      option.id === value.id
+                  }}
+                  value={null}
+                  options={configSetupList}
                   getOptionLabel={(option) => {
                     if (accessType == 'accessPoint') {
                       return option.accessPointName;
@@ -222,7 +227,7 @@ function DeviceConfigSetupModal({
                     }
                   }}
 
-                  options={configSetupList}
+                 
                   onChange={(e, data) => {
                     setAccessPointName(data.accessPointName);
                     setSsId(data.ssId);
@@ -241,6 +246,7 @@ function DeviceConfigSetupModal({
                       {...params}
                       label="Search Criteria"
                       onKeyUp={(e) => {
+             
                         // setTimeout(()=>{
                         //   SensorFetchService(sensorCategoryId, sensorHandleSuccess,handleException);
                         // },500);
