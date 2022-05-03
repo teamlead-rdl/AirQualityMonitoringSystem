@@ -244,12 +244,16 @@ function FloorModal({
             <div className="float-right">
               <div className="rounded-md -space-y-px">
                 <Button
+                  sx={{ m:1 }}
                   type="submit"
+                  size="large"
                   disabled={errorObject?.buildingName?.errorStatus || errorObject?.buildingTotalFloors?.errorStatus}
                 >
                   {isAddButton ? 'Add' : 'Update'}
                 </Button>
                 <Button
+                  sx={{ m:1 }}
+                  size="large"
                   onClick={(e) => {
                     setOpen(false);
                     setErrorObject({});

@@ -404,7 +404,7 @@ function DeviceAdd({ locationDetails, labMap, deviceData }) {
           >
             <div className="mt-0 ml-2 float-right">
               <Button
-                sx={{ m: 2 }}
+                size="large"
                 onClick={(e) => {
                   setErrorObject({});
                   resetForm();
@@ -422,9 +422,8 @@ function DeviceAdd({ locationDetails, labMap, deviceData }) {
                   || errorObject?.pollingPriority?.errorStatus
                   || errorObject?.nonPollingPriority?.errorStatus
                 }
-                sx={{ m: 2 }}
+                sx={{ m: 1 }}
                 size="large"
-                variant="contained"
                 type="submit"
               >
                 ADD

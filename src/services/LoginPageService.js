@@ -246,3 +246,9 @@ export const DeviceConfigSetupFetchService = (data, successCallback, errorCallBa
 export const StelEditService = (data, successCallback, errorCallBack) => {
   return _fetchService(`stel/${data.id}/update`, 'POST', data, successCallback, errorCallBack);
 };
+
+//------------ Change Device Mode -------------------//
+
+export const ChangeDeviceMode = (data, successCallback, errorCallBack) => {
+  return _fetchService(`deviceMode/${data.id}/update`, 'POST', data, successCallback, errorCallBack);
+};

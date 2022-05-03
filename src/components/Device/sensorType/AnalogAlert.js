@@ -84,64 +84,6 @@ function AnalogAlert({
           lg={6}
           xl={6}
         >
-          <div className="rounded-md -space-y-px">
-            <TextField
-              sx={{ marginTop: 0 }}
-              value={criticalMinValue}
-              type="number"
-              onBlur={() => validateForNullValue(criticalMinValue, 'criticalMinValue')}
-              onChange={(e) => {
-                setCriticalMinValue(e.target.value);
-              }}
-              margin="normal"
-              required
-              id="outlined-required"
-              label="Min Value"
-              fullWidth
-              error={errorObject?.criticalMinValue?.errorStatus}
-              helperText={errorObject?.criticalMinValue?.helperText}
-              autoComplete="off"
-            />
-          </div>
-        </Grid>
-        <Grid
-          sx={{ mt: 0, padding: 0 }}
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-        >
-          <div className="rounded-md -space-y-px">
-            <TextField
-              sx={{ marginTop: 0 }}
-              value={criticalMaxValue}
-              type="number"
-              onBlur={() => validateForNullValue(criticalMaxValue, 'criticalMaxValue')}
-              onChange={(e) => {
-                setCriticalMaxValue(e.target.value);
-              }}
-              margin="normal"
-              required
-              id="outlined-required"
-              label="Max Value"
-              fullWidth
-              error={errorObject?.criticalMaxValue?.errorStatus}
-              helperText={errorObject?.criticalMaxValue?.helperText}
-              autoComplete="off"
-            />
-          </div>
-        </Grid>
-        <Grid
-          sx={{ mt: 0, padding: 0 }}
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-        >
           <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
             <InputLabel id="demo-simple-select-label">
               Sensor alert
@@ -154,6 +96,8 @@ function AnalogAlert({
               label="Sensor alert"
               onChange={(e) => {
                 setCriticalAlertType(e.target.value);
+                setCriticalMinValue('');
+                setCriticalMaxValue('');
               }}
             >
               <MenuItem value="High">High</MenuItem>
@@ -247,7 +191,56 @@ function AnalogAlert({
           lg={6}
           xl={6}
         >
-          <div className="rounded-md -space-y-px" />
+          <div className="rounded-md -space-y-px">
+            <TextField
+              sx={{ marginTop: 0 }}
+              value={criticalMinValue}
+              disabled={criticalAlertType === "High" || criticalAlertType === ""}
+              type="number"
+              onBlur={() => validateForNullValue(criticalMinValue, 'criticalMinValue')}
+              onChange={(e) => {
+                setCriticalMinValue(e.target.value);
+              }}
+              margin="normal"
+              required
+              id="outlined-required"
+              label="Min Value"
+              fullWidth
+              error={errorObject?.criticalMinValue?.errorStatus}
+              helperText={errorObject?.criticalMinValue?.helperText}
+              autoComplete="off"
+            />
+          </div>
+        </Grid>
+        <Grid
+          sx={{ mt: 0, padding: 0 }}
+          item
+          xs={12}
+          sm={6}
+          md={6}
+          lg={6}
+          xl={6}
+        >
+          <div className="rounded-md -space-y-px">
+            <TextField
+              sx={{ marginTop: 0 }}
+              value={criticalMaxValue}
+              type="number"
+              disabled={criticalAlertType === "Low" || criticalAlertType === ""}
+              onBlur={() => validateForNullValue(criticalMaxValue, 'criticalMaxValue')}
+              onChange={(e) => {
+                setCriticalMaxValue(e.target.value);
+              }}
+              margin="normal"
+              required
+              id="outlined-required"
+              label="Max Value"
+              fullWidth
+              error={errorObject?.criticalMaxValue?.errorStatus}
+              helperText={errorObject?.criticalMaxValue?.helperText}
+              autoComplete="off"
+            />
+          </div>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
@@ -273,64 +266,6 @@ function AnalogAlert({
           lg={6}
           xl={6}
         >
-          <div className="rounded-md -space-y-px">
-            <TextField
-              sx={{ marginTop: 0 }}
-              value={warningMinValue}
-              type="number"
-              onBlur={() => validateForNullValue(warningMinValue, 'warningMinValue')}
-              onChange={(e) => {
-                setWarningMinValue(e.target.value);
-              }}
-              margin="normal"
-              required
-              id="outlined-required"
-              label="Min Value"
-              fullWidth
-              error={errorObject?.warningMinValue?.errorStatus}
-              helperText={errorObject?.warningMinValue?.helperText}
-              autoComplete="off"
-            />
-          </div>
-        </Grid>
-        <Grid
-          sx={{ mt: 0, padding: 0 }}
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-        >
-          <div className="rounded-md -space-y-px">
-            <TextField
-              sx={{ marginTop: 0 }}
-              value={warningMaxValue}
-              type="number"
-              onBlur={() => validateForNullValue(warningMaxValue, 'warningMaxValue')}
-              onChange={(e) => {
-                setWarningMaxValue(e.target.value);
-              }}
-              margin="normal"
-              required
-              id="outlined-required"
-              label="Max Value"
-              fullWidth
-              error={errorObject?.warningMaxValue?.errorStatus}
-              helperText={errorObject?.warningMaxValue?.helperText}
-              autoComplete="off"
-            />
-          </div>
-        </Grid>
-        <Grid
-          sx={{ mt: 0, padding: 0 }}
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-        >
           <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
             <InputLabel id="demo-simple-select-label">
               Sensor alert
@@ -343,6 +278,8 @@ function AnalogAlert({
               required
               onChange={(e) => {
                 setWarningAlertType(e.target.value);
+                setWarningMinValue("");
+                setWarningMaxValue("");
               }}
             >
               <MenuItem value="High">High</MenuItem>
@@ -436,7 +373,56 @@ function AnalogAlert({
           lg={6}
           xl={6}
         >
-          <div className="rounded-md -space-y-px" />
+          <div className="rounded-md -space-y-px">
+            <TextField
+              sx={{ marginTop: 0 }}
+              value={warningMinValue}
+              type="number"
+              disabled={warningAlertType === "High" || warningAlertType === "" }
+              onBlur={() => validateForNullValue(warningMinValue, 'warningMinValue')}
+              onChange={(e) => {
+                setWarningMinValue(e.target.value);
+              }}
+              margin="normal"
+              required
+              id="outlined-required"
+              label="Min Value"
+              fullWidth
+              error={errorObject?.warningMinValue?.errorStatus}
+              helperText={errorObject?.warningMinValue?.helperText}
+              autoComplete="off"
+            />
+          </div>
+        </Grid>
+        <Grid
+          sx={{ mt: 0, padding: 0 }}
+          item
+          xs={12}
+          sm={6}
+          md={6}
+          lg={6}
+          xl={6}
+        >
+          <div className="rounded-md -space-y-px">
+            <TextField
+              sx={{ marginTop: 0 }}
+              value={warningMaxValue}
+              type="number"
+              disabled={warningAlertType === "Low" || warningAlertType === ""}
+              onBlur={() => validateForNullValue(warningMaxValue, 'warningMaxValue')}
+              onChange={(e) => {
+                setWarningMaxValue(e.target.value);
+              }}
+              margin="normal"
+              required
+              id="outlined-required"
+              label="Max Value"
+              fullWidth
+              error={errorObject?.warningMaxValue?.errorStatus}
+              helperText={errorObject?.warningMaxValue?.helperText}
+              autoComplete="off"
+            />
+          </div>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
@@ -462,64 +448,6 @@ function AnalogAlert({
           lg={6}
           xl={6}
         >
-          <div className="rounded-md -space-y-px">
-            <TextField
-              sx={{ marginTop: 0 }}
-              value={outofrangeMinValue}
-              type="number"
-              onBlur={() => validateForNullValue(outofrangeMinValue, 'outofrangeMinValue')}
-              onChange={(e) => {
-                setOutofrangeMinValue(e.target.value);
-              }}
-              margin="normal"
-              required
-              id="outlined-required"
-              label="Min Value"
-              fullWidth
-              error={errorObject?.outofrangeMinValue?.errorStatus}
-              helperText={errorObject?.outofrangeMinValue?.helperText}
-              autoComplete="off"
-            />
-          </div>
-        </Grid>
-        <Grid
-          sx={{ mt: 0, padding: 0 }}
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-        >
-          <div className="rounded-md -space-y-px">
-            <TextField
-              sx={{ marginTop: 0 }}
-              value={outofrangeMaxValue}
-              type="number"
-              onBlur={() => validateForNullValue(outofrangeMaxValue, 'outofrangeMaxValue')}
-              onChange={(e) => {
-                setOutofrangeMaxValue(e.target.value);
-              }}
-              margin="normal"
-              required
-              id="outlined-required"
-              label="Max Value"
-              fullWidth
-              error={errorObject?.outofrangeMaxValue?.errorStatus}
-              helperText={errorObject?.outofrangeMaxValue?.helperText}
-              autoComplete="off"
-            />
-          </div>
-        </Grid>
-        <Grid
-          sx={{ mt: 0, padding: 0 }}
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-        >
           <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
             <InputLabel id="demo-simple-select-label">
               Sensor alert
@@ -532,6 +460,8 @@ function AnalogAlert({
               label="Sensor alert"
               onChange={(e) => {
                 setOutofrangeAlertType(e.target.value);
+                setOutofrangeMaxValue('');
+                setOutofrangeMinValue('');
               }}
             >
               <MenuItem value="High">High</MenuItem>
@@ -625,7 +555,56 @@ function AnalogAlert({
           lg={6}
           xl={6}
         >
-          <div className="rounded-md -space-y-px" />
+          <div className="rounded-md -space-y-px">
+            <TextField
+              sx={{ marginTop: 0 }}
+              value={outofrangeMinValue}
+              type="number"
+              disabled={outofrangeAlertType === "High" || outofrangeAlertType === "" }
+              onBlur={() => validateForNullValue(outofrangeMinValue, 'outofrangeMinValue')}
+              onChange={(e) => {
+                setOutofrangeMinValue(e.target.value);
+              }}
+              margin="normal"
+              required
+              id="outlined-required"
+              label="Min Value"
+              fullWidth
+              error={errorObject?.outofrangeMinValue?.errorStatus}
+              helperText={errorObject?.outofrangeMinValue?.helperText}
+              autoComplete="off"
+            />
+          </div>
+        </Grid>
+        <Grid
+          sx={{ mt: 0, padding: 0 }}
+          item
+          xs={12}
+          sm={6}
+          md={6}
+          lg={6}
+          xl={6}
+        >
+          <div className="rounded-md -space-y-px">
+            <TextField
+              sx={{ marginTop: 0 }}
+              value={outofrangeMaxValue}
+              type="number"
+              disabled={outofrangeAlertType === "Low" || outofrangeAlertType === "" }
+              onBlur={() => validateForNullValue(outofrangeMaxValue, 'outofrangeMaxValue')}
+              onChange={(e) => {
+                setOutofrangeMaxValue(e.target.value);
+              }}
+              margin="normal"
+              required
+              id="outlined-required"
+              label="Max Value"
+              fullWidth
+              error={errorObject?.outofrangeMaxValue?.errorStatus}
+              helperText={errorObject?.outofrangeMaxValue?.helperText}
+              autoComplete="off"
+            />
+          </div>
         </Grid>
       </Grid>
     </DialogContent>

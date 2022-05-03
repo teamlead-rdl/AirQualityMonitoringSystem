@@ -183,7 +183,6 @@ function VendorModel({
 
           <Button
             size="large"
-            variant="outlined"
             autoFocus
             onClick={(e) => {
               setOpen(false);
@@ -204,7 +203,6 @@ function VendorModel({
                      || errorObject?.contactPerson?.errorStatus
             }
             size="large"
-            variant="contained"
             type="submit"
           >
             {' '}

@@ -1440,7 +1440,6 @@ function SensorConfig({
                 <Button
                   sx={{ m: 2 }}
                   size="large"
-                  variant="contained"
                   type="submit"
                   disabled={
                     errorObject?.sensorName?.errorStatus

@@ -7,6 +7,8 @@ import { VendorListToolbar } from './VendorListToolbar';
 import { FetchVendorService, VendorDeleteService } from '../../services/LoginPageService';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../context/UserAccessProvider';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import DeleteConfirmationDailog from '../../utils/confirmDeletion';
 
 export function VendorListResults() {
   const columns = [
@@ -55,6 +57,7 @@ export function VendorListResults() {
   ];
 
   const [open, setOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
   const [isAddButton, setIsAddButton] = useState(true);
   const [editVendor, setEditVendor] = useState([]);
   const [vendorList, setVendorList] = useState([]);
@@ -118,12 +121,16 @@ export function VendorListResults() {
   function DeleteData(props) {
     return moduleAccess.delete && (
       <DeleteIcon onClick={() => {
-        VendorDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+        // VendorDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+        ConfirmDeletion(props);
       }}
       />
-    );
+      );
+    }
+    
+  function ConfirmDeletion(props){
+    setDeleteDailogOpen(true);
   }
-
   const handleClose = () => {
     setNotification({
       status: false,
@@ -159,6 +166,10 @@ export function VendorListResults() {
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
       />
     </div>
   );

@@ -20,6 +20,7 @@ function Building() {
         <BuildingListResults locationCoordinationList={locationCoordinationList} setLocationCoordinationList={setLocationCoordinationList} />
       </Grid>
       <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
+      {locationCoordinationList.length !== 0 ?
         <MapsMultiplePoints
           width="100%"
           height="50vh"
@@ -27,6 +28,9 @@ function Building() {
           zoom={18}
           center={{ lat: centerLat, lng: centerLng}}
         />
+        :
+        ''
+      }
       </Grid>
     </Container>
   );

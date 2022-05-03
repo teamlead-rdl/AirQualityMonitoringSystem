@@ -326,7 +326,7 @@ function BuildingModal({
                     latitude={markerLat}
                     stateName={editData.buildingName}
                     zoom={18}
-                    center={{ lat: locationCoordinationList[0]?.position.lat, lng:locationCoordinationList[0]?.position.lng}}
+                    center={{ lat: locationCoordinationList[0]?.position.lat || 19.34187, lng:locationCoordinationList[0]?.position.lng || 78.30460}}
                   />
 
                 </div>

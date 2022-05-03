@@ -74,62 +74,6 @@ function ModbusAlert({
           sx={{ mt: 0, padding: 0 }}
           item
           xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-        >
-          <div className="rounded-md -space-y-px">
-            <TextField
-              sx={{ marginTop: 0 }}
-              value={criticalMinValue}
-              // onBlur={() => validateForNullValue(alertTag, "alertTag")}
-              onChange={(e) => {
-                setCriticalMinValue(e.target.value);
-              }}
-              margin="normal"
-              required
-              id="outlined-required"
-              label="Min Value"
-              fullWidth
-              // error={errorObject?.deviceName?.errorStatus}
-              // helperText={errorObject?.deviceName?.helperText}
-              autoComplete="off"
-            />
-          </div>
-        </Grid>
-        <Grid
-          sx={{ mt: 0, padding: 0 }}
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-        >
-          <div className="rounded-md -space-y-px">
-            <TextField
-              sx={{ marginTop: 0 }}
-              value={criticalMaxValue}
-              // onBlur={() => validateForNullValue(alertTag, "alertTag")}
-              onChange={(e) => {
-                setCriticalMaxValue(e.target.value);
-              }}
-              margin="normal"
-              required
-              id="outlined-required"
-              label="Max Value"
-              fullWidth
-              // error={errorObject?.deviceName?.errorStatus}
-              // helperText={errorObject?.deviceName?.helperText}
-              autoComplete="off"
-            />
-          </div>
-        </Grid>
-        <Grid
-          sx={{ mt: 0, padding: 0 }}
-          item
-          xs={12}
           sm={4}
           md={4}
           lg={4}
@@ -146,6 +90,8 @@ function ModbusAlert({
               label="Sensor alert"
               onChange={(e) => {
                 setCriticalAlertType(e.target.value);
+                setCriticalMinValue("");
+                setCriticalMaxValue("");
               }}
               // error={errorObject?.deviceName?.errorStatus}
               // helperText={errorObject?.deviceName?.helperText}
@@ -237,29 +183,6 @@ function ModbusAlert({
               : ''}
           </Grid>
         </Grid>
-        {/* <Grid
-          sx={{ mt: 0, padding:0 }}
-          item
-          xs={12} sm={6} md={6} lg={6} xl={6}>
-          <div className='rounded-md -space-y-px'>
-
-          </div>
-        </Grid> */}
-      </Grid>
-      <Grid container spacing={1} sx={{ mt: 0 }}>
-        <Grid
-          sx={{ mt: 0, padding: 0 }}
-          item
-          xs={12}
-          sm={12}
-          md={12}
-          lg={12}
-          xl={12}
-        >
-          <div className="float-left ml-2">
-            Warning Alert :
-          </div>
-        </Grid>
         <Grid
           sx={{ mt: 0, padding: 0 }}
           item
@@ -272,10 +195,11 @@ function ModbusAlert({
           <div className="rounded-md -space-y-px">
             <TextField
               sx={{ marginTop: 0 }}
-              value={warningMinValue}
+              value={criticalMinValue}
+              disabled={criticalAlertType === "High" || criticalAlertType === "High"}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
-                setWarningMinValue(e.target.value);
+                setCriticalMinValue(e.target.value);
               }}
               margin="normal"
               required
@@ -300,10 +224,11 @@ function ModbusAlert({
           <div className="rounded-md -space-y-px">
             <TextField
               sx={{ marginTop: 0 }}
-              value={warningMaxValue}
+              value={criticalMaxValue}
+              disabled={criticalAlertType === "Low" || criticalAlertType === ""}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
-                setWarningMaxValue(e.target.value);
+                setCriticalMaxValue(e.target.value);
               }}
               margin="normal"
               required
@@ -314,6 +239,21 @@ function ModbusAlert({
               // helperText={errorObject?.deviceName?.helperText}
               autoComplete="off"
             />
+          </div>
+        </Grid>
+      </Grid>
+      <Grid container spacing={1} sx={{ mt: 0 }}>
+        <Grid
+          sx={{ mt: 0, padding: 0 }}
+          item
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          xl={12}
+        >
+          <div className="float-left ml-2">
+            Warning Alert :
           </div>
         </Grid>
         <Grid
@@ -336,6 +276,8 @@ function ModbusAlert({
               label="Sensor alert"
               onChange={(e) => {
                 setWarningAlertType(e.target.value);
+                setWarningMinValue("");
+                setWarningMaxValue("");
               }}
               // error={errorObject?.deviceName?.errorStatus}
               // helperText={errorObject?.deviceName?.helperText}
@@ -438,39 +380,14 @@ function ModbusAlert({
           lg={6}
           xl={6}
         >
-          <div className="rounded-md -space-y-px" />
-        </Grid>
-      </Grid>
-      <Grid container spacing={1} sx={{ mt: 0 }}>
-        <Grid
-          sx={{ mt: 0, padding: 0 }}
-          item
-          xs={12}
-          sm={12}
-          md={12}
-          lg={12}
-          xl={12}
-        >
-          <div className="float-left ml-2">
-            Out-of-Range Alert :
-          </div>
-        </Grid>
-        <Grid
-          sx={{ mt: 0, padding: 0 }}
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          lg={6}
-          xl={6}
-        >
           <div className="rounded-md -space-y-px">
             <TextField
               sx={{ marginTop: 0 }}
-              value={outofrangeMinValue}
+              value={warningMinValue}
+              disabled={warningAlertType === "High" || warningAlertType === ""}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
-                setOutofrangeMinValue(e.target.value);
+                setWarningMinValue(e.target.value);
               }}
               margin="normal"
               required
@@ -495,10 +412,11 @@ function ModbusAlert({
           <div className="rounded-md -space-y-px">
             <TextField
               sx={{ marginTop: 0 }}
-              value={outofrangeMaxValue}
+              value={warningMaxValue}
+              disabled={warningAlertType === "Low" || warningAlertType === ""}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
-                setOutofrangeMaxValue(e.target.value);
+                setWarningMaxValue(e.target.value);
               }}
               margin="normal"
               required
@@ -509,6 +427,21 @@ function ModbusAlert({
               // helperText={errorObject?.deviceName?.helperText}
               autoComplete="off"
             />
+          </div>
+        </Grid>
+      </Grid>
+      <Grid container spacing={1} sx={{ mt: 0 }}>
+        <Grid
+          sx={{ mt: 0, padding: 0 }}
+          item
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          xl={12}
+        >
+          <div className="float-left ml-2">
+            Out-of-Range Alert :
           </div>
         </Grid>
         <Grid
@@ -633,7 +566,54 @@ function ModbusAlert({
           lg={6}
           xl={6}
         >
-          <div className="rounded-md -space-y-px" />
+          <div className="rounded-md -space-y-px">
+            <TextField
+              sx={{ marginTop: 0 }}
+              value={outofrangeMinValue}
+              disabled={outofrangeAlertType === "High" || outofrangeAlertType === ""}
+              // onBlur={() => validateForNullValue(alertTag, "alertTag")}
+              onChange={(e) => {
+                setOutofrangeMinValue(e.target.value);
+              }}
+              margin="normal"
+              required
+              id="outlined-required"
+              label="Min Value"
+              fullWidth
+              // error={errorObject?.deviceName?.errorStatus}
+              // helperText={errorObject?.deviceName?.helperText}
+              autoComplete="off"
+            />
+          </div>
+        </Grid>
+        <Grid
+          sx={{ mt: 0, padding: 0 }}
+          item
+          xs={12}
+          sm={6}
+          md={6}
+          lg={6}
+          xl={6}
+        >
+          <div className="rounded-md -space-y-px">
+            <TextField
+              sx={{ marginTop: 0 }}
+              value={outofrangeMaxValue}
+              disabled={outofrangeAlertType === "Low" || outofrangeAlertType === ""}
+              // onBlur={() => validateForNullValue(alertTag, "alertTag")}
+              onChange={(e) => {
+                setOutofrangeMaxValue(e.target.value);
+              }}
+              margin="normal"
+              required
+              id="outlined-required"
+              label="Max Value"
+              fullWidth
+              // error={errorObject?.deviceName?.errorStatus}
+              // helperText={errorObject?.deviceName?.helperText}
+              autoComplete="off"
+            />
+          </div>
         </Grid>
       </Grid>
     </DialogContent>

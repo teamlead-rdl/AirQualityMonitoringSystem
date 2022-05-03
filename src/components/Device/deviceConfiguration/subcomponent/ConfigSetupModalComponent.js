@@ -270,7 +270,6 @@ function ConfigSetupModal({
         <DialogActions sx={{ margin: '10px' }}>
           <Button
             size="large"
-            variant="outlined"
             autoFocus
             onClick={(e) => {
               setOpen(false);
@@ -283,7 +282,6 @@ function ConfigSetupModal({
           <Button
             // disabled={errorObject?.vendorName?.errorStatus || errorObject?.companyCode?.errorStatus || errorObject?.phoneNumber?.errorStatus || errorObject?.emailId?.errorStatus || errorObject?.address?.errorStatus|| errorObject?.contactPerson?.errorStatus}
             size="large"
-            variant="contained"
             type="submit"
           >
             {' '}

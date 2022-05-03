@@ -119,7 +119,6 @@ function CategoryModel({
         <DialogActions sx={{ margin: '10px' }}>
           <Button
             size="large"
-            variant="outlined"
             autoFocus
             onClick={(e) => {
               setOpen(false);
@@ -132,7 +131,6 @@ function CategoryModel({
           <Button
             disabled={errorObject?.categoryName?.errorStatus || errorObject?.categoryDescription?.errorStatus}
             size="large"
-            variant="contained"
             type="submit"
           >
             {' '}

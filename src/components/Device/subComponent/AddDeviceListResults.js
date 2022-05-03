@@ -6,15 +6,16 @@ import SensorsIcon from '@mui/icons-material/Sensors';
 import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt';
 import DeviceModel from './DeviceModelComponent';
 import {
-  DeviceDeleteService, DeviceFetchService, CategoryFetchService, SensorDeployFetchService,
+  DeviceDeleteService, DeviceFetchService, CategoryFetchService, SensorDeployFetchService, ChangeDeviceMode,
 } from '../../../services/LoginPageService';
 import SensorModel from './SensorModelComponent';
 import DeviceConfigSetupModal from '../deviceConfiguration/subcomponent/DeviceConfigSetupModalComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
-import { MenuItem, Select } from '@mui/material';
+import { MenuItem, Select, LinearProgress, Box, CircularProgress, Dialog, DialogTitle, DialogContent, Typography, DialogActions, Button } from '@mui/material';
 import BumpTestComponentModal from './BumpTestComponentModal';
-import { PlayArrow, PlayDisabled, Science, Tune, Upgrade } from '@mui/icons-material';
+import { GppMaybe, PlayArrow, PlayDisabled, Science, Tune, Upgrade } from '@mui/icons-material';
+import { darken, lighten } from '@mui/material/styles';
 
 function AddDeviceListResults(props) {
   const columns = [
@@ -94,6 +95,7 @@ function AddDeviceListResults(props) {
   // } = props.locationDetails;
   const [sensorOpen, setSensorOpen] = useState(false);
   const [configSetupOpen, setConfigSetupOpen] = useState(false);
+  const [modeChange, setModeChange] = useState(false);
   // const [editConfigSetup, setEditConfigSetup] = useState([]);
 
   const [analogSensorList, setAnalogSensorList] = useState([]);
@@ -149,18 +151,10 @@ function AddDeviceListResults(props) {
             label="Mode"
             fullWidth
             onChange={(e)=>{
-              switch(e.target.value){
-                case "calibration" : 
-                  setProgressStatus(3);
-                  setSensorOpen(true);
-                  break;
-                case "bumpTest" :
-                  setBumpTestOpen(true);
-                  break;
-                default : break;
-              }
+              // setModeChange(true);
+              ChangeModeAPI(props.selectedRow, e.target.value);
             }}
-          >
+            >
             <MenuItem value="enabled">Enable</MenuItem>
             <MenuItem value="disabled">Disable</MenuItem>
             <MenuItem value="bumpTest">Bump Test</MenuItem>
@@ -171,12 +165,54 @@ function AddDeviceListResults(props) {
       ));
   }
   /* eslint-disable-next-line */
+  function ChangeModeAPI({id}, deviceMode){
+    ChangeDeviceMode({id, deviceMode}, modeChangeHandleSuccess, modeChangeHandleException);
+  }
+
+  /* eslint-disable-next-line */
+  const modeChangeHandleSuccess = (dataObject) => {
+    setNotification({
+      status: true,
+      type: 'success',
+      message: dataObject.message,
+    });
+
+    setRefreshData((oldvalue) => !oldvalue);
+
+    setTimeout(() => {
+      handleClose();
+      switch(dataObject.deviceMode){
+          case "calibration" : 
+            setProgressStatus(3);
+            setSensorOpen(true);
+            break;
+          case "bumpTest" :
+            setBumpTestOpen(true);
+            break;
+          default : break;
+        }
+    }, 3000);
+    console.log(dataObject);
+  };
+
+  /* eslint-disable-next-line */
+  const modeChangeHandleException = (errorObject, errorMessage) => {
+    setNotification({
+      status: true,
+      type: 'error',
+      message: errorMessage,
+    });
+  };
+  /* eslint-disable-next-line */
   function ChangeStatus(props) {
     switch(props.selectedRow.deviceMode){
       case "calibration" : 
         return <Upgrade/>
       case "firmwareUpgradation" : 
-        return <Tune/>
+        // return <Tune/>
+        return <Box sx={{ width:'50%'}}>
+                <CircularProgress color='secondary' style={{width:20, height:20}}/>
+              </Box>
       case "disabled" : 
         return <PlayDisabled/>
       case "bumpTest" :
@@ -282,16 +318,88 @@ function AddDeviceListResults(props) {
     });
   };
 
+  const getBackgroundColor = (color, mode) =>
+  mode === 'dark' ? darken(color, 0.6) : lighten(color, 0.6);
+
+  const getHoverBackgroundColor = (color, mode) =>
+  mode === 'dark' ? darken(color, 0.5) : lighten(color, 0.5);
+
   return (
     <div style={{ height: 300, width: '100%', padding: 0 }}>
-      <DataGrid
-        rows={deviceList}
-        columns={columns}
-        pageSize={5}
-        loading={isLoading}
-        rowsPerPageOptions={[5]}
-        disableSelectionOnClick
-      />
+      <Box
+        sx={{
+          height: 400,
+          width: 1,
+          '& .super-app-theme--calibration': {
+            bgcolor: (theme) =>
+              getBackgroundColor('#FAE8FA', theme.palette.mode),
+            '&:hover': {
+              bgcolor: (theme) =>
+                getHoverBackgroundColor('#FAE8FA', theme.palette.mode),
+            },
+            ":hover":{backgroundColor:'#FAE8FA'}
+          },
+          '& .super-app-theme--firmwareUpgradation': {
+            bgcolor: (theme) =>
+              getBackgroundColor('#9fa8da', theme.palette.mode),
+            '&:hover': {
+              bgcolor: (theme) =>
+                getHoverBackgroundColor(
+                  '#9fa8da',
+                  theme.palette.mode,
+                ),
+            },
+          },
+          '& .super-app-theme--disabled': {
+            bgcolor: (theme) =>
+              getBackgroundColor('#ffcdd2', theme.palette.mode),
+            '&:hover': {
+              bgcolor: (theme) =>
+                getHoverBackgroundColor(
+                  '#ffcdd2',
+                  theme.palette.mode,
+                ),
+            },
+          },
+          '& .super-app-theme--enabled': {
+            bgcolor: (theme) =>
+              getBackgroundColor('#A5D6A7', theme.palette.mode),
+            '&:hover': {
+              bgcolor: (theme) =>
+                getHoverBackgroundColor(
+                  '#A5D6A7',
+                  theme.palette.mode,
+                ),
+            },
+          },
+          '& .super-app-theme--bumpTest': {
+            bgcolor: (theme) =>
+              getBackgroundColor('#FFFCE3', theme.palette.mode),
+            '&:hover': {
+              bgcolor: (theme) =>
+                getHoverBackgroundColor('#FFFCE3', theme.palette.mode),
+            },
+          },
+          '& .super-app-theme--config': {
+            bgcolor: (theme) =>
+              getBackgroundColor('#F2FFF2', theme.palette.mode),
+            '&:hover': {
+              bgcolor: (theme) =>
+                getHoverBackgroundColor('#F2FFF2', theme.palette.mode),
+            },
+          }
+        }}
+      >
+        <DataGrid
+          rows={deviceList}
+          columns={columns}
+          pageSize={5}
+          loading={isLoading}
+          rowsPerPageOptions={[5]}
+          disableSelectionOnClick
+          getRowClassName={(params) => `super-app-theme--${params.row.deviceMode}`}
+        />
+      </Box>
       <DeviceModel
         isAddButton={isAddButton}
         deviceData={editDevice}
@@ -333,6 +441,39 @@ function AddDeviceListResults(props) {
         openNotification={openNotification.status}
         type={openNotification.type}
       />
+      <Dialog
+        fullWidth
+        maxWidth="sm"
+        sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: '100%' } }}
+        open={modeChange}
+      >
+        <DialogTitle sx={{ textAlign: 'center' }}>
+          <GppMaybe color="warning" style={{ fontSize: 95 }} />
+        </DialogTitle>
+        <DialogContent sx={{ textAlign: 'center' }}>
+          <Typography
+            sx={{ m: 1 }}
+            variant="h5"
+            component="span"
+          >
+            Do you really want to change the mode?
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ margin: '10px' }}>
+          <div style={{ textAlign: 'center' }}>
+            <Button onClick={()=>{
+              setModeChange(false);
+            }}>
+              Confirm
+            </Button>
+            <Button
+              onClick={() => { setModeChange(false); }}
+            >
+              Cancel
+            </Button>
+          </div>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

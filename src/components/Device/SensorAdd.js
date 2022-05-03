@@ -883,7 +883,7 @@ function DeviceAdd({
 
           <div className="float-right">
             <Button
-              sx={{ m: 2 }}
+              size="large"
               onClick={() => {
                 setErrorObject({});
                 resetForm();
@@ -894,9 +894,8 @@ function DeviceAdd({
               Cancel
             </Button>
             <Button
-              sx={{ m: 2 }}
+              sx={{ m: 1 }}
               size="large"
-              variant="contained"
               type="submit"
             >
               {isUpdate ? 'UPDATE' : 'ADD' }
