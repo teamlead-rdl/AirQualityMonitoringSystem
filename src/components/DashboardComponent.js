@@ -7,6 +7,7 @@ import Featured from './featured/Featured';
 import BarChart from './chart/barChart/BarChart';
 import LineChart from './chart/lineChart/LineChart';
 import Table from './table/Table';
+import { DisplayLineChart } from '../services/LoginPageService';
 
 function Dashboard() {
   const [showSave, setSaveLayout] = useState(false);
@@ -27,7 +28,16 @@ function Dashboard() {
 
   useEffect(() => {
     setSaveLayout(true);
+    DisplayLineChart(handleSuccess, handleException);
   }, [layout]);
+
+  const handleSuccess = (dataObject) => {
+    console.log(dataObject);
+  };
+
+  const handleException = (errorObject, errorMessage) => {
+    console.log(errorMessage);
+  };
   return (
     <div>
       <div className="widgets">

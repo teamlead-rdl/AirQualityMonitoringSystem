@@ -9,6 +9,7 @@ import BranchModal from './BranchModalComponent';
 import { Link, useLocation } from 'react-router-dom';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
+import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
 
 export function BranchListResults(props) {
   const branchColumns = [
@@ -47,6 +48,8 @@ export function BranchListResults(props) {
   ];
 
   const [open, setOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editData, setEditData] = useState([]);
   const [dataList, setDataList] = useState([]);
@@ -99,7 +102,8 @@ export function BranchListResults(props) {
     setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
-    }, 5000);
+      setDeleteDailogOpen(false);
+    }, 3000);
   };
 
   const deletehandleException = (errorObject, errorMessage) => {
@@ -108,6 +112,9 @@ export function BranchListResults(props) {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   function LinkTo(props) {
@@ -141,7 +148,8 @@ export function BranchListResults(props) {
 
   const DeleteData = (props) => {
     return moduleAccess.delete && <DeleteIcon onClick={()=>{
-      BranchDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+      setDeleteId(props.selectedRow.id);
+      setDeleteDailogOpen(true);
     }}
     style={{cursor:'pointer'}}
     />
@@ -198,6 +206,14 @@ export function BranchListResults(props) {
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={BranchDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );

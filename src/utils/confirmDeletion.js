@@ -5,6 +5,10 @@ import {
 import React from 'react';
 
 export default function DeleteConfirmationDailog(props) {
+  function onSubmit() {
+    props.setOpen(false);
+    props.deleteService(props.deleteId, props.handleSuccess, props.handleException);
+  }
   return (
     <Dialog
       fullWidth
@@ -28,11 +32,11 @@ export default function DeleteConfirmationDailog(props) {
       </DialogContent>
       <DialogActions sx={{ margin: '10px' }}>
         <div style={{ textAlign: 'center' }}>
-          <Button>
+          <Button onClick={() => { onSubmit(); }}>
             Confirm
           </Button>
           <Button
-            onClick={() => { props.setOpen(false); }}
+            onClick={() => props.setOpen(false)}
           >
             Cancel
           </Button>

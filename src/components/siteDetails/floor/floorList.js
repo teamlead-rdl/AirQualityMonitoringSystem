@@ -9,6 +9,7 @@ import FloorModal from './FloorModalComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 import ApplicationStore from '../../../utils/localStorageUtil';
+import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
 
 export function FloorListResults({ img }) {
   const dataColumns = [
@@ -47,6 +48,8 @@ export function FloorListResults({ img }) {
   ];
 
   const [open, setOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editData, setEditData] = useState([]);
   const [dataList, setDataList] = useState([]);
@@ -113,7 +116,8 @@ export function FloorListResults({ img }) {
     setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
-    }, 5000);
+      setDeleteDailogOpen(false);
+    }, 3000);
   };
 
   const deletehandleException = (errorObject, errorMessage) => {
@@ -122,6 +126,9 @@ export function FloorListResults({ img }) {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   function EditData(props) {
@@ -142,8 +149,11 @@ export function FloorListResults({ img }) {
   function DeleteData(props) {
     return moduleAccess.delete && (
       <DeleteOutlined
-        onClick={() => FloorDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException)}
-
+        onClick={() => {
+            setDeleteId(props.selectedRow.id);
+            setDeleteDailogOpen(true);
+          }
+        }
         style={{ cursor: 'pointer' }}
       />
     );
@@ -259,12 +269,19 @@ export function FloorListResults({ img }) {
         setRefreshData={setRefreshData}
         src={img}
       />
-
       <NotificationBar
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={FloorDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );

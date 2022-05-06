@@ -58,6 +58,7 @@ export function VendorListResults() {
 
   const [open, setOpen] = useState(false);
   const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editVendor, setEditVendor] = useState([]);
   const [vendorList, setVendorList] = useState([]);
@@ -92,7 +93,8 @@ export function VendorListResults() {
     setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
-    }, 5000);
+      setDeleteDailogOpen(false);
+    }, 3000);
   };
 
   const deletehandleException = (errorObject, errorMessage) => {
@@ -101,6 +103,9 @@ export function VendorListResults() {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   function EditData(props) {
@@ -121,16 +126,13 @@ export function VendorListResults() {
   function DeleteData(props) {
     return moduleAccess.delete && (
       <DeleteIcon onClick={() => {
-        // VendorDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
-        ConfirmDeletion(props);
+        setDeleteId(props.selectedRow.id);
+        setDeleteDailogOpen(true);
       }}
       />
       );
     }
     
-  function ConfirmDeletion(props){
-    setDeleteDailogOpen(true);
-  }
   const handleClose = () => {
     setNotification({
       status: false,
@@ -166,10 +168,14 @@ export function VendorListResults() {
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
-      />
+        />
       <DeleteConfirmationDailog
         open={deleteDailogOpen}
         setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={VendorDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );

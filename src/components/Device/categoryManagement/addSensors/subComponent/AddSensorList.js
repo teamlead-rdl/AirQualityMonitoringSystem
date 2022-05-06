@@ -7,6 +7,7 @@ import { AddSensorCategoryToolbar } from './AddSensorCategoryToolbar';
 import AddSensorModal from './AddSensorModal';
 import NotificationBar from '../../../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../../../context/UserAccessProvider';
+import DeleteConfirmationDailog from '../../../../../utils/confirmDeletion';
 // import ConfigAlarm from './ConfigAlarm';
 
 export function AddSensorList() {
@@ -39,6 +40,8 @@ export function AddSensorList() {
 
   const [open, setOpen] = useState(false);
   // const [alertOpen, setAlertOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editCategory, setEditCategory] = useState([]);
   const [CategoryList, setCategoryList] = useState([]);
@@ -98,7 +101,8 @@ export function AddSensorList() {
       <DeleteIcon
         style={{ cursor: 'pointer' }}
         onClick={() => {
-          SensorDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+          setDeleteId(props.selectedRow.id);
+          setDeleteDailogOpen(true);
         }}
       />
     );
@@ -112,7 +116,8 @@ export function AddSensorList() {
     setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
-    }, 5000);
+      setDeleteDailogOpen(false);
+    }, 3000);
   };
 
   const deletehandleException = (errorObject, errorMessage) => {
@@ -121,6 +126,9 @@ export function AddSensorList() {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   const handleClose = () => {
@@ -164,6 +172,14 @@ export function AddSensorList() {
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={SensorDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );

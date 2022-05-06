@@ -8,6 +8,7 @@ import { FacilityListToolbar } from './facility-list-toolbars';
 import FacilityModal from './FacilityModalComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
+import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
 
 export function FacilityListResults(props) {
   const branchColumns = [
@@ -56,6 +57,8 @@ export function FacilityListResults(props) {
   ];
 
   const [open, setOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editData, setEditData] = useState([]);
   const [dataList, setDataList] = useState([]);
@@ -110,6 +113,7 @@ export function FacilityListResults(props) {
     setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
+      setDeleteDailogOpen(false);
     }, 5000);
   };
 
@@ -119,6 +123,9 @@ export function FacilityListResults(props) {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   function LinkTo(props) {
@@ -155,7 +162,8 @@ export function FacilityListResults(props) {
     return moduleAccess.delete && (
       <DeleteOutlined
         onClick={() => {
-          FacilityDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+          setDeleteId(props.selectedRow.id);
+          setDeleteDailogOpen(true);
         }}
         style={{ cursor: 'pointer' }}
       />
@@ -228,6 +236,14 @@ export function FacilityListResults(props) {
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={FacilityDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );

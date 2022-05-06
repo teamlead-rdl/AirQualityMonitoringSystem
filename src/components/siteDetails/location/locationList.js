@@ -8,9 +8,12 @@ import { LocationListToolbar } from './location-list-toolbars';
 import LocationModal from './LocationModalComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
+import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
 
 export function LocationListResults({ locationCoordinationList, setLocationCoordinationList }) {
   const [open, setOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editState, setEditState] = useState([]);
   const [dataList, setDataList] = useState([]);
@@ -133,7 +136,11 @@ export function LocationListResults({ locationCoordinationList, setLocationCoord
   function DeleteData(props) {
     return moduleAccess.delete && (
       <DeleteIcon
-        onClick={() => LocationDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException)}
+        onClick={() => {
+            setDeleteId(props.selectedRow.id);
+            setDeleteDailogOpen(true);
+          }
+        }
         style={{ cursor: 'pointer' }}
       />
     );
@@ -177,6 +184,14 @@ export function LocationListResults({ locationCoordinationList, setLocationCoord
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={LocationDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );

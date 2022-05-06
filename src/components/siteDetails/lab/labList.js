@@ -9,6 +9,7 @@ import LabModal from './LabModalComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 import ApplicationStore from '../../../utils/localStorageUtil';
+import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
 
 export function LabListResults({ img }) {
   const dataColumns = [
@@ -48,6 +49,8 @@ export function LabListResults({ img }) {
   ];
 
   const [open, setOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editData, setEditData] = useState([]);
   const [dataList, setDataList] = useState([]);
@@ -96,7 +99,8 @@ export function LabListResults({ img }) {
     setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
-    }, 5000);
+      setDeleteDailogOpen(false);
+    }, 3000);
   };
 
   const deletehandleException = (errorObject, errorMessage) => {
@@ -105,6 +109,9 @@ export function LabListResults({ img }) {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   function EditData(props) {
@@ -123,7 +130,11 @@ export function LabListResults({ img }) {
   function DeleteData(props) {
     return moduleAccess.delete && (
       <DeleteOutlined
-        onClick={() => LabDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException)}
+        onClick={() => {
+          // LabDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+          setDeleteId(props.selectedRow.id);
+          setDeleteDailogOpen(true);
+        }}
       />
     );
   }
@@ -277,12 +288,19 @@ export function LabListResults({ img }) {
         setRefreshData={setRefreshData}
         img={img}
       />
-
       <NotificationBar
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={LabDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );

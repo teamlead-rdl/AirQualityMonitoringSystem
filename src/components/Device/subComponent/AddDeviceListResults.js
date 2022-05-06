@@ -16,6 +16,7 @@ import { MenuItem, Select, LinearProgress, Box, CircularProgress, Dialog, Dialog
 import BumpTestComponentModal from './BumpTestComponentModal';
 import { GppMaybe, PlayArrow, PlayDisabled, Science, Tune, Upgrade } from '@mui/icons-material';
 import { darken, lighten } from '@mui/material/styles';
+import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
 
 function AddDeviceListResults(props) {
   const columns = [
@@ -84,6 +85,8 @@ function AddDeviceListResults(props) {
   ];
   const [progressStatus, setProgressStatus] = useState(3);
   const [open, setOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [bumpTestOpen, setBumpTestOpen] = useState(false);
   const [isAddButton, setIsAddButton] = useState(true);
   const [editDevice, setEditDevice] = useState([]);
@@ -241,7 +244,8 @@ function AddDeviceListResults(props) {
   function DeleteData(props) {
     return moduleAccess.delete && (
       <DeleteIcon onClick={() => {
-        DeviceDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+        setDeleteId(props.selectedRow.id);
+        setDeleteDailogOpen(true);
       }}
       />
     );
@@ -296,10 +300,10 @@ function AddDeviceListResults(props) {
     });
 
     setRefreshData((oldvalue) => !oldvalue);
-
     setTimeout(() => {
       handleClose();
-    }, 5000);
+      setDeleteDailogOpen(false);
+    }, 3000);
   };
 
   const deletehandleException = (errorObject, errorMessage) => {
@@ -308,6 +312,9 @@ function AddDeviceListResults(props) {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   const handleClose = () => {
@@ -474,6 +481,14 @@ function AddDeviceListResults(props) {
           </div>
         </DialogActions>
       </Dialog>
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={DeviceDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
+      />
     </div>
   );
 }

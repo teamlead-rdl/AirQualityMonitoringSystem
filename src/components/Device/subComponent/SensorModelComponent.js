@@ -22,6 +22,7 @@ import { useUserAccess } from '../../../context/UserAccessProvider';
 import SensorAdd from '../SensorAdd';
 import { FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
 
 function generate(element) {
   return [0, 1, 2].map((value) => React.cloneElement(element, {
@@ -81,13 +82,17 @@ function SensorModel({
     },
   ];
 
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
+
   const HandleSubmit = async (e) => {
     e.preventDefault();
     setOpen(false);
   };
 
-  const deleteSensor = (id) => {
-    SensorDeployDeleteService({ id }, handleSuccess, handleException);
+  const deleteSensor = (data) => {
+    setDeleteId(data.id);
+    setDeleteDailogOpen(true);
   };
 
   const handleSuccess = (dataObject) => {
@@ -98,11 +103,11 @@ function SensorModel({
     });
 
     setRefreshData((oldvalue) => !oldvalue);
-
     setTimeout(() => {
       handleClose();
+      setDeleteDailogOpen(false);
       setOpen(false);
-    }, 5000);
+    }, 3000);
   };
 
   const handleException = (errorObject, errorMessage) => {
@@ -111,6 +116,9 @@ function SensorModel({
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   const handleClose = () => {
@@ -149,7 +157,7 @@ function SensorModel({
                                                   <IconButton
                                                     edge="end"
                                                     aria-label="delete"
-                                                    onClick={() => { deleteSensor(data.id); }}
+                                                    onClick={() => { deleteSensor(data); }}
                                                   >
                                                     <DeleteIcon />
                                                   </IconButton>
@@ -198,7 +206,7 @@ function SensorModel({
                                                   <IconButton
                                                     edge="end"
                                                     aria-label="delete"
-                                                    onClick={() => { deleteSensor(data.id); }}
+                                                    onClick={() => { deleteSensor(data); }}
                                                   >
                                                     <DeleteIcon />
                                                   </IconButton>
@@ -247,7 +255,7 @@ function SensorModel({
                                                   <IconButton
                                                     edge="end"
                                                     aria-label="delete"
-                                                    onClick={() => { deleteSensor(data.id); }}
+                                                    onClick={() => { deleteSensor(data); }}
                                                   >
                                                     <DeleteIcon />
                                                   </IconButton>
@@ -552,6 +560,14 @@ function SensorModel({
           </Grid>
         </Grid>
       )}
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={SensorDeployDeleteService}
+        handleSuccess={handleSuccess}
+        handleException={handleException}
+      />
     </Dialog>
   );
 }
