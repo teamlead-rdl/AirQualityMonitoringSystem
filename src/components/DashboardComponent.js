@@ -10,6 +10,7 @@ import Table from './table/Table';
 import { DisplayLineChart } from '../services/LoginPageService';
 
 function Dashboard() {
+  const [arrayList, setArrayList] = useState([]);
   const [showSave, setSaveLayout] = useState(false);
   const [layout, setLayout] = useState([
     {
@@ -32,9 +33,9 @@ function Dashboard() {
   }, [layout]);
 
   const handleSuccess = (dataObject) => {
+    setArrayList(dataObject);
     console.log(dataObject);
   };
-
   const handleException = (errorObject, errorMessage) => {
     console.log(errorMessage);
   };
@@ -57,10 +58,10 @@ function Dashboard() {
           <Featured />
         </div>
         <div key="b">
-          <BarChart title="Gas Emissions (AQMS-Floor:02-LAB:12)" aspect={2 / 1} />
+          <BarChart title="Gas Emissions (AQMS-Floor:02-LAB:12)" aspect={2 / 1} data={arrayList}/>
         </div>
         <div key="c">
-          <LineChart title="Gas Emissions (AQMS-Floor:02-LAB:12)" aspect={2 / 1} />
+          <LineChart title="Gas Emissions (AQMS-Floor:02-LAB:12)" aspect={2 / 1} data={arrayList} />
         </div>
         <div key="d">
           <div className="listContainer">

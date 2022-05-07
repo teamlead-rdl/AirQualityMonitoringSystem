@@ -237,24 +237,33 @@ export const ConfigSetupDeleteService = (id, successCallback, errorCallBack) => 
 
 export const DeviceConfigSetupAddService = (data, successCallback, errorCallBack) => _fetchService('DeviceConfigSetup/add', 'POST', data, successCallback, errorCallBack);
 
-export const DeviceConfigSetupFetchService = (data, successCallback, errorCallBack) => {
-  return _fetchService(`DeviceConfigSetup/${data.id}/getDeviceConfigData`, 'GET', {}, successCallback, errorCallBack);
-};
+export const DeviceConfigSetupFetchService = (data, successCallback, errorCallBack) => { return _fetchService(`DeviceConfigSetup/${data.id}/getDeviceConfigData`, 'GET', {}, successCallback, errorCallBack); };
 
 // ----------- STEL & TWA setup -----------------------//
 
-export const StelEditService = (data, successCallback, errorCallBack) => {
-  return _fetchService(`stel/${data.id}/update`, 'POST', data, successCallback, errorCallBack);
-};
+export const StelEditService = (data, successCallback, errorCallBack) => { return _fetchService(`stel/${data.id}/update`, 'POST', data, successCallback, errorCallBack); };
 
 //------------ Change Device Mode -------------------//
 
-export const ChangeDeviceMode = (data, successCallback, errorCallBack) => {
-  return _fetchService(`deviceMode/${data.id}/update`, 'POST', data, successCallback, errorCallBack);
-};
+export const ChangeDeviceMode = (data, successCallback, errorCallBack) => { return _fetchService(`deviceMode/${data.id}/update`, 'POST', data, successCallback, errorCallBack); };
 
 //------------- Dashboard Chart Display ------------//
 
-export const DisplayLineChart = (successCallback, errorCallBack) => {
-  return _fetchService(`aqmiValues`, 'POST', {}, successCallback, errorCallBack);
-};
+export const DisplayLineChart = (successCallback, errorCallBack) => { return _fetchService(`aqmiValues`, 'POST', {}, successCallback, errorCallBack); };
+
+//------------- Calibration Result ---------------//
+
+export const CalibrationAddService = (data, successCallback, errorCallBack) => _fetchService('calibrationTestResult/add', 'POST', data, successCallback, errorCallBack);
+
+//-------------DeployedSensor List --------------//
+export const deviceDeployedSensors = (id, successCallback, errorCallBack) => _fetchService(`deviceDeployedSensors/${id}`, 'GET', {}, successCallback, errorCallBack);
+
+//-------------DeployedSensorTable List --------------//
+export const DeployedSensorsDetailsList = (data, successCallback, errorCallBack) => _fetchService(`calibrationTestResult`, 'POST', data, successCallback, errorCallBack);
+
+//------------- Bump Test ----------------------------//
+export const BumpTestAddService = (data, successCallback, errorCallBack) => _fetchService('bumpTestResult/add', 'POST', data, successCallback, errorCallBack);
+
+export const BumpTestFetchService = (data, successCallback, errorCallBack) => _fetchService('bumpTestResult', 'POST', data, successCallback, errorCallBack);
+
+export const BumpTestData = (data, successCallback, errorCallBack) => _fetchServiceBumpTestData('AQMS_DATA_EXTRACTION_CRON/aqms_data_extraction.php', 'POST', data, successCallback, errorCallBack);

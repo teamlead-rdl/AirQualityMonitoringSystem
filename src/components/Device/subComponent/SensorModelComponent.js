@@ -15,6 +15,8 @@ import SensorsIcon from '@mui/icons-material/Sensors';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import {
+  CalibrationAddService,
+  DeployedSensorsDetailsList,
   SensorDeployDeleteService,
 } from '../../../services/LoginPageService';
 import NotificationBar from '../../notification/ServiceNotificationBar';
@@ -23,7 +25,7 @@ import SensorAdd from '../SensorAdd';
 import { FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
-
+// CalibrationAddService
 function generate(element) {
   return [0, 1, 2].map((value) => React.cloneElement(element, {
     key: value,
@@ -45,16 +47,20 @@ function SensorModel({
   modbusSensorList,
   setRefreshData,
   progressStatus,
-  setProgressStatus
+  setProgressStatus,
+  deployedSensorTagList
 }) {
   const moduleAccess = useUserAccess()('devicelocation');
   
   const [editData, setEditData] = useState('');
   const [isUpdate, setIsUpdate] = useState(true);
-  const [calibrationList, setCalibrationList] = useState([
-    { id: 1, date: '10-04-2022', lastCalibrationValue: '15' },
-    { id: 2, date: '12-11-2022', lastCalibrationValue: '24' },
-  ]);
+  const [sensorTag, setSensorTag] = useState('');
+  const [name, setName] = useState(''); 
+  const [model, setModel] = useState('');
+  const [testResult, setTestResult] = useState('');
+  const [nextDueDate, setNextDueDate] = useState('');
+  const [lastDueDate, setLastDueDate] = useState('');
+  const [calibrationList, setCalibrationlist] = useState([]);
 
   const [openNotification, setNotification] = useState({
     status: false,
@@ -69,27 +75,74 @@ function SensorModel({
 
   const columns = [
     {
-      field: 'date',
+      field: 'calibrationDate',
       headerName: 'Date',
+      width: 200,
+      editable: true,
+    },
+    {
+      field: 'name',
+      headerName: 'Name',
       width: 150,
       editable: true,
     },
     {
-      field: 'lastCalibrationValue',
-      headerName: 'Last Calibration Value',
+      field: 'model',
+      headerName: 'Model',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'testResult',
+      headerName: 'Test Result',
       width: 200,
       editable: true,
     },
+    {
+      field: 'nextDueDate',
+      headerName: 'Next Due Date',
+      width: 200,
+      editable: true,
+    }
   ];
 
   const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState('');
 
-  const HandleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setOpen(false);
+    CalibrationAddService({sensorTag, name, model, testResult, nextDueDate}, calibrationHandleSuccess, calibrationHandleException);
   };
 
+  const calibrationHandleSuccess = (dataObject) => {
+    setNotification({
+      status: true,
+      type: 'success',
+      message: dataObject.message,
+    });
+    setRefreshData((oldvalue) => !oldvalue);
+    setTimeout(() => {
+      handleClose();
+      setSensorTag('');
+      setName('');
+      setModel('');
+      setTestResult('');
+      setNextDueDate('');
+      setLastDueDate('');
+      setCalibrationlist([]);
+    }, 2000);
+  };
+
+  const calibrationHandleException = (dataObject, errorMessage) => {
+    setNotification({
+      status: true,
+      type: 'error',
+      message: errorMessage,
+    });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
+  };
   const deleteSensor = (data) => {
     setDeleteId(data.id);
     setDeleteDailogOpen(true);
@@ -121,6 +174,30 @@ function SensorModel({
     }, 3000);
   };
 
+  const fetchCalibrationDetails = (sensorTag) => {
+    DeployedSensorsDetailsList({sensorTag}, calibrationdetailsHandleSuccess, calibrationDetailsHandleException)
+  }
+  const calibrationdetailsHandleSuccess = (dataObject) => {
+    setName(dataObject.sensorNameUnit)
+    setLastDueDate(dataObject.lastDueDate);
+    setCalibrationlist(dataObject.data);
+  };
+
+  const calibrationDetailsHandleException = (errorObject, errorMessage) => {
+  };
+
+  const handleCancel = () => {
+    setRefreshData((oldvalue) => !oldvalue);
+    setProgressStatus(0);
+    setOpen(false);
+    setSensorTag('');
+    setName('');
+    setModel('');
+    setTestResult('');
+    setNextDueDate('');
+    setLastDueDate('');
+    setCalibrationlist([]);
+  }
   const handleClose = () => {
     setNotification({
       status: false,
@@ -306,13 +383,6 @@ function SensorModel({
               </div>
             </Box>
           </DialogContent>
-
-          <NotificationBar
-            handleClose={handleClose}
-            notificationContent={openNotification.message}
-            openNotification={openNotification.status}
-            type={openNotification.type}
-          />
         </>
       )}
       {progressStatus === 2 && (
@@ -326,214 +396,216 @@ function SensorModel({
             Calibration
           </Typography>
           <Grid container spacing={1}>
-            <Grid 
-              sx={{mt: 0, padding: 0}}
-              item 
-              xs={12}
-              sm={4}
-              md={4}
-              lg={4}
-              xl={4}
-            >
-              <div className="rounded-md -space-y-px">
-                <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
-                  <InputLabel id="demo-simple-select-label">
-                    Sensor Tag
-                  </InputLabel>
-                  <Select
-                    // sx={{ minWidth: 250 }}
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    // value={categoryId}
-                    required
-                    // disabled={editData && true}
-                    label="Sensor Tag"
-                    onChange={(e) => {
-                      // deviceChanged(e.target.value);
-                    }}
-                    // error={errorObject?.deviceCategory?.errorStatus}
-                    // helperText={errorObject?.deviceCategory?.helperText}
+            <form onSubmit={handleSubmit}>
+              <Grid container spacing={1}>
+                <Grid container spacing={1} sx={{ mt:3, ml:2 }}>
+                  <Grid 
+                    sx={{mt: 0, padding: 0}}
+                    item 
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    lg={4}
+                    xl={4}
                   >
-                    {/* {categoryList.map((data) => {
-                      return ( */}
-                        {/* <MenuItem value={data.id}>{data.categoryName}</MenuItem> */}
-                        <MenuItem value={1}>Sensor-1</MenuItem>
-                        <MenuItem value={2}>Sensor-2</MenuItem>
-                        <MenuItem value={3}>Sensor-3</MenuItem>
-                      {/* );
-                    })} */}
-                  </Select>
-                </FormControl>
-              </div>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={4}
-              md={4}
-              lg={4}
-            >
-              <div className="rounded-md -space-y-px">
-                <TextField
-                  sx={{ marginTop: 0 }}
-                  // value={sensorTag}
-                  // onBlur={() => validateForNullValue(sensorTag, 'sensorTag')}
-                  onChange={(e) => {
-                    // setSensorTag(e.target.value);
-                  }}
-                  margin="normal"
-                  required
-                  id="outlined-required"
-                  label="Name"
-                  fullWidth
-                  // error={errorObject?.sensorTag?.errorStatus}
-                  // helperText={errorObject?.sensorTag?.helperText}
-                  autoComplete="off"
-                />
-              </div>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={4}
-              md={4}
-              lg={4}
-            >
-              <div className="rounded-md -space-y-px">
-                <TextField
-                  sx={{ marginTop: 0 }}
-                  // value={sensorTag}
-                  // onBlur={() => validateForNullValue(sensorTag, 'sensorTag')}
-                  onChange={(e) => {
-                    // setSensorTag(e.target.value);
-                  }}
-                  margin="normal"
-                  required
-                  id="outlined-required"
-                  label="Model"
-                  fullWidth
-                  // error={errorObject?.sensorTag?.errorStatus}
-                  // helperText={errorObject?.sensorTag?.helperText}
-                  autoComplete="off"
-                />
-              </div>
-            </Grid>
-          </Grid>
-          <Grid container spacing={1}>
-            <Grid
-              item
-              xs={12}
-              sm={4}
-              md={4}
-              lg={4}
-            >
-              <div className="rounded-md -space-y-px">
-                <TextField
-                  sx={{ marginTop: 0 }}
-                  // value={sensorTag}
-                  // onBlur={() => validateForNullValue(sensorTag, 'sensorTag')}
-                  onChange={(e) => {
-                    // setSensorTag(e.target.value);
-                  }}
-                  margin="normal"
-                  required
-                  id="outlined-required"
-                  label="Test Result"
-                  fullWidth
-                  // error={errorObject?.sensorTag?.errorStatus}
-                  // helperText={errorObject?.sensorTag?.helperText}
-                  autoComplete="off"
-                />
-              </div>
-            </Grid>
-            <Grid 
-              item
-              xs={12}
-              sm={4}
-              md={4}
-              lg={4}
-              xl={4}
-            >
-              <div className="rounded-md -space-y-px">
-                <TextField
-                  sx={{ marginTop: 0 }}
-                  // value={sensorTag}
-                  // onBlur={() => validateForNullValue(sensorTag, 'sensorTag')}
-                  onChange={(e) => {
-                    // setSensorTag(e.target.value);
-                  }}
-                  margin="normal"
-                  required
-                  id="outlined-required"
-                  label="Calibration Due Date"
-                  fullWidth
-                  type="date"
-                  // error={errorObject?.sensorTag?.errorStatus}
-                  // helperText={errorObject?.sensorTag?.helperText}
-                  autoComplete="off"
-                  InputLabelProps={{shrink: true}}
-                />
-              </div>
-            </Grid>
-            <Grid 
-              item
-              xs={12}
-              sm={4}
-              md={4}
-              lg={4}
-              xl={4}
-            >
-              <div className="rounded-md -space-y-px">
-                <TextField
-                  sx={{ marginTop: 0 }}
-                  // value={sensorTag}
-                  // onBlur={() => validateForNullValue(sensorTag, 'sensorTag')}
-                  onChange={(e) => {
-                    // setSensorTag(e.target.value);
-                  }}
-                  margin="normal"
-                  required
-                  id="outlined-required"
-                  label="Next Calibration Date"
-                  fullWidth
-                  type="date"
-                  // error={errorObject?.sensorTag?.errorStatus}
-                  // helperText={errorObject?.sensorTag?.helperText}
-                  autoComplete="off"
-                  InputLabelProps={{shrink: true}}
-                />
-              </div>
-            </Grid>
-          </Grid>
-          <Grid container spacing={1} 
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            xl={12}
-            sx={{marginTop:1}}
-          >
-            <Grid item 
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              xl={12}
-            >
-              <div className="float-right">
-                <Button>
-                  Submit
-                </Button>
-                <Button
-                  onClick={()=>{
-                    setProgressStatus(0);
-                    setOpen(false);
-                  }}
+                    <div className="rounded-md -space-y-px">
+                      <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
+                        <InputLabel id="demo-simple-select-label">
+                          Sensor Tag
+                        </InputLabel>
+                        <Select
+                          // sx={{ minWidth: 250 }}
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={sensorTag}
+                          required
+                          // disabled={editData && true}
+                          label="Sensor Tag"
+                          onChange={(e) => {
+                            setSensorTag(e.target.value);
+                            fetchCalibrationDetails(e.target.value);
+                          }}
+                          // error={errorObject?.deviceCategory?.errorStatus}
+                          // helperText={errorObject?.deviceCategory?.helperText}
+                        >
+                          {deployedSensorTagList.map((data) => {
+                            return (
+                              <MenuItem value={data.sensorTag}>{data.sensorTag}</MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
+                    </div>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    lg={4}
+                  >
+                    <div className="rounded-md -space-y-px">
+                      <TextField
+                        sx={{ marginTop: 0 }}
+                        value={name}
+                        disabled
+                        // onBlur={() => validateForNullValue(sensorTag, 'sensorTag')}
+                        onChange={(e) => {
+                          setName(e.target.value);
+                        }}
+                        margin="normal"
+                        required
+                        id="outlined-required"
+                        label="Name"
+                        fullWidth
+                        // error={errorObject?.sensorTag?.errorStatus}
+                        // helperText={errorObject?.sensorTag?.helperText}
+                        autoComplete="off"
+                      />
+                    </div>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    lg={4}
+                  >
+                    <div className="rounded-md -space-y-px">
+                      <TextField
+                        sx={{ marginTop: 0 }}
+                        value={model}
+                        // onBlur={() => validateForNullValue(sensorTag, 'sensorTag')}
+                        onChange={(e) => {
+                          setModel(e.target.value);
+                        }}
+                        margin="normal"
+                        required
+                        id="outlined-required"
+                        label="Model"
+                        fullWidth
+                        // error={errorObject?.sensorTag?.errorStatus}
+                        // helperText={errorObject?.sensorTag?.helperText}
+                        autoComplete="off"
+                      />
+                    </div>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={1} sx={{ ml:2 }} >
+                  <Grid
+                    item
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    lg={4}
+                  >
+                    <div className="rounded-md -space-y-px">
+                      <TextField
+                        sx={{ marginTop: 0 }}
+                        value={testResult}
+                        // onBlur={() => validateForNullValue(sensorTag, 'sensorTag')}
+                        onChange={(e) => {
+                          setTestResult(e.target.value);
+                        }}
+                        margin="normal"
+                        required
+                        id="outlined-required"
+                        label="Test Result"
+                        fullWidth
+                        // error={errorObject?.sensorTag?.errorStatus}
+                        // helperText={errorObject?.sensorTag?.helperText}
+                        autoComplete="off"
+                      />
+                    </div>
+                  </Grid>
+                  <Grid 
+                    item
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    lg={4}
+                    xl={4}
+                  >
+                    <div className="rounded-md -space-y-px">
+                      <TextField
+                        sx={{ marginTop: 0 }}
+                        value={lastDueDate}
+                        // onBlur={() => validateForNullValue(sensorTag, 'sensorTag')}
+                        onChange={(e) => {
+                          // setSensorTag(e.target.value);
+                        }}
+                        margin="normal"
+                        disabled
+                        id="outlined-required"
+                        label="Calibration Due Date"
+                        fullWidth
+                        type="date"
+                        // error={errorObject?.sensorTag?.errorStatus}
+                        // helperText={errorObject?.sensorTag?.helperText}
+                        autoComplete="off"
+                        InputLabelProps={{shrink: true}}
+                      />
+                    </div>
+                  </Grid>
+                  <Grid 
+                    item
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    lg={4}
+                    xl={4}
+                  >
+                    <div className="rounded-md -space-y-px">
+                      <TextField
+                        sx={{ marginTop: 0 }}
+                        value={nextDueDate}
+                        // onBlur={() => validateForNullValue(sensorTag, 'sensorTag')}
+                        onChange={(e) => {
+                          setNextDueDate(e.target.value);
+                        }}
+                        margin="normal"
+                        required
+                        id="outlined-required"
+                        label="Next Calibration Date"
+                        fullWidth
+                        type="date"
+                        // error={errorObject?.sensorTag?.errorStatus}
+                        // helperText={errorObject?.sensorTag?.helperText}
+                        autoComplete="off"
+                        InputLabelProps={{shrink: true}}
+                      />
+                    </div>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={1} 
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  xl={12}
+                  sx={{marginTop:1}}
                 >
-                  Cancel
-                </Button>
-              </div>
-            </Grid>
+                  <Grid item 
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    xl={12}
+                  >
+                    <div className="float-right">
+                      <Button type="submit" >
+                        Submit
+                      </Button>
+                      <Button
+                        onClick={handleCancel}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </form>
           </Grid>
           <Grid container spacing={1} sx={{ml:0}}>
             <Typography sx={{ m: 0, marginTop: 2 }} variant="h5">
@@ -560,6 +632,12 @@ function SensorModel({
           </Grid>
         </Grid>
       )}
+      <NotificationBar
+        handleClose={handleClose}
+        notificationContent={openNotification.message}
+        openNotification={openNotification.status}
+        type={openNotification.type}
+      />
       <DeleteConfirmationDailog
         open={deleteDailogOpen}
         setOpen={setDeleteDailogOpen}

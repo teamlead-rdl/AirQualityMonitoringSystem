@@ -6,7 +6,7 @@ import SensorsIcon from '@mui/icons-material/Sensors';
 import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt';
 import DeviceModel from './DeviceModelComponent';
 import {
-  DeviceDeleteService, DeviceFetchService, CategoryFetchService, SensorDeployFetchService, ChangeDeviceMode,
+  DeviceDeleteService, DeviceFetchService, CategoryFetchService, SensorDeployFetchService, ChangeDeviceMode, deviceDeployedSensors,
 } from '../../../services/LoginPageService';
 import SensorModel from './SensorModelComponent';
 import DeviceConfigSetupModal from '../deviceConfiguration/subcomponent/DeviceConfigSetupModalComponent';
@@ -87,6 +87,8 @@ function AddDeviceListResults(props) {
   const [open, setOpen] = useState(false);
   const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState('');
+  const [deployedSensorTagList, setDeployedSensorTagList] = useState([]);
+  const [bumpTestSensorTagList, setBumpTestSensorTagList] = useState([]);
   const [bumpTestOpen, setBumpTestOpen] = useState(false);
   const [isAddButton, setIsAddButton] = useState(true);
   const [editDevice, setEditDevice] = useState([]);
@@ -186,18 +188,42 @@ function AddDeviceListResults(props) {
       handleClose();
       switch(dataObject.deviceMode){
           case "calibration" : 
-            setProgressStatus(3);
-            setSensorOpen(true);
+            calibrateDeployedSensorsList(dataObject.deviceId);
             break;
           case "bumpTest" :
-            setBumpTestOpen(true);
+            bumptestDeployedSensorsList(dataObject.deviceId);
             break;
           default : break;
-        }
+          }
     }, 3000);
-    console.log(dataObject);
+  };
+      
+  const calibrateDeployedSensorsList = (id) => {
+    deviceDeployedSensors(id, deviceDeployedSensorsListSuccess, deviceDeployedSensorsListException);
+  };
+      
+  const bumptestDeployedSensorsList = (id) => {
+    deviceDeployedSensors(id, bumptestSensorsListSuccess, bumptestSensorsListException);
+  };
+  
+  const  deviceDeployedSensorsListSuccess = (dataObject) => {
+    setDeployedSensorTagList(dataObject);  
+    setProgressStatus(3);
+    setSensorOpen(true);
+    console.log(dataObject);           
   };
 
+  const deviceDeployedSensorsListException = (dataObject, errorObject) => {
+  };
+
+  const  bumptestSensorsListSuccess = (dataObject) => {
+    setBumpTestSensorTagList(dataObject);  
+    setBumpTestOpen(true);
+    console.log(dataObject);           
+  };
+
+  const bumptestSensorsListException = (dataObject, errorObject) => {
+  };
   /* eslint-disable-next-line */
   const modeChangeHandleException = (errorObject, errorMessage) => {
     setNotification({
@@ -429,12 +455,20 @@ function AddDeviceListResults(props) {
         setRefreshData={setRefreshData}
         progressStatus={progressStatus}
         setProgressStatus={setProgressStatus}
+        deployedSensorTagList={deployedSensorTagList}
       />
+      {/* <BumpTestComponentModal
+        isAddButton={isAddButton}      
+        open={bumpTestOpen}
+        setOpen={setBumpTestOpen}
+        setRefreshData={setRefreshData}
+      /> */}
       <BumpTestComponentModal
         isAddButton={isAddButton}      
         open={bumpTestOpen}
         setOpen={setBumpTestOpen}
         setRefreshData={setRefreshData}
+        deployedSensorTagList={bumpTestSensorTagList}
       />
       <DeviceConfigSetupModal
         isAddButton={isAddButton}
