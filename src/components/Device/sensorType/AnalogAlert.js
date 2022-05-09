@@ -4,6 +4,7 @@ import {
 import { Box } from '@mui/system';
 import React from 'react';
 import { AddCategoryValidate, AnalogSensorValidate } from '../../../validation/formValidation';
+import { useUserAccess } from '../../../context/UserAccessProvider';
 
 function AnalogAlert({
   errorObject, setErrorObject,
@@ -26,6 +27,7 @@ function AnalogAlert({
   outofrangeLowAlert, setOutofrangeLowAlert,
   outofrangeHighAlert, setOutofrangeHighAlert,
 }) {
+  const moduleAccess = useUserAccess()('devicelocation');
   const validateForNullValue = (value, type) => {
     AnalogSensorValidate(value, type, setErrorObject);
   };
@@ -41,7 +43,7 @@ function AnalogAlert({
           lg={6}
           xl={6}
         >
-          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
+          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }} disabled={moduleAccess.edit === false && true}>
             <InputLabel id="demo-simple-select-label">
               Polling Interval type
             </InputLabel>
@@ -84,7 +86,7 @@ function AnalogAlert({
           lg={6}
           xl={6}
         >
-          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
+          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }} disabled={moduleAccess.edit === false && true}>
             <InputLabel id="demo-simple-select-label">
               Sensor alert
             </InputLabel>
@@ -132,6 +134,7 @@ function AnalogAlert({
                   <TextField
                     sx={{ marginTop: 0 }}
                     value={criticalLowAlert}
+                    disabled={moduleAccess.edit === false && true}
                     onBlur={() => validateForNullValue(criticalLowAlert, 'criticalLowAlert')}
                     onChange={(e) => {
                       setCriticalLowAlert(e.target.value);
@@ -164,6 +167,7 @@ function AnalogAlert({
                   <TextField
                     sx={{ marginTop: 0 }}
                     value={criticalHighAlert}
+                    disabled={moduleAccess.edit === false && true}
                     onBlur={() => validateForNullValue(criticalHighAlert, 'criticalHighAlert')}
                     onChange={(e) => {
                       setCriticalHighAlert(e.target.value);
@@ -195,7 +199,7 @@ function AnalogAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={criticalMinValue}
-              disabled={criticalAlertType === "High" || criticalAlertType === ""}
+              disabled={criticalAlertType === "High" || criticalAlertType === "" || moduleAccess.edit === false && true}
               type="number"
               onBlur={() => validateForNullValue(criticalMinValue, 'criticalMinValue')}
               onChange={(e) => {
@@ -226,7 +230,7 @@ function AnalogAlert({
               sx={{ marginTop: 0 }}
               value={criticalMaxValue}
               type="number"
-              disabled={criticalAlertType === "Low" || criticalAlertType === ""}
+              disabled={criticalAlertType === "Low" || criticalAlertType === "" || moduleAccess.edit === false && true}
               onBlur={() => validateForNullValue(criticalMaxValue, 'criticalMaxValue')}
               onChange={(e) => {
                 setCriticalMaxValue(e.target.value);
@@ -275,6 +279,7 @@ function AnalogAlert({
               labelId="demo-simple-select-label"
               value={warningAlertType}
               label="Sensor alert"
+              disabled={moduleAccess.edit === false && true}
               required
               onChange={(e) => {
                 setWarningAlertType(e.target.value);
@@ -314,6 +319,7 @@ function AnalogAlert({
                   <TextField
                     sx={{ marginTop: 0 }}
                     value={warningLowAlert}
+                    disabled={moduleAccess.edit === false && true}
                     onBlur={() => validateForNullValue(warningLowAlert, 'warningLowAlert')}
                     onChange={(e) => {
                       setWarningLowAlert(e.target.value);
@@ -346,6 +352,7 @@ function AnalogAlert({
                   <TextField
                     sx={{ marginTop: 0 }}
                     value={warningHighAlert}
+                    disabled={moduleAccess.edit === false && true}
                     onBlur={() => validateForNullValue(warningHighAlert, 'warningHighAlert')}
                     onChange={(e) => {
                       setWarningHighAlert(e.target.value);
@@ -378,7 +385,7 @@ function AnalogAlert({
               sx={{ marginTop: 0 }}
               value={warningMinValue}
               type="number"
-              disabled={warningAlertType === "High" || warningAlertType === "" }
+              disabled={warningAlertType === "High" || warningAlertType === "" || moduleAccess.edit === false && true }
               onBlur={() => validateForNullValue(warningMinValue, 'warningMinValue')}
               onChange={(e) => {
                 setWarningMinValue(e.target.value);
@@ -408,7 +415,7 @@ function AnalogAlert({
               sx={{ marginTop: 0 }}
               value={warningMaxValue}
               type="number"
-              disabled={warningAlertType === "Low" || warningAlertType === ""}
+              disabled={warningAlertType === "Low" || warningAlertType === "" || moduleAccess.edit === false && true}
               onBlur={() => validateForNullValue(warningMaxValue, 'warningMaxValue')}
               onChange={(e) => {
                 setWarningMaxValue(e.target.value);
@@ -456,6 +463,7 @@ function AnalogAlert({
               sx={{ minWidth: 250 }}
               labelId="demo-simple-select-label"
               value={outofrangeAlertType}
+              disabled={moduleAccess.edit === false && true}
               required
               label="Sensor alert"
               onChange={(e) => {
@@ -495,6 +503,7 @@ function AnalogAlert({
                   <TextField
                     sx={{ marginTop: 0 }}
                     value={outofrangeLowAlert}
+                    disabled={moduleAccess.edit === false && true}
                     onBlur={() => validateForNullValue(outofrangeLowAlert, 'outofrangeLowAlert')}
                     onChange={(e) => {
                       setOutofrangeLowAlert(e.target.value);
@@ -527,6 +536,7 @@ function AnalogAlert({
                   <TextField
                     sx={{ marginTop: 0 }}
                     value={outofrangeHighAlert}
+                    disabled={moduleAccess.edit === false && true}
                     onBlur={() => validateForNullValue(outofrangeHighAlert, 'outofrangeHighAlert')}
                     onChange={(e) => {
                       setOutofrangeHighAlert(e.target.value);
@@ -560,7 +570,7 @@ function AnalogAlert({
               sx={{ marginTop: 0 }}
               value={outofrangeMinValue}
               type="number"
-              disabled={outofrangeAlertType === "High" || outofrangeAlertType === "" }
+              disabled={outofrangeAlertType === "High" || outofrangeAlertType === "" || moduleAccess.edit === false && true}
               onBlur={() => validateForNullValue(outofrangeMinValue, 'outofrangeMinValue')}
               onChange={(e) => {
                 setOutofrangeMinValue(e.target.value);
@@ -590,7 +600,7 @@ function AnalogAlert({
               sx={{ marginTop: 0 }}
               value={outofrangeMaxValue}
               type="number"
-              disabled={outofrangeAlertType === "Low" || outofrangeAlertType === "" }
+              disabled={outofrangeAlertType === "Low" || outofrangeAlertType === "" || moduleAccess.edit === false && true}
               onBlur={() => validateForNullValue(outofrangeMaxValue, 'outofrangeMaxValue')}
               onChange={(e) => {
                 setOutofrangeMaxValue(e.target.value);

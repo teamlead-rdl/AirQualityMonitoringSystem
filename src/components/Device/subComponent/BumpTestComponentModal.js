@@ -212,8 +212,8 @@ function BumpTestComponentModal({
                       // Reset(e.target.value);
                     }}
                   >
-                    {deployedSensorList.map((data) => (
-                      <MenuItem value={data.sensorTag}>{data.sensorTag}</MenuItem>
+                    {deployedSensorList.map((data, index) => (
+                      <MenuItem value={data.sensorTag} key={index}>{data.sensorTag}</MenuItem>
                     ))}
                     {/* <MenuItem value="accessPoint">Sensor 1</MenuItem>
                     <MenuItem value="FTP">Sensor 2</MenuItem> */}

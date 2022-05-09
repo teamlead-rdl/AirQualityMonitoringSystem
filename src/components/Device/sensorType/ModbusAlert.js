@@ -2,6 +2,7 @@ import {
   DialogContent, FormControl, Grid, InputLabel, MenuItem, Select, TextField,
 } from '@mui/material';
 import React from 'react';
+import { useUserAccess } from '../../../context/UserAccessProvider';
 
 function ModbusAlert({
   pollingIntervalType, setPollingIntervalType,
@@ -23,6 +24,8 @@ function ModbusAlert({
   outofrangeLowAlert, setOutofrangeLowAlert,
   outofrangeHighAlert, setOutofrangeHighAlert,
 }) {
+  const moduleAccess = useUserAccess()('devicelocation');
+
   return (
     <DialogContent sx={{ px: 0, p: 0 }}>
       <Grid container spacing={1} sx={{ mt: 1 }}>
@@ -35,7 +38,7 @@ function ModbusAlert({
           lg={6}
           xl={6}
         >
-          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
+          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }} disabled={moduleAccess.edit === false && true}>
             <InputLabel id="demo-simple-select-label">
               Polling Interval type
             </InputLabel>
@@ -79,7 +82,7 @@ function ModbusAlert({
           lg={4}
           xl={4}
         >
-          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
+          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }} disabled={moduleAccess.edit === false && true}>
             <InputLabel id="demo-simple-select-label">
               Sensor alert
             </InputLabel>
@@ -132,6 +135,7 @@ function ModbusAlert({
                     <TextField
                       sx={{ marginTop: 0 }}
                       value={criticalLowAlert}
+                      disabled={moduleAccess.edit === false && true}
                       // onBlur={() => validateForNullValue(alertTag, "alertTag")}
                       onChange={(e) => {
                         setCriticalLowAlert(e.target.value);
@@ -164,6 +168,7 @@ function ModbusAlert({
                     <TextField
                       sx={{ marginTop: 0 }}
                       value={criticalHighAlert}
+                      disabled={moduleAccess.edit === false && true}
                       // onBlur={() => validateForNullValue(alertTag, "alertTag")}
                       onChange={(e) => {
                         setCriticalHighAlert(e.target.value);
@@ -196,7 +201,7 @@ function ModbusAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={criticalMinValue}
-              disabled={criticalAlertType === "High" || criticalAlertType === "High"}
+              disabled={criticalAlertType === "High" || criticalAlertType === "High" || moduleAccess.edit === false && true}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
                 setCriticalMinValue(e.target.value);
@@ -225,7 +230,7 @@ function ModbusAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={criticalMaxValue}
-              disabled={criticalAlertType === "Low" || criticalAlertType === ""}
+              disabled={criticalAlertType === "Low" || criticalAlertType === "" || moduleAccess.edit === false && true}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
                 setCriticalMaxValue(e.target.value);
@@ -265,7 +270,7 @@ function ModbusAlert({
           lg={4}
           xl={4}
         >
-          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
+          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }} disabled={moduleAccess.edit === false && true}>
             <InputLabel id="demo-simple-select-label">
               Sensor alert
             </InputLabel>
@@ -320,6 +325,7 @@ function ModbusAlert({
                     <TextField
                       sx={{ marginTop: 0 }}
                       value={warningLowAlert}
+                      disabled={moduleAccess.edit === false && true}
                       // onBlur={() => validateForNullValue(alertTag, "alertTag")}
                       onChange={(e) => {
                         setWarningLowAlert(e.target.value);
@@ -352,6 +358,7 @@ function ModbusAlert({
                     <TextField
                       sx={{ marginTop: 0 }}
                       value={warningHighAlert}
+                      disabled={moduleAccess.edit === false && true}
                       // onBlur={() => validateForNullValue(alertTag, "alertTag")}
                       onChange={(e) => {
                         setWarningHighAlert(e.target.value);
@@ -384,7 +391,7 @@ function ModbusAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={warningMinValue}
-              disabled={warningAlertType === "High" || warningAlertType === ""}
+              disabled={warningAlertType === "High" || warningAlertType === "" || moduleAccess.edit === false && true}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
                 setWarningMinValue(e.target.value);
@@ -413,7 +420,7 @@ function ModbusAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={warningMaxValue}
-              disabled={warningAlertType === "Low" || warningAlertType === ""}
+              disabled={warningAlertType === "Low" || warningAlertType === "" || moduleAccess.edit === false && true}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
                 setWarningMaxValue(e.target.value);
@@ -453,7 +460,7 @@ function ModbusAlert({
           lg={4}
           xl={4}
         >
-          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
+          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }} disabled={moduleAccess.edit === false && true}>
             <InputLabel id="demo-simple-select-label">
               Sensor alert
             </InputLabel>
@@ -506,6 +513,7 @@ function ModbusAlert({
                     <TextField
                       sx={{ marginTop: 0 }}
                       value={outofrangeLowAlert}
+                      disabled={moduleAccess.edit === false && true}
                       // onBlur={() => validateForNullValue(alertTag, "alertTag")}
                       onChange={(e) => {
                         setOutofrangeLowAlert(e.target.value);
@@ -538,6 +546,7 @@ function ModbusAlert({
                     <TextField
                       sx={{ marginTop: 0 }}
                       value={outofrangeHighAlert}
+                      disabled={moduleAccess.edit === false && true}
                       // onBlur={() => validateForNullValue(alertTag, "alertTag")}
                       onChange={(e) => {
                         setOutofrangeHighAlert(e.target.value);
@@ -570,7 +579,7 @@ function ModbusAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={outofrangeMinValue}
-              disabled={outofrangeAlertType === "High" || outofrangeAlertType === ""}
+              disabled={outofrangeAlertType === "High" || outofrangeAlertType === "" || moduleAccess.edit === false && true}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
                 setOutofrangeMinValue(e.target.value);
@@ -599,7 +608,7 @@ function ModbusAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={outofrangeMaxValue}
-              disabled={outofrangeAlertType === "Low" || outofrangeAlertType === ""}
+              disabled={outofrangeAlertType === "Low" || outofrangeAlertType === "" || moduleAccess.edit === false && true}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
                 setOutofrangeMaxValue(e.target.value);

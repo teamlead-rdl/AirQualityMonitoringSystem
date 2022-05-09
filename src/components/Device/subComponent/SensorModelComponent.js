@@ -387,7 +387,7 @@ function SensorModel({
       )}
       {progressStatus === 2 && (
         <div style={{ textAlign: 'center', padding: 5 }}>
-          <SensorAdd isUpdate={isUpdate} editData={editData} locationDetails={locationDetails} setProgressStatus={setProgressStatus} />
+          <SensorAdd isUpdate={isUpdate} editData={editData} locationDetails={locationDetails} setProgressStatus={setProgressStatus}/>
         </div>
       )}
       {progressStatus === 3 && (

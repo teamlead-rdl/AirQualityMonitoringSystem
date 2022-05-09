@@ -88,7 +88,7 @@ function AddDeviceListResults(props) {
   const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState('');
   const [deployedSensorTagList, setDeployedSensorTagList] = useState([]);
-  const [bumpTestSensorTagList, setBumpTestSensorTagList] = useState([]);
+  // const [bumpTestSensorTagList, setBumpTestSensorTagList] = useState([]);
   const [bumpTestOpen, setBumpTestOpen] = useState(false);
   const [isAddButton, setIsAddButton] = useState(true);
   const [editDevice, setEditDevice] = useState([]);
@@ -217,7 +217,7 @@ function AddDeviceListResults(props) {
   };
 
   const  bumptestSensorsListSuccess = (dataObject) => {
-    setBumpTestSensorTagList(dataObject);  
+    // setDeployedSensorTagList(dataObject);  
     setBumpTestOpen(true);
     console.log(dataObject);           
   };
@@ -468,7 +468,7 @@ function AddDeviceListResults(props) {
         open={bumpTestOpen}
         setOpen={setBumpTestOpen}
         setRefreshData={setRefreshData}
-        deployedSensorTagList={bumpTestSensorTagList}
+        deployedSensorTagList={deployedSensorTagList}
       />
       <DeviceConfigSetupModal
         isAddButton={isAddButton}

@@ -6,6 +6,7 @@ import Widget from './widget/Widget';
 import Featured from './featured/Featured';
 import BarChart from './chart/barChart/BarChart';
 import LineChart from './chart/lineChart/LineChart';
+import { lineChartData } from './chart/lineChart/responsiveLineChartData'
 import Table from './table/Table';
 import { DisplayLineChart } from '../services/LoginPageService';
 
@@ -25,6 +26,9 @@ function Dashboard() {
     {
       i: 'd', x: 4, y: 0, w: 11, h: 13, minW: 4, maxW: 11, minH: 13, maxH: 13,
     },
+    {
+      i: 'e', x: 1, y: 0, w: 6, h: 11, minW: 4, maxW: 9, minH: 11, maxH: 11,
+    },
   ]);
 
   useEffect(() => {
@@ -33,8 +37,42 @@ function Dashboard() {
   }, [layout]);
 
   const handleSuccess = (dataObject) => {
-    setArrayList(dataObject);
-    console.log(dataObject);
+    const res = Object.values(dataObject.reduce((acc,{parameterName, last_val, avg_val, min_val, max_val})=>{
+      acc[parameterName] = acc[parameterName] || {parameterName, last_val: [], max_val: [], min_val: [], avg_val: []};
+      acc[parameterName].avg_val.push(avg_val);
+      acc[parameterName].min_val.push(min_val);
+      acc[parameterName].max_val.push(max_val);
+      acc[parameterName].last_val.push(last_val);
+      return acc;
+    }, {}));
+    console.log(res);
+    // console.log(dataObject.slice(0, 10));
+    setArrayList((oldvalue) =>{
+      var dataList = res.map((item)=>{
+        return {
+          id : item.parameterName,
+          data : [
+            {
+              x : 'Minimum Value',
+              y : item.min_val
+            },
+            {
+              x : 'Average Value',
+              y : item.avg_val
+            },
+            {
+              x : 'Maximum Value',
+              y : item.max_val
+            },
+            {
+              x : 'Last value',
+              y : item.last_val
+            }
+          ]
+        }
+      })
+      return dataList
+    });
   };
   const handleException = (errorObject, errorMessage) => {
     console.log(errorMessage);
@@ -61,6 +99,9 @@ function Dashboard() {
           <BarChart title="Gas Emissions (AQMS-Floor:02-LAB:12)" aspect={2 / 1} data={arrayList}/>
         </div>
         <div key="c">
+          <LineChart title="Gas Emissions (AQMS-Floor:02-LAB:12)" aspect={2 / 1} data={lineChartData} />
+        </div>
+        <div key="e">
           <LineChart title="Gas Emissions (AQMS-Floor:02-LAB:12)" aspect={2 / 1} data={arrayList} />
         </div>
         <div key="d">
