@@ -265,5 +265,3 @@ export const DeployedSensorsDetailsList = (data, successCallback, errorCallBack)
 export const BumpTestAddService = (data, successCallback, errorCallBack) => _fetchService('bumpTestResult/add', 'POST', data, successCallback, errorCallBack);
 
 export const BumpTestFetchService = (data, successCallback, errorCallBack) => _fetchService('bumpTestResult', 'POST', data, successCallback, errorCallBack);
-
-export const BumpTestData = (data, successCallback, errorCallBack) => _fetchServiceBumpTestData('AQMS_DATA_EXTRACTION_CRON/aqms_data_extraction.php', 'POST', data, successCallback, errorCallBack);
