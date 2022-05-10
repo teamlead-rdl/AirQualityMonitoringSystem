@@ -20,6 +20,8 @@ import NotificationBar from "../notification/ServiceNotificationBar";
 const Navbar = () => {
   // const { dispatch } = useContext(DarkModeContext);
   const navigate = useNavigate();
+  const { userDetails } = ApplicationStore().getStorage('userDetails');
+  const [userDisplayName, setUserDisplayName] = useState('');
   const notificationList = [
     {
       id: 1,
@@ -81,6 +83,12 @@ const Navbar = () => {
     type: '',
     message: ''
   });
+
+  useEffect(() => {
+    if (userDetails.userName) {
+      setUserDisplayName(userDetails.userName);
+    }
+  }, []);
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -126,7 +134,7 @@ const Navbar = () => {
       <div className="wrapper">
         <div className="items">
           <div className="item">
-          <NotificationsNoneOutlined className="icon" />
+            <NotificationsNoneOutlined className="icon" />
             <div className="counter">1</div>
           
           </div>
@@ -156,12 +164,12 @@ const Navbar = () => {
                 {/* {id === 1 && (
                   <ListSubheader sx={{ bgcolor: 'background.paper' }}>
                     Today
-                  </ListSubheader>
-                )}
-
-                {id === 3 && (
+                    </ListSubheader>
+                    )}
+                    
+                    {id === 3 && (
                   <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                    Yesterday
+                  Yesterday
                   </ListSubheader>
                 )} */}
                 <ListSubheader sx={{ bgcolor: 'background.paper' }}>
@@ -181,14 +189,11 @@ const Navbar = () => {
               </div>
             ))}
           </Menu>
-          <div className="item">
-            <ListOutlined className="icon" />
-          </div>
           {/* <div className="item">
             <img
-              src="https://images.pexels.com/photos/941693/pexels-photo-941693.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-              alt=""
-              className="avatar"
+            src="https://images.pexels.com/photos/941693/pexels-photo-941693.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+            alt=""
+            className="avatar"
             />
           </div> */}
           <IconButton
@@ -223,9 +228,11 @@ const Navbar = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
             <MenuItem onClick={logout}>Logout</MenuItem>
           </Menu>
+          <div className="item">
+            {userDisplayName}
+          </div>
         </div>
       </div>
       <NotificationBar

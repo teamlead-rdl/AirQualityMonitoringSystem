@@ -9,6 +9,7 @@ import BuildingModal from './BuildingModalComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 import ApplicationStore from '../../../utils/localStorageUtil';
+import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
 
 export function BuildingListResults(props) {
   const dataColumns = [
@@ -52,6 +53,8 @@ export function BuildingListResults(props) {
   ];
 
   const [open, setOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editData, setEditData] = useState([]);
   const [dataList, setDataList] = useState([]);
@@ -111,7 +114,8 @@ export function BuildingListResults(props) {
     setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
-    }, 5000);
+      setDeleteDailogOpen(false);
+    }, 3000);
   };
 
   const deletehandleException = (errorObject, errorMessage) => {
@@ -120,6 +124,9 @@ export function BuildingListResults(props) {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   function LinkTo(props) {
@@ -157,7 +164,11 @@ export function BuildingListResults(props) {
   function DeleteData(props) {
     return moduleAccess.delete && (
       <DeleteOutlined
-        onClick={() => BuildingDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException)}
+        onClick={() => {
+          // BuildingDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+          setDeleteId(props.selectedRow.id);
+          setDeleteDailogOpen(true);
+        }}
         style={{ cursor: 'pointer' }}
       />
     );
@@ -248,7 +259,6 @@ export function BuildingListResults(props) {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
         style={{ maxHeight: `${80}%` }}
       />
@@ -262,13 +272,21 @@ export function BuildingListResults(props) {
         branchId={branch_id}
         facilityId={facility_id}
         setRefreshData={setRefreshData}
+        locationCoordinationList={props.locationCoordinationList}
       />
-
       <NotificationBar
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={BuildingDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );

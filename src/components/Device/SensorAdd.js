@@ -21,10 +21,12 @@ import ModbusAlert from './sensorType/ModbusAlert';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import { AddCategoryValidate } from '../../validation/formValidation';
 import StelTWA from './sensorType/StelTWAComponent';
+import { useUserAccess } from '../../context/UserAccessProvider';
 
 function DeviceAdd({
   locationDetails, setProgressStatus, editData, isUpdate,
 }) {
+  const moduleAccess = useUserAccess()('devicelocation');
   const id = editData?.id || '';
   const [deviceId, setDeviceId] = useState(editData?.deviceId || '');
   const [categoryId, setCategoryId] = useState(editData?.categoryId || '');
@@ -598,6 +600,7 @@ function DeviceAdd({
                 <TextField
                   sx={{ marginTop: 0 }}
                   value={sensorTag}
+                  disabled={moduleAccess.edit === false && true}
                   onBlur={() => validateForNullValue(sensorTag, 'sensorTag')}
                   onChange={(e) => {
                     setSensorTag(e.target.value);
@@ -668,6 +671,7 @@ function DeviceAdd({
                   labelId="demo-simple-select-label3"
                   id="demo-simple-select3"
                   value={alarm}
+                  disabled={moduleAccess.edit === false && true}
                   label="Alarm Type"
                   required
                   onChange={(e) => {
@@ -883,7 +887,7 @@ function DeviceAdd({
 
           <div className="float-right">
             <Button
-              sx={{ m: 2 }}
+              size="large"
               onClick={() => {
                 setErrorObject({});
                 resetForm();
@@ -893,14 +897,16 @@ function DeviceAdd({
             >
               Cancel
             </Button>
-            <Button
-              sx={{ m: 2 }}
-              size="large"
-              variant="contained"
-              type="submit"
-            >
-              {isUpdate ? 'UPDATE' : 'ADD' }
-            </Button>
+            {moduleAccess.edit === true
+              && (
+                <Button
+                  sx={{ m: 1 }}
+                  size="large"
+                  type="submit"
+                >
+                  {isUpdate ? 'UPDATE' : 'ADD' }
+                </Button>
+              )}
           </div>
         </DialogContent>
       </form>

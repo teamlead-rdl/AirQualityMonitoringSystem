@@ -131,13 +131,8 @@ function DeviceLocationModal({
             <div className="float-right">
               <div className="rounded-md -space-y-px">
                 <Button
-                  type="submit"
-                  disabled={errorObject?.coordinates?.errorStatus || errorObject?.stateName?.errorStatus}
-                >
-                  {/* {isAddButton ? "Add" : "Update"} */}
-                  Done
-                </Button>
-                <Button
+                  sx={{ m:1 }}
+                  size="large"
                   onClick={(e) => {
                     setOpen(false);
                     setErrorObject({});
@@ -145,6 +140,15 @@ function DeviceLocationModal({
                   }}
                 >
                   Cancel
+                </Button>
+                <Button
+                  sx={{ m: 1 }}
+                  type="submit"
+                  size="large"
+                  disabled={errorObject?.coordinates?.errorStatus || errorObject?.stateName?.errorStatus}
+                >
+                  {/* {isAddButton ? "Add" : "Update"} */}
+                  Done
                 </Button>
               </div>
             </div>

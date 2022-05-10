@@ -7,7 +7,7 @@ import { AddSensorCategoryToolbar } from './AddSensorCategoryToolbar';
 import AddSensorModal from './AddSensorModal';
 import NotificationBar from '../../../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../../../context/UserAccessProvider';
-// import ConfigAlarm from './ConfigAlarm';
+import DeleteConfirmationDailog from '../../../../../utils/confirmDeletion';
 
 export function AddSensorList() {
   const columns = [
@@ -38,7 +38,8 @@ export function AddSensorList() {
   ];
 
   const [open, setOpen] = useState(false);
-  // const [alertOpen, setAlertOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editCategory, setEditCategory] = useState([]);
   const [CategoryList, setCategoryList] = useState([]);
@@ -79,26 +80,13 @@ export function AddSensorList() {
         ));
   }
 
-  // function SetAlarm(props) {
-  //   return (moduleAccess.edit
-  //       && (
-  //         <NotificationsActive
-  //           style={{ cursor: 'pointer' }}
-  //           onClick={(event) => {
-  //             event.stopPropagation();
-  //             setEditCategory(props.selectedRow);
-  //             setAlertOpen(true);
-  //           }}
-  //         />
-  //       ));
-  // }
-
   function DeleteData(props) {
     return moduleAccess.delete && (
       <DeleteIcon
         style={{ cursor: 'pointer' }}
         onClick={() => {
-          SensorDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+          setDeleteId(props.selectedRow.id);
+          setDeleteDailogOpen(true);
         }}
       />
     );
@@ -112,7 +100,8 @@ export function AddSensorList() {
     setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
-    }, 5000);
+      setDeleteDailogOpen(false);
+    }, 3000);
   };
 
   const deletehandleException = (errorObject, errorMessage) => {
@@ -121,6 +110,9 @@ export function AddSensorList() {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   const handleClose = () => {
@@ -144,7 +136,6 @@ export function AddSensorList() {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
       />
       <AddSensorModal
@@ -155,16 +146,19 @@ export function AddSensorList() {
         CategoryList={CategoryList}
         setRefreshData={setRefreshData}
       />
-      {/* <ConfigAlarm
-            open={alertOpen}
-            setOpen={setAlertOpen}
-            editData={editCategory}
-          /> */}
       <NotificationBar
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={SensorDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );

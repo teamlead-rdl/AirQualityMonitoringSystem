@@ -45,7 +45,6 @@ function MapsMultiplePoints(props) {
         <LoadScript
             googleMapsApiKey="AIzaSyBLUOrdeTct_dq-4ANyGGyiGoAHxeRR1yU"
         >
-
             <GoogleMap
                 id="location-marker"
                 mapContainerStyle={mapContainerStyle}

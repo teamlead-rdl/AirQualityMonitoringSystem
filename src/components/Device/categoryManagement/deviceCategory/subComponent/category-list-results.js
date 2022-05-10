@@ -7,6 +7,7 @@ import { CategoryListToolbar } from './CategoryListToolbar';
 import { CategoryFetchService, CategoryDeleteService } from '../../../../../services/LoginPageService';
 import NotificationBar from '../../../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../../../context/UserAccessProvider';
+import DeleteConfirmationDailog from '../../../../../utils/confirmDeletion';
 
 export function CategoryListResults() {
   const columns = [
@@ -33,6 +34,8 @@ export function CategoryListResults() {
   ];
 
   const [open, setOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editCategory, setEditCategory] = useState([]);
   const [CategoryList, setCategoryList] = useState([]);
@@ -78,7 +81,8 @@ export function CategoryListResults() {
       <DeleteIcon
         style={{ cursor: 'pointer' }}
         onClick={() => {
-          CategoryDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+          setDeleteId(props.selectedRow.id);
+          setDeleteDailogOpen(true);
         }}
       />
     );
@@ -92,7 +96,8 @@ export function CategoryListResults() {
     setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
-    }, 5000);
+      setDeleteDailogOpen(false);
+    }, 3000);
   };
 
   const deletehandleException = (errorObject, errorMessage) => {
@@ -101,6 +106,9 @@ export function CategoryListResults() {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   const handleClose = () => {
@@ -124,7 +132,6 @@ export function CategoryListResults() {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
       />
       <CategoryModel
@@ -139,6 +146,14 @@ export function CategoryListResults() {
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={CategoryDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );

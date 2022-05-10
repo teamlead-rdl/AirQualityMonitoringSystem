@@ -7,6 +7,7 @@ import { ConfigSetupListToolbar } from './ConfigSetupListToolbar';
 import { ConfigSetupFetchService, ConfigSetupDeleteService } from '../../../../services/LoginPageService';
 import NotificationBar from '../../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../../context/UserAccessProvider';
+import DeleteConfirmationDailog from '../../../../utils/confirmDeletion';
 
 export function ConfigSetupListResults() {
   const columns = [
@@ -54,6 +55,8 @@ export function ConfigSetupListResults() {
   ];
 
   const [open, setOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editConfigSetup, setEditConfigSetup] = useState([]);
   const [configSetupList, setConfigSetupList] = useState([]);
@@ -78,7 +81,8 @@ export function ConfigSetupListResults() {
   function DeleteData(props) {
     return moduleAccess.delete && (
       <DeleteIcon onClick={() => {
-        ConfigSetupDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+        setDeleteId(props.selectedRow.id);
+        setDeleteDailogOpen(true);
       }}
       />
     );
@@ -95,6 +99,10 @@ export function ConfigSetupListResults() {
       message: dataObject.message,
     });
     setRefreshData((oldvalue) => !oldvalue);
+    setTimeout(() => {
+      handleClose();
+      setDeleteDailogOpen(false);
+    }, 3000);
   };
 
   const deletehandleException = (errorObject, errorMessage) => {
@@ -103,6 +111,9 @@ export function ConfigSetupListResults() {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   function EditData(props) {
@@ -142,7 +153,6 @@ export function ConfigSetupListResults() {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
       />
       <ConfigSetupModal
@@ -157,6 +167,14 @@ export function ConfigSetupListResults() {
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={ConfigSetupDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );

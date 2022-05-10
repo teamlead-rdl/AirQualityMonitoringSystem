@@ -111,7 +111,7 @@ export const LocationAddService = (data, successCallback, errorCallBack) => _fet
 
 export const LocationEditService = (data, successCallback, errorCallBack) => _fetchService(`location/${data.locationId}/update`, 'POST', data, successCallback, errorCallBack);
 
-export const LocationDeleteService = (data, successCallback, errorCallBack) => _fetchService(`location/${data.id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
+export const LocationDeleteService = (id, successCallback, errorCallBack) => _fetchService(`location/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 
 // -------------------- Branch ----------------------
 export const FetchBranchService = (data, successCallback, errorCallBack) => _fetchService('search', 'POST', data, successCallback, errorCallBack);
@@ -120,7 +120,7 @@ export const BranchAddService = (data, successCallback, errorCallBack) => _fetch
 
 export const BranchEditService = (data, successCallback, errorCallBack) => _fetchService(`branch/${data.branch_id}/update`, 'POST', data, successCallback, errorCallBack);
 
-export const BranchDeleteService = (data, successCallback, errorCallBack) => _fetchService(`branch/${data.id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
+export const BranchDeleteService = (id, successCallback, errorCallBack) => _fetchService(`branch/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 
 // --------------- Facility ---------------
 export const FetchFacilitiyService = (data, successCallback, errorCallBack) => _fetchService('search', 'POST', data, successCallback, errorCallBack);
@@ -129,7 +129,7 @@ export const FacilitiyAddService = (data, successCallback, errorCallBack) => _fe
 
 export const FacilityEditService = (data, successCallback, errorCallBack) => _fetchService(`facility/${data.facilityId}/update`, 'POST', data, successCallback, errorCallBack);
 
-export const FacilityDeleteService = (data, successCallback, errorCallBack) => _fetchService(`facility/${data.id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
+export const FacilityDeleteService = (id, successCallback, errorCallBack) => _fetchService(`facility/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 
 // ----------- Building -------------
 export const BuildingFetchService = (data, successCallback, errorCallBack) => _fetchService('search', 'POST', data, successCallback, errorCallBack);
@@ -138,7 +138,7 @@ export const BuildingAddService = (data, successCallback, errorCallBack) => _fet
 
 export const BuildingEditService = (data, successCallback, errorCallBack) => _fetchService(`building/${data.buildingId}/update`, 'POST', data, successCallback, errorCallBack);
 
-export const BuildingDeleteService = (data, successCallback, errorCallBack) => _fetchService(`building/${data.id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
+export const BuildingDeleteService = (id, successCallback, errorCallBack) => _fetchService(`building/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 
 // ----------- Floor -------------
 export const FloorfetchService = (data, successCallback, errorCallBack) => _fetchService('search', 'POST', data, successCallback, errorCallBack);
@@ -147,7 +147,7 @@ export const FloorAddService = (data, successCallback, errorCallBack) => _fetchS
 
 export const FloorEditService = (data, successCallback, errorCallBack) => _fetchService(`floor/${data.floor_id}/update`, 'POST', data, successCallback, errorCallBack);
 
-export const FloorDeleteService = (data, successCallback, errorCallBack) => _fetchService(`floor/${data.id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
+export const FloorDeleteService = (id, successCallback, errorCallBack) => _fetchService(`floor/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 
 // ------------ Lab --------------
 export const LabfetchService = (data, successCallback, errorCallBack) => _fetchService('search', 'POST', data, successCallback, errorCallBack);
@@ -156,7 +156,7 @@ export const LabAddService = (data, successCallback, errorCallBack) => _fetchSer
 
 export const LabEditService = (data, successCallback, errorCallBack) => _fetchService(`labDepartment/${data.labid}/update`, 'POST', data, successCallback, errorCallBack);
 
-export const LabDeleteService = (data, successCallback, errorCallBack) => _fetchService(`labDepartment/${data.id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
+export const LabDeleteService = (id, successCallback, errorCallBack) => _fetchService(`labDepartment/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 
 export const FetchCategoryService = (successCallback, errorCallBack) => _fetchService('category', 'GET', {}, successCallback, errorCallBack);
 
@@ -175,7 +175,7 @@ export const CategoryAddService = (data, successCallback, errorCallBack) => _fet
 
 export const CategoryEditService = (data, successCallback, errorCallBack) => _fetchService(`category/${data.id}/update`, 'POST', data, successCallback, errorCallBack);
 
-export const CategoryDeleteService = (data, successCallback, errorCallBack) => _fetchService(`category/${data.id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
+export const CategoryDeleteService = (id, successCallback, errorCallBack) => _fetchService(`category/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 
 // ---------- Device ---------
 export const DeviceFetchService = (data, successCallback, errorCallBack) => _fetchService('search', 'POST', data, successCallback, errorCallBack);
@@ -184,10 +184,10 @@ export const DeviceAddService = (data, successCallback, errorCallBack) => _fetch
 
 export const DeviceEditService = (data, successCallback, errorCallBack) => _fetchService(`device/${data.id}/update`, 'POST', data, successCallback, errorCallBack);
 
-export const DeviceDeleteService = (data, successCallback, errorCallBack) => _fetchService(`device/${data.id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
+export const DeviceDeleteService = (id, successCallback, errorCallBack) => _fetchService(`device/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 
 // ------------ Vendor --------
-export const VendorDeleteService = (data, successCallback, errorCallBack) => _fetchService(`vendor/${data.id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
+export const VendorDeleteService = (id, successCallback, errorCallBack) => _fetchService(`vendor/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 
 export const VendorEditService = (data, successCallback, errorCallBack) => _fetchService(`vendor/${data.id}/update`, 'POST', data, successCallback, errorCallBack);
 
@@ -202,7 +202,7 @@ export const SensorCategoryAddService = (data, successCallback, errorCallBack) =
 
 export const SensorCategoryEditService = (data, successCallback, errorCallBack) => _fetchService(`sensorCategory/${data.id}/update`, 'POST', data, successCallback, errorCallBack);
 
-export const SensorCategoryDeleteService = (data, successCallback, errorCallBack) => _fetchService(`sensorCategory/${data.id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
+export const SensorCategoryDeleteService = (id, successCallback, errorCallBack) => _fetchService(`sensorCategory/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 // --------------- Sensor Adding ---------------------//
 
 export const SensorAddService = (data, successCallback, errorCallBack) => _fetchService('sensorUnit/add', 'POST', data, successCallback, errorCallBack);
@@ -211,7 +211,7 @@ export const SensorEditService = (data, successCallback, errorCallBack) => _fetc
 
 export const SensorFetchService = (data, successCallback, errorCallBack) => _fetchService(`sensorUnit/${data}`, 'GET', {}, successCallback, errorCallBack);
 
-export const SensorDeleteService = (data, successCallback, errorCallBack) => _fetchService(`sensorUnit/${data.id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
+export const SensorDeleteService = (id, successCallback, errorCallBack) => _fetchService(`sensorUnit/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 
 export const SensorListFetchService = (successCallback, errorCallBack) => _fetchService('sensorUnit', 'GET', {}, successCallback, errorCallBack);
 
@@ -220,7 +220,7 @@ export const SensorDeployAddService = (data, successCallback, errorCallBack) => 
 
 export const SensorDeployEditService = (data, successCallback, errorCallBack) => _fetchService(`sensor/${data.id}/update`, 'POST', data, successCallback, errorCallBack);
 
-export const SensorDeployDeleteService = (data, successCallback, errorCallBack) => _fetchService(`sensor/${data.id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
+export const SensorDeployDeleteService = (id, successCallback, errorCallBack) => _fetchService(`sensor/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 
 export const SensorDeployFetchService = (data, successCallback, errorCallBack) => _fetchService('search', 'POST', data, successCallback, errorCallBack);
 // ------------ Config setup ------------------//
@@ -231,18 +231,37 @@ export const ConfigSetupAddService = (data, successCallback, errorCallBack) => _
 
 export const ConfigSetupEditService = (data, successCallback, errorCallBack) => _fetchService(`configSetup/${data.id}/update`, 'POST', data, successCallback, errorCallBack);
 
-export const ConfigSetupDeleteService = (data, successCallback, errorCallBack) => _fetchService(`configSetup/${data.id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
+export const ConfigSetupDeleteService = (id, successCallback, errorCallBack) => _fetchService(`configSetup/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 
 // ------------ Device Config setup ------------------//
 
 export const DeviceConfigSetupAddService = (data, successCallback, errorCallBack) => _fetchService('DeviceConfigSetup/add', 'POST', data, successCallback, errorCallBack);
 
-export const DeviceConfigSetupFetchService = (data, successCallback, errorCallBack) => {
-  return _fetchService(`DeviceConfigSetup/${data.id}/getDeviceConfigData`, 'GET', {}, successCallback, errorCallBack);
-};
+export const DeviceConfigSetupFetchService = (data, successCallback, errorCallBack) => { return _fetchService(`DeviceConfigSetup/${data.id}/getDeviceConfigData`, 'GET', {}, successCallback, errorCallBack); };
 
 // ----------- STEL & TWA setup -----------------------//
 
-export const StelEditService = (data, successCallback, errorCallBack) => {
-  return _fetchService(`stel/${data.id}/update`, 'POST', data, successCallback, errorCallBack);
-};
+export const StelEditService = (data, successCallback, errorCallBack) => { return _fetchService(`stel/${data.id}/update`, 'POST', data, successCallback, errorCallBack); };
+
+//------------ Change Device Mode -------------------//
+
+export const ChangeDeviceMode = (data, successCallback, errorCallBack) => { return _fetchService(`deviceMode/${data.id}/update`, 'POST', data, successCallback, errorCallBack); };
+
+//------------- Dashboard Chart Display ------------//
+
+export const DisplayLineChart = (successCallback, errorCallBack) => { return _fetchService(`aqmiValues`, 'POST', {}, successCallback, errorCallBack); };
+
+//------------- Calibration Result ---------------//
+
+export const CalibrationAddService = (data, successCallback, errorCallBack) => _fetchService('calibrationTestResult/add', 'POST', data, successCallback, errorCallBack);
+
+//-------------DeployedSensor List --------------//
+export const deviceDeployedSensors = (id, successCallback, errorCallBack) => _fetchService(`deviceDeployedSensors/${id}`, 'GET', {}, successCallback, errorCallBack);
+
+//-------------DeployedSensorTable List --------------//
+export const DeployedSensorsDetailsList = (data, successCallback, errorCallBack) => _fetchService(`calibrationTestResult`, 'POST', data, successCallback, errorCallBack);
+
+//------------- Bump Test ----------------------------//
+export const BumpTestAddService = (data, successCallback, errorCallBack) => _fetchService('bumpTestResult/add', 'POST', data, successCallback, errorCallBack);
+
+export const BumpTestFetchService = (data, successCallback, errorCallBack) => _fetchService('bumpTestResult', 'POST', data, successCallback, errorCallBack);

@@ -32,5 +32,6 @@ module.exports = {
     'arrow-body-style': 0,
     'react/prop-types': 0,
     'react/destructuring-assignment': ['error', 'never'],
+    'react/no-unstable-nested-components': ['warn', { allowAsProps: true }],
   },
 };
