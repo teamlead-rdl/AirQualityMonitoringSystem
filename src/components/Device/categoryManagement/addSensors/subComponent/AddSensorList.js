@@ -8,7 +8,6 @@ import AddSensorModal from './AddSensorModal';
 import NotificationBar from '../../../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../../../context/UserAccessProvider';
 import DeleteConfirmationDailog from '../../../../../utils/confirmDeletion';
-// import ConfigAlarm from './ConfigAlarm';
 
 export function AddSensorList() {
   const columns = [
@@ -39,7 +38,6 @@ export function AddSensorList() {
   ];
 
   const [open, setOpen] = useState(false);
-  // const [alertOpen, setAlertOpen] = useState(false);
   const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
@@ -81,20 +79,6 @@ export function AddSensorList() {
           />
         ));
   }
-
-  // function SetAlarm(props) {
-  //   return (moduleAccess.edit
-  //       && (
-  //         <NotificationsActive
-  //           style={{ cursor: 'pointer' }}
-  //           onClick={(event) => {
-  //             event.stopPropagation();
-  //             setEditCategory(props.selectedRow);
-  //             setAlertOpen(true);
-  //           }}
-  //         />
-  //       ));
-  // }
 
   function DeleteData(props) {
     return moduleAccess.delete && (
@@ -162,11 +146,6 @@ export function AddSensorList() {
         CategoryList={CategoryList}
         setRefreshData={setRefreshData}
       />
-      {/* <ConfigAlarm
-            open={alertOpen}
-            setOpen={setAlertOpen}
-            editData={editCategory}
-          /> */}
       <NotificationBar
         handleClose={handleClose}
         notificationContent={openNotification.message}

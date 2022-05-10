@@ -93,8 +93,8 @@ function ModbusAlert({
               label="Sensor alert"
               onChange={(e) => {
                 setCriticalAlertType(e.target.value);
-                setCriticalMinValue("");
-                setCriticalMaxValue("");
+                setCriticalMinValue('');
+                setCriticalMaxValue('');
               }}
               // error={errorObject?.deviceName?.errorStatus}
               // helperText={errorObject?.deviceName?.helperText}
@@ -201,7 +201,7 @@ function ModbusAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={criticalMinValue}
-              disabled={criticalAlertType === "High" || criticalAlertType === "High" || moduleAccess.edit === false && true}
+              disabled={criticalAlertType === 'High' || criticalAlertType === 'High' || (moduleAccess.edit === false && true)}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
                 setCriticalMinValue(e.target.value);
@@ -230,7 +230,7 @@ function ModbusAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={criticalMaxValue}
-              disabled={criticalAlertType === "Low" || criticalAlertType === "" || moduleAccess.edit === false && true}
+              disabled={criticalAlertType === 'Low' || criticalAlertType === '' || (moduleAccess.edit === false && true)}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
                 setCriticalMaxValue(e.target.value);
@@ -281,8 +281,8 @@ function ModbusAlert({
               label="Sensor alert"
               onChange={(e) => {
                 setWarningAlertType(e.target.value);
-                setWarningMinValue("");
-                setWarningMaxValue("");
+                setWarningMinValue('');
+                setWarningMaxValue('');
               }}
               // error={errorObject?.deviceName?.errorStatus}
               // helperText={errorObject?.deviceName?.helperText}
@@ -391,7 +391,7 @@ function ModbusAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={warningMinValue}
-              disabled={warningAlertType === "High" || warningAlertType === "" || moduleAccess.edit === false && true}
+              disabled={warningAlertType === 'High' || warningAlertType === '' || (moduleAccess.edit === false && true)}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
                 setWarningMinValue(e.target.value);
@@ -420,7 +420,7 @@ function ModbusAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={warningMaxValue}
-              disabled={warningAlertType === "Low" || warningAlertType === "" || moduleAccess.edit === false && true}
+              disabled={warningAlertType === 'Low' || warningAlertType === '' || (moduleAccess.edit === false && true)}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
                 setWarningMaxValue(e.target.value);
@@ -579,7 +579,7 @@ function ModbusAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={outofrangeMinValue}
-              disabled={outofrangeAlertType === "High" || outofrangeAlertType === "" || moduleAccess.edit === false && true}
+              disabled={outofrangeAlertType === 'High' || outofrangeAlertType === '' || (moduleAccess.edit === false && true)}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
                 setOutofrangeMinValue(e.target.value);
@@ -608,7 +608,7 @@ function ModbusAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={outofrangeMaxValue}
-              disabled={outofrangeAlertType === "Low" || outofrangeAlertType === "" || moduleAccess.edit === false && true}
+              disabled={outofrangeAlertType === 'Low' || outofrangeAlertType === '' || (moduleAccess.edit === false && true)}
               // onBlur={() => validateForNullValue(alertTag, "alertTag")}
               onChange={(e) => {
                 setOutofrangeMaxValue(e.target.value);

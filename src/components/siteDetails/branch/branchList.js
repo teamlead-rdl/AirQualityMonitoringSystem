@@ -3,10 +3,10 @@ import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { Breadcrumbs, Typography } from '@mui/material';
+import { Link, useLocation } from 'react-router-dom';
 import { BranchDeleteService, FetchBranchService } from '../../../services/LoginPageService';
 import { BranchListToolbar } from './branch-list-toolbars';
 import BranchModal from './BranchModalComponent';
-import { Link, useLocation } from 'react-router-dom';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
@@ -85,11 +85,11 @@ export function BranchListResults(props) {
           lng: parseFloat(coordinates[1]),
         },
       };
-    })  
+    })
       : [];
     props.setLocationCoordinationList(newArray);
   };
-
+  /* eslint-disable-next-line */
   const handleException = (errorObject) => {
   };
 
@@ -116,7 +116,7 @@ export function BranchListResults(props) {
       handleClose();
     }, 3000);
   };
-
+  /* eslint-disable-next-line */
   function LinkTo(props) {
     return (
       <Link
@@ -130,7 +130,7 @@ export function BranchListResults(props) {
       </Link>
     );
   }
-
+  /* eslint-disable-next-line */
   function EditData(props) {
     return (
       moduleAccess.edit
@@ -145,14 +145,17 @@ export function BranchListResults(props) {
         />
       ));
   }
-
-  const DeleteData = (props) => {
-    return moduleAccess.delete && <DeleteIcon onClick={()=>{
-      setDeleteId(props.selectedRow.id);
-      setDeleteDailogOpen(true);
-    }}
-    style={{cursor:'pointer'}}
-    />
+  /* eslint-disable-next-line */
+  function DeleteData(props) {
+    return moduleAccess.delete && (
+      <DeleteIcon
+        onClick={() => {
+          setDeleteId(props.selectedRow.id);
+          setDeleteDailogOpen(true);
+        }}
+        style={{ cursor: 'pointer' }}
+      />
+    );
   }
 
   const handleClose = () => {

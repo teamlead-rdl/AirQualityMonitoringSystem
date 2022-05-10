@@ -13,7 +13,7 @@ import previewImage from '../../../images/previewImage.png';
 // import ImageMarkerComponent from './imageMarker';
 
 function BuildingModal({
-  open, setOpen, isAddButton, editData, locationId, branchId, facilityId, setRefreshData, locationCoordinationList
+  open, setOpen, isAddButton, editData, locationId, branchId, facilityId, setRefreshData, locationCoordinationList,
 }) {
   const location_id = locationId;
   const branch_id = branchId;
@@ -326,7 +326,10 @@ function BuildingModal({
                     latitude={markerLat}
                     stateName={editData.buildingName}
                     zoom={18}
-                    center={{ lat: locationCoordinationList[0]?.position.lat || 19.34187, lng:locationCoordinationList[0]?.position.lng || 78.30460}}
+                    center={{
+                      lat: locationCoordinationList[0]?.position.lat || 19.34187,
+                      lng: locationCoordinationList[0]?.position.lng || 78.30460,
+                    }}
                   />
 
                 </div>

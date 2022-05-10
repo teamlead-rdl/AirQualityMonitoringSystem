@@ -4,6 +4,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SensorsIcon from '@mui/icons-material/Sensors';
 import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt';
+import {
+  MenuItem, Select, Box, CircularProgress, Dialog, DialogTitle, DialogContent, Typography, DialogActions, Button,
+} from '@mui/material';
+import {
+  GppMaybe, PlayArrow, PlayDisabled, Science, Upgrade,
+} from '@mui/icons-material';
+import { darken, lighten } from '@mui/material/styles';
 import DeviceModel from './DeviceModelComponent';
 import {
   DeviceDeleteService, DeviceFetchService, CategoryFetchService, SensorDeployFetchService, ChangeDeviceMode, deviceDeployedSensors,
@@ -12,10 +19,7 @@ import SensorModel from './SensorModelComponent';
 import DeviceConfigSetupModal from '../deviceConfiguration/subcomponent/DeviceConfigSetupModalComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
-import { MenuItem, Select, LinearProgress, Box, CircularProgress, Dialog, DialogTitle, DialogContent, Typography, DialogActions, Button } from '@mui/material';
 import BumpTestComponentModal from './BumpTestComponentModal';
-import { GppMaybe, PlayArrow, PlayDisabled, Science, Tune, Upgrade } from '@mui/icons-material';
-import { darken, lighten } from '@mui/material/styles';
 import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
 
 function AddDeviceListResults(props) {
@@ -88,21 +92,15 @@ function AddDeviceListResults(props) {
   const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState('');
   const [deployedSensorTagList, setDeployedSensorTagList] = useState([]);
-  // const [bumpTestSensorTagList, setBumpTestSensorTagList] = useState([]);
   const [bumpTestOpen, setBumpTestOpen] = useState(false);
   const [isAddButton, setIsAddButton] = useState(true);
   const [editDevice, setEditDevice] = useState([]);
   const [deviceList, setDeviceList] = useState([]);
   const [categoryList, setCategoryList] = useState('');
   const [isLoading, setGridLoading] = useState(true);
-  // const {
-  //   location_id, branch_id, facility_id, building_id, floor_id, lab_id,
-  // } = props.locationDetails;
   const [sensorOpen, setSensorOpen] = useState(false);
   const [configSetupOpen, setConfigSetupOpen] = useState(false);
   const [modeChange, setModeChange] = useState(false);
-  // const [editConfigSetup, setEditConfigSetup] = useState([]);
-
   const [analogSensorList, setAnalogSensorList] = useState([]);
   const [digitalSensorList, setDigitalSensorList] = useState([]);
   const [modbusSensorList, setModbusSensorList] = useState([]);
@@ -135,43 +133,44 @@ function AddDeviceListResults(props) {
   };
 
   /* eslint-disable-next-line */
+  function ChangeModeAPI({id}, deviceMode){
+    ChangeDeviceMode({ id, deviceMode }, modeChangeHandleSuccess, modeChangeHandleException);
+  }
+
+  /* eslint-disable-next-line */
   function ChangeMode(props) {
     return (moduleAccess.edit
       && (
-          <Select
-            sx={{
-              width:180,
-              "&.Mui-root .MuiOutlinedInput-root": {
-                border: "0px solid #484850",
-                borderRadius: "5px 5px 0 0"
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                border: "0px solid #484850",
-                borderRadius: "5px 5px 0 0"
-              },
-            }}
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={props.selectedRow.deviceMode}
-            label="Mode"
-            fullWidth
-            onChange={(e)=>{
-              // setModeChange(true);
-              ChangeModeAPI(props.selectedRow, e.target.value);
-            }}
-            >
-            <MenuItem value="enabled">Enable</MenuItem>
-            <MenuItem value="disabled">Disable</MenuItem>
-            <MenuItem value="bumpTest">Bump Test</MenuItem>
-            <MenuItem value="calibration">Calibration</MenuItem>
-            <MenuItem value="firmwareUpgradation">Firmware Upgradation</MenuItem>
-            <MenuItem value="config">Configuration</MenuItem>
-          </Select>
+        <Select
+          sx={{
+            width: 180,
+            '&.Mui-root .MuiOutlinedInput-root': {
+              border: '0px solid #484850',
+              borderRadius: '5px 5px 0 0',
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              border: '0px solid #484850',
+              borderRadius: '5px 5px 0 0',
+            },
+          }}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={props.selectedRow.deviceMode}
+          label="Mode"
+          fullWidth
+          onChange={(e) => {
+            // setModeChange(true);
+            ChangeModeAPI(props.selectedRow, e.target.value);
+          }}
+        >
+          <MenuItem value="enabled">Enable</MenuItem>
+          <MenuItem value="disabled">Disable</MenuItem>
+          <MenuItem value="bumpTest">Bump Test</MenuItem>
+          <MenuItem value="calibration">Calibration</MenuItem>
+          <MenuItem value="firmwareUpgradation">Firmware Upgradation</MenuItem>
+          <MenuItem value="config">Configuration</MenuItem>
+        </Select>
       ));
-  }
-  /* eslint-disable-next-line */
-  function ChangeModeAPI({id}, deviceMode){
-    ChangeDeviceMode({id, deviceMode}, modeChangeHandleSuccess, modeChangeHandleException);
   }
 
   /* eslint-disable-next-line */
@@ -186,42 +185,40 @@ function AddDeviceListResults(props) {
 
     setTimeout(() => {
       handleClose();
-      switch(dataObject.deviceMode){
-          case "calibration" : 
-            calibrateDeployedSensorsList(dataObject.deviceId);
-            break;
-          case "bumpTest" :
-            bumptestDeployedSensorsList(dataObject.deviceId);
-            break;
-          default : break;
-          }
+      switch (dataObject.deviceMode) {
+      case 'calibration':
+        calibrateDeployedSensorsList(dataObject.deviceId);
+        break;
+      case 'bumpTest':
+        bumptestDeployedSensorsList(dataObject.deviceId);
+        break;
+      default: break;
+      }
     }, 3000);
   };
-      
+
   const calibrateDeployedSensorsList = (id) => {
     deviceDeployedSensors(id, deviceDeployedSensorsListSuccess, deviceDeployedSensorsListException);
   };
-      
+
   const bumptestDeployedSensorsList = (id) => {
     deviceDeployedSensors(id, bumptestSensorsListSuccess, bumptestSensorsListException);
   };
-  
-  const  deviceDeployedSensorsListSuccess = (dataObject) => {
-    setDeployedSensorTagList(dataObject);  
+
+  const deviceDeployedSensorsListSuccess = (dataObject) => {
+    setDeployedSensorTagList(dataObject);
     setProgressStatus(3);
     setSensorOpen(true);
-    console.log(dataObject);           
   };
-
+  /* eslint-disable-next-line */
   const deviceDeployedSensorsListException = (dataObject, errorObject) => {
   };
 
-  const  bumptestSensorsListSuccess = (dataObject) => {
-    // setDeployedSensorTagList(dataObject);  
+  const bumptestSensorsListSuccess = (dataObject) => {
+    setDeployedSensorTagList(dataObject);
     setBumpTestOpen(true);
-    console.log(dataObject);           
   };
-
+  /* eslint-disable-next-line */
   const bumptestSensorsListException = (dataObject, errorObject) => {
   };
   /* eslint-disable-next-line */
@@ -234,20 +231,21 @@ function AddDeviceListResults(props) {
   };
   /* eslint-disable-next-line */
   function ChangeStatus(props) {
-    switch(props.selectedRow.deviceMode){
-      case "calibration" : 
-        return <Upgrade/>
-      case "firmwareUpgradation" : 
-        // return <Tune/>
-        return <Box sx={{ width:'50%'}}>
-                <CircularProgress color='secondary' style={{width:20, height:20}}/>
-              </Box>
-      case "disabled" : 
-        return <PlayDisabled/>
-      case "bumpTest" :
-        return <Science/>
-      default : 
-        return <PlayArrow/>
+    switch (props.selectedRow.deviceMode) {
+    case 'calibration':
+      return <Upgrade />;
+    case 'firmwareUpgradation':
+      return (
+        <Box sx={{ width: '50%' }}>
+          <CircularProgress color="secondary" style={{ width: 20, height: 20 }} />
+        </Box>
+      );
+    case 'disabled':
+      return <PlayDisabled />;
+    case 'bumpTest':
+      return <Science />;
+    default:
+      return <PlayArrow />;
     }
   }
 
@@ -351,11 +349,9 @@ function AddDeviceListResults(props) {
     });
   };
 
-  const getBackgroundColor = (color, mode) =>
-  mode === 'dark' ? darken(color, 0.6) : lighten(color, 0.6);
+  const getBackgroundColor = (color, mode) => (mode === 'dark' ? darken(color, 0.6) : lighten(color, 0.6));
 
-  const getHoverBackgroundColor = (color, mode) =>
-  mode === 'dark' ? darken(color, 0.5) : lighten(color, 0.5);
+  const getHoverBackgroundColor = (color, mode) => (mode === 'dark' ? darken(color, 0.5) : lighten(color, 0.5));
 
   return (
     <div style={{ height: 300, width: '100%', padding: 0 }}>
@@ -364,63 +360,51 @@ function AddDeviceListResults(props) {
           height: 400,
           width: 1,
           '& .super-app-theme--calibration': {
-            bgcolor: (theme) =>
-              getBackgroundColor('#FAE8FA', theme.palette.mode),
+            bgcolor: (theme) => getBackgroundColor('#FAE8FA', theme.palette.mode),
             '&:hover': {
-              bgcolor: (theme) =>
-                getHoverBackgroundColor('#FAE8FA', theme.palette.mode),
+              bgcolor: (theme) => getHoverBackgroundColor('#FAE8FA', theme.palette.mode),
             },
-            ":hover":{backgroundColor:'#FAE8FA'}
+            ':hover': { backgroundColor: '#FAE8FA' },
           },
           '& .super-app-theme--firmwareUpgradation': {
-            bgcolor: (theme) =>
-              getBackgroundColor('#9fa8da', theme.palette.mode),
+            bgcolor: (theme) => getBackgroundColor('#9fa8da', theme.palette.mode),
             '&:hover': {
-              bgcolor: (theme) =>
-                getHoverBackgroundColor(
-                  '#9fa8da',
-                  theme.palette.mode,
-                ),
+              bgcolor: (theme) => getHoverBackgroundColor(
+                '#9fa8da',
+                theme.palette.mode,
+              ),
             },
           },
           '& .super-app-theme--disabled': {
-            bgcolor: (theme) =>
-              getBackgroundColor('#ffcdd2', theme.palette.mode),
+            bgcolor: (theme) => getBackgroundColor('#ffcdd2', theme.palette.mode),
             '&:hover': {
-              bgcolor: (theme) =>
-                getHoverBackgroundColor(
-                  '#ffcdd2',
-                  theme.palette.mode,
-                ),
+              bgcolor: (theme) => getHoverBackgroundColor(
+                '#ffcdd2',
+                theme.palette.mode,
+              ),
             },
           },
           '& .super-app-theme--enabled': {
-            bgcolor: (theme) =>
-              getBackgroundColor('#A5D6A7', theme.palette.mode),
+            bgcolor: (theme) => getBackgroundColor('#A5D6A7', theme.palette.mode),
             '&:hover': {
-              bgcolor: (theme) =>
-                getHoverBackgroundColor(
-                  '#A5D6A7',
-                  theme.palette.mode,
-                ),
+              bgcolor: (theme) => getHoverBackgroundColor(
+                '#A5D6A7',
+                theme.palette.mode,
+              ),
             },
           },
           '& .super-app-theme--bumpTest': {
-            bgcolor: (theme) =>
-              getBackgroundColor('#FFFCE3', theme.palette.mode),
+            bgcolor: (theme) => getBackgroundColor('#FFFCE3', theme.palette.mode),
             '&:hover': {
-              bgcolor: (theme) =>
-                getHoverBackgroundColor('#FFFCE3', theme.palette.mode),
+              bgcolor: (theme) => getHoverBackgroundColor('#FFFCE3', theme.palette.mode),
             },
           },
           '& .super-app-theme--config': {
-            bgcolor: (theme) =>
-              getBackgroundColor('#F2FFF2', theme.palette.mode),
+            bgcolor: (theme) => getBackgroundColor('#F2FFF2', theme.palette.mode),
             '&:hover': {
-              bgcolor: (theme) =>
-                getHoverBackgroundColor('#F2FFF2', theme.palette.mode),
+              bgcolor: (theme) => getHoverBackgroundColor('#F2FFF2', theme.palette.mode),
             },
-          }
+          },
         }}
       >
         <DataGrid
@@ -457,14 +441,8 @@ function AddDeviceListResults(props) {
         setProgressStatus={setProgressStatus}
         deployedSensorTagList={deployedSensorTagList}
       />
-      {/* <BumpTestComponentModal
-        isAddButton={isAddButton}      
-        open={bumpTestOpen}
-        setOpen={setBumpTestOpen}
-        setRefreshData={setRefreshData}
-      /> */}
       <BumpTestComponentModal
-        isAddButton={isAddButton}      
+        isAddButton={isAddButton}
         open={bumpTestOpen}
         setOpen={setBumpTestOpen}
         setRefreshData={setRefreshData}
@@ -502,9 +480,10 @@ function AddDeviceListResults(props) {
         </DialogContent>
         <DialogActions sx={{ margin: '10px' }}>
           <div style={{ textAlign: 'center' }}>
-            <Button onClick={()=>{
+            <Button onClick={() => {
               setModeChange(false);
-            }}>
+            }}
+            >
               Confirm
             </Button>
             <Button

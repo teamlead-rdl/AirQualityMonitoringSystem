@@ -22,6 +22,7 @@ import NotificationBar from '../notification/ServiceNotificationBar';
 import { AddCategoryValidate } from '../../validation/formValidation';
 import StelTWA from './sensorType/StelTWAComponent';
 import { useUserAccess } from '../../context/UserAccessProvider';
+
 function DeviceAdd({
   locationDetails, setProgressStatus, editData, isUpdate,
 }) {
@@ -896,15 +897,16 @@ function DeviceAdd({
             >
               Cancel
             </Button>
-            {moduleAccess.edit === true && 
-              <Button
-                sx={{ m: 1 }}
-                size="large"
-                type="submit"
-              >
-                {isUpdate ? 'UPDATE' : 'ADD' }
-              </Button>
-            }
+            {moduleAccess.edit === true
+              && (
+                <Button
+                  sx={{ m: 1 }}
+                  size="large"
+                  type="submit"
+                >
+                  {isUpdate ? 'UPDATE' : 'ADD' }
+                </Button>
+              )}
           </div>
         </DialogContent>
       </form>
