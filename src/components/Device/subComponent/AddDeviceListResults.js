@@ -360,6 +360,7 @@ function AddDeviceListResults(props) {
           height: 400,
           width: 1,
           '& .super-app-theme--calibration': {
+            color: 'maroon',
             bgcolor: (theme) => getBackgroundColor('#FAE8FA', theme.palette.mode),
             '&:hover': {
               bgcolor: (theme) => getHoverBackgroundColor('#FAE8FA', theme.palette.mode),
@@ -367,6 +368,7 @@ function AddDeviceListResults(props) {
             ':hover': { backgroundColor: '#FAE8FA' },
           },
           '& .super-app-theme--firmwareUpgradation': {
+            color: 'purple',
             bgcolor: (theme) => getBackgroundColor('#9fa8da', theme.palette.mode),
             '&:hover': {
               bgcolor: (theme) => getHoverBackgroundColor(
@@ -394,12 +396,14 @@ function AddDeviceListResults(props) {
             },
           },
           '& .super-app-theme--bumpTest': {
+            color: 'darkgoldenrod',
             bgcolor: (theme) => getBackgroundColor('#FFFCE3', theme.palette.mode),
             '&:hover': {
               bgcolor: (theme) => getHoverBackgroundColor('#FFFCE3', theme.palette.mode),
             },
           },
           '& .super-app-theme--config': {
+            color: 'green',
             bgcolor: (theme) => getBackgroundColor('#F2FFF2', theme.palette.mode),
             '&:hover': {
               bgcolor: (theme) => getHoverBackgroundColor('#F2FFF2', theme.palette.mode),

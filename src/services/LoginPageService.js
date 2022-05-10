@@ -45,6 +45,9 @@ const _fetchService = (PATH, serviceMethod, data, successCallback, errorCallBack
     })
     .then((dataResponse) => successCallback(dataResponse))
     .catch((error) => {
+      // if (error.errorStatus === 401) {
+      //   // TODO: navigate the user to login page since token expired error has occured
+      // }
       error.errorObject.then((errorResponse) => {
         const errorMessage = errorResponse.error ? errorResponse.error : errorResponse.message;
         errorCallBack(error.errorStatus, errorMessage);
@@ -223,6 +226,8 @@ export const SensorDeployEditService = (data, successCallback, errorCallBack) =>
 export const SensorDeployDeleteService = (id, successCallback, errorCallBack) => _fetchService(`sensor/${id}/delete`, 'DELETE', {}, successCallback, errorCallBack);
 
 export const SensorDeployFetchService = (data, successCallback, errorCallBack) => _fetchService('search', 'POST', data, successCallback, errorCallBack);
+
+export const SensorPropertiesUpdateService = (data, successCallback, errorCallBack) => _fetchService(`sensorProperties/${data.id}/update`, 'POST', data, successCallback, errorCallBack);
 // ------------ Config setup ------------------//
 
 export const ConfigSetupFetchService = (successCallback, errorCallBack) => _fetchService('configSetup', 'GET', {}, successCallback, errorCallBack);
@@ -243,25 +248,25 @@ export const DeviceConfigSetupFetchService = (data, successCallback, errorCallBa
 
 export const StelEditService = (data, successCallback, errorCallBack) => { return _fetchService(`stel/${data.id}/update`, 'POST', data, successCallback, errorCallBack); };
 
-//------------ Change Device Mode -------------------//
+// ------------ Change Device Mode -------------------//
 
 export const ChangeDeviceMode = (data, successCallback, errorCallBack) => { return _fetchService(`deviceMode/${data.id}/update`, 'POST', data, successCallback, errorCallBack); };
 
-//------------- Dashboard Chart Display ------------//
+// ------------- Dashboard Chart Display ------------//
 
-export const DisplayLineChart = (successCallback, errorCallBack) => { return _fetchService(`aqmiValues`, 'POST', {}, successCallback, errorCallBack); };
+export const DisplayLineChart = (successCallback, errorCallBack) => { return _fetchService('aqmiValues', 'POST', {}, successCallback, errorCallBack); };
 
-//------------- Calibration Result ---------------//
+// ------------- Calibration Result ---------------//
 
 export const CalibrationAddService = (data, successCallback, errorCallBack) => _fetchService('calibrationTestResult/add', 'POST', data, successCallback, errorCallBack);
 
-//-------------DeployedSensor List --------------//
+// -------------DeployedSensor List --------------//
 export const deviceDeployedSensors = (id, successCallback, errorCallBack) => _fetchService(`deviceDeployedSensors/${id}`, 'GET', {}, successCallback, errorCallBack);
 
-//-------------DeployedSensorTable List --------------//
-export const DeployedSensorsDetailsList = (data, successCallback, errorCallBack) => _fetchService(`calibrationTestResult`, 'POST', data, successCallback, errorCallBack);
+// -------------DeployedSensorTable List --------------//
+export const DeployedSensorsDetailsList = (data, successCallback, errorCallBack) => _fetchService('calibrationTestResult', 'POST', data, successCallback, errorCallBack);
 
-//------------- Bump Test ----------------------------//
+// ------------- Bump Test ----------------------------//
 export const BumpTestAddService = (data, successCallback, errorCallBack) => _fetchService('bumpTestResult/add', 'POST', data, successCallback, errorCallBack);
 
 export const BumpTestFetchService = (data, successCallback, errorCallBack) => _fetchService('bumpTestResult', 'POST', data, successCallback, errorCallBack);
