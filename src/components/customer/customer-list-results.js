@@ -156,7 +156,6 @@ export function CustomerListResults() {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
       />
       <ConfirmPassword

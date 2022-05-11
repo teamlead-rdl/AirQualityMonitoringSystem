@@ -10,6 +10,7 @@ import floorPointer from '../../../images/icons/placeholder.png';
 import floorPlan from '../../../images/floorPlan.png';
 
 function ImageMarkerComponent(props) {
+  const [rotateImg, setRotateImg] = useState(2);
   const {
     setFloorCoordinations, floorCords, height, src,
   } = props;
@@ -67,7 +68,13 @@ function ImageMarkerComponent(props) {
           src={src || building}
           // src='https://1.bp.blogspot.com/-6uL4YhQICoU/XRNup_w25-I/AAAAAAAAAKE/pMGI0DVUecsO9f6boeMsfVs0U17dLCAWACLcBGAs/s1600/5%2Bstorey%2Bbuilding%2Bdesign.jpg'
           markers={markers}
-          onAddMarker={(marker) => setMarkers([marker])}
+          onAddMarker={(marker) => {
+            setMarkers([marker]);
+            setMarkers([{
+              top: marker.top + -0.5,
+              left: marker.left + rotateImg
+            }])
+          }}
           markerComponent={CustomMarker}
         />
       </ImageMarkerWrapper>
@@ -91,6 +98,12 @@ function ImageMarkerComponent(props) {
           onClick={() => {
             setMarkerShape((prevMarker) => (prevMarker == buildingPointerLeft ? buildingPointerRight : buildingPointerLeft));
             setDirection((prevdirection) => (prevdirection == 'false' ? 'true' : 'false'));
+            setRotateImg((oldValue)=>{
+              if(oldValue === 2)
+                return -6;
+              else
+                return 2;
+            })
           }}
         >
           Toggle Pointer Shape

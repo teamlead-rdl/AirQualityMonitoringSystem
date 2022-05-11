@@ -63,7 +63,6 @@ function UserResetPassword(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (newPassword !== confirmPassword) {
       setErrorObject((oldData) => {
         const status = {
@@ -73,6 +72,18 @@ function UserResetPassword(props) {
         return {
           ...oldData,
           confirmPassword: status,
+        };
+      });
+    }
+    else if(oldPassword == newPassword){
+      setErrorObject((oldData) => {
+        const status = {
+          errorStatus: true,
+          helperText: 'Old password and New password should be different',
+        };
+        return {
+          ...oldData,
+          newPassword: status,
         };
       });
     } else {

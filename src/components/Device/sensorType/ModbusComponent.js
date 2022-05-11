@@ -3,6 +3,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { AnalogSensorValidate } from '../../../validation/formValidation';
+import { useUserAccess } from '../../../context/UserAccessProvider';
 
 function Modbus({
   errorObject, setErrorObject, disable, units, setUnits, sensorType, setSensorType, minRatedReading, setMinRatedReading,
@@ -13,6 +14,7 @@ function Modbus({
   setConversionType, ipAddress, setIpAddress, subnetMask, setSubnetMask,
 }) {
   // const [errorObject, setErrorObject] = useState({});
+  const moduleAccess = useUserAccess()('devicelocation');
   const validateForNullValue = (value, type) => {
     AnalogSensorValidate(value, type, setErrorObject);
   };
@@ -368,7 +370,7 @@ function Modbus({
         >
           <div className="rounded-md -space-y-px flex">
             <Checkbox
-              checked={minRatedReadingChecked != 0}
+              checked={minRatedReadingChecked != 0 || moduleAccess.edit === false && true}
               onChange={(e) => {
                 setMinRatedReadingChecked(e.target.checked);
               }}
@@ -388,7 +390,7 @@ function Modbus({
             <TextField
               sx={{ marginTop: 0 }}
               value={minRatedReadingScale}
-              disabled={minRatedReadingChecked == 0}
+              disabled={minRatedReadingChecked == 0 || moduleAccess.edit === false && true}
               type="number"
               onBlur={() => validateForNullValue(minRatedReadingScale, 'minRatedReadingScale')}
               onChange={(e) => {
@@ -459,7 +461,7 @@ function Modbus({
         >
           <div className="rounded-md -space-y-px flex">
             <Checkbox
-              checked={maxRatedReadingChecked != 0}
+              checked={maxRatedReadingChecked != 0 || moduleAccess.edit === false && true}
               onChange={(e) => { setMaxRatedReadingChecked(e.target.checked); }}
             />
           </div>
@@ -477,7 +479,7 @@ function Modbus({
             <TextField
               sx={{ marginTop: 0 }}
               value={maxRatedReadingScale}
-              disabled={maxRatedReadingChecked == 0}
+              disabled={maxRatedReadingChecked == 0 || moduleAccess.edit === false && true}
               onBlur={() => validateForNullValue(maxRatedReadingScale, 'maxRatedReadingScale')}
               onChange={(e) => {
                 setMaxRatedReadingScale(e.target.value);

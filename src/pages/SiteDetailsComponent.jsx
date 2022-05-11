@@ -8,6 +8,8 @@ import ApplicationStore from '../utils/localStorageUtil';
 
 const SiteDetails = () => {
   const [locationCoordinationList, setLocationCoordinationList] = useState([]);
+  const [centerLat, setCenterLat] = useState(21.785);
+  const [centerLng, setCenterLng] = useState(72.91655655);
   const navigate = useNavigate();
   useEffect(() => {
     const { locationDetails } = ApplicationStore().getStorage('userDetails');
@@ -21,12 +23,14 @@ const SiteDetails = () => {
     } else if(location_id) {
       return navigate(`${locationLabel}`, { state: { location_id }}); 
     }
-  }, []);
+    setCenterLat(locationCoordinationList[0]?.position.lat);
+    setCenterLng(locationCoordinationList[0]?.position.lng);
+  }, [locationCoordinationList]);
 
   return (
     <Container maxWidth={false} style={{marginTop:0}}>
       <Grid item sx={{ mt: 1 }}  xs={12} sm={12} md={12} lg={12} xl={12}>
-        <LocationListResults setLocationCoordinationList={setLocationCoordinationList}/>
+        <LocationListResults locationCoordinationList={locationCoordinationList} setLocationCoordinationList={setLocationCoordinationList}/>
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
         <MapsMultiplePoints 
@@ -34,7 +38,7 @@ const SiteDetails = () => {
           height="50vh"
           markers={locationCoordinationList}
           zoom={4}
-          center={{ lat: 21.17295268645021, lng: 72.83259344505929 }}
+          center={{ lat: centerLat, lng: centerLng }}
         />
       </Grid>
     </Container>

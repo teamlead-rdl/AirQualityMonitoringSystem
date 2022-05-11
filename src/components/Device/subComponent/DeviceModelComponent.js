@@ -347,7 +347,7 @@ function DeviceModel({
                 InputLabelProps={{ shrink: true }}
                 type="file"
                 inputProps={{
-                  accept: 'image/png',
+                  accept: 'image/png, image/jpeg',
                 }}
                 error={errorObject?.deviceImage?.errorStatus}
                 helperText={errorObject?.deviceImage?.helperText}

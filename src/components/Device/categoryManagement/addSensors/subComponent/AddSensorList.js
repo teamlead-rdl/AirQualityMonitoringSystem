@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import {
-  CategoryFetchService, CategoryDeleteService, SensorCategoryFetchService, SensorCategoryDeleteService, SensorFetchService, SensorListFetchService, SensorDeleteService,
-} from '../../../../../services/LoginPageService';
+import { SensorListFetchService, SensorDeleteService } from '../../../../../services/LoginPageService';
 import { AddSensorCategoryToolbar } from './AddSensorCategoryToolbar';
 import AddSensorModal from './AddSensorModal';
 import NotificationBar from '../../../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../../../context/UserAccessProvider';
+import DeleteConfirmationDailog from '../../../../../utils/confirmDeletion';
 
 export function AddSensorList() {
   const columns = [
@@ -22,20 +21,25 @@ export function AddSensorList() {
       headerName: 'Sensor Output',
       width: 300,
     },
-
     {
       field: 'actions',
       type: 'actions',
       headerName: 'Actions',
       width: 100,
       cellClassName: 'actions',
-      getActions: (params) => [
-        <EditData selectedRow={params.row} />, <DeleteData selectedRow={params.row} />,
-      ],
+      getActions: (params) => {
+        return [
+          <EditData selectedRow={params.row} />,
+          // <SetAlarm selectedRow={params.row}/>,
+          <DeleteData selectedRow={params.row} />,
+        ];
+      },
     },
   ];
 
   const [open, setOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editCategory, setEditCategory] = useState([]);
   const [CategoryList, setCategoryList] = useState([]);
@@ -54,7 +58,7 @@ export function AddSensorList() {
     setCategoryList(dataObject.data);
   };
 
-  const handleException = (errorObject) => {
+  const handleException = () => {
   };
 
   useEffect(() => {
@@ -81,7 +85,8 @@ export function AddSensorList() {
       <DeleteIcon
         style={{ cursor: 'pointer' }}
         onClick={() => {
-          SensorDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+          setDeleteId(props.selectedRow.id);
+          setDeleteDailogOpen(true);
         }}
       />
     );
@@ -95,7 +100,8 @@ export function AddSensorList() {
     setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
-    }, 5000);
+      setDeleteDailogOpen(false);
+    }, 3000);
   };
 
   const deletehandleException = (errorObject, errorMessage) => {
@@ -104,6 +110,9 @@ export function AddSensorList() {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   const handleClose = () => {
@@ -127,7 +136,6 @@ export function AddSensorList() {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
       />
       <AddSensorModal
@@ -143,6 +151,14 @@ export function AddSensorList() {
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={SensorDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );

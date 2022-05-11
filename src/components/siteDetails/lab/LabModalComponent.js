@@ -8,7 +8,7 @@ import ImageMarkerComponent from './imageMarker';
 // import ImageMarkerComponent from '../../maps/imageMarker';
 import { LabFormValidate } from '../../../validation/locationValidation';
 import NotificationBar from '../../notification/ServiceNotificationBar';
-import previewImage from '../../../images/chooseFile.png';
+import previewImage from '../../../images/previewImage.png';
 
 function LabModal({
   open, setOpen, isAddButton, editData, locationId, branchId, facilityId, buildingId, floorId, setRefreshData, img,
@@ -176,7 +176,7 @@ function LabModal({
                       InputLabelProps={{ shrink: true }}
                       type="file"
                       inputProps={{
-                        accept: 'image/png',
+                        accept: 'image/png, image/jpeg',
                       }}
                       error={errorObject?.buildingImg?.errorStatus}
                       helperText={errorObject?.buildingImg?.helperText}
@@ -201,12 +201,16 @@ function LabModal({
             <div className="float-right">
               <div className="rounded-md -space-y-px">
                 <Button
+                  sx={{ m:1 }}
                   type="submit"
+                  size="large"
                   disabled={errorObject?.labDepName?.errorStatus}
                 >
                   {isAddButton ? 'Add' : 'Update'}
                 </Button>
                 <Button
+                  sx={{ m:1 }}
+                  size="large"
                   onClick={(e) => {
                     setOpen(false);
                     setErrorObject({});

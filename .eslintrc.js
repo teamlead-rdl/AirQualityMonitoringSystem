@@ -18,7 +18,7 @@ module.exports = {
     'react',
   ],
   rules: {
-    'linebreak-style': ['error', 'windows'],
+    'linebreak-style': ['error', process.platform === 'win32' ? 'windows' : 'unix'],
     'max-len': ['error', { code: 140 }],
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'react/jsx-props-no-spreading': 'off',
@@ -31,5 +31,7 @@ module.exports = {
     camelcase: 'off',
     'arrow-body-style': 0,
     'react/prop-types': 0,
+    'react/destructuring-assignment': 0,
+    'react/no-unstable-nested-components': ['warn', { allowAsProps: true }],
   },
 };
