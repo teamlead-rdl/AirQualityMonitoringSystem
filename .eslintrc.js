@@ -31,7 +31,7 @@ module.exports = {
     camelcase: 'off',
     'arrow-body-style': 0,
     'react/prop-types': 0,
-    'react/destructuring-assignment': ['error', 'never'],
+    'react/destructuring-assignment': 0,
     'react/no-unstable-nested-components': ['warn', { allowAsProps: true }],
   },
 };
