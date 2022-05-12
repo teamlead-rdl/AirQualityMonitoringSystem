@@ -267,22 +267,21 @@ function SensorModel({
                               </ListItemButton>
                             </ListItem>
                           );
-                        })
-                      ) : (
-                        <ListItem
-                          style={{ display: 'block', textAlignLast: 'center' }}
-                        >
-                          <ListItemAvatar />
-                          <span
-                            style={{
-                              display: 'block',
-                              textAlignLast: 'center',
-                            }}
+                        }) : (
+                          <ListItem
+                            style={{ display: 'block', textAlignLast: 'center' }}
                           >
-                            No Analog Sensors
-                          </span>
-                        </ListItem>
-                      )}
+                            <ListItemAvatar />
+                            <span
+                              style={{
+                                display: 'block',
+                                textAlignLast: 'center',
+                              }}
+                            >
+                              No Analog Sensors
+                            </span>
+                          </ListItem>
+                        )}
                     </List>
                   </ListWrapper>
                 </Grid>
