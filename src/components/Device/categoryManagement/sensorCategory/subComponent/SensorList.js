@@ -9,6 +9,7 @@ import { SensorCategorytoolbar } from './SensorCategorytoolbar';
 import SensorCategoryModal from './SensorCategoryModal';
 import NotificationBar from '../../../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../../../context/UserAccessProvider';
+import DeleteConfirmationDailog from '../../../../../utils/confirmDeletion';
 
 export function SensorList() {
   const columns = [
@@ -35,6 +36,8 @@ export function SensorList() {
   ];
 
   const [open, setOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editCategory, setEditCategory] = useState([]);
   const [CategoryList, setCategoryList] = useState([]);
@@ -80,7 +83,8 @@ export function SensorList() {
       <DeleteIcon
         style={{ cursor: 'pointer' }}
         onClick={() => {
-          SensorCategoryDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+          setDeleteId(props.selectedRow.id);
+          setDeleteDailogOpen(true);
         }}
       />
     );
@@ -94,6 +98,7 @@ export function SensorList() {
     setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
+      setDeleteDailogOpen(false);
     }, 5000);
   };
 
@@ -103,6 +108,9 @@ export function SensorList() {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
 
   const handleClose = () => {
@@ -126,7 +134,6 @@ export function SensorList() {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
       />
       <SensorCategoryModal
@@ -141,6 +148,14 @@ export function SensorList() {
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={SensorCategoryDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );

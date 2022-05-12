@@ -34,7 +34,7 @@ function DeviceAdd({ locationDetails, labMap, deviceData }) {
   const [id, setId] = useState('');
   const [deviceName, setDeviceName] = useState('');
   const [deviceCategory, setDeviceCategory] = useState('');
-  const [deviceImage, setDeviceImage] = useState({});
+  const [firmwareBinFile, setFirmwareBinFile] = useState({});
   const [deviceTag, setDeviceTag] = useState('');
   const [macAddress, setMacAddress] = useState('');
   const [firmwareVersion, setFirmwareVersion] = useState('');
@@ -93,7 +93,7 @@ function DeviceAdd({ locationDetails, labMap, deviceData }) {
     await DeviceAddService({
       deviceName,
       category_id,
-      deviceImage,
+      firmwareBinFile,
       deviceTag,
       firmwareVersion,
       macAddress,
@@ -111,7 +111,7 @@ function DeviceAdd({ locationDetails, labMap, deviceData }) {
     setDeviceName('');
     setMacAddress('');
     setDeviceTag('');
-    setDeviceImage({});
+    setFirmwareBinFile({});
     setFloorCords('');
     setCategory_id('');
   };
@@ -285,15 +285,15 @@ function DeviceAdd({ locationDetails, labMap, deviceData }) {
                 label="Photo of Device"
                 autoComplete="off"
                 required
-                onBlur={() => { validateForNullValue(deviceImage, 'deviceImage'); }}
+                onBlur={() => { validateForNullValue(firmwareBinFile, 'deviceImage'); }}
                 onChange={(e) => {
                   if (e.target.files && e.target.files.length > 0) {
-                    setDeviceImage(e.target.files[0]);
+                    setFirmwareBinFile(e.target.files[0]);
 
                     const reader = new FileReader();
                     reader.onload = () => {
                       if (reader.readyState === 2) {
-                        setDeviceImage(reader.result);
+                        setFirmwareBinFile(reader.result);
                       }
                     };
                     reader.readAsDataURL(e.target.files[0]);
@@ -302,7 +302,7 @@ function DeviceAdd({ locationDetails, labMap, deviceData }) {
                 InputLabelProps={{ shrink: true }}
                 type="file"
                 inputProps={{
-                  accept: 'image/png',
+                  accept: '.bin',
                 }}
                 error={errorObject?.deviceImage?.errorStatus}
                 helperText={errorObject?.deviceImage?.helperText}
@@ -320,7 +320,8 @@ function DeviceAdd({ locationDetails, labMap, deviceData }) {
               <TextField
                 sx={{ marginTop: 0 }}
                 value={pollingPriority}
-                type="time"
+                type="number"
+                placeholder="Enter value in Seconds"
                 onBlur={() => validateForNullValue(pollingPriority, 'pollingPriority')}
                 onChange={(e) => {
                   setPollingPriority(e.target.value);
@@ -350,7 +351,8 @@ function DeviceAdd({ locationDetails, labMap, deviceData }) {
               <TextField
                 sx={{ marginTop: 0 }}
                 value={nonPollingPriority}
-                type="time"
+                type="number"
+                placeholder="Enter value in Seconds"
                 onBlur={() => validateForNullValue(nonPollingPriority, 'nonPollingPriority')}
                 onChange={(e) => {
                   setNonPollingPriority(e.target.value);
@@ -404,7 +406,7 @@ function DeviceAdd({ locationDetails, labMap, deviceData }) {
           >
             <div className="mt-0 ml-2 float-right">
               <Button
-                sx={{ m: 2 }}
+                size="large"
                 onClick={(e) => {
                   setErrorObject({});
                   resetForm();
@@ -422,9 +424,8 @@ function DeviceAdd({ locationDetails, labMap, deviceData }) {
                   || errorObject?.pollingPriority?.errorStatus
                   || errorObject?.nonPollingPriority?.errorStatus
                 }
-                sx={{ m: 2 }}
+                sx={{ m: 1 }}
                 size="large"
-                variant="contained"
                 type="submit"
               >
                 ADD

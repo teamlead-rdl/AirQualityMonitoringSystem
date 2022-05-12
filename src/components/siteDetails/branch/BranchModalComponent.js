@@ -9,7 +9,7 @@ import MapsComponent from '../../maps/googleMapsComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 
 function BranchModal({
-  open, setOpen, isAddButton, editData, locationId, setRefreshData,
+  open, setOpen, isAddButton, editData, locationId, setRefreshData, locationCoordinationList
 }) {
   const [branchName, setbranchName] = useState('');
   const [longitude, setLongitude] = useState('');
@@ -205,6 +205,8 @@ function BranchModal({
                     longitude={markerLng}
                     latitude={markerLat}
                     stateName={editData.branchName}
+                    zoom={6}
+                    center={{ lat: locationCoordinationList[0]?.position.lat || 19.34187, lng:locationCoordinationList[0]?.position.lng || 78.30460}}
                   />
                 </div>
 

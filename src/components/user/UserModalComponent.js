@@ -415,6 +415,7 @@ function UserModal({
                         onChange={(e) => {
                           setRole(e.target.value);
                         }}
+                        disabled
                       >
                         <MenuItem value="superAdmin">Super Admin</MenuItem>
                       </Select>

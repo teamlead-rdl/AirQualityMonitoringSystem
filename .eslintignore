@@ -9,3 +9,5 @@
 # To be fixed one after the other
 /src/components
 /src/pages
+/src/services
+/src/utils

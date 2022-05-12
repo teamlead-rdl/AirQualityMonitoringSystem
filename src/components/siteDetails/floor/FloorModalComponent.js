@@ -6,7 +6,7 @@ import { FloorAddService, FloorEditService } from '../../../services/LoginPageSe
 import { LocationFormValidate } from '../../../validation/locationValidation';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import ImageMarkerComponent from './imageMarker';
-import previewImage from '../../../images/chooseFile.png';
+import previewImage from '../../../images/previewImage.png';
 
 function FloorModal({
   open, setOpen, isAddButton, editData, locationId, branchId, facilityId, buildingId, setRefreshData, src,
@@ -209,7 +209,7 @@ function FloorModal({
                       InputLabelProps={{ shrink: true }}
                       type="file"
                       inputProps={{
-                        accept: 'image/png',
+                        accept: 'image/png, image/jpeg',
                       }}
                       error={errorObject?.buildingImg?.errorStatus}
                       helperText={errorObject?.buildingImg?.helperText}
@@ -244,12 +244,16 @@ function FloorModal({
             <div className="float-right">
               <div className="rounded-md -space-y-px">
                 <Button
+                  sx={{ m:1 }}
                   type="submit"
+                  size="large"
                   disabled={errorObject?.buildingName?.errorStatus || errorObject?.buildingTotalFloors?.errorStatus}
                 >
                   {isAddButton ? 'Add' : 'Update'}
                 </Button>
                 <Button
+                  sx={{ m:1 }}
+                  size="large"
                   onClick={(e) => {
                     setOpen(false);
                     setErrorObject({});

@@ -1,11 +1,11 @@
 import {
-  Button, Dialog, DialogContent, DialogTitle, FormControl, Input, InputLabel, MenuItem, Select, TextField,
+  Button, Dialog, DialogContent, DialogTitle, TextField,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DialogActions from '@mui/material/DialogActions';
 import { AddCategoryValidate } from '../../../../../validation/formValidation';
 import {
-  CategoryAddService, CategoryEditService, SensorCategoryAddService, SensorCategoryEditService,
+  SensorCategoryAddService, SensorCategoryEditService,
 } from '../../../../../services/LoginPageService';
 import NotificationBar from '../../../../notification/ServiceNotificationBar';
 
@@ -57,12 +57,12 @@ function SensorCategoryModal({
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (isAddButton) {
-      await SensorCategoryAddService({ sensorName, sensorDescriptions }, handleSuccess, handleException);
+      SensorCategoryAddService({ sensorName, sensorDescriptions }, handleSuccess, handleException);
     } else {
-      await SensorCategoryEditService({ id, sensorName, sensorDescriptions }, handleSuccess, handleException);
+      SensorCategoryEditService({ id, sensorName, sensorDescriptions }, handleSuccess, handleException);
     }
   };
 
@@ -118,7 +118,6 @@ function SensorCategoryModal({
         <DialogActions sx={{ margin: '10px' }}>
           <Button
             size="large"
-            variant="outlined"
             autoFocus
             onClick={(e) => {
               setOpen(false);
@@ -131,7 +130,6 @@ function SensorCategoryModal({
           <Button
             disabled={errorObject?.categoryName?.errorStatus || errorObject?.categoryDescription?.errorStatus}
             size="large"
-            variant="contained"
             type="submit"
           >
             {' '}

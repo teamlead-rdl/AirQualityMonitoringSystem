@@ -3,11 +3,13 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { AddCategoryValidate } from '../../../validation/formValidation';
+import { useUserAccess } from '../../../context/UserAccessProvider';
 
 function Digital({
   errorObject, setErrorObject, digitalAlertType, setDigitalAlertType, digitalLowAlert, setDigitalLowAlert,
   digitalHighAlert, setDigitalHighAlert,
 }) {
+  const moduleAccess = useUserAccess()('devicelocation');
   const validateForNullValue = (value, type) => {
     AddCategoryValidate(value, type, setErrorObject);
   };
@@ -23,7 +25,7 @@ function Digital({
           lg={6}
           xl={6}
         >
-          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
+          <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }} disabled={moduleAccess.edit === false && true}>
             <InputLabel id="demo-simple-select-label">
               Sensor alert
             </InputLabel>
@@ -58,6 +60,7 @@ function Digital({
                 <TextField
                   sx={{ marginTop: 0 }}
                   value={digitalLowAlert}
+                  disabled={moduleAccess.edit === false && true}
                   onBlur={() => validateForNullValue(digitalLowAlert, 'digitalLowAlert')}
                   onChange={(e) => {
                     setDigitalLowAlert(e.target.value);
@@ -89,6 +92,7 @@ function Digital({
                   <TextField
                     sx={{ marginTop: 0 }}
                     value={digitalHighAlert}
+                    disabled={moduleAccess.edit === false && true}
                     onBlur={() => validateForNullValue(digitalHighAlert, 'digitalHighAlert')}
                     onChange={(e) => {
                       setDigitalHighAlert(e.target.value);

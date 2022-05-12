@@ -18,7 +18,7 @@ import MapsComponent from '../../maps/googleMapsComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 
 function LocationModal({
-  open, setOpen, isAddButton, locationData, setRefreshData,
+  open, setOpen, isAddButton, locationData, setRefreshData, locationCoordinationList
 }) {
   const [stateName, setStateName] = useState('');
   const [longitude, setLongitude] = useState('');
@@ -233,6 +233,8 @@ function LocationModal({
                     longitude={markerLng}
                     latitude={markerLat}
                     stateName={locationData.stateName}
+                    center={{ lat: locationCoordinationList[0]?.position.lat, lng:locationCoordinationList[0]?.position.lng}}
+                    zoom={4}
                   />
                 </div>
               </div>

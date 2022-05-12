@@ -3,12 +3,13 @@ import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { Breadcrumbs, Typography } from '@mui/material';
+import { Link, useLocation } from 'react-router-dom';
 import { BranchDeleteService, FetchBranchService } from '../../../services/LoginPageService';
 import { BranchListToolbar } from './branch-list-toolbars';
 import BranchModal from './BranchModalComponent';
-import { Link, useLocation } from 'react-router-dom';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
+import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
 
 export function BranchListResults(props) {
   const branchColumns = [
@@ -47,6 +48,8 @@ export function BranchListResults(props) {
   ];
 
   const [open, setOpen] = useState(false);
+  const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const [isAddButton, setIsAddButton] = useState(true);
   const [editData, setEditData] = useState([]);
   const [dataList, setDataList] = useState([]);
@@ -82,11 +85,11 @@ export function BranchListResults(props) {
           lng: parseFloat(coordinates[1]),
         },
       };
-    })  
+    })
       : [];
     props.setLocationCoordinationList(newArray);
   };
-
+  /* eslint-disable-next-line */
   const handleException = (errorObject) => {
   };
 
@@ -99,7 +102,8 @@ export function BranchListResults(props) {
     setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
       handleClose();
-    }, 5000);
+      setDeleteDailogOpen(false);
+    }, 3000);
   };
 
   const deletehandleException = (errorObject, errorMessage) => {
@@ -108,8 +112,11 @@ export function BranchListResults(props) {
       type: 'error',
       message: errorMessage,
     });
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
   };
-
+  /* eslint-disable-next-line */
   function LinkTo(props) {
     return (
       <Link
@@ -123,7 +130,7 @@ export function BranchListResults(props) {
       </Link>
     );
   }
-
+  /* eslint-disable-next-line */
   function EditData(props) {
     return (
       moduleAccess.edit
@@ -138,12 +145,13 @@ export function BranchListResults(props) {
         />
       ));
   }
-
+  /* eslint-disable-next-line */
   function DeleteData(props) {
     return moduleAccess.delete && (
       <DeleteIcon
         onClick={() => {
-          BranchDeleteService(props.selectedRow, deletehandleSuccess, deletehandleException);
+          setDeleteId(props.selectedRow.id);
+          setDeleteDailogOpen(true);
         }}
         style={{ cursor: 'pointer' }}
       />
@@ -184,11 +192,9 @@ export function BranchListResults(props) {
         pageSize={5}
         loading={isLoading}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
         style={{ maxHeight: `${80}%` }}
       />
-
       <BranchModal
         isAddButton={isAddButton}
         editData={editData}
@@ -196,12 +202,21 @@ export function BranchListResults(props) {
         setOpen={setOpen}
         locationId={location_id}
         setRefreshData={setRefreshData}
+        locationCoordinationList={props.locationCoordinationList}
       />
       <NotificationBar
         handleClose={handleClose}
         notificationContent={openNotification.message}
         openNotification={openNotification.status}
         type={openNotification.type}
+      />
+      <DeleteConfirmationDailog
+        open={deleteDailogOpen}
+        setOpen={setDeleteDailogOpen}
+        deleteId={deleteId}
+        deleteService={BranchDeleteService}
+        handleSuccess={deletehandleSuccess}
+        handleException={deletehandleException}
       />
     </div>
   );
