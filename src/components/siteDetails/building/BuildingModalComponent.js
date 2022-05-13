@@ -330,6 +330,7 @@ function BuildingModal({
                       lat: locationCoordinationList[0]?.position.lat || 19.34187,
                       lng: locationCoordinationList[0]?.position.lng || 78.30460,
                     }}
+                    flagDistance={0.0003}
                   />
 
                 </div>
