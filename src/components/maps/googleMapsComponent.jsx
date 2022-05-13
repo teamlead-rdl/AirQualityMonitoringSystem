@@ -16,10 +16,6 @@ function MapsComponent(props) {
 
   const onMarkerDragEnd = (event) => {
     props.onMarkerDrop(event);
-    // setPosition({
-    //     lat: event.latLng.lat(),
-    //     lng: event.latLng.lng()
-    // });
   };
   const customBuildingIcon = {
     url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',

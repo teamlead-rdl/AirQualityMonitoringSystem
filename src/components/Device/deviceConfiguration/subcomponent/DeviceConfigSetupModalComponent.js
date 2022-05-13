@@ -432,8 +432,6 @@ function DeviceConfigSetupModal({
             Cancel
           </Button>
           <Button
-            // disabled={errorObject?.vendorName?.errorStatus || errorObject?.companyCode?.errorStatus || errorObject?.phoneNumber?.error
-            // Status || errorObject?.emailId?.errorStatus || errorObject?.address?.errorStatus|| errorObject?.contactPerson?.errorStatus}
             type="submit"
           >
             {' '}
