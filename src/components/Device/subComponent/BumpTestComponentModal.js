@@ -155,14 +155,17 @@ function BumpTestComponentModal({
   };
   /* eslint-disable-next-line */
   const getBumpTestResultDataHandleException = (dataObject, errorObject) => {
+     console.log(errorObject);
   };
 
   const getBumpTestDataSuccess = (dataObject) => {
-    setDisplayedValue(dataObject.data.LAST);
-    bumpData.push(dataObject.data.LAST);
+    // setDisplayedValue(dataObject.data.LAST);
+    // bumpData.push(dataObject.data.LAST);
+    console.log(dataObject);
   };
   /* eslint-disable-next-line */
   const getBumpTestDataHandleException = (dataObject, errorObject) => {
+    console.log(errorObject);
   };
   /* eslint-disable-next-line */
   const validateForNullValue = (value, type) => {
