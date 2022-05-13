@@ -16,6 +16,13 @@ const columns = [
     field: 'calibrationDate',
     headerName: ' BumpTest Date',
     width: 150,
+    renderCell: (params) => (
+      <Typography>
+        {
+          new Date(params.value).toLocaleDateString()
+        }
+      </Typography>
+    ),
   },
   {
     field: 'typeCheck',
@@ -54,8 +61,10 @@ function BumpTestComponentModal({
   const [result, setResult] = useState('');
   const [deployedSensorList, setDeployedSensorList] = useState([]);
   const [bumpTestData, setBumpTestData] = useState([]);
+  /* eslint-disable-next-line */
   const [errorObject, setErrorObject] = useState({});
   const [bumpData, setBumpData] = useState([]);
+  const [inputDisable, setInputDisable] = useState(false);
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
@@ -89,18 +98,20 @@ function BumpTestComponentModal({
   const getBumpData = (e) => {
     e.preventDefault();
     setBumpData([]);
+    setInputDisable(true);
     const DurationSec = durationPeriod;
-    const myVar = setInterval(myTimer, 2000);
+    /* eslint-disable-next-line */
+    const myVar = setInterval(bumpTestDataCall, 2000);
     /* eslint-disable-next-line */
     const callCount = parseInt(DurationSec / 2);
     let count = 0;
     let dataCount = 0;
-    function myTimer() {
+    function bumpTestDataCall() {
       BumpTestData({ sensorTagName }, getBumpTestDataSuccess, getBumpTestDataHandleException);
       if (count === callCount) {
+        setInputDisable(false);
         clearInterval(myVar);
         /* eslint-disable-next-line */
-        // const percentageDeviation = parseInt(percentageConcentrationGas);
         const dataList = bumpData.length;
         let tot = 0;
         let pcgValPowOfTwo = 0;
@@ -149,23 +160,20 @@ function BumpTestComponentModal({
       setLastDueDate('');
       setBumpTestData([]);
     } else {
-      setLastDueDate(dataObject.nextDueDate);
+      setLastDueDate(new Date(dataObject.nextDueDate).toLocaleDateString());
       setBumpTestData(dataObject.data);
     }
   };
   /* eslint-disable-next-line */
-  const getBumpTestResultDataHandleException = (dataObject, errorObject) => {
-     console.log(errorObject);
+  const getBumpTestResultDataHandleException = (dataObject, errorObject) => {    
   };
 
   const getBumpTestDataSuccess = (dataObject) => {
-    // setDisplayedValue(dataObject.data.LAST);
-    // bumpData.push(dataObject.data.LAST);
-    console.log(dataObject);
+    setDisplayedValue(dataObject.data.LAST);
+    bumpData.push(dataObject.data.LAST);
   };
   /* eslint-disable-next-line */
   const getBumpTestDataHandleException = (dataObject, errorObject) => {
-    console.log(errorObject);
   };
   /* eslint-disable-next-line */
   const validateForNullValue = (value, type) => {
@@ -246,6 +254,7 @@ function BumpTestComponentModal({
                   >
                     {/* eslint-disable-next-line */}
                     {deployedSensorList.map((data, index) => (
+                      /* eslint-disable-next-line */
                       <MenuItem value={data.sensorTag} key={index}>{data.sensorTag}</MenuItem>
                     ))}
                     {/* <MenuItem value="accessPoint">Sensor 1</MenuItem>
@@ -266,7 +275,7 @@ function BumpTestComponentModal({
                   sx={{ marginTop: 0 }}
                   margin="dense"
                   id="outlined-required"
-                  label="Last Due Date"
+                  label="Next Due Date"
                   defaultValue=""
                   fullWidth
                   type="text"
@@ -298,6 +307,7 @@ function BumpTestComponentModal({
                     value={typeCheck}
                     onClick={(e) => {
                       setTypeCheck(e.target.value);
+                      setPercentrationConcentrationGas(e.target.value === 'zeroCheck' ? 0 : '');
                     }}
                   >
                     <FormControlLabel value="zeroCheck" control={<Radio required />} label="Zero Check" />
@@ -427,6 +437,7 @@ function BumpTestComponentModal({
                   defaultValue=""
                   fullWidth
                   type="date"
+                  disabled={inputDisable === true}
                   required
                   value={nextDueDate}
                   // onBlur={() => validateForNullValue(categoryName, 'categoryName')}
@@ -449,7 +460,6 @@ function BumpTestComponentModal({
                 <DialogActions sx={{ margin: '0px' }}>
                   <Button
                     size="large"
-                    variant="outlined"
                     autoFocus
                     /* eslint-disable-next-line */
                     onClick={(e) => {
@@ -462,9 +472,8 @@ function BumpTestComponentModal({
                     Cancel
                   </Button>
                   <Button
-                    disabled={errorObject?.categoryName?.errorStatus || errorObject?.categoryDescription?.errorStatus}
+                    disabled={inputDisable === true}
                     size="large"
-                    variant="contained"
                     type="submit"
                   >
                     {' '}
