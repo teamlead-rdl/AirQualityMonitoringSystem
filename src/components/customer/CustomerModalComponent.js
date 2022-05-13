@@ -73,11 +73,11 @@ function CustomerModal({
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isAddButton) {
-      await CustomerAddService({
+      CustomerAddService({
         customerName, email, phoneNo, address, customerId, customerLogo,
       }, handleSuccess, handleException);
     } else {
-      await CustomerEditService({
+      CustomerEditService({
         id, customerName, email, phoneNo, address, customerId, customerLogo,
       }, handleSuccess, handleException);
     }
@@ -237,7 +237,6 @@ function CustomerModal({
                       }}
                       onChange={(e) => {
                         if (e.target.files && e.target.files.length > 0) {
-                          // setCustomerLogo(e.target.files[0]);
                           const reader = new FileReader();
                           reader.onload = () => {
                             if (reader.readyState === 2) {
@@ -260,8 +259,6 @@ function CustomerModal({
                 </div>
                 <div className="col-span-12 sm:col-span-2 lg:col-span-2">
                   <div className="mb-2 block">
-                    {/* <div className="rounded-md -space-y-px mb-2" style={{ border: '2px black solid' }}> */}
-                    {/* <img src={previewBuilding || previewImage} style={{ width: '-webkit-fill-available', height: `${55}%` }} /> */}
                     <Box
                       component="img"
                       sx={{
@@ -273,10 +270,6 @@ function CustomerModal({
                       alt="The house from the offer."
                       src={previewBuilding || previewImage}
                     />
-
-
-
-                    {/* </div> */}
                   </div>
                 </div>
               </div>
