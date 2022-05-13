@@ -1,5 +1,5 @@
 import {
-  Button, Dialog, DialogContent, DialogTitle, FormControl, Input, InputLabel, MenuItem, Select, TextField,
+  Button, Box, Dialog, DialogContent, DialogTitle, TextField,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { CustomerAddService, CustomerEditService, UnblockUserService } from '../../services/LoginPageService';
@@ -17,12 +17,10 @@ function CustomerModal({
   const [address, setAddress] = useState('');
   const [customerId, setCustomerID] = useState('');
   const [customerLogo, setCustomerLogo] = useState('');
-  const [customerTheme, setCustomerTheme] = useState('#000000');
   const [previewBuilding, setPreviewBuilding] = useState('');
   const [password, setConfirmPassword] = useState('');
   const [btnReset, setBtnReset] = useState(false);
   const [errorObject, setErrorObject] = useState({});
-
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
@@ -41,7 +39,6 @@ function CustomerModal({
     setPhone(customerData.phoneNo || '');
     setAddress(customerData.address || '');
     setCustomerID(customerData.customerId || '');
-    setCustomerTheme(customerData.customerTheme || '#000000');
     setPreviewBuilding(customerData.customerLogo ? `http://varmatrix.com/Aqms/blog/public/${customerData.customerLogo}` : previewImage);
   };
   const validateForNullValue = (value, type) => {
@@ -76,12 +73,12 @@ function CustomerModal({
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isAddButton) {
-      await CustomerAddService({
-        customerName, email, phoneNo, address, customerId, customerLogo, customerTheme,
+      CustomerAddService({
+        customerName, email, phoneNo, address, customerId, customerLogo,
       }, handleSuccess, handleException);
     } else {
-      await CustomerEditService({
-        id, customerName, email, phoneNo, address, customerId, customerLogo, customerTheme,
+      CustomerEditService({
+        id, customerName, email, phoneNo, address, customerId, customerLogo,
       }, handleSuccess, handleException);
     }
   };
@@ -123,7 +120,7 @@ function CustomerModal({
 
   return (
     <Dialog
-      sx={{ '& .MuiDialog-paper': { minWidth: '80%' } }}
+      sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: '100%' } }}
       maxWidth="sm"
       open={open}
     >
@@ -240,7 +237,6 @@ function CustomerModal({
                       }}
                       onChange={(e) => {
                         if (e.target.files && e.target.files.length > 0) {
-                          // setCustomerLogo(e.target.files[0]);
                           const reader = new FileReader();
                           reader.onload = () => {
                             if (reader.readyState === 2) {
@@ -263,32 +259,22 @@ function CustomerModal({
                 </div>
                 <div className="col-span-12 sm:col-span-2 lg:col-span-2">
                   <div className="mb-2 block">
-                    <div className="rounded-md -space-y-px mb-2" style={{ border: '2px black solid' }}>
-                      <img src={previewBuilding || previewImage} style={{ width: '-webkit-fill-available', height: `${50}%` }} />
-                    </div>
-                  </div>
-                </div>
-                <div className="col-span-12 sm:col-span-2 lg:col-span-2">
-                  <div className="mb-2 block">
-                    <TextField
-                      inputProps={{
+                    <Box
+                      component="img"
+                      sx={{
+                        height: 100,
+                        width: 250,
+                        maxHeight: { xs: 233, md: 167 },
+                        maxWidth: { xs: 150, md: 150 },
                       }}
-                      sx={{ mb: 1 }}
-                      fullWidth
-                      label="Theme Color"
-                      type="color"
-                      value={customerTheme}
-                      required
-                      onBlur={() => validateForNullValue(customerTheme, 'customerTheme')}
-                      onChange={(e) => setCustomerTheme(e.target.value)}
-                      error={errorObject?.customerTheme?.errorStatus}
-                      helperText={errorObject?.customerTheme?.helperText}
+                      alt="The Customer Buidling Image"
+                      src={previewBuilding || previewImage}
                     />
+
                   </div>
                 </div>
               </div>
             </div>
-            {/* ------ */}
             <div className="rounded-md -space-y-px float-right">
               {isAddButton ? ''
                 : (
@@ -299,7 +285,7 @@ function CustomerModal({
                   >
                     Reset Password
                   </Button>
-                ) }
+                )}
               <Button
                 type="submit"
                 disabled={errorObject?.fullName?.errorStatus || errorObject?.emailID?.errorStatus || errorObject?.phone?.errorStatus || errorObject?.address?.errorStatus || errorObject?.customerID?.errorStatus || errorObject?.customerTheme?.errorStatus || errorObject?.customerLogo?.errorStatus}
