@@ -1,22 +1,21 @@
 import {
-  Button, Dialog, DialogContent, DialogTitle, TextField, Box, Grid,
+  Button, Dialog, DialogContent, DialogTitle, TextField, Grid,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { BranchAddService, BranchEditService } from '../../../services/LoginPageService';
-import { LocationFormValidate, BranchFormValidate } from '../../../validation/locationValidation';
+import { BranchFormValidate } from '../../../validation/locationValidation';
 import MapsComponent from '../../maps/googleMapsComponent';
 
 import NotificationBar from '../../notification/ServiceNotificationBar';
 
 function BranchModal({
-  open, setOpen, isAddButton, editData, locationId, setRefreshData, locationCoordinationList
+  open, setOpen, isAddButton, editData, locationId, setRefreshData, locationCoordinationList,
 }) {
   const [branchName, setbranchName] = useState('');
   const [longitude, setLongitude] = useState('');
   const [latitude, setLatitude] = useState('');
   const [location_id, setLocationId] = useState(locationId);
   const [branch_id, setBranchId] = useState('');
-  const [Cordinates, setCordinates] = useState({});
   const [errorObject, setErrorObject] = useState({});
 
   const [openNotification, setNotification] = useState({
@@ -44,6 +43,7 @@ function BranchModal({
     setMarkerLng(parseFloat(coordinates[0]));
     setMarkerLat(parseFloat(coordinates[1]));
   };
+  /* eslint-disable-next-line */
   const clearForm = () => {
     setbranchName('');
     setLongitude('');
@@ -52,7 +52,7 @@ function BranchModal({
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (longitude == '' || latitude == '') {
+    if (longitude === '' || latitude === '') {
       setErrorObject((oldErrorState) => {
         let status = {};
         status = {
@@ -91,7 +91,7 @@ function BranchModal({
       setErrorObject({});
     }, 5000);
   };
-
+  /* eslint-disable-next-line */
   const handleException = (errorObject, errorMessage) => {
     setNotification({
       status: true,
@@ -144,7 +144,8 @@ function BranchModal({
                       value={branchName}
                       variant="outlined"
                       placeholder="Please enter Branch name"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                      placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
                       required
                       // onBlur={() =>validateForNullValue(branchName, 'stateName')}
                       onBlur={() => validateForNullValue(branchName, 'branchName')}
@@ -163,7 +164,8 @@ function BranchModal({
                       disabled
                       value={latitude}
                       variant="outlined"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                      placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
                       required
                       onChange={(e) => { setLatitude(e.target.value); }}
                       autoComplete="off"
@@ -176,7 +178,6 @@ function BranchModal({
                   </div>
                   <div className="rounded-md -space-y-px mb-2">
                     <TextField
-                      variant="filled"
                       fullWidth
                       sx={{ mb: 1 }}
                       label="Longitude"
@@ -184,7 +185,8 @@ function BranchModal({
                       disabled
                       value={longitude}
                       variant="outlined"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                      placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
                       required
                       onChange={(e) => { setLongitude(e.target.value); }}
                       autoComplete="off"
@@ -206,7 +208,13 @@ function BranchModal({
                     latitude={markerLat}
                     stateName={editData.branchName}
                     zoom={6}
-                    center={{ lat: locationCoordinationList[0]?.position.lat || 19.34187, lng:locationCoordinationList[0]?.position.lng || 78.30460}}
+                    center={{
+                      lat: locationCoordinationList[0]?.position.lat
+                      || 19.34187,
+                      lng: locationCoordinationList[0]?.position.lng
+                      || 78.30460,
+                    }}
+                    flagDistance={1}
                   />
                 </div>
 
@@ -221,7 +229,7 @@ function BranchModal({
                   {isAddButton ? 'Add' : 'Update'}
                 </Button>
                 <Button
-                  onClick={(e) => {
+                  onClick={() => {
                     setOpen(false);
                     setErrorObject({});
                     loaddata();
