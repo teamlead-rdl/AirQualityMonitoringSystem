@@ -132,9 +132,9 @@ function DeviceConfigSetupModal({
   const handleException = () => {
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    await DeviceConfigSetupAddService({
+    DeviceConfigSetupAddService({
       device_id,
       accessPointName,
       ssId,
