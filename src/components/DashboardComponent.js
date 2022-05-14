@@ -45,37 +45,9 @@ function Dashboard() {
       acc[parameterName].last_val.push(last_val);
       return acc;
     }, {}));
-    console.log(res);
-    // console.log(dataObject.slice(0, 10));
-    setArrayList((oldvalue) =>{
-      var dataList = res.map((item)=>{
-        return {
-          id : item.parameterName,
-          data : [
-            {
-              x : 'Minimum Value',
-              y : item.min_val
-            },
-            {
-              x : 'Average Value',
-              y : item.avg_val
-            },
-            {
-              x : 'Maximum Value',
-              y : item.max_val
-            },
-            {
-              x : 'Last value',
-              y : item.last_val
-            }
-          ]
-        }
-      })
-      return dataList
-    });
+    setArrayList(dataObject);
   };
   const handleException = (errorObject, errorMessage) => {
-    console.log(errorMessage);
   };
   return (
     <div>

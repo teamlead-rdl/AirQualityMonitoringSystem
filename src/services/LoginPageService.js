@@ -254,7 +254,7 @@ export const ChangeDeviceMode = (data, successCallback, errorCallBack) => { retu
 
 // ------------- Dashboard Chart Display ------------//
 
-export const DisplayLineChart = (successCallback, errorCallBack) => { return _fetchService('aqmiValues', 'POST', {}, successCallback, errorCallBack); };
+export const DisplayLineChart = (successCallback, errorCallBack) => { return _fetchService('aqmiSensorValues', 'POST', {}, successCallback, errorCallBack); };
 
 // ------------- Calibration Result ---------------//
 

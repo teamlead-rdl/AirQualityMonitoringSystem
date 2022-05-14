@@ -1,5 +1,5 @@
 import {
-  Autocomplete, Button, Dialog, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, TextField,
+  Autocomplete, Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, MenuItem, Select, Switch, TextField,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import {
@@ -22,6 +22,7 @@ function UserModal({
   const [phoneNo, setPhone] = useState('');
   const [empRole, setRole] = useState(isSuperAdmin ? 'superAdmin' : 'User');
   const [empName, setFullName] = useState('');
+  const [empNotification, setEmpNotification] = useState(true);
   const [companyCode, setCompanyCode] = useState('');
   const [location_id, setLocationId] = useState('');
   const [branch_id, setBranchId] = useState('');
@@ -61,6 +62,7 @@ function UserModal({
     } else {
       setRole(userData?.user_role || 'User');
     }
+    setEmpNotification(userData?.empNotification || true);
     setFullName(userData?.name || '');
     setCompanyCode(userData?.companyCode || '');
     setLocationId(userData.location_id || '');
@@ -98,11 +100,11 @@ function UserModal({
     event.preventDefault();
     if (isAddButton) {
       await UserAddService({
-        location_id, branch_id, facility_id, empId, email, phoneNo, empRole, empName,
+        location_id, branch_id, facility_id, empId, email, phoneNo, empRole, empName, empNotification,
       }, handleSuccess, handleException);
     } else {
       await UserUpdateService({
-        location_id, branch_id, facility_id, empId, email, phoneNo, empRole, empName, id,
+        location_id, branch_id, facility_id, empId, email, phoneNo, empRole, empName, empNotification, id,
       }, handleSuccess, handleException);
     }
   };
@@ -436,6 +438,15 @@ function UserModal({
                       </Select>
                     )}
                 </FormControl>
+              </div>
+            </div>
+            <div className="">
+              <div className="">
+              <FormGroup sx={{display : 'block'}}>
+                <FormControlLabel control={<Switch checked={empNotification !=0} onChange={(e)=>{
+                  setEmpNotification(e.target.checked);
+                }} color="warning"/>} label="Enable Notification" />
+              </FormGroup>
               </div>
             </div>
             <div className="rounded-md -space-y-px float-right">
