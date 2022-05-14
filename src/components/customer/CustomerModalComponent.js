@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { CustomerAddService, CustomerEditService, UnblockUserService } from '../../services/LoginPageService';
 import { AddCustomerValidate } from '../../validation/formValidation';
 import NotificationBar from '../notification/ServiceNotificationBar';
-import previewImage from '../../images/previewImageSmall.png';
+import previewImage from '../../images/chooseFile.png';
 
 function CustomerModal({
   open, setOpen, isAddButton, customerData, setRefreshData,

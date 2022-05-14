@@ -213,6 +213,7 @@ function DeviceConfigSetupModal({
                 <Autocomplete
                   id="asynchronous-demo"
                   sx={{}}
+                  value={null}
                   disabled={accessType === 'Custom'}
                   isOptionEqualToValue={(option, value) => option.id === value.id}
                   /* eslint-disable-next-line */
