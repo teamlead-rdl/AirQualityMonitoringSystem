@@ -161,9 +161,9 @@ function SensorModel({
       handleClose();
     }, 3000);
   };
-
-  const fetchCalibrationDetails = (tag) => {
-    DeployedSensorsDetailsList({ tag }, calibrationdetailsHandleSuccess, calibrationDetailsHandleException);
+  /* eslint-disable-next-line */
+  const fetchCalibrationDetails = (sensorTag) => {
+    DeployedSensorsDetailsList({ sensorTag }, calibrationdetailsHandleSuccess, calibrationDetailsHandleException);
   };
   const calibrationdetailsHandleSuccess = (dataObject) => {
     setName(dataObject.sensorNameUnit);
@@ -267,19 +267,13 @@ function SensorModel({
                               </ListItemButton>
                             </ListItem>
                           );
-                        }) : (
+                        })
+                        : (
                           <ListItem
                             style={{ display: 'block', textAlignLast: 'center' }}
                           >
                             <ListItemAvatar />
-                            <span
-                              style={{
-                                display: 'block',
-                                textAlignLast: 'center',
-                              }}
-                            >
-                              No Analog Sensors
-                            </span>
+                            <span style={{ display: 'block', textAlignLast: 'center' }}>No Analog Sensors</span>
                           </ListItem>
                         )}
                     </List>

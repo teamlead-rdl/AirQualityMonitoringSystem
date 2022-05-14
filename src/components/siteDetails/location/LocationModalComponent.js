@@ -4,7 +4,6 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  Box,
   Grid,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -12,13 +11,13 @@ import {
   LocationAddService,
   LocationEditService,
 } from '../../../services/LoginPageService';
-import { LocationFormValidate, LocationAddFormValidate } from '../../../validation/locationValidation';
+import { LocationAddFormValidate } from '../../../validation/locationValidation';
 import MapsComponent from '../../maps/googleMapsComponent';
 
 import NotificationBar from '../../notification/ServiceNotificationBar';
 
 function LocationModal({
-  open, setOpen, isAddButton, locationData, setRefreshData, locationCoordinationList
+  open, setOpen, isAddButton, locationData, setRefreshData, locationCoordinationList,
 }) {
   const [stateName, setStateName] = useState('');
   const [longitude, setLongitude] = useState('');
@@ -53,6 +52,7 @@ function LocationModal({
     setMarkerLng(parseFloat(coordinates[0]));
     setMarkerLat(parseFloat(coordinates[1]));
   };
+  /* eslint-disable-next-line */
   const clearForm = () => {
     setStateName('');
     setLongitude('');
@@ -61,7 +61,7 @@ function LocationModal({
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (longitude == '' || latitude == '') {
+    if (longitude === '' || latitude === '') {
       setErrorObject((oldErrorState) => {
         let status = {};
         status = {
@@ -108,7 +108,7 @@ function LocationModal({
       setErrorObject({});
     }, 5000);
   };
-
+  /* eslint-disable-next-line */
   const handleException = (errorObject, errorMessage) => {
     setNotification({
       status: true,
@@ -161,7 +161,8 @@ function LocationModal({
                       value={stateName}
                       variant="outlined"
                       placeholder="Please enter location name"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                      placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
                       required
                       onBlur={() => {
                         validateForNullValue(stateName, 'stateName');
@@ -184,12 +185,12 @@ function LocationModal({
                       value={latitude}
                       variant="outlined"
                       // placeholder="Latitude"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                      placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
                       required
                       // onBlur={() =>validateForNullValue(customerName, 'fullName')}
                       onChange={(e) => {
                         setLatitude(e.target.value);
-                        alert('Changed');
                       }}
                       autoComplete="off"
                       error={errorObject?.coordinates?.errorStatus}
@@ -201,7 +202,6 @@ function LocationModal({
                   </div>
                   <div className="rounded-md -space-y-px mb-2">
                     <TextField
-                      variant="filled"
                       fullWidth
                       sx={{ mb: 1 }}
                       label="Longitude"
@@ -210,7 +210,8 @@ function LocationModal({
                       value={longitude}
                       variant="outlined"
                       // placeholder="Longitude"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                      placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
                       required
                       // onBlur={() =>{validateForNullValue(longitude, 'fullName')}}
                       onChange={(e) => {
@@ -233,8 +234,9 @@ function LocationModal({
                     longitude={markerLng}
                     latitude={markerLat}
                     stateName={locationData.stateName}
-                    center={{ lat: locationCoordinationList[0]?.position.lat, lng:locationCoordinationList[0]?.position.lng}}
+                    center={{ lat: locationCoordinationList[0]?.position.lat, lng: locationCoordinationList[0]?.position.lng }}
                     zoom={4}
+                    flagDistance={3}
                   />
                 </div>
               </div>
@@ -251,7 +253,7 @@ function LocationModal({
                   {isAddButton ? 'Add' : 'Update'}
                 </Button>
                 <Button
-                  onClick={(e) => {
+                  onClick={() => {
                     setOpen(false);
                     setErrorObject({});
                     loaddata();

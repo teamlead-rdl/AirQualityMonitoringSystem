@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Container } from '@mui/material';
-import { UserListResults } from '../components/user/UserListResults';
+import UserListResults from '../components/user/UserListResults';
 
 function UserManagementComponent(props) {
     return (
