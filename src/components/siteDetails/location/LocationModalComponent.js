@@ -234,7 +234,7 @@ function LocationModal({
                     longitude={markerLng}
                     latitude={markerLat}
                     stateName={locationData.stateName}
-                    center={{ lat: locationCoordinationList[0]?.position.lat, lng: locationCoordinationList[0]?.position.lng }}
+                    center={{ lat: locationCoordinationList[0]?.position.lat || 23.500, lng: locationCoordinationList[0]?.position.lng || 80.500}}
                     zoom={4}
                     flagDistance={3}
                   />
