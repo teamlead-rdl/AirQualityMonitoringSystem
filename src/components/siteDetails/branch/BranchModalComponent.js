@@ -9,7 +9,7 @@ import MapsComponent from '../../maps/googleMapsComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 
 function BranchModal({
-  open, setOpen, isAddButton, editData, locationId, setRefreshData, locationCoordinationList,
+  open, setOpen, isAddButton, editData, locationId, setRefreshData, locationCoordinationList, centerCoord
 }) {
   const [branchName, setbranchName] = useState('');
   const [longitude, setLongitude] = useState('');
@@ -37,8 +37,8 @@ function BranchModal({
   const loaddata = () => {
     const coordinates = editData.coordinates ? editData.coordinates.split(',') : ['', ''];
     setbranchName(editData.branchName || '');
-    setLongitude(coordinates[0]);
-    setLatitude(coordinates[1]);
+    setLatitude(coordinates[0]);
+    setLongitude(coordinates[1]);
     setBranchId(editData.id || '');
     setMarkerLng(parseFloat(coordinates[0]));
     setMarkerLat(parseFloat(coordinates[1]));
@@ -208,16 +208,14 @@ function BranchModal({
                     latitude={markerLat}
                     stateName={editData.branchName}
                     zoom={6}
-                    center={{
-                      lat: locationCoordinationList[0]?.position.lat
-                      || 19.34187,
-                      lng: locationCoordinationList[0]?.position.lng
-                      || 78.30460,
+                    center={isAddButton ? {lat: centerCoord.lat, lng: centerCoord.lng}
+                    :{
+                      lat: Number(latitude) || 80.500,
+                      lng: Number(longitude) || 23.500,
                     }}
                     flagDistance={1}
                   />
                 </div>
-
               </div>
             </div>
             <div className="float-right">

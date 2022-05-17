@@ -17,11 +17,11 @@ import MapsComponent from '../../maps/googleMapsComponent';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 
 function LocationModal({
-  open, setOpen, isAddButton, locationData, setRefreshData, locationCoordinationList,
+  open, setOpen, isAddButton, locationData, setRefreshData, centerCoord
 }) {
   const [stateName, setStateName] = useState('');
-  const [longitude, setLongitude] = useState('');
-  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState(0);
+  const [latitude, setLatitude] = useState(0);
   const [locationId, setLocationId] = useState(19);
   const [errorObject, setErrorObject] = useState({});
 
@@ -45,8 +45,8 @@ function LocationModal({
     const coordinates = locationData.coordinates
       ? locationData.coordinates.split(',')
       : ['', ''];
-    setLongitude(coordinates[0]);
-    setLatitude(coordinates[1]);
+    setLatitude(parseFloat(coordinates[0]) || '');
+    setLongitude(parseFloat(coordinates[1]) || '');
     setStateName(locationData.stateName || '');
     setLocationId(locationData.id || '');
     setMarkerLng(parseFloat(coordinates[0]));
@@ -234,7 +234,8 @@ function LocationModal({
                     longitude={markerLng}
                     latitude={markerLat}
                     stateName={locationData.stateName}
-                    center={{ lat: locationCoordinationList[0]?.position.lat || 23.500, lng: locationCoordinationList[0]?.position.lng || 80.500}}
+                    center={isAddButton ? { lat : Number(centerCoord.lat), lng : Number(centerCoord.lng)} :
+                    { lat: Number(latitude) || 80.500, lng: Number(longitude) || 23.500}}
                     zoom={4}
                     flagDistance={3}
                   />

@@ -23,14 +23,12 @@ const SiteDetails = () => {
     } else if(location_id) {
       return navigate(`${locationLabel}`, { state: { location_id }}); 
     }
-    setCenterLat(locationCoordinationList[0]?.position.lat);
-    setCenterLng(locationCoordinationList[0]?.position.lng);
   }, [locationCoordinationList]);
 
   return (
     <Container maxWidth={false} style={{marginTop:0}}>
       <Grid item sx={{ mt: 1 }}  xs={12} sm={12} md={12} lg={12} xl={12}>
-        <LocationListResults locationCoordinationList={locationCoordinationList} setLocationCoordinationList={setLocationCoordinationList}/>
+        <LocationListResults setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} />
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
       {locationCoordinationList.length !== 0
