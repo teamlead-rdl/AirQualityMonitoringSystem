@@ -1,20 +1,21 @@
 import {
-  Button, Dialog, DialogContent, DialogTitle, TextField, Box, Grid,
+  Button, Dialog, DialogContent, DialogTitle, TextField, Grid,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { FacilitiyAddService, FacilityEditService } from '../../../services/LoginPageService';
 import MapsComponent from '../../maps/googleMapsComponent';
-import { LocationFormValidate, FacilityAddFormValidate } from '../../../validation/locationValidation';
+import { FacilityAddFormValidate } from '../../../validation/locationValidation';
 
 import NotificationBar from '../../notification/ServiceNotificationBar';
 
 function FacilityModal({
-  open, setOpen, isAddButton, editData, locationId, branchId, setRefreshData, locationCoordinationList
+  open, setOpen, isAddButton, editData, locationId, branchId, setRefreshData, locationCoordinationList,
 }) {
   const [facilityName, setFacilityName] = useState('');
   const [longitude, setLongitude] = useState('');
   const [latitude, setLatitude] = useState('');
   const [location_id, setLocationId] = useState(locationId);
+  /* eslint-disable-next-line */
   const [branch_id, setBranchId] = useState(branchId);
   const [facilityId, setFacilityId] = useState('');
   const [errorObject, setErrorObject] = useState({});
@@ -44,6 +45,7 @@ function FacilityModal({
     setMarkerLng(parseFloat(coordinates[0]));
     setMarkerLat(parseFloat(coordinates[1]));
   };
+  /* eslint-disable-next-line */
   const clearForm = () => {
     setFacilityName('');
     setLongitude('');
@@ -52,7 +54,7 @@ function FacilityModal({
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (longitude == '' || latitude == '') {
+    if (longitude === '' || latitude === '') {
       setErrorObject((oldErrorState) => {
         let status = {};
         status = {
@@ -91,7 +93,7 @@ function FacilityModal({
       setErrorObject({});
     }, 5000);
   };
-
+  /* eslint-disable-next-line */
   const handleException = (errorObject, errorMessage) => {
     setNotification({
       status: true,
@@ -142,7 +144,8 @@ function FacilityModal({
                       value={facilityName}
                       variant="outlined"
                       placeholder="Please enter location name"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                      placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
                       required
                       // onBlur={() =>validateForNullValue(facilityName, 'stateName')}
                       onBlur={() => validateForNullValue(facilityName, 'facilityName')}
@@ -161,7 +164,8 @@ function FacilityModal({
                       disabled
                       value={latitude}
                       variant="outlined"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                      placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
                       required
                       onChange={(e) => { setLatitude(e.target.value); }}
                       autoComplete="off"
@@ -174,7 +178,6 @@ function FacilityModal({
                   </div>
                   <div className="rounded-md -space-y-px mb-2">
                     <TextField
-                      variant="filled"
                       fullWidth
                       sx={{ mb: 1 }}
                       label="Longitude"
@@ -182,7 +185,8 @@ function FacilityModal({
                       disabled
                       value={longitude}
                       variant="outlined"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
+                      placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
                       required
                       onChange={(e) => { setLongitude(e.target.value); }}
                       autoComplete="off"
@@ -204,7 +208,12 @@ function FacilityModal({
                     latitude={markerLat}
                     stateName={editData.facilityName}
                     zoom={11}
-                    center={{ lat: locationCoordinationList[0]?.position.lat || 19.34187, lng:locationCoordinationList[0]?.position.lng || 78.30460}}
+                    center={{
+                      lat: locationCoordinationList[0]?.position.lat
+                      || 19.34187,
+                      lng: locationCoordinationList[0]?.position.lng || 78.30460,
+                    }}
+                    flagDistance={0.03}
                   />
                 </div>
               </div>
@@ -218,7 +227,7 @@ function FacilityModal({
                   {isAddButton ? 'Add' : 'Update'}
                 </Button>
                 <Button
-                  onClick={(e) => {
+                  onClick={() => {
                     setOpen(false);
                     setErrorObject({});
                     loaddata();

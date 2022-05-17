@@ -161,9 +161,9 @@ function SensorModel({
       handleClose();
     }, 3000);
   };
-
-  const fetchCalibrationDetails = (tag) => {
-    DeployedSensorsDetailsList({ tag }, calibrationdetailsHandleSuccess, calibrationDetailsHandleException);
+  /* eslint-disable-next-line */
+  const fetchCalibrationDetails = (sensorTag) => {
+    DeployedSensorsDetailsList({ sensorTag }, calibrationdetailsHandleSuccess, calibrationDetailsHandleException);
   };
   const calibrationdetailsHandleSuccess = (dataObject) => {
     setName(dataObject.sensorNameUnit);

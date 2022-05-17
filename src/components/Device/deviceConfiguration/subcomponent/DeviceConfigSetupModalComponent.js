@@ -1,24 +1,20 @@
 import {
-  Button, Dialog, DialogContent, DialogTitle, FormControl, Input, InputLabel, MenuItem, Select, TextField,
+  Button, Dialog, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField,
   Autocomplete,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
-import { GridBody } from '@mui/x-data-grid';
-import { Box } from '@mui/system';
 import Grid from '@mui/material/Grid';
 import { AddVendorValidate } from '../../../../validation/locationValidation';
 import {
-  ConfigSetupEditService, ConfigSetupFetchService, DeviceConfigSetupAddService, DeviceConfigSetupFetchService,
+  ConfigSetupFetchService, DeviceConfigSetupAddService, DeviceConfigSetupFetchService,
 } from '../../../../services/LoginPageService';
 import NotificationBar from '../../../notification/ServiceNotificationBar';
 
 function DeviceConfigSetupModal({
   open, setOpen, isAddButton, deviceData,
 }) {
-  const [id, setId] = useState('');
-
   const [device_id, setDevice_id] = useState('');
   // AccessPoint inputs
   const [accessPointName, setAccessPointName] = useState('');
@@ -39,7 +35,7 @@ function DeviceConfigSetupModal({
 
   const [configSetupList, setConfigSetupList] = useState([]);
   const [accessType, setAccessType] = useState('');
-
+  /* eslint-disable-next-line */
   const [errorObject, setErrorObject] = useState({});
 
   const [openNotification, setNotification] = useState({
@@ -91,8 +87,9 @@ function DeviceConfigSetupModal({
       setApn(dataObject.data[0].apn || '');
     }
   };
-  const handleDeviceConfigSetupFetchException = (errorObject) => {
+  const handleDeviceConfigSetupFetchException = () => {
   };
+  /* eslint-disable-next-line */
   const validateForNullValue = (value, type) => {
     AddVendorValidate(value, type, setErrorObject);
   };
@@ -101,7 +98,7 @@ function DeviceConfigSetupModal({
     setConfigSetupList(dataObject.data);
   };
 
-  const configSetupHandleException = (errorObject) => {
+  const configSetupHandleException = () => {
   };
 
   const handleSuccess = (dataObject) => {
@@ -117,7 +114,7 @@ function DeviceConfigSetupModal({
   };
 
   const Reset = (data) => {
-    if (data == 'Custom') {
+    if (data === 'Custom') {
       setAccessPointName('');
       setSsId('');
       setAccessPointPassword('');
@@ -132,13 +129,24 @@ function DeviceConfigSetupModal({
     }
   };
 
-  const handleException = (errorObject) => {
+  const handleException = () => {
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    await DeviceConfigSetupAddService({
-      device_id, accessPointName, ssId, accessPointPassword, ftpAccountName, userName, ftpPassword, port, serverUrl, folderPath, serviceProvider, apn,
+    DeviceConfigSetupAddService({
+      device_id,
+      accessPointName,
+      ssId,
+      accessPointPassword,
+      ftpAccountName,
+      userName,
+      ftpPassword,
+      port,
+      serverUrl,
+      folderPath,
+      serviceProvider,
+      apn,
     }, handleSuccess, handleException);
   };
 
@@ -205,23 +213,24 @@ function DeviceConfigSetupModal({
                 <Autocomplete
                   id="asynchronous-demo"
                   sx={{}}
-                  disabled={accessType == 'Custom'}
+                  value={null}
+                  disabled={accessType === 'Custom'}
                   isOptionEqualToValue={(option, value) => option.id === value.id}
+                  /* eslint-disable-next-line */
                   getOptionLabel={(option) => {
-                    if (accessType == 'accessPoint') {
+                    if (accessType === 'accessPoint') {
                       return option.accessPointName;
                     }
-                    if (accessType == 'FTP') {
+                    if (accessType === 'FTP') {
                       return option.ftpAccountName;
                     }
-                    if (accessType == 'serviceProvider') {
+                    if (accessType === 'serviceProvider') {
                       return option.serviceProvider;
                     }
-                    if (accessType == 'Custom') {
+                    if (accessType === 'Custom') {
                       return '';
                     }
                   }}
-
                   options={configSetupList}
                   onChange={(e, data) => {
                     setAccessPointName(data.accessPointName);
@@ -240,7 +249,7 @@ function DeviceConfigSetupModal({
                     <TextField
                       {...params}
                       label="Search Criteria"
-                      onKeyUp={(e) => {
+                      onKeyUp={() => {
                         // setTimeout(()=>{
                         //   SensorFetchService(sensorCategoryId, sensorHandleSuccess,handleException);
                         // },500);
@@ -414,10 +423,8 @@ function DeviceConfigSetupModal({
         </DialogContent>
         <DialogActions sx={{ margin: '10px' }}>
           <Button
-            size="large"
-            variant="outlined"
             autoFocus
-            onClick={(e) => {
+            onClick={() => {
               setOpen(false);
               setErrorObject({});
               loadData();
@@ -426,9 +433,6 @@ function DeviceConfigSetupModal({
             Cancel
           </Button>
           <Button
-            // disabled={errorObject?.vendorName?.errorStatus || errorObject?.companyCode?.errorStatus || errorObject?.phoneNumber?.errorStatus || errorObject?.emailId?.errorStatus || errorObject?.address?.errorStatus|| errorObject?.contactPerson?.errorStatus}
-            size="large"
-            variant="contained"
             type="submit"
           >
             {' '}

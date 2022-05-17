@@ -1,15 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import {
+  Tabs, Tab, Typography, Box,
+} from '@mui/material';
 import UserModal from './UserModalComponent';
 import UserListToolbar from './UserListToolbar';
 import { FetchUserService, UserDeleteService } from '../../services/LoginPageService';
 import ConfirmPassword from './passwordConfirmComponent';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../context/UserAccessProvider';
+import UserLogForm from './UserLog/UserLogForm';
 
-export function UserListResults() {
+function TabPanel(props) {
+  const {
+    children, value, index, ...other
+  } = props;
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
+export default function UserListResults() {
+  const [value, setValue] = React.useState(0);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   const columns = [
     {
       field: 'employeeId',
@@ -73,7 +109,7 @@ export function UserListResults() {
     setUserList(dataObject?.data || []);
   };
 
-  const handleException = (errorObject) => {
+  const handleException = () => {
   };
 
   useEffect(() => {
@@ -111,6 +147,7 @@ export function UserListResults() {
     UserDeleteService({ password, id }, passwordValidationSuccess, passwordValidationException);
     setBtnReset(false);
   };
+
   const passwordValidationSuccess = (dataObject) => {
     setNotification({
       status: true,
@@ -137,41 +174,55 @@ export function UserListResults() {
   };
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      <UserListToolbar
-        setIsAddButton={setIsAddButton}
-        setEditUser={setEditUser}
-        setOpen={setOpen}
-        editUser={editUser}
-        userAccess={moduleAccess}
-      />
-      <DataGrid
-        rows={userList}
-        columns={columns}
-        pageSize={5}
-        loading={isLoading}
-        rowsPerPageOptions={[5]}
-        disableSelectionOnClick
-      />
-      <UserModal
-        isAddButton={isAddButton}
-        userData={editUser}
-        open={open}
-        setOpen={setOpen}
-        setRefreshData={setRefreshData}
-      />
-      <ConfirmPassword
-        open={btnReset}
-        passwordSubmit={passwordSubmit}
-        setConfirmPassword={setConfirmPassword}
-        setBtnReset={setBtnReset}
-      />
-      <NotificationBar
-        handleClose={handleClose}
-        notificationContent={openNotification.message}
-        openNotification={openNotification.status}
-        type={openNotification.type}
-      />
-    </div>
+    <Box sx={{ width: '100%' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tab label="Create User" {...a11yProps(0)} />
+          <Tab label="Log activity" {...a11yProps(1)} />
+        </Tabs>
+      </Box>
+      <TabPanel value={value} index={0}>
+        <div style={{ height: 400, width: '100%' }}>
+          <UserListToolbar
+            setIsAddButton={setIsAddButton}
+            setEditUser={setEditUser}
+            setOpen={setOpen}
+            editUser={editUser}
+            userAccess={moduleAccess}
+          />
+          <DataGrid
+            rows={userList}
+            columns={columns}
+            pageSize={5}
+            loading={isLoading}
+            rowsPerPageOptions={[5]}
+            checkboxSelection
+            disableSelectionOnClick
+          />
+          <UserModal
+            isAddButton={isAddButton}
+            userData={editUser}
+            open={open}
+            setOpen={setOpen}
+            setRefreshData={setRefreshData}
+          />
+          <ConfirmPassword
+            open={btnReset}
+            passwordSubmit={passwordSubmit}
+            setConfirmPassword={setConfirmPassword}
+            setBtnReset={setBtnReset}
+          />
+          <NotificationBar
+            handleClose={handleClose}
+            notificationContent={openNotification.message}
+            openNotification={openNotification.status}
+            type={openNotification.type}
+          />
+        </div>
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <UserLogForm />
+      </TabPanel>
+    </Box>
   );
 }

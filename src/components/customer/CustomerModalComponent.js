@@ -1,5 +1,5 @@
 import {
-  Button, Box, Dialog, DialogContent, DialogTitle, FormControl, Input, InputLabel, MenuItem, Select, TextField,
+  Button, Box, Dialog, DialogContent, DialogTitle, TextField,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { CustomerAddService, CustomerEditService, UnblockUserService } from '../../services/LoginPageService';
@@ -262,19 +262,19 @@ function CustomerModal({
                     <Box
                       component="img"
                       sx={{
-                        height: 133,
+                        height: 100,
                         width: 250,
                         maxHeight: { xs: 233, md: 167 },
                         maxWidth: { xs: 150, md: 150 },
                       }}
-                      alt="The house from the offer."
+                      alt="The Customer Buidling Image"
                       src={previewBuilding || previewImage}
                     />
+
                   </div>
                 </div>
               </div>
             </div>
-            {/* ------ */}
             <div className="rounded-md -space-y-px float-right">
               {isAddButton ? ''
                 : (
