@@ -45,11 +45,12 @@ const _fetchService = (PATH, serviceMethod, data, successCallback, errorCallBack
     })
     .then((dataResponse) => successCallback(dataResponse))
     .catch((error) => {
-      // if (error.errorStatus === 401) {
-      //   // TODO: navigate the user to login page since token expired error has occured
-      // }
       error.errorObject.then((errorResponse) => {
         const errorMessage = errorResponse.error ? errorResponse.error : errorResponse.message;
+        if (error.errorStatus === 401 && errorMessage === 'Unable to access the page, Token Expired') {
+          ApplicationStore().clearStorage();
+          location.reload();
+        }
         errorCallBack(error.errorStatus, errorMessage);
       });
     });
