@@ -10,7 +10,7 @@ import NotificationBar from '../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
 
-export function LocationListResults({ locationCoordinationList, setLocationCoordinationList }) {
+export function LocationListResults({ setLocationCoordinationList, centerLat, centerLng }) {
   const [open, setOpen] = useState(false);
   const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState('');
@@ -111,7 +111,7 @@ export function LocationListResults({ locationCoordinationList, setLocationCoord
     return (
       <Link
         to={`${props.selectedRow.stateName}`}
-        state={{ location_id: props.selectedRow.id }}
+        state={{ location_id: props.selectedRow.id, centerCoordination: props.selectedRow.coordinates }}
       >
         {props.selectedRow.stateName}
       </Link>
@@ -177,7 +177,7 @@ export function LocationListResults({ locationCoordinationList, setLocationCoord
         open={open}
         setOpen={setOpen}
         setRefreshData={setRefreshData}
-        locationCoordinationList={locationCoordinationList}
+        centerCoord={{ lat: centerLat, lng: centerLng }}
       />
       <NotificationBar
         handleClose={handleClose}

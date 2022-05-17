@@ -89,6 +89,7 @@ const Navbar = () => {
       setUserDisplayName(userDetails.userName);
     }
   }, []);
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -96,10 +97,12 @@ const Navbar = () => {
   const handleNotificationMenu = (event) => {
     setAnchorElNotification(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
     setAnchorElNotification(null);
   };
+
   const logout = () =>{
     // API call for logout
     LogoutService(logoutSuccessCallback, logoutErrorCallBack);
@@ -112,6 +115,7 @@ const Navbar = () => {
       type: 'success',
       message: dataObject.message
     });
+
     setTimeout(() => {
       handleNotificationClose();
         ApplicationStore().setStorage('userDetails', '');
@@ -120,8 +124,8 @@ const Navbar = () => {
     }, 2000);
   };
 
-  const logoutErrorCallBack = (errorObject) => {
-  };
+  const logoutErrorCallBack = () => { };
+  
   const handleNotificationClose = () => {
     setNotification({
         status: false,
