@@ -50,6 +50,34 @@ function UserModal({
       setOpen(open);
       loaddata();
     }
+
+    if (!isAddButton) {
+      if (userData?.location_id) {
+        FetchLocationService((locationRespObj) => {
+          locationHandleSuccess(locationRespObj);
+          FetchBranchService({
+            location_id: userData?.location_id
+          }, (branchRespObj) => {
+            setLocationId(userData.location_id);
+            branchHandleSuccess(branchRespObj);
+
+            if (userData?.branch_id) {
+              FetchFacilitiyService({
+                location_id: userData?.location_id,
+                branch_id: userData?.branch_id
+              }, (facilityRespObj) => {
+                setBranchId(userData.branch_id);
+                facilityHandleSuccess(facilityRespObj);
+
+                if (userData?.facility_id) {
+                  setFacilityId(userData.facility_id);
+                }
+              }, locationHandleException)
+            }
+          }, locationHandleException)
+        }, locationHandleException);
+      }
+    }
   }, [userData]);
 
   const loaddata = () => {
