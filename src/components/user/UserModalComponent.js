@@ -1,5 +1,5 @@
 import {
-  Autocomplete, Button, Dialog, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, TextField,
+  Autocomplete, Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, MenuItem, Select, Switch, TextField,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import {
@@ -22,10 +22,14 @@ function UserModal({
   const [phoneNo, setPhone] = useState('');
   const [empRole, setRole] = useState(isSuperAdmin ? 'superAdmin' : 'User');
   const [empName, setFullName] = useState('');
+  const [empNotification, setEmpNotification] = useState(true);
   const [companyCode, setCompanyCode] = useState('');
   const [location_id, setLocationId] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState('');
   const [branch_id, setBranchId] = useState('');
+  const [selectedBranch, setSelectedBranch] = useState('');
   const [facility_id, setFacilityId] = useState('');
+  const [selectedFacility, setSelectedFacility] = useState('');
 
   const [locationList, setLocationList] = useState([]);
   const [branchList, setBranchList] = useState([]);
@@ -37,7 +41,7 @@ function UserModal({
   const [password, setConfirmPassword] = useState('');
   const [btnReset, setBtnReset] = useState(false);
   const [errorObject, setErrorObject] = useState({});
-
+  
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
@@ -45,10 +49,38 @@ function UserModal({
   });
 
   useEffect(() => {
+    if (!isAddButton) {
+      if (userData?.location_id) {
+        FetchLocationService((locationRespObj) => {
+          locationHandleSuccess(locationRespObj);
+          FetchBranchService({
+            location_id: userData?.location_id
+          }, (branchRespObj) => {
+            setLocationId(userData.location_id);
+            branchHandleSuccess(branchRespObj);
+            if (userData?.branch_id) {
+              FetchFacilitiyService({
+                location_id: userData?.location_id,
+                branch_id: userData?.branch_id
+              }, (facilityRespObj) => {
+                setBranchId(userData.branch_id);
+                facilityHandleSuccess(facilityRespObj);
+
+                if (userData?.facility_id) {
+                  setFacilityId(userData.facility_id);
+                }
+              }, locationHandleException)
+            }
+          }, locationHandleException)
+        }, locationHandleException);
+      }
+    }
+
     if (userData) {
       setOpen(open);
       loaddata();
     }
+
   }, [userData]);
 
   const loaddata = () => {
@@ -61,10 +93,13 @@ function UserModal({
     } else {
       setRole(userData?.user_role || 'User');
     }
+    setEmpNotification(userData?.empNotification || true);
     setFullName(userData?.name || '');
     setCompanyCode(userData?.companyCode || '');
-    setLocationId(userData.location_id || '');
+    setLocationId(userData?.location_id || '');
+    setSelectedLocation(locationList?.[userData.location_id] || '');
     setBranchId(userData.branch_id || '');
+    setSelectedBranch(branchList?.[userData.branch_id] || '');
     setFacilityId(userData.facility_id || '');
   };
 
@@ -98,11 +133,11 @@ function UserModal({
     event.preventDefault();
     if (isAddButton) {
       await UserAddService({
-        location_id, branch_id, facility_id, empId, email, phoneNo, empRole, empName,
+        location_id, branch_id, facility_id, empId, email, phoneNo, empRole, empName, empNotification,
       }, handleSuccess, handleException);
     } else {
       await UserUpdateService({
-        location_id, branch_id, facility_id, empId, email, phoneNo, empRole, empName, id,
+        location_id, branch_id, facility_id, empId, email, phoneNo, empRole, empName, empNotification, id,
       }, handleSuccess, handleException);
     }
   };
@@ -193,14 +228,18 @@ function UserModal({
                         id="asynchronous-demo"
                         sx={{}}
                         open={locationOpen}
+                        value={locationList.find(v => v.id == userData.location_id )}
+                        // defaultValue={locationList.find(v => v.stateName[0])} 
+                        // onInputChange={(event, newInputValue) => {
+                        //   setLocationId(newInputValue);
+                        // }}
                         onOpen={() => {
                           setLocationOpen(true);
                         }}
                         onClose={() => {
                           setLocationOpen(false);
                         }}
-                        // isOptionEqualToValue={(option, value) => option.id === value.id}
-                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        isOptionEqualToValue={(option, value) => option.id === '4'}
                         getOptionLabel={(option) => {
                           return option.stateName;
                         }}
@@ -208,6 +247,7 @@ function UserModal({
                         // loading={loading}
                         onChange={(e, data) => {
                           setLocationId(data.id);
+                          setSelectedLocation(data);
                         }}
                         renderInput={(params) => (
                           <TextField
@@ -243,7 +283,7 @@ function UserModal({
                         onClose={() => {
                           setBranchOpen(false);
                         }}
-                        // isOptionEqualToValue={(option, value) => option.id === value.id}
+                        value={selectedBranch}
                         isOptionEqualToValue={(option, value) => option.id === value.id}
                         getOptionLabel={(option) => {
                           return option.branchName;
@@ -252,6 +292,7 @@ function UserModal({
                         // loading={loading}
                         onChange={(e, data) => {
                           setBranchId(data.id);
+                          setSelectedBranch(data);
                         }}
                         renderInput={(params) => (
                           <TextField
@@ -436,6 +477,15 @@ function UserModal({
                       </Select>
                     )}
                 </FormControl>
+              </div>
+            </div>
+            <div className="">
+              <div className="">
+              <FormGroup sx={{display : 'block'}}>
+                <FormControlLabel control={<Switch checked={empNotification !=0} onChange={(e)=>{
+                  setEmpNotification(e.target.checked);
+                }} color="warning"/>} label="Enable Notification" />
+              </FormGroup>
               </div>
             </div>
             <div className="rounded-md -space-y-px float-right">

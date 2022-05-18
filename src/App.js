@@ -13,7 +13,6 @@ import CategoryManagement from './pages/CategoryManagementComponent';
 import CustomerManagement from './pages/CustomerComponent';
 import UserManagement from './pages/UserComponent';
 import SiteDetails from './pages/SiteDetailsComponent';
-
 import Dashboard from './components/DashboardComponent';
 import Branch from './components/BranchComponent';
 import Facility from './components/FacilityComponent';

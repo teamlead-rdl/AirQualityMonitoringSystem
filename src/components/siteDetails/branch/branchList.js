@@ -55,7 +55,7 @@ export function BranchListResults(props) {
   const [dataList, setDataList] = useState([]);
   const [isLoading, setGridLoading] = useState(true);
   const routeStateObject = useLocation();
-  const { location_id } = routeStateObject.state;
+  const { location_id, centerCoordination } = routeStateObject.state;
   const [refreshData, setRefreshData] = useState(false);
   const moduleAccess = useUserAccess()('location');
 
@@ -124,6 +124,7 @@ export function BranchListResults(props) {
         state={{
           location_id,
           branch_id: props.selectedRow.id,
+          centerCoordination: props.selectedRow.coordinates
         }}
       >
         {props.selectedRow.branchName}
@@ -177,7 +178,7 @@ export function BranchListResults(props) {
           color="inherit"
           to="/"
         >
-          {pathname[1]}
+          {pathname[1].replace("%20", " ")}
         </Typography>
       </Breadcrumbs>
       <BranchListToolbar
@@ -203,6 +204,7 @@ export function BranchListResults(props) {
         locationId={location_id}
         setRefreshData={setRefreshData}
         locationCoordinationList={props.locationCoordinationList}
+        centerCoord={{ lat: parseFloat(props.centerLat), lng: parseFloat(props.centerLng) }}
       />
       <NotificationBar
         handleClose={handleClose}

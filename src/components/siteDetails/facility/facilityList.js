@@ -136,6 +136,7 @@ export function FacilityListResults(props) {
           location_id,
           branch_id,
           facility_id: props.selectedRow.id,
+          centerCoordination: props.selectedRow.coordinates
         }}
       >
         {props.selectedRow.facilityName}
@@ -230,6 +231,7 @@ export function FacilityListResults(props) {
         branchId={branch_id}
         setRefreshData={setRefreshData}
         locationCoordinationList={props.locationCoordinationList}
+        centerCoord={{ lat: parseFloat(props.centerLat), lng: parseFloat(props.centerLng) }}
       />
       <NotificationBar
         handleClose={handleClose}

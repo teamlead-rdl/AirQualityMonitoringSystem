@@ -145,11 +145,11 @@ function StelTWA({
                 }}
                 margin="dense"
                 id="outlined-required"
-                label="Duration"
+                label="Duration (In Seconds)"
                 required={isStel === true}
                 disabled={(isStel !== true) || disable}
                 fullWidth
-                type="time"
+                type="number"
                 // error={errorObject?.partId?.errorStatus}
                 // helperText={errorObject?.partId?.helperText}
                 autoComplete="off"
@@ -295,9 +295,9 @@ function StelTWA({
                 required={isStel === true}
                 disabled={(isStel !== true) || disable}
                 id="outlined-required"
-                label="Duration"
+                label="Duration (In Seconds)"
                 fullWidth
-                type="time"
+                type="number"
                 // error={errorObject?.partId?.errorStatus}
                 // helperText={errorObject?.partId?.helperText}
                 autoComplete="off"

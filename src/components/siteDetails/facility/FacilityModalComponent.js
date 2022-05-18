@@ -9,7 +9,7 @@ import { FacilityAddFormValidate } from '../../../validation/locationValidation'
 import NotificationBar from '../../notification/ServiceNotificationBar';
 
 function FacilityModal({
-  open, setOpen, isAddButton, editData, locationId, branchId, setRefreshData, locationCoordinationList,
+  open, setOpen, isAddButton, editData, locationId, branchId, setRefreshData, locationCoordinationList, centerCoord
 }) {
   const [facilityName, setFacilityName] = useState('');
   const [longitude, setLongitude] = useState('');
@@ -39,8 +39,8 @@ function FacilityModal({
   const loaddata = () => {
     const coordinates = editData.coordinates ? editData.coordinates.split(',') : ['', ''];
     setFacilityName(editData.facilityName || '');
-    setLongitude(coordinates[0]);
-    setLatitude(coordinates[1]);
+    setLatitude(coordinates[0]);
+    setLongitude(coordinates[1]);
     setFacilityId(editData.id || '');
     setMarkerLng(parseFloat(coordinates[0]));
     setMarkerLat(parseFloat(coordinates[1]));
@@ -208,10 +208,15 @@ function FacilityModal({
                     latitude={markerLat}
                     stateName={editData.facilityName}
                     zoom={11}
-                    center={{
-                      lat: locationCoordinationList[0]?.position.lat
-                      || 19.34187,
-                      lng: locationCoordinationList[0]?.position.lng || 78.30460,
+                    // center={{
+                    //   lat: locationCoordinationList[0]?.position.lat
+                    //   || 19.34187,
+                    //   lng: locationCoordinationList[0]?.position.lng || 78.30460,
+                    // }}
+                    center={isAddButton ? {lat: centerCoord.lat, lng: centerCoord.lng}
+                    :{
+                      lat: Number(latitude) || 80.500,
+                      lng: Number(longitude) || 23.500,
                     }}
                     flagDistance={0.03}
                   />
