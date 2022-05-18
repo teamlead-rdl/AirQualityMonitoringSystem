@@ -124,6 +124,7 @@ export function BranchListResults(props) {
         state={{
           location_id,
           branch_id: props.selectedRow.id,
+          centerCoordination: props.selectedRow.coordinates
         }}
       >
         {props.selectedRow.branchName}
