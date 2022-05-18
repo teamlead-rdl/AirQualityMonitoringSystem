@@ -15,7 +15,7 @@ function Branch() {
   useEffect(() => {
     let coordinates = centerCoordination ? centerCoordination.replaceAll('"', '').split(',') : [];
     setCenterLat(parseFloat(coordinates[0]) || '');
-    setCenterLng(parseFloat(coordinates[1])) || '';
+    setCenterLng(parseFloat(coordinates[1]) || '');
   }, [locationCoordinationList]);
   return (
     <Container maxWidth={false} style={{ marginTop: 0 }}>

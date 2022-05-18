@@ -25,8 +25,11 @@ function UserModal({
   const [empNotification, setEmpNotification] = useState(true);
   const [companyCode, setCompanyCode] = useState('');
   const [location_id, setLocationId] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState('');
   const [branch_id, setBranchId] = useState('');
+  const [selectedBranch, setSelectedBranch] = useState('');
   const [facility_id, setFacilityId] = useState('');
+  const [selectedFacility, setSelectedFacility] = useState('');
 
   const [locationList, setLocationList] = useState([]);
   const [branchList, setBranchList] = useState([]);
@@ -38,7 +41,7 @@ function UserModal({
   const [password, setConfirmPassword] = useState('');
   const [btnReset, setBtnReset] = useState(false);
   const [errorObject, setErrorObject] = useState({});
-
+  
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
@@ -46,10 +49,38 @@ function UserModal({
   });
 
   useEffect(() => {
+    if (!isAddButton) {
+      if (userData?.location_id) {
+        FetchLocationService((locationRespObj) => {
+          locationHandleSuccess(locationRespObj);
+          FetchBranchService({
+            location_id: userData?.location_id
+          }, (branchRespObj) => {
+            setLocationId(userData.location_id);
+            branchHandleSuccess(branchRespObj);
+            if (userData?.branch_id) {
+              FetchFacilitiyService({
+                location_id: userData?.location_id,
+                branch_id: userData?.branch_id
+              }, (facilityRespObj) => {
+                setBranchId(userData.branch_id);
+                facilityHandleSuccess(facilityRespObj);
+
+                if (userData?.facility_id) {
+                  setFacilityId(userData.facility_id);
+                }
+              }, locationHandleException)
+            }
+          }, locationHandleException)
+        }, locationHandleException);
+      }
+    }
+
     if (userData) {
       setOpen(open);
       loaddata();
     }
+
   }, [userData]);
 
   const loaddata = () => {
@@ -65,8 +96,10 @@ function UserModal({
     setEmpNotification(userData?.empNotification || true);
     setFullName(userData?.name || '');
     setCompanyCode(userData?.companyCode || '');
-    setLocationId(userData.location_id || '');
+    setLocationId(userData?.location_id || '');
+    setSelectedLocation(locationList?.[userData.location_id] || '');
     setBranchId(userData.branch_id || '');
+    setSelectedBranch(branchList?.[userData.branch_id] || '');
     setFacilityId(userData.facility_id || '');
   };
 
@@ -195,14 +228,18 @@ function UserModal({
                         id="asynchronous-demo"
                         sx={{}}
                         open={locationOpen}
+                        value={locationList.find(v => v.id == userData.location_id )}
+                        // defaultValue={locationList.find(v => v.stateName[0])} 
+                        // onInputChange={(event, newInputValue) => {
+                        //   setLocationId(newInputValue);
+                        // }}
                         onOpen={() => {
                           setLocationOpen(true);
                         }}
                         onClose={() => {
                           setLocationOpen(false);
                         }}
-                        // isOptionEqualToValue={(option, value) => option.id === value.id}
-                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        isOptionEqualToValue={(option, value) => option.id === '4'}
                         getOptionLabel={(option) => {
                           return option.stateName;
                         }}
@@ -210,6 +247,7 @@ function UserModal({
                         // loading={loading}
                         onChange={(e, data) => {
                           setLocationId(data.id);
+                          setSelectedLocation(data);
                         }}
                         renderInput={(params) => (
                           <TextField
@@ -245,7 +283,7 @@ function UserModal({
                         onClose={() => {
                           setBranchOpen(false);
                         }}
-                        // isOptionEqualToValue={(option, value) => option.id === value.id}
+                        value={selectedBranch}
                         isOptionEqualToValue={(option, value) => option.id === value.id}
                         getOptionLabel={(option) => {
                           return option.branchName;
@@ -254,6 +292,7 @@ function UserModal({
                         // loading={loading}
                         onChange={(e, data) => {
                           setBranchId(data.id);
+                          setSelectedBranch(data);
                         }}
                         renderInput={(params) => (
                           <TextField
