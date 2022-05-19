@@ -11,33 +11,33 @@ function Building() {
   const [locationCoordinationList, setLocationCoordinationList] = useState([]);
   const [centerLat, setCenterLat] = useState(23.500);
   const [centerLng, setCenterLng] = useState(80.500);
-  useEffect(()=>{
+  useEffect(() => {
     let coordinates = centerCoordination ? centerCoordination.replaceAll('"', '').split(',') : [];
     setCenterLat(parseFloat(coordinates[0]) || 23.500);
     setCenterLng(parseFloat(coordinates[1]) || 80.500);
-  },[locationCoordinationList]);
+  }, [locationCoordinationList]);
   return (
     <Container maxWidth={false} style={{ marginTop: 0 }}>
       <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
-        <BuildingListResults 
-          locationCoordinationList={locationCoordinationList} 
+        <BuildingListResults
+          locationCoordinationList={locationCoordinationList}
           setLocationCoordinationList={setLocationCoordinationList}
           centerLat={centerLat}
           centerLng={centerLng}
         />
       </Grid>
       <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
-      {locationCoordinationList.length !== 0 ?
-        <MapsMultiplePoints
-          width="100%"
-          height="50vh"
-          markers={locationCoordinationList}
-          zoom={18}
-          center={{ lat: centerLat, lng: centerLng}}
-        />
-        :
-        ''
-      }
+        {locationCoordinationList.length !== 0 ?
+          <MapsMultiplePoints
+            width="100%"
+            height="50vh"
+            markers={locationCoordinationList}
+            zoom={18}
+            center={{ lat: centerLat, lng: centerLng }}
+          />
+          :
+          ''
+        }
       </Grid>
     </Container>
   );

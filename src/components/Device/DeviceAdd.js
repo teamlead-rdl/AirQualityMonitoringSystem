@@ -282,7 +282,7 @@ function DeviceAdd({ locationDetails, labMap, deviceData }) {
                 sx={{ marginTop: 0 }}
                 margin="normal"
                 fullWidth
-                label="Photo of Device"
+                label="Upload Bin File"
                 autoComplete="off"
                 required
                 onBlur={() => { validateForNullValue(firmwareBinFile, 'deviceImage'); }}
