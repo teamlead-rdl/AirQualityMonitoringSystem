@@ -25,11 +25,10 @@ function DeviceModel({
   const [macAddress, setMacAddress] = useState('');
   const [category_id, setCategory_id] = useState('');
   const [categoryList, setCategoryList] = useState([]);
-  const [deviceImage, setDeviceImage] = useState({});
+  const [firmwareBinFile, setFirmwareBinFile] = useState({});
   const [pollingPriority, setPollingPriority] = useState('');
   const [nonPollingPriority, setNonPollingPriority] = useState('');
   const [floorCords, setFloorCords] = useState('');
-  const [previewImage, setPreviewImage] = useState();
   const [errorObject, setErrorObject] = useState({});
   const [openModel, setOpenModel] = useState(false);
   const [openNotification, setNotification] = useState({
@@ -54,7 +53,6 @@ function DeviceModel({
     setFloorCords(deviceData.floorCords || '');
     setCategoryList(categoryData || []);
     setCategory_id(deviceData.category_id || '');
-    setPreviewImage(`http://varmatrix.com/Aqms/blog/public/${deviceData.deviceImage}` || '');
   };
 
   const validateForNullValue = (value, type) => {
@@ -84,13 +82,12 @@ function DeviceModel({
 
   const HandleSubmit = async (e) => {
     e.preventDefault();
-    // alert('Submitted')
     if (isAddButton) {
       await DeviceAddService(
         {
           deviceName,
           category_id,
-          deviceImage,
+          firmwareBinFile,
           deviceTag,
           firmwareVersion,
           macAddress,
@@ -108,7 +105,7 @@ function DeviceModel({
           id,
           deviceName,
           category_id,
-          deviceImage,
+          firmwareBinFile,
           deviceTag,
           firmwareVersion,
           macAddress,
@@ -121,6 +118,10 @@ function DeviceModel({
         handleException,
       );
     }
+  };
+
+  const resetForm = () => {
+    setFirmwareBinFile({});
   };
 
   const handleClose = () => {
@@ -256,7 +257,8 @@ function DeviceModel({
               <TextField
                 sx={{ marginTop: 0 }}
                 value={pollingPriority}
-                type="time"
+                type="number"
+                placeholder="Enter value in Seconds"
                 onBlur={() => validateForNullValue(pollingPriority, 'pollingPriority')}
                 onChange={(e) => {
                   setPollingPriority(e.target.value);
@@ -286,7 +288,8 @@ function DeviceModel({
               <TextField
                 sx={{ marginTop: 0 }}
                 value={nonPollingPriority}
-                type="time"
+                type="number"
+                placeholder="Enter value in Seconds"
                 onBlur={() => validateForNullValue(nonPollingPriority, 'nonPollingPriority')}
                 onChange={(e) => {
                   setNonPollingPriority(e.target.value);
@@ -318,27 +321,26 @@ function DeviceModel({
               sx={{ mt: 0, padding: 0 }}
               item
               xs={12}
-              sm={9}
-              md={9}
-              lg={9}
-              xl={9}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
             >
               <TextField
                 sx={{ marginTop: 0 }}
                 margin="normal"
                 fullWidth
-                label="Photo of Device"
+                label="Upload Bin file"
                 autoComplete="off"
-                onBlur={() => { validateForNullValue(deviceImage, 'deviceImage'); }}
+                onBlur={() => { validateForNullValue(firmwareBinFile, 'deviceImage'); }}
                 onChange={(e) => {
                   if (e.target.files && e.target.files.length > 0) {
-                    setDeviceImage(e.target.files[0]);
+                    setFirmwareBinFile(e.target.files[0]);
 
                     const reader = new FileReader();
                     reader.onload = () => {
                       if (reader.readyState === 2) {
-                        setDeviceImage(reader.result);
-                        setPreviewImage(reader.result);
+                        setFirmwareBinFile(reader.result);
                       }
                     };
                     reader.readAsDataURL(e.target.files[0]);
@@ -347,24 +349,13 @@ function DeviceModel({
                 InputLabelProps={{ shrink: true }}
                 type="file"
                 inputProps={{
-                  accept: 'image/png, image/jpeg',
+                  accept: '.bin',
                 }}
                 error={errorObject?.deviceImage?.errorStatus}
                 helperText={errorObject?.deviceImage?.helperText}
               />
             </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={3}
-              md={3}
-              lg={3}
-              xl={3}
-            >
-              <img src={previewImage} />
-              {/* <div className='rounded-md -space-y-px mb-2' style={{border:'2px black solid'}}>
-                      </div> */}
-            </Grid>
+
 
           </Grid>
           <div className="float-right">
@@ -375,6 +366,7 @@ function DeviceModel({
                   setOpen(false);
                   setErrorObject({});
                   loadData();
+                  resetForm();
                 }}
               >
                 Cancel
