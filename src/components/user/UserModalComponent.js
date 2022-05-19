@@ -25,11 +25,11 @@ function UserModal({
   const [empNotification, setEmpNotification] = useState(true);
   const [companyCode, setCompanyCode] = useState('');
   const [location_id, setLocationId] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState({});
   const [branch_id, setBranchId] = useState('');
-  const [selectedBranch, setSelectedBranch] = useState('');
+  const [selectedBranch, setSelectedBranch] = useState({});
   const [facility_id, setFacilityId] = useState('');
-  const [selectedFacility, setSelectedFacility] = useState('');
+  const [selectedFacility, setSelectedFacility] = useState({});
 
   const [locationList, setLocationList] = useState([]);
   const [branchList, setBranchList] = useState([]);
@@ -74,13 +74,18 @@ function UserModal({
           }, locationHandleException)
         }, locationHandleException);
       }
+    } else {
+      FetchLocationService((locationRespObj) => {
+        locationHandleSuccess(locationRespObj);
+        setBranchList([]);
+        setFacilityList([]);
+      }, locationHandleException);
     }
 
     if (userData) {
       setOpen(open);
       loaddata();
     }
-
   }, [userData]);
 
   const loaddata = () => {
@@ -97,10 +102,11 @@ function UserModal({
     setFullName(userData?.name || '');
     setCompanyCode(userData?.companyCode || '');
     setLocationId(userData?.location_id || '');
-    setSelectedLocation(locationList?.[userData.location_id] || '');
-    setBranchId(userData.branch_id || '');
-    setSelectedBranch(branchList?.[userData.branch_id] || '');
-    setFacilityId(userData.facility_id || '');
+    setSelectedLocation(locationList.find(v => v.id == userData.location_id ) || {id: 0, stateName: 'Select'}); 
+    setBranchId(userData?.branch_id || '');
+    setSelectedBranch(branchList.find(v => v.id == userData.branch_id ) || {id: 0, branchName: 'Select'}); 
+    setFacilityId(userData?.facility_id || '');
+    setSelectedFacility(facilityList.find(v => v.id == userData.facility_id ) || {id: 0, facilityName: 'Select'})
   };
 
   const validateForNullValue = (value, type) => {
@@ -199,6 +205,20 @@ function UserModal({
 
   const facilityHandleException = () => {};
 
+  const onLocationChange = (location_id, data) =>{
+    setLocationId(location_id);
+    setSelectedLocation(data);
+    FetchBranchService({ location_id }, branchHandleSuccess, branchHandleException);
+    setFacilityList([]);
+    setSelectedBranch({id: 0, branchName: 'Select'});
+    setSelectedFacility({id: 0, facilityName: 'Select'});
+  }
+
+  const onBranchChange = (branch_id, data) =>{
+    setBranchId(branch_id);
+    setSelectedBranch(data);
+    FetchFacilitiyService({ location_id, branch_id }, facilityHandleSuccess, facilityHandleException);
+  }
   return (
     <Dialog
       sx={{ '& .MuiDialog-paper': { minWidth: '80%' } }}
@@ -228,7 +248,8 @@ function UserModal({
                         id="asynchronous-demo"
                         sx={{}}
                         open={locationOpen}
-                        value={locationList.find(v => v.id == userData.location_id )}
+                        value={selectedLocation}
+                        // value={locationList.find(v => v.id == userData.location_id )}
                         // defaultValue={locationList.find(v => v.stateName[0])} 
                         // onInputChange={(event, newInputValue) => {
                         //   setLocationId(newInputValue);
@@ -239,16 +260,16 @@ function UserModal({
                         onClose={() => {
                           setLocationOpen(false);
                         }}
-                        isOptionEqualToValue={(option, value) => option.id === '4'}
+                        // isOptionEqualToValue={(option, value) => option.id === value.id}
                         getOptionLabel={(option) => {
                           return option.stateName;
                         }}
                         options={locationList}
                         // loading={loading}
-                        onChange={(e, data) => {
-                          setLocationId(data.id);
-                          setSelectedLocation(data);
-                        }}
+                        onChange={(e, data) => { 
+                          onLocationChange(data.id, data);
+                          // setSelectedBranch({id: 0, branchName: 'Select'}); 
+                         }}
                         renderInput={(params) => (
                           <TextField
                             {...params}
@@ -284,16 +305,13 @@ function UserModal({
                           setBranchOpen(false);
                         }}
                         value={selectedBranch}
-                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        // isOptionEqualToValue={(option, value) => option.id === value.id}
                         getOptionLabel={(option) => {
                           return option.branchName;
                         }}
                         options={branchList}
                         // loading={loading}
-                        onChange={(e, data) => {
-                          setBranchId(data.id);
-                          setSelectedBranch(data);
-                        }}
+                        onChange={(e, data) => { onBranchChange(data.id, data) }}
                         renderInput={(params) => (
                           <TextField
                             {...params}
@@ -325,6 +343,7 @@ function UserModal({
                         onOpen={() => {
                           setFacilityOpen(true);
                         }}
+                        value={selectedFacility}
                         onClose={() => {
                           setFacilityOpen(false);
                         }}
@@ -337,6 +356,7 @@ function UserModal({
                         // loading={loading}
                         onChange={(e, data) => {
                           setFacilityId(data.id);
+                          setSelectedFacility(data);
                         }}
                         renderInput={(params) => (
                           <TextField
