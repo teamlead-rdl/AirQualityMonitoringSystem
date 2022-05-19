@@ -1,23 +1,30 @@
 import React, { useEffect, useState } from 'react';
-// import Box from '@mui/material/Box';
-import { Box, Container } from '@mui/material';
+import { Container } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import MapsComponent from './maps/googleMapsComponent';
 import { BuildingListResults } from './siteDetails/building/buildingList';
 import MapsMultiplePoints from './maps/mapsMultiplePoints';
+import { useLocation } from 'react-router-dom';
 
 function Building() {
+  const routeStateObject = useLocation();
+  const { centerCoordination } = routeStateObject.state;
   const [locationCoordinationList, setLocationCoordinationList] = useState([]);
-  const [centerLat, setCenterLat] = useState(21.785);
-  const [centerLng, setCenterLng] = useState(72.91655655);
+  const [centerLat, setCenterLat] = useState(23.500);
+  const [centerLng, setCenterLng] = useState(80.500);
   useEffect(() => {
-    setCenterLat(locationCoordinationList[0]?.position.lat);
-    setCenterLng(locationCoordinationList[0]?.position.lng);
+    let coordinates = centerCoordination ? centerCoordination.replaceAll('"', '').split(',') : [];
+    setCenterLat(parseFloat(coordinates[0]) || 23.500);
+    setCenterLng(parseFloat(coordinates[1]) || 80.500);
   }, [locationCoordinationList]);
   return (
     <Container maxWidth={false} style={{ marginTop: 0 }}>
       <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
-        <BuildingListResults locationCoordinationList={locationCoordinationList} setLocationCoordinationList={setLocationCoordinationList} />
+        <BuildingListResults
+          locationCoordinationList={locationCoordinationList}
+          setLocationCoordinationList={setLocationCoordinationList}
+          centerLat={centerLat}
+          centerLng={centerLng}
+        />
       </Grid>
       <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
         {locationCoordinationList.length !== 0 ?

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { PlayArrow, Edit, DeleteOutlined } from '@mui/icons-material';
+import { Edit, DeleteOutlined } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
 import { Breadcrumbs, Typography } from '@mui/material';
 import { BuildingDeleteService, BuildingFetchService } from '../../../services/LoginPageService';
@@ -273,6 +273,7 @@ export function BuildingListResults(props) {
         facilityId={facility_id}
         setRefreshData={setRefreshData}
         locationCoordinationList={props.locationCoordinationList}
+        centerCoord={{ lat: parseFloat(props.centerLat), lng: parseFloat(props.centerLng) }}
       />
       <NotificationBar
         handleClose={handleClose}

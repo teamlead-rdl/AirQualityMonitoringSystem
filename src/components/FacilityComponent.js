@@ -3,18 +3,18 @@ import Grid from '@mui/material/Grid';
 import { Container } from '@mui/material';
 import { FacilityListResults } from './siteDetails/facility/facilityList';
 import MapsMultiplePoints from './maps/mapsMultiplePoints';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 function Facility() {
   const routeStateObject = useLocation();
   const { centerCoordination } = routeStateObject.state;
   const [locationCoordinationList, setLocationCoordinationList] = useState([]);
-  const [centerLat, setCenterLat] = useState(21.785);
-  const [centerLng, setCenterLng] = useState(72.91655655);
+  const [centerLat, setCenterLat] = useState(23.500);
+  const [centerLng, setCenterLng] = useState(80.500);
   useEffect(() => {
     let coordinates = centerCoordination ? centerCoordination.replaceAll('"', '').split(',') : [];
-    setCenterLat(parseFloat(coordinates[0]) || '');
-    setCenterLng(parseFloat(coordinates[1]) || '');
+    setCenterLat(parseFloat(coordinates[0]) || 23.500);
+    setCenterLng(parseFloat(coordinates[1]) || 80.500);
   }, [locationCoordinationList]);
   return (
     <Container maxWidth={false} style={{ marginTop: 0 }}>
