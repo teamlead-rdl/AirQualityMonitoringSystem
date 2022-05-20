@@ -49,6 +49,44 @@ function UserModal({
   });
 
   useEffect(() => {
+    // if (!isAddButton) {
+    //   if (userData?.location_id) {
+    //     FetchLocationService((locationRespObj) => {
+    //       locationHandleSuccess(locationRespObj);
+    //       FetchBranchService({
+    //         location_id: userData?.location_id
+    //       }, (branchRespObj) => {
+    //         setLocationId(userData.location_id);
+    //         branchHandleSuccess(branchRespObj);
+    //         if (userData?.branch_id) {
+    //           FetchFacilitiyService({
+    //             location_id: userData?.location_id,
+    //             branch_id: userData?.branch_id
+    //           }, (facilityRespObj) => {
+    //             setBranchId(userData.branch_id);
+    //             facilityHandleSuccess(facilityRespObj);
+
+    //             if (userData?.facility_id) {
+    //               setFacilityId(userData.facility_id);
+    //             }
+    //           }, locationHandleException)
+    //         }
+    //       }, locationHandleException)
+    //     }, locationHandleException);
+    //   }
+    // } else {
+    //   FetchLocationService((locationRespObj) => {
+    //     locationHandleSuccess(locationRespObj);
+    //   }, locationHandleException);
+    // }
+
+    if (userData) {
+      setOpen(open);
+      loaddata();
+    }
+  }, [userData]);
+
+  const loaddata = () => {
     if (!isAddButton) {
       if (userData?.location_id) {
         FetchLocationService((locationRespObj) => {
@@ -81,14 +119,6 @@ function UserModal({
         setFacilityList([]);
       }, locationHandleException);
     }
-
-    if (userData) {
-      setOpen(open);
-      loaddata();
-    }
-  }, [userData]);
-
-  const loaddata = () => {
     setId(userData?.id || '');
     setEmployeeId(userData?.employeeId || '');
     setEmailId(userData?.email || '');
@@ -102,11 +132,11 @@ function UserModal({
     setFullName(userData?.name || '');
     setCompanyCode(userData?.companyCode || '');
     setLocationId(userData?.location_id || '');
-    setSelectedLocation(locationList.find(v => v.id == userData.location_id ) || {id: 0, stateName: 'Select'}); 
+    // setSelectedLocation(locationList.find(v => v.id == userData.location_id ) || {id: 0, stateName: 'Select'}); 
     setBranchId(userData?.branch_id || '');
-    setSelectedBranch(branchList.find(v => v.id == userData.branch_id ) || {id: 0, branchName: 'Select'}); 
+    // setSelectedBranch(branchList.find(v => v.id == userData.branch_id ) || {id: 0, branchName: 'Select'}); 
     setFacilityId(userData?.facility_id || '');
-    setSelectedFacility(facilityList.find(v => v.id == userData.facility_id ) || {id: 0, facilityName: 'Select'})
+    // setSelectedFacility(facilityList.find(v => v.id == userData.facility_id ) || {id: 0, facilityName: 'Select'})
   };
 
   const validateForNullValue = (value, type) => {
@@ -195,6 +225,7 @@ function UserModal({
 
   const branchHandleSuccess = (dataObject) => {
     setBranchList(dataObject.data);
+    setFacilityList([]);
   };
 
   const branchHandleException = () => {};
@@ -205,20 +236,33 @@ function UserModal({
 
   const facilityHandleException = () => {};
 
-  const onLocationChange = (location_id, data) =>{
+  const onLocationChange = (location_id) =>{
     setLocationId(location_id);
-    setSelectedLocation(data);
-    FetchBranchService({ location_id }, branchHandleSuccess, branchHandleException);
-    setFacilityList([]);
-    setSelectedBranch({id: 0, branchName: 'Select'});
-    setSelectedFacility({id: 0, facilityName: 'Select'});
+    // setSelectedLocation(data);
+    if(location_id){
+      FetchBranchService({ location_id }, branchHandleSuccess, branchHandleException);
+    } else {
+      setBranchList([]);
+      setFacilityList([]);
+    }
+    // setSelectedBranch({id: 0, branchName: 'Select'});
+    // setSelectedFacility({id: 0, facilityName: 'Select'});
   }
 
-  const onBranchChange = (branch_id, data) =>{
+  const onBranchChange = (branch_id) =>{
     setBranchId(branch_id);
-    setSelectedBranch(data);
-    FetchFacilitiyService({ location_id, branch_id }, facilityHandleSuccess, facilityHandleException);
+    if(branch_id){
+      FetchFacilitiyService({ location_id, branch_id }, facilityHandleSuccess, facilityHandleException);
+    }
+    else{
+      setFacilityList([]);
+    }
   }
+
+  const onFacilityChange = (facility_id) =>{
+    setFacilityId(facility_id);
+  }
+
   return (
     <Dialog
       sx={{ '& .MuiDialog-paper': { minWidth: '80%' } }}
@@ -244,7 +288,7 @@ function UserModal({
                     xl={4}
                   >
                     <div className="rounded-md -space-y-px">
-                      <Autocomplete
+                      {/* <Autocomplete
                         id="asynchronous-demo"
                         sx={{}}
                         open={locationOpen}
@@ -281,7 +325,25 @@ function UserModal({
                             }}
                           />
                         )}
-                      />
+                      /> */}
+                     
+                      <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-standard-label">Location</InputLabel>
+                        <Select
+                          value={location_id}
+                          onChange={(e)=>onLocationChange(e.target.value)}
+                          label="Location"
+                        >
+                          <MenuItem value="" key={0}>
+                            <em>N/A</em>
+                          </MenuItem>
+                          {locationList?.map((data, index) =>{
+                            return(
+                              <MenuItem value={data.id} key={index+1}>{data.stateName}</MenuItem>
+                            )
+                          })}
+                        </Select>
+                      </FormControl>
                     </div>
                   </Grid>
                   <Grid
@@ -294,7 +356,7 @@ function UserModal({
                     xl={4}
                   >
                     <div className="rounded-md -space-y-px">
-                      <Autocomplete
+                      {/* <Autocomplete
                         id="asynchronous-demo"
                         sx={{}}
                         open={branchOpen}
@@ -323,7 +385,24 @@ function UserModal({
                             }}
                           />
                         )}
-                      />
+                      /> */}
+                      <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-standard-label">Branch</InputLabel>
+                        <Select
+                          value={branch_id}
+                          onChange={(e)=>onBranchChange(e.target.value)}
+                          label="Branch"
+                        >
+                          <MenuItem value="" key={0}>
+                            <em>N/A</em>
+                          </MenuItem>
+                          {branchList?.map((data, index) =>{
+                            return(
+                              <MenuItem value={data.id} key={index+1}>{data.branchName}</MenuItem>
+                            )
+                          })}
+                        </Select>
+                      </FormControl>
                     </div>
                   </Grid>
                   <Grid
@@ -336,7 +415,7 @@ function UserModal({
                     xl={4}
                   >
                     <div className="rounded-md -space-y-px">
-                      <Autocomplete
+                      {/* <Autocomplete
                         id="asynchronous-demo"
                         sx={{}}
                         open={facilityOpen}
@@ -373,7 +452,24 @@ function UserModal({
                             }}
                           />
                         )}
-                      />
+                      /> */}
+                      <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-standard-label">Facility</InputLabel>
+                        <Select
+                          value={facility_id}
+                          onChange={(e)=>onFacilityChange(e.target.value)}
+                          label="Facility"
+                        >
+                          <MenuItem value="" key={0}>
+                            <em>N/A</em>
+                          </MenuItem>
+                          {facilityList?.map((data, index) =>{
+                            return(
+                              <MenuItem value={data.id} key={index+1}>{data.facilityName}</MenuItem>
+                            )
+                          })}
+                        </Select>
+                      </FormControl>
                     </div>
                   </Grid>
                 </Grid>
