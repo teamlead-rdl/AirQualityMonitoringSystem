@@ -904,7 +904,7 @@ function DeviceAdd({
                   size="large"
                   type="submit"
                 >
-                  {isUpdate ? 'UPDATE' : 'ADD' }
+                  {isUpdate ? 'UPDATE' : 'ADD'}
                 </Button>
               )}
           </div>
