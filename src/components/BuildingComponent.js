@@ -32,8 +32,8 @@ function Building() {
             width="100%"
             height="50vh"
             markers={locationCoordinationList}
-            zoom={18}
-            center={{ lat: centerLat, lng: centerLng }}
+            zoom={17}
+            center={{ lat: locationCoordinationList[0].position.lat || centerLat, lng: locationCoordinationList[0].position.lng || centerLng }}
           />
           :
           ''

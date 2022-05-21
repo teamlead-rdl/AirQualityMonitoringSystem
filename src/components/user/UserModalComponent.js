@@ -9,13 +9,12 @@ import ApplicationStore from '../../utils/localStorageUtil';
 import { AddUserValidate } from '../../validation/formValidation';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import ConfirmPassword from './passwordConfirmComponent';
-
 function UserModal({
   open, setOpen, isAddButton, userData, setRefreshData,
 }) {
   const { userDetails } = ApplicationStore().getStorage('userDetails');
   const isSuperAdmin = userDetails ? userDetails.userRole === 'superAdmin' : true;
-
+  const userRole = userDetails.userRole;
   const [id, setId] = useState('');
   const [empId, setEmployeeId] = useState('');
   const [email, setEmailId] = useState('');
@@ -430,6 +429,7 @@ function UserModal({
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={empRole}
+                        disabled={userRole === "Manager" && true}
                         label="Role"
                         onChange={(e) => {
                           setRole(e.target.value);
