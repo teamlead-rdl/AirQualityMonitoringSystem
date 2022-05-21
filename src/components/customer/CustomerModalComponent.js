@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { CustomerAddService, CustomerEditService, UnblockUserService } from '../../services/LoginPageService';
 import { AddCustomerValidate } from '../../validation/formValidation';
 import NotificationBar from '../notification/ServiceNotificationBar';
-import previewImage from '../../images/chooseFile.png';
+import previewImage from '../../images/previewImageSmall.png';
 
 function CustomerModal({
   open, setOpen, isAddButton, customerData, setRefreshData,
@@ -138,7 +138,7 @@ function CustomerModal({
                 type="text"
                 value={customerName}
                 variant="outlined"
-                placeholder="Employee Id"
+                placeholder="Customer Name"
                 className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
                 required
                 onBlur={() => validateForNullValue(customerName, 'fullName')}
@@ -194,7 +194,7 @@ function CustomerModal({
                   type="text"
                   value={address}
                   variant="outlined"
-                  placeholder="Full Name"
+                  placeholder="Address"
                   className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
                   required
                   onBlur={() => validateForNullValue(address, 'address')}
@@ -213,7 +213,7 @@ function CustomerModal({
                   type="text"
                   value={customerId}
                   variant="outlined"
-                  placeholder="Full Name"
+                  placeholder="Customer Id"
                   className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
                   required
                   onBlur={() => validateForNullValue(customerId, 'customerID')}
