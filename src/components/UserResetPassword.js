@@ -67,7 +67,7 @@ function UserResetPassword(props) {
       setErrorObject((oldData) => {
         const status = {
           errorStatus: true,
-          helperText: 'Password does not matched',
+          helperText: 'Password do not match',
         };
         return {
           ...oldData,
@@ -75,7 +75,7 @@ function UserResetPassword(props) {
         };
       });
     }
-    else if(oldPassword == newPassword){
+    else if (oldPassword == newPassword) {
       setErrorObject((oldData) => {
         const status = {
           errorStatus: true,
@@ -158,7 +158,7 @@ function UserResetPassword(props) {
                   >
                     {showOldPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
-                              </InputAdornment>,
+                </InputAdornment>,
               }}
             />
           </div>
@@ -192,7 +192,7 @@ function UserResetPassword(props) {
                   >
                     {showNewPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
-                              </InputAdornment>,
+                </InputAdornment>,
               }}
             />
 

@@ -83,7 +83,7 @@ function CategoryModel({
     >
       <form onSubmit={handleSubmit}>
         <DialogTitle>
-          {isAddButton ? 'Add Catagory' : 'Edit Category'}
+          {isAddButton ? 'Add Category' : 'Edit Category'}
         </DialogTitle>
         <DialogContent>
           <TextField
