@@ -75,6 +75,7 @@ export default function UserLogForm() {
       BranchHandleSuccess,
       branchHandleException,
     );
+    setFacilityList([]);
     FetchUserLogService(
       { location_id },
       UserLogHandleSuccess,
