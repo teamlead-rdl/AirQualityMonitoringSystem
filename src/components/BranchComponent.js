@@ -36,7 +36,7 @@ function Branch() {
               height="50vh"
               markers={locationCoordinationList}
               zoom={6}
-              center={{ lat: centerLat, lng: centerLng }}
+              center={{ lat: locationCoordinationList[0].position.lat || centerLat, lng: locationCoordinationList[0].position.lng || centerLng }}
             />
           )
           : ''}
