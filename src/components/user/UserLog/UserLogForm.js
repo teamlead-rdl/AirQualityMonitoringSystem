@@ -25,10 +25,14 @@ export default function UserLogForm() {
   const [toDate, setToDate] = useState(null);
   const [userLogList, setUserLogList] = useState([]);
   const [isLoading, setGridLoading] = useState(false);
+  const [check, setCheck] = useState(false);
+
+ 
 
   useEffect(() => {
     loadLocation();
-  }, []);
+    FetchUserLogService({},UserLogHandleSuccess,userHandleException);
+  }, [check]);
 
   const columns = [
     {
@@ -60,6 +64,10 @@ export default function UserLogForm() {
 
   const loadLocation = () => {
     FetchLocationService(LocationHandleSuccess, LocationHandleException);
+  };
+
+  const loadLocationUser = () => {
+
   };
 
   const LocationHandleSuccess = (dataObject) => {
@@ -155,6 +163,7 @@ export default function UserLogForm() {
     setToDate('');
     setUserLogList([]);
     setGridLoading(false);
+    setCheck(!check);
   };
   return (
     <div>
