@@ -170,7 +170,6 @@ function LoginPage() {
                 text-sm font-medium rounded-md text-black bg-white-500 hover:bg-red-100 focus:outline
                 focus:ring-2 focus:ring-offset-2 focus:ring-red-100 outline outline-offset-2 outline-2
                 outline-red-500"
-                disabled={errorObject?.emailId?.errorStatus || errorObject?.password?.errorStatus}
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                   <LockClosedIcon className="h-5 w-5 text-white-500 group-hover:text-red-500 r-red" aria-hidden="true" />

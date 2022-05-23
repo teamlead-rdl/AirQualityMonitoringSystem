@@ -66,7 +66,7 @@ export default function UserLogForm() {
     setLocationList(dataObject.data);
   };
 
-  const LocationHandleException = () => {};
+  const LocationHandleException = () => { };
   /* eslint-disable-next-line */
   const LocationChanged = (location_id) => {
     setLocation_id(location_id);
@@ -102,15 +102,15 @@ export default function UserLogForm() {
     setBranchList(dataObject.data);
   };
 
-  const branchHandleException = () => {};
+  const branchHandleException = () => { };
 
-  const userHandleException = () => {};
+  const userHandleException = () => { };
 
   const FacilityHandleSuccess = (dataObject) => {
     setFacilityList(dataObject.data);
   };
 
-  const FacilityHandleException = () => {};
+  const FacilityHandleException = () => { };
 
   const FacilityChanged = (facility_id) => {
     setFacility(facility_id);
@@ -131,7 +131,7 @@ export default function UserLogForm() {
     setGridLoading(false);
   };
 
-  const userLogDetailsHandleException = () => {};
+  const userLogDetailsHandleException = () => { };
 
   const handleSubmit = (e) => {
     e.preventDefault();
