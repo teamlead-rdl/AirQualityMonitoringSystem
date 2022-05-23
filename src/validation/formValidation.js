@@ -247,7 +247,7 @@ const AddCustomerValidate = (value, type, setErrorObject) => {
       break;
     case 'fullName': setErrorObject((oldErrorState) => {
       let status = {};
-      if (!validate('fullName', value)) {
+      if (!validate('address', value)) {
         status = {
           errorStatus: true,
           helperText: 'Enter full name of the customer',

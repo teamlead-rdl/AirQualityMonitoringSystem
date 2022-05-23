@@ -235,6 +235,7 @@ function FloorModal({
                     width="500px"
                     setFloorCoordinations={setFloorCoordinations}
                     floorCords={floorCords}
+                    isAddButton={isAddButton}
                   />
 
                 </div>

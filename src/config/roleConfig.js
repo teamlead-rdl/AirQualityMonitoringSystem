@@ -50,7 +50,7 @@ export const crudConfig = {
       view: true,
       add: false,
       edit: true,
-      delete: true,
+      delete: false,
     },
     manager: {
       view: true,
@@ -203,7 +203,7 @@ export const crudConfig = {
     manager: {
       view: true,
       add: false,
-      edit: false,
+      edit: true,
       delete: false,
     },
     user: {
