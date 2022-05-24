@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import allowedSidebarItems from '../../utils/accessRoleUtil';
 import ApplicationStore from '../../utils/localStorageUtil';
+import defaultCompanyLogo from '../../images/defaultCompanyLogo.png';
 
 const SidebarItems = {
   'Dashboard Management': [{
@@ -72,17 +73,17 @@ function DrawerObject(props) {
             </Link>
           ))}
         </ul>
-                     </div>);
+      </div>);
     }
     return returnObj;
   };
 
-  const [companyLogo, setCompanyLogo] = useState('https://images.pexels.com/photos/941693/pexels-photo-941693.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500');
+  const [companyLogo, setCompanyLogo] = useState(defaultCompanyLogo);
   const { userDetails } = ApplicationStore().getStorage('userDetails');
 
   useEffect(() => {
     if (userDetails.companyLogo) {
-      setCompanyLogo(`http://varmatrix.com/Aqms/blog/public/${userDetails.companyLogo}`);
+      setCompanyLogo(`http://varmatrix.com/Aqms/blog/public/${userDetails.companyLogo}?${new Date().getTime()}`);
     }
   }, []);
 
@@ -93,6 +94,7 @@ function DrawerObject(props) {
           <div className="">
             <Link to="Dashboard">
               <img
+
                 src={companyLogo}
                 alt=""
                 className="avatar"

@@ -40,6 +40,7 @@ function CustomerModal({
     setAddress(customerData.address || '');
     setCustomerID(customerData.customerId || '');
     setPreviewBuilding(customerData.customerLogo ? `http://varmatrix.com/Aqms/blog/public/${customerData.customerLogo}` : previewImage);
+    setCustomerLogo("");
   };
   const validateForNullValue = (value, type) => {
     AddCustomerValidate(value, type, setErrorObject);
