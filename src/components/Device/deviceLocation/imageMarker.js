@@ -39,11 +39,13 @@ function ImageMarkerComponent(props) {
 
     return (
       <img
-        src={deviceIcon ? require(`../../../images/deviceIcons/${deviceIcon}.gif`) : require('../../../images/deviceIcons/dataloger1.gif')}
-        srcSet={deviceIcon ? require(`../../../images/deviceIcons/${deviceIcon}.gif`) : require('../../../images/deviceIcons/dataloger1.gif')}
+        // src={deviceIcon ? require(`../../../images/deviceIcons/${deviceIcon}.gif`) : require('../../../images/deviceIcons/dataloger1.gif')}
+        // srcSet={deviceIcon ? require(`../../../images/deviceIcons/${deviceIcon}.gif`) : require('../../../images/deviceIcons/dataloger1.gif')}
+        src={require('../../../images/deviceIcons/dataloger.png')}
+        srcSet={require('../../../images/deviceIcons/dataloger.png')}
         alt="Pointer"
-        width="80"
-        height="80"
+        width="40"
+        height="40"
       />
     );
   }
@@ -60,7 +62,16 @@ function ImageMarkerComponent(props) {
           extraClass="imageMapperMaxSize"
           src={src || building}
           markers={markers}
-          onAddMarker={(marker) => setMarkers([marker])}
+          // onAddMarker={(marker) => setMarkers([marker])}
+          onAddMarker={(marker) => {
+            setMarkers(() =>{
+              return [{
+                top: marker.top + -2,
+                left: marker.left + -2,
+              }]
+            });
+          }}
+
           markerComponent={CustomMarker}
         />
       </ImageMarkerWrapper>

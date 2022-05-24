@@ -227,7 +227,7 @@ function UserModal({
         {isAddButton ? 'Add User' : 'Edit User'}
       </DialogTitle>
       <DialogContent>
-        <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md  -space-y-px">
             {isSuperAdmin ? ''
               : (

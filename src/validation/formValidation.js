@@ -664,7 +664,7 @@ const AnalogSensorValidate = (value, type, setErrorObject) => {
   switch (type) {
     case 'units': setErrorObject((oldErrorState) => {
       let status = {};
-      if (!validate('fullName', value)) {
+      if (!validate('address', value)) {
         status = {
           errorStatus: true,
           helperText: 'Enter the Unit',
