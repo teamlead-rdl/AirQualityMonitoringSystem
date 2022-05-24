@@ -22,6 +22,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { userDetails } = ApplicationStore().getStorage('userDetails');
   const [userDisplayName, setUserDisplayName] = useState('');
+  const [customerDisplayName, setCustomerDisplayName] = useState('Company Name Here...');
   const notificationList = [
     {
       id: 1,
@@ -87,6 +88,7 @@ const Navbar = () => {
   useEffect(() => {
     if (userDetails.userName) {
       setUserDisplayName(userDetails.userName);
+      setCustomerDisplayName(userDetails.companyName);
     }
   }, []);
 
@@ -136,6 +138,11 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="wrapper">
+        <div className="wrapper" style={{
+          display:'block'
+        }}>
+          {customerDisplayName}
+        </div>
         <div className="items">
           <div className="item">
             <NotificationsNoneOutlined className="icon" />
