@@ -27,11 +27,9 @@ export default function UserLogForm() {
   const [isLoading, setGridLoading] = useState(false);
   const [unTaggedUserList, setUnTaggedUserList] = useState(false);
 
- 
-
   useEffect(() => {
     loadLocation();
-    FetchUserLogService({},UserLogHandleSuccess,userHandleException);
+    FetchUserLogService({}, UserLogHandleSuccess, userHandleException);
   }, [unTaggedUserList]);
 
   const columns = [
@@ -66,44 +64,23 @@ export default function UserLogForm() {
     FetchLocationService(LocationHandleSuccess, LocationHandleException);
   };
 
-  const loadLocationUser = () => {
-
-  };
-
   const LocationHandleSuccess = (dataObject) => {
     setLocationList(dataObject.data);
-
   };
 
   const LocationHandleException = () => {};
   /* eslint-disable-next-line */
   const LocationChanged = (location_id) => {
     setLocation_id(location_id);
-    FetchBranchService(
-      { location_id },
-      BranchHandleSuccess,
-      branchHandleException,
-    );
-    FetchUserLogService(
-      { location_id },
-      UserLogHandleSuccess,
-      userHandleException,
-    );
+    FetchBranchService({ location_id }, BranchHandleSuccess, branchHandleException);
+    FetchUserLogService({ location_id }, UserLogHandleSuccess, userHandleException);
   };
   /* eslint-disable-next-line */
   const BranchChanged = (branch_id) => {
     setBranch(branch_id);
     setBranch_id(branch_id);
-    FetchFacilitiyService(
-      { location_id, branch_id },
-      FacilityHandleSuccess,
-      FacilityHandleException,
-    );
-    FetchUserLogService(
-      { location_id, branch_id },
-      UserLogHandleSuccess,
-      userHandleException,
-    );
+    FetchFacilitiyService({ location_id, branch_id }, FacilityHandleSuccess, FacilityHandleException);
+    FetchUserLogService({ location_id, branch_id }, UserLogHandleSuccess, userHandleException);
   };
 
   const BranchHandleSuccess = (dataObject) => {
@@ -122,16 +99,11 @@ export default function UserLogForm() {
 
   const FacilityChanged = (facility_id) => {
     setFacility(facility_id);
-    FetchUserLogService(
-      { location_id, branch_id, facility_id },
-      UserLogHandleSuccess,
-      userHandleException,
-    );
+    FetchUserLogService({ location_id, branch_id, facility_id }, UserLogHandleSuccess, userHandleException);
   };
 
   const UserLogHandleSuccess = (dataObject) => {
     setUserList(dataObject);
-    console.log(dataObject);
     setGridLoading(false);
   };
 
@@ -145,11 +117,7 @@ export default function UserLogForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setGridLoading(true);
-    FetchUserLogDetails(
-      { userId, fromDate, toDate },
-      UserLogDetailsHandleSuccess,
-      userLogDetailsHandleException,
-    );
+    FetchUserLogDetails({ userId, fromDate, toDate }, UserLogDetailsHandleSuccess, userLogDetailsHandleException);
   };
 
   const handleCancel = () => {
