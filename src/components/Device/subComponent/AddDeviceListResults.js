@@ -139,8 +139,7 @@ function AddDeviceListResults(props) {
 
   /* eslint-disable-next-line */
   function ChangeMode(props) {
-    return (moduleAccess.edit
-      && (
+    return ((
         <Select
           sx={{
             width: 180,
@@ -156,6 +155,7 @@ function AddDeviceListResults(props) {
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={props.selectedRow.deviceMode}
+          disabled = {!moduleAccess.edit && true}
           label="Mode"
           fullWidth
           onChange={(e) => {

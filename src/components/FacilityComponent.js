@@ -33,8 +33,8 @@ function Facility() {
               width="100%"
               height="50vh"
               markers={locationCoordinationList}
-              zoom={11}
-              center={{ lat: centerLat, lng: centerLng }}
+              zoom={10}
+              center={{ lat: locationCoordinationList[0].position.lat , lng: locationCoordinationList[0].position.lng  }}
             />
           )
           : ''}

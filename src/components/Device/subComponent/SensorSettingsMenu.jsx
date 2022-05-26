@@ -3,8 +3,10 @@ import {
 } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { useState } from 'react';
+import { useUserAccess } from '../../../context/UserAccessProvider';
 
 function SensorSettingsMenu(props) {
+  const moduleAccess = useUserAccess()('devicelocation');
   const sensorId = props.sensorProperties.id;
   const [sensorStatus, setSensorStatus] = useState(props.sensorProperties.sensorStatus);
   const [notificationStatus, setSensorNotificationStatus] = useState(props.sensorProperties.sensorNotificationStatus);
@@ -77,7 +79,7 @@ function SensorSettingsMenu(props) {
         />
       </MenuItem>
       <Divider sx={{ my: 0.5 }} />
-      <MenuItem onClick={() => props.deleteSensor(sensorId)} disableRipple>
+      <MenuItem disabled={moduleAccess.delete == false ?  true : false} onClick={() => props.deleteSensor(sensorId)} disableRipple>
         <Delete />
         {' '}
         Delete Sensor

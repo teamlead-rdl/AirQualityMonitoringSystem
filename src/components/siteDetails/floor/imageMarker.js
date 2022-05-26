@@ -10,14 +10,14 @@ import floorPointer from '../../../images/icons/placeholder.png';
 import floorPlan from '../../../images/floorPlan.png';
 
 function ImageMarkerComponent(props) {
-  const [rotateImg, setRotateImg] = useState(2);
   const {
-    setFloorCoordinations, floorCords, height, src,
+    setFloorCoordinations, floorCords, height, src, isAddButton
   } = props;
   const coordinates = floorCords.replaceAll('"', '').split(',');
-  const top = parseFloat(coordinates[0]);
-  const left = parseFloat(coordinates[1]);
-  const pointerDirection = coordinates[2];
+  const top = parseFloat(coordinates[0] || 0);
+  const left = parseFloat(coordinates[1] || 0);
+  const pointerDirection = (coordinates[2] == 'true' ? true : false) || false;
+  const [rotateImg, setRotateImg] = useState(pointerDirection == false ? -6 : 2);
 
   const ImageMarkerWrapper = styled.div`
   height: 100%;
@@ -28,19 +28,11 @@ function ImageMarkerComponent(props) {
   `;
   const [markers, setMarkers] = useState([{
     top: top || 10,
-    left: left || 20,
+    left: left || 20 + rotateImg,
   }]);
-
-  const [direction, setDirection] = useState(pointerDirection || false);
-  const [markerShape, setMarkerShape] = useState();
-
-  useEffect(() => {
-    if (direction == 'false') {
-      setMarkerShape(() => buildingPointerRight);
-    } else {
-      setMarkerShape(() => buildingPointerLeft);
-    }
-  }, []);
+  
+  const [direction, setDirection] = useState(pointerDirection);
+  const [markerShape, setMarkerShape] = useState(pointerDirection == false ? buildingPointerRight : buildingPointerLeft);
 
   function CustomMarker(props) {
     setFloorCoordinations(props, direction);
@@ -66,7 +58,6 @@ function ImageMarkerComponent(props) {
         <ImageMarker
           extraClass="imageMapperMaxSize"
           src={src || building}
-          // src='https://1.bp.blogspot.com/-6uL4YhQICoU/XRNup_w25-I/AAAAAAAAAKE/pMGI0DVUecsO9f6boeMsfVs0U17dLCAWACLcBGAs/s1600/5%2Bstorey%2Bbuilding%2Bdesign.jpg'
           markers={markers}
           onAddMarker={(marker) => {
             setMarkers([marker]);
@@ -85,8 +76,17 @@ function ImageMarkerComponent(props) {
           className="float-right w-full w-1/2"
           endIcon={<HistoryOutlinedIcon />}
           onClick={() => {
-            setMarkers([]);
-            setMarkerShape();
+            setDirection(pointerDirection);
+            setRotateImg(pointerDirection == false ? -6 : 2)
+            setMarkers(()=>{
+              return [
+                {
+                  top: top || 10,
+                  left: left || 20 + rotateImg,
+                }
+              ]
+            });
+            setMarkerShape(pointerDirection == false ? buildingPointerRight : buildingPointerLeft);
           }}
         >
           Reset the Pointer
@@ -97,12 +97,12 @@ function ImageMarkerComponent(props) {
           endIcon={<HistoryOutlinedIcon />}
           onClick={() => {
             setMarkerShape((prevMarker) => (prevMarker == buildingPointerLeft ? buildingPointerRight : buildingPointerLeft));
-            setDirection((prevdirection) => (prevdirection == 'false' ? 'true' : 'false'));
+            setDirection((prevdirection) => (!prevdirection));
             setRotateImg((oldValue)=>{
-              if(oldValue === 2)
-                return -6;
-              else
+              if(oldValue == -6)
                 return 2;
+              else
+                return -6;
             })
           }}
         >
