@@ -25,14 +25,14 @@ export default function UserLogForm() {
   const [toDate, setToDate] = useState(null);
   const [userLogList, setUserLogList] = useState([]);
   const [isLoading, setGridLoading] = useState(false);
-  const [check, setCheck] = useState(false);
+  const [unTaggedUserList, setUnTaggedUserList] = useState(false);
 
  
 
   useEffect(() => {
     loadLocation();
     FetchUserLogService({},UserLogHandleSuccess,userHandleException);
-  }, [check]);
+  }, [unTaggedUserList]);
 
   const columns = [
     {
@@ -72,9 +72,10 @@ export default function UserLogForm() {
 
   const LocationHandleSuccess = (dataObject) => {
     setLocationList(dataObject.data);
+
   };
 
-  const LocationHandleException = () => { };
+  const LocationHandleException = () => {};
   /* eslint-disable-next-line */
   const LocationChanged = (location_id) => {
     setLocation_id(location_id);
@@ -83,7 +84,6 @@ export default function UserLogForm() {
       BranchHandleSuccess,
       branchHandleException,
     );
-    setFacilityList([]);
     FetchUserLogService(
       { location_id },
       UserLogHandleSuccess,
@@ -110,15 +110,15 @@ export default function UserLogForm() {
     setBranchList(dataObject.data);
   };
 
-  const branchHandleException = () => { };
+  const branchHandleException = () => {};
 
-  const userHandleException = () => { };
+  const userHandleException = () => {};
 
   const FacilityHandleSuccess = (dataObject) => {
     setFacilityList(dataObject.data);
   };
 
-  const FacilityHandleException = () => { };
+  const FacilityHandleException = () => {};
 
   const FacilityChanged = (facility_id) => {
     setFacility(facility_id);
@@ -131,6 +131,7 @@ export default function UserLogForm() {
 
   const UserLogHandleSuccess = (dataObject) => {
     setUserList(dataObject);
+    console.log(dataObject);
     setGridLoading(false);
   };
 
@@ -139,7 +140,7 @@ export default function UserLogForm() {
     setGridLoading(false);
   };
 
-  const userLogDetailsHandleException = () => { };
+  const userLogDetailsHandleException = () => {};
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -164,7 +165,7 @@ export default function UserLogForm() {
     setToDate('');
     setUserLogList([]);
     setGridLoading(false);
-    setCheck(!check);
+    setUnTaggedUserList(!unTaggedUserList);
   };
   return (
     <div>
