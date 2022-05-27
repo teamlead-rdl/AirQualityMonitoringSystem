@@ -70,7 +70,7 @@ function BuildingModal({
         };
       });
     } else {
-      const coordinates = JSON.stringify(`${longitude},${latitude}`).replaceAll('"', '');
+      const coordinates = JSON.stringify(`${latitude},${longitude}`).replaceAll('"', '');
       if (isAddButton) {
         await BuildingAddService({
           buildingName,
@@ -124,8 +124,8 @@ function BuildingModal({
   };
   const onMapClick = (e) => {
     delete errorObject.coordinates;
-    setLongitude(e.latLng.lat());
-    setLatitude(e.latLng.lng());
+    setLatitude(e.latLng.lat());
+    setLongitude(e.latLng.lng());
   };
   const validateForNullValue = (value, type) => {
     LocationFormValidate(value, type, setErrorObject);
@@ -217,6 +217,28 @@ function BuildingModal({
                   </div>
                   <div className="rounded-md -space-y-px mb-2">
                     <TextField
+                      fullWidth
+                      sx={{ mb: 1 }}
+                      label="Latitude"
+                      type="text"
+                      disabled
+                      value={latitude}
+                      variant="outlined"
+                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2
+                      border border-gray-300 placeholder-gray-500 text-gray-900
+                      rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
+                      required
+                      onChange={(e) => { setLatitude(e.target.value); }}
+                      autoComplete="off"
+                      error={errorObject?.coordinates?.errorStatus}
+                      helperText={errorObject?.coordinates?.helperText}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </div>
+                  <div className="rounded-md -space-y-px mb-2">
+                    <TextField
                       // variant="filled"
                       fullWidth
                       sx={{ mb: 1 }}
@@ -230,28 +252,6 @@ function BuildingModal({
                       focus:ring-red-500 focus:border-red-500  sm:text-sm"
                       required
                       onChange={(e) => { setLongitude(e.target.value); }}
-                      autoComplete="off"
-                      error={errorObject?.coordinates?.errorStatus}
-                      helperText={errorObject?.coordinates?.helperText}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </div>
-                  <div className="rounded-md -space-y-px mb-2">
-                    <TextField
-                      fullWidth
-                      sx={{ mb: 1 }}
-                      label="Latitude"
-                      type="text"
-                      disabled
-                      value={latitude}
-                      variant="outlined"
-                      className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2
-                      border border-gray-300 placeholder-gray-500 text-gray-900
-                      rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
-                      required
-                      onChange={(e) => { setLatitude(e.target.value); }}
                       autoComplete="off"
                       error={errorObject?.coordinates?.errorStatus}
                       helperText={errorObject?.coordinates?.helperText}
@@ -323,7 +323,7 @@ function BuildingModal({
                     longitude={markerLng}
                     latitude={markerLat}
                     stateName={editData.buildingName}
-                    zoom={18}
+                    zoom={17}
                     center={isAddButton ? {lat: centerCoord.lat, lng: centerCoord.lng}
                     :{
                       lat: Number(latitude) || 80.500,
@@ -331,7 +331,6 @@ function BuildingModal({
                     }}
                     flagDistance={0.0003}
                   />
-
                 </div>
               </div>
             </div>
