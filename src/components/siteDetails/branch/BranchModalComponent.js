@@ -65,7 +65,7 @@ function BranchModal({
         };
       });
     } else {
-      const coordinates = JSON.stringify(`${longitude},${latitude}`).replaceAll('"', '');
+      const coordinates = JSON.stringify(`${latitude},${longitude}`).replaceAll('"', '');
       if (isAddButton) {
         await BranchAddService({ location_id, branchName, coordinates }, handleSuccess, handleException);
         // clearForm();
@@ -103,11 +103,10 @@ function BranchModal({
 
   const onMapClick = (e) => {
     delete errorObject.coordinates;
-    setLongitude(e.latLng.lat());
-    setLatitude(e.latLng.lng());
+    setLatitude(e.latLng.lat());
+    setLongitude(e.latLng.lng());
   };
   const validateForNullValue = (value, type) => {
-    // LocationFormValidate(value, type, setErrorObject);
     BranchFormValidate(value, type, setErrorObject);
   };
 
@@ -147,7 +146,6 @@ function BranchModal({
                       className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
                       placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
                       required
-                      // onBlur={() =>validateForNullValue(branchName, 'stateName')}
                       onBlur={() => validateForNullValue(branchName, 'branchName')}
                       onChange={(e) => { setbranchName(e.target.value); }}
                       autoComplete="off"

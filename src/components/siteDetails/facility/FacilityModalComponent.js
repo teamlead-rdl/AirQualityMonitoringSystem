@@ -67,7 +67,7 @@ function FacilityModal({
         };
       });
     } else {
-      const coordinates = JSON.stringify(`${longitude},${latitude}`).replaceAll('"', '');
+      const coordinates = JSON.stringify(`${latitude},${longitude}`).replaceAll('"', '');
       if (isAddButton) {
         await FacilitiyAddService({
           facilityName, coordinates, location_id, branch_id,
@@ -104,11 +104,10 @@ function FacilityModal({
   };
   const onMapClick = (e) => {
     delete errorObject.coordinates;
-    setLongitude(e.latLng.lat());
-    setLatitude(e.latLng.lng());
+    setLatitude(e.latLng.lat());
+    setLongitude(e.latLng.lng());
   };
   const validateForNullValue = (value, type) => {
-    // LocationFormValidate(value, type, setErrorObject);
     FacilityAddFormValidate(value, type, setErrorObject);
   };
 
@@ -147,7 +146,6 @@ function FacilityModal({
                       className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300
                       placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
                       required
-                      // onBlur={() =>validateForNullValue(facilityName, 'stateName')}
                       onBlur={() => validateForNullValue(facilityName, 'facilityName')}
                       onChange={(e) => { setFacilityName(e.target.value); }}
                       autoComplete="off"
@@ -207,12 +205,7 @@ function FacilityModal({
                     longitude={markerLng}
                     latitude={markerLat}
                     stateName={editData.facilityName}
-                    zoom={11}
-                    // center={{
-                    //   lat: locationCoordinationList[0]?.position.lat
-                    //   || 19.34187,
-                    //   lng: locationCoordinationList[0]?.position.lng || 78.30460,
-                    // }}
+                    zoom={10}
                     center={isAddButton ? {lat: centerCoord.lat, lng: centerCoord.lng}
                     :{
                       lat: Number(latitude) || 80.500,

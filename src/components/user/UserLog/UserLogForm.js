@@ -39,7 +39,7 @@ export default function UserLogForm() {
     {
       field: 'userId',
       headerName: 'User ID',
-      width: 170,
+      width: 130,
     },
     {
       field: 'userEmail',
@@ -49,13 +49,23 @@ export default function UserLogForm() {
     {
       field: 'action',
       headerName: 'Action',
-      width: 150,
+      width: 100,
     },
     {
       field: 'created_at',
       headerName: 'Date & Time',
-      width: 150,
+      width: 230,
     },
+    // {
+    //   field: 'date',
+    //   headerName: 'Date',
+    //   width: 100,
+    // },
+    // {
+    //   field: 'time',
+    //   headerName: 'Time',
+    //   width: 100,
+    // },
   ];
 
   const loadLocation = () => {
@@ -329,12 +339,12 @@ export default function UserLogForm() {
           >
             <div className="mt-3 ml-2 float-right inline-block">
               <FormControl sx={{ margin: '5px' }}>
-                <Button size="large" variant="outlined" autoFocus onClick={handleCancel}>
+                <Button autoFocus onClick={handleCancel}>
                   Cancel
                 </Button>
               </FormControl>
               <FormControl sx={{ margin: '5px' }}>
-                <Button size="large" variant="contained" type="submit">
+                <Button type="submit">
                   Submit
                 </Button>
               </FormControl>
