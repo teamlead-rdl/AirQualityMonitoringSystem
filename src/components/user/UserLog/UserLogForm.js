@@ -338,7 +338,6 @@ export default function UserLogForm() {
             pageSize={5}
             loading={isLoading}
             rowsPerPageOptions={[5]}
-            checkboxSelection
             disableSelectionOnClick
           />
         </div>

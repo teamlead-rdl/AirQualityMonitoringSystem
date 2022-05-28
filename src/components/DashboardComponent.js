@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import './dashboard/dragResize.scss';
 import GridLayout from 'react-grid-layout';
-
+import { Button } from '@mui/material';
 import Widget from './widget/Widget';
 import Featured from './featured/Featured';
 import BarChart from './chart/barChart/BarChart';
 import LineChart from './chart/lineChart/LineChart';
-import { lineChartData } from './chart/lineChart/responsiveLineChartData'
+import { lineChartData } from './chart/lineChart/responsiveLineChartData';
 import Table from './table/Table';
 import { DisplayLineChart } from '../services/LoginPageService';
-
+import AddWidgetModal from './dashboard/AddWidgetModal';
+/* eslint-disable no-unused-vars */
 function Dashboard() {
+  const [addWidget, setAddWidget] = useState(false);
   const [arrayList, setArrayList] = useState([]);
   const [showSave, setSaveLayout] = useState(false);
   const [layout, setLayout] = useState([
@@ -37,8 +39,12 @@ function Dashboard() {
   }, [layout]);
 
   const handleSuccess = (dataObject) => {
-    const res = Object.values(dataObject.reduce((acc,{parameterName, last_val, avg_val, min_val, max_val})=>{
-      acc[parameterName] = acc[parameterName] || {parameterName, last_val: [], max_val: [], min_val: [], avg_val: []};
+    const res = Object.values(dataObject.reduce((acc, {
+      parameterName, last_val, avg_val, min_val, max_val,
+    }) => {
+      acc[parameterName] = acc[parameterName] || {
+        parameterName, last_val: [], max_val: [], min_val: [], avg_val: [],
+      };
       acc[parameterName].avg_val.push(avg_val);
       acc[parameterName].min_val.push(min_val);
       acc[parameterName].max_val.push(max_val);
@@ -51,7 +57,12 @@ function Dashboard() {
   };
   return (
     <div>
-      <div className="widgets">
+      <div className="widgets" style={{ flexFlow: 'row-reverse', paddingTop: 5, paddingBottom: 0 }}>
+        <Button onClick={() => setAddWidget((oldvalue) => !oldvalue)}>
+          Add Widget
+        </Button>
+      </div>
+      <div className="widgets" style={{ paddingTop: 5 }}>
         <Widget type="user" />
         <Widget type="labs" />
         <Widget type="devices" />
@@ -68,7 +79,7 @@ function Dashboard() {
           <Featured />
         </div>
         <div key="b">
-          <BarChart title="Gas Emissions (AQMS-Floor:02-LAB:12)" aspect={2 / 1} data={arrayList}/>
+          <BarChart title="Gas Emissions (AQMS-Floor:02-LAB:12)" aspect={2 / 1} data={arrayList} />
         </div>
         <div key="c">
           <LineChart title="Gas Emissions (AQMS-Floor:02-LAB:12)" aspect={2 / 1} data={lineChartData} />
@@ -83,6 +94,10 @@ function Dashboard() {
           </div>
         </div>
       </GridLayout>
+      <AddWidgetModal
+        open={addWidget}
+        setAddWidget={setAddWidget}
+      />
     </div>
   );
 }
