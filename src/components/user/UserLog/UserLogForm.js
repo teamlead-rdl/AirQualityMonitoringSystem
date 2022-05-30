@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  InputLabel, MenuItem, FormControl, Select, Grid, Box, Button, TextField, Typography,
+  InputLabel, MenuItem, FormControl, Select, Grid, Box, Button, TextField,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import {
@@ -64,16 +64,6 @@ export default function UserLogForm() {
       headerName: 'Time',
       width: 250,
     },
-    // {
-    //   field: 'created_at',
-    //   headerName: 'Date',
-    //   width: 100,
-    // },
-    // {
-    //   field: 'time',
-    //   headerName: 'Time',
-    //   width: 100,
-    // },
   ];
 
   const loadLocation = () => {
