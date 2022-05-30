@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  InputLabel, MenuItem, FormControl, Select, Grid, Box, Button, TextField,
+  InputLabel, MenuItem, FormControl, Select, Grid, Box, Button, TextField, Typography,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import {
@@ -10,6 +10,7 @@ import {
   FetchUserLogService,
   FetchUserLogDetails,
 } from '../../../services/LoginPageService';
+import { getFullDate, getFullTime } from '../../../utils/helperFunctions';
 
 export default function UserLogForm() {
   const [location_id, setLocation_id] = useState('');
@@ -46,7 +47,7 @@ export default function UserLogForm() {
     {
       field: 'userEmail',
       headerName: 'Email',
-      width: 150,
+      width: 250,
     },
     {
       field: 'action',
@@ -54,9 +55,14 @@ export default function UserLogForm() {
       width: 100,
     },
     {
-      field: 'created_at',
-      headerName: 'Date & Time',
-      width: 230,
+      field: 'createdDate',
+      headerName: 'Date',
+      width: 250,
+    },
+    {
+      field: 'createdTime',
+      headerName: 'Time',
+      width: 250,
     },
     // {
     //   field: 'date',
@@ -118,7 +124,12 @@ export default function UserLogForm() {
   };
 
   const UserLogDetailsHandleSuccess = (dataObject) => {
-    setUserLogList(dataObject);
+    const userLog = dataObject.map((data, index)=>{
+      const createdDate = getFullDate(data.created_at);
+      const createdTime = getFullTime(data.created_at);
+      return {...data, createdDate, createdTime};
+    })
+    setUserLogList(userLog);
     setGridLoading(false);
   };
 
@@ -338,7 +349,6 @@ export default function UserLogForm() {
             pageSize={5}
             loading={isLoading}
             rowsPerPageOptions={[5]}
-            checkboxSelection
             disableSelectionOnClick
           />
         </div>
