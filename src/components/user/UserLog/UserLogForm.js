@@ -65,7 +65,7 @@ export default function UserLogForm() {
       width: 250,
     },
     // {
-    //   field: 'date',
+    //   field: 'created_at',
     //   headerName: 'Date',
     //   width: 100,
     // },
