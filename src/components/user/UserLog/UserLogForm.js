@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  InputLabel, MenuItem, FormControl, Select, Grid, Box, Button, TextField,
+  InputLabel, MenuItem, FormControl, Select, Grid, Box, Button, TextField, Typography,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import {
@@ -56,10 +56,17 @@ export default function UserLogForm() {
     {
       field: 'created_at',
       headerName: 'Date & Time',
-      width: 230,
+      width: 250,
+      renderCell: (params) => (
+        <Typography>
+          {
+            params.value.replaceAll("T", ", ").split('.')[0]
+          }
+        </Typography>
+      ),
     },
     // {
-    //   field: 'date',
+    //   field: 'created_at',
     //   headerName: 'Date',
     //   width: 100,
     // },
