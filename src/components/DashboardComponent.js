@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import './dashboard/dragResize.scss';
 import GridLayout from 'react-grid-layout';
-import { Button, Fab } from '@mui/material';
 import Widget from './widget/Widget';
 import Featured from './featured/Featured';
 import BarChart from './chart/barChart/BarChart';
 import LineChart from './chart/lineChart/LineChart';
-import AddIcon from '@mui/icons-material/Add';
 import { lineChartData } from './chart/lineChart/responsiveLineChartData';
 import Table from './table/Table';
 import { DisplayLineChart } from '../services/LoginPageService';
 /* eslint-disable no-unused-vars */
 function Dashboard() {
-  const [addWidget, setAddWidget] = useState(false);
   const [arrayList, setArrayList] = useState([]);
   const [showSave, setSaveLayout] = useState(false);
   const [layout, setLayout] = useState([
