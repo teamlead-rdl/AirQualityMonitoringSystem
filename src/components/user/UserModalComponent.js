@@ -1,4 +1,5 @@
 import {
+  /* eslint-disable max-len */
   Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, MenuItem, Select, Switch, TextField,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -9,12 +10,15 @@ import ApplicationStore from '../../utils/localStorageUtil';
 import { AddUserValidate } from '../../validation/formValidation';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import ConfirmPassword from './passwordConfirmComponent';
+/* eslint-disable no-shadow */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-unused-vars */
 function UserModal({
   open, setOpen, isAddButton, userData, setRefreshData,
 }) {
   const { userDetails } = ApplicationStore().getStorage('userDetails');
   const isSuperAdmin = userDetails ? userDetails.userRole === 'superAdmin' : true;
-  const userRole = userDetails.userRole;
+  const { userRole } = userDetails;
   const [id, setId] = useState('');
   const [empId, setEmployeeId] = useState('');
   const [email, setEmailId] = useState('');
@@ -32,7 +36,7 @@ function UserModal({
   const [password, setConfirmPassword] = useState('');
   const [btnReset, setBtnReset] = useState(false);
   const [errorObject, setErrorObject] = useState({});
-  
+
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
@@ -47,19 +51,23 @@ function UserModal({
   }, [userData]);
 
   const loaddata = () => {
+    setBranchList([]);
+    setFacilityList([]);
+    setBranchId('');
+    setFacilityId('');
     if (!isAddButton) {
       if (userData?.location_id) {
         FetchLocationService((locationRespObj) => {
           locationHandleSuccess(locationRespObj);
           FetchBranchService({
-            location_id: userData?.location_id
+            location_id: userData?.location_id,
           }, (branchRespObj) => {
             setLocationId(userData.location_id);
             branchHandleSuccess(branchRespObj);
             if (userData?.branch_id) {
               FetchFacilitiyService({
                 location_id: userData?.location_id,
-                branch_id: userData?.branch_id
+                branch_id: userData?.branch_id,
               }, (facilityRespObj) => {
                 setBranchId(userData.branch_id);
                 facilityHandleSuccess(facilityRespObj);
@@ -67,9 +75,9 @@ function UserModal({
                 if (userData?.facility_id) {
                   setFacilityId(userData.facility_id);
                 }
-              }, locationHandleException)
+              }, locationHandleException);
             }
-          }, locationHandleException)
+          }, locationHandleException);
         }, locationHandleException);
       }
     } else {
@@ -77,6 +85,8 @@ function UserModal({
         locationHandleSuccess(locationRespObj);
         setBranchList([]);
         setFacilityList([]);
+        setBranchId('');
+        setFacilityId('');
       }, locationHandleException);
     }
     setId(userData?.id || '');
@@ -193,29 +203,28 @@ function UserModal({
 
   const facilityHandleException = () => {};
 
-  const onLocationChange = (location_id) =>{
+  const onLocationChange = (location_id) => {
     setLocationId(location_id);
-    if(location_id){
+    if (location_id) {
       FetchBranchService({ location_id }, branchHandleSuccess, branchHandleException);
     } else {
       setBranchList([]);
       setFacilityList([]);
     }
-  }
+  };
 
-  const onBranchChange = (branch_id) =>{
+  const onBranchChange = (branch_id) => {
     setBranchId(branch_id);
-    if(branch_id){
+    if (branch_id) {
       FetchFacilitiyService({ location_id, branch_id }, facilityHandleSuccess, facilityHandleException);
-    }
-    else{
+    } else {
       setFacilityList([]);
     }
-  }
+  };
 
-  const onFacilityChange = (facility_id) =>{
+  const onFacilityChange = (facility_id) => {
     setFacilityId(facility_id);
-  }
+  };
 
   return (
     <Dialog
@@ -246,16 +255,16 @@ function UserModal({
                         <InputLabel id="demo-simple-select-standard-label">Location</InputLabel>
                         <Select
                           value={location_id}
-                          onChange={(e)=>onLocationChange(e.target.value)}
+                          onChange={(e) => onLocationChange(e.target.value)}
                           label="Location"
                         >
                           <MenuItem value="" key={0}>
                             <em>N/A</em>
                           </MenuItem>
-                          {locationList?.map((data, index) =>{
-                            return(
-                              <MenuItem value={data.id} key={index+1}>{data.stateName}</MenuItem>
-                            )
+                          {locationList?.map((data, index) => {
+                            return (
+                              <MenuItem value={data.id} key={index + 1}>{data.stateName}</MenuItem>
+                            );
                           })}
                         </Select>
                       </FormControl>
@@ -275,16 +284,16 @@ function UserModal({
                         <InputLabel id="demo-simple-select-standard-label">Branch</InputLabel>
                         <Select
                           value={branch_id}
-                          onChange={(e)=>onBranchChange(e.target.value)}
+                          onChange={(e) => onBranchChange(e.target.value)}
                           label="Branch"
                         >
                           <MenuItem value="" key={0}>
                             <em>N/A</em>
                           </MenuItem>
-                          {branchList?.map((data, index) =>{
-                            return(
-                              <MenuItem value={data.id} key={index+1}>{data.branchName}</MenuItem>
-                            )
+                          {branchList?.map((data, index) => {
+                            return (
+                              <MenuItem value={data.id} key={index + 1}>{data.branchName}</MenuItem>
+                            );
                           })}
                         </Select>
                       </FormControl>
@@ -304,16 +313,16 @@ function UserModal({
                         <InputLabel id="demo-simple-select-standard-label">Facility</InputLabel>
                         <Select
                           value={facility_id}
-                          onChange={(e)=>onFacilityChange(e.target.value)}
+                          onChange={(e) => onFacilityChange(e.target.value)}
                           label="Facility"
                         >
                           <MenuItem value="" key={0}>
                             <em>N/A</em>
                           </MenuItem>
-                          {facilityList?.map((data, index) =>{
-                            return(
-                              <MenuItem value={data.id} key={index+1}>{data.facilityName}</MenuItem>
-                            )
+                          {facilityList?.map((data, index) => {
+                            return (
+                              <MenuItem value={data.id} key={index + 1}>{data.facilityName}</MenuItem>
+                            );
                           })}
                         </Select>
                       </FormControl>
@@ -429,7 +438,7 @@ function UserModal({
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={empRole}
-                        disabled={userRole === "Manager" && true}
+                        disabled={userRole === 'Manager' && true}
                         label="Role"
                         onChange={(e) => {
                           setRole(e.target.value);
@@ -445,11 +454,21 @@ function UserModal({
             </div>
             <div className="">
               <div className="">
-              <FormGroup sx={{display : 'block'}}>
-                <FormControlLabel control={<Switch checked={empNotification !=0} onChange={(e)=>{
-                  setEmpNotification(e.target.checked);
-                }} color="warning"/>} label="Enable Notification" />
-              </FormGroup>
+                <FormGroup sx={{ display: 'block' }}>
+                  <FormControlLabel
+                    control={(
+                      <Switch
+                      /* eslint-disable-next-line */
+                        checked={empNotification != 0}
+                        onChange={(e) => {
+                          setEmpNotification(e.target.checked);
+                        }}
+                        color="warning"
+                      />
+                    )}
+                    label="Enable Notification"
+                  />
+                </FormGroup>
               </div>
             </div>
             <div className="rounded-md -space-y-px float-right">
@@ -477,9 +496,13 @@ function UserModal({
               </Button>
               <Button
                 onClick={() => {
-                  setOpen(false);
                   setErrorObject({});
+                  setBranchList([]);
+                  setFacilityList([]);
+                  setBranchId('');
+                  setFacilityId('');
                   loaddata();
+                  setOpen(false);
                 }}
               >
                 Cancel
