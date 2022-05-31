@@ -1,6 +1,7 @@
 import {
+  Backdrop,
   /* eslint-disable max-len */
-  Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, MenuItem, Select, Switch, TextField,
+  Button, CircularProgress, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, MenuItem, Select, Switch, TextField,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import {
@@ -36,7 +37,7 @@ function UserModal({
   const [password, setConfirmPassword] = useState('');
   const [btnReset, setBtnReset] = useState(false);
   const [errorObject, setErrorObject] = useState({});
-
+  const [backdrop, setBackdrop] = useState(false);
   const [openNotification, setNotification] = useState({
     status: false,
     type: 'error',
@@ -46,9 +47,13 @@ function UserModal({
   useEffect(() => {
     if (userData) {
       setOpen(open);
+      setBackdrop(true);
       loaddata();
     }
-  }, [userData]);
+    if (isAddButton) {
+      setBackdrop(false);
+    }
+  }, [userData, isAddButton]);
 
   const loaddata = () => {
     setBranchList([]);
@@ -57,6 +62,7 @@ function UserModal({
     setFacilityId('');
     if (!isAddButton) {
       if (userData?.location_id) {
+        setBackdrop(true);
         FetchLocationService((locationRespObj) => {
           locationHandleSuccess(locationRespObj);
           FetchBranchService({
@@ -75,10 +81,15 @@ function UserModal({
                 if (userData?.facility_id) {
                   setFacilityId(userData.facility_id);
                 }
+                setBackdrop(false);
               }, locationHandleException);
+            } else {
+              setBackdrop(false);
             }
           }, locationHandleException);
         }, locationHandleException);
+      } else {
+        setBackdrop(false);
       }
     } else {
       FetchLocationService((locationRespObj) => {
@@ -523,6 +534,12 @@ function UserModal({
         openNotification={openNotification.status}
         type={openNotification.type}
       />
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={backdrop}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Dialog>
   );
 }
