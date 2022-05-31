@@ -9,11 +9,13 @@ import LineChart from './chart/lineChart/LineChart';
 import AddIcon from '@mui/icons-material/Add';
 import { lineChartData } from './chart/lineChart/responsiveLineChartData';
 import Table from './table/Table';
-import { DisplayLineChart } from '../services/LoginPageService';
+import { DisplayLineChart, FetchDeviceGraphData, FetchDeviceSensorGraphData } from '../services/LoginPageService';
 import AddWidgetModal from './dashboard/AddWidgetModal';
 /* eslint-disable no-unused-vars */
 function Dashboard() {
   const [addWidget, setAddWidget] = useState(false);
+  const [deviceGraphList, setDeviceGraphList] = useState([]);
+  const [deviceSensorGraphList, setDeviceSensorGraphList] = useState([]);
   const [arrayList, setArrayList] = useState([]);
   const [showSave, setSaveLayout] = useState(false);
   const [layout, setLayout] = useState([
@@ -32,13 +34,46 @@ function Dashboard() {
     {
       i: 'e', x: 1, y: 0, w: 6, h: 11, minW: 4, maxW: 9, minH: 11, maxH: 11,
     },
+    {
+      i: 'f', x: 1, y: 0, w: 6, h: 11, minW: 4, maxW: 9, minH: 11, maxH: 11,
+    },
+    {
+      i: 'g', x: 1, y: 0, w: 6, h: 11, minW: 4, maxW: 9, minH: 11, maxH: 11,
+    },
   ]);
 
   useEffect(() => {
     setSaveLayout(true);
     DisplayLineChart(handleSuccess, handleException);
+    FetchDeviceGraphData({deviceId:"3",
+    segretionInterval:"60",
+    rangeInterval:"48*60"}, handleDeviceGraphSuccess, handleDeviceGraphException);
+    FetchDeviceSensorGraphData({sensorTagId:"43",
+    segretionInterval:"60",
+    rangeInterval:"50*60"}, handleDeviceSensorGraphSuccess, handleDeviceSensorGraphException)
   }, [layout]);
 
+  const handleDeviceGraphSuccess = (dataObject) =>{
+    const dataList = dataObject.map((data, index) =>{
+      return {...data, id: data.sensorTag, sensorTagId: data.id}
+    })
+    console.log(dataList);
+    setDeviceGraphList(dataList);
+  }
+
+  const handleDeviceSensorGraphSuccess = (dataObject) =>{
+    const dataList = dataObject.map((data, index) =>{
+      return {...data, id: data.sensorTag, sensorTagId: data.id}
+    })
+    console.log(dataObject);
+    // setDeviceSensorGraphList(dataObject);
+  }
+
+  const handleDeviceGraphException = (errorObject, errorMessage) => {
+  };
+
+  const handleDeviceSensorGraphException = (errorObject, errorMessage) => {
+  };
   const handleSuccess = (dataObject) => {
     const res = Object.values(dataObject.reduce((acc, {
       parameterName, last_val, avg_val, min_val, max_val,
@@ -52,6 +87,7 @@ function Dashboard() {
       acc[parameterName].last_val.push(last_val);
       return acc;
     }, {}));
+    console.log(dataObject);
     setArrayList(dataObject);
   };
   const handleException = (errorObject, errorMessage) => {
@@ -88,6 +124,12 @@ function Dashboard() {
         </div>
         <div key="e">
           <LineChart title="Gas Emissions (AQMS-Floor:02-LAB:12)" aspect={2 / 1} data={arrayList} />
+        </div>
+        <div key="f">
+          <LineChart title="Gas Emissions (AQMS-Floor:02-LAB:12)" aspect={2 / 1} data={deviceGraphList} />
+        </div>
+        <div key="g">
+          <LineChart title="Gas Emissions (AQMS-Floor:02-LAB:12)" aspect={2 / 1} data={deviceSensorGraphList} />
         </div>
         <div key="d">
           <div className="listContainer">

@@ -275,3 +275,7 @@ export const BumpTestFetchService = (data, successCallback, errorCallBack) => _f
 export const FetchUserLogService = (data, successCallback, errorCallBack) => _fetchService('userListDetails', 'POST', data, successCallback, errorCallBack);
 
 export const FetchUserLogDetails = (data, successCallback, errorCallBack) => _fetchService('userLog', 'POST', data, successCallback, errorCallBack);
+
+// ------------- Device Sensor graph data -----------//
+export const FetchDeviceGraphData = (data, successCallback, errorCallBack) => _fetchService('lastSampledValues', 'POST', data, successCallback, errorCallBack);
+export const FetchDeviceSensorGraphData = (data, successCallback, errorCallBack) => _fetchService('sensorTagIdData', 'POST', data, successCallback, errorCallBack);
