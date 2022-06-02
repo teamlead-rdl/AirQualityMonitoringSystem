@@ -57,7 +57,16 @@ function Dashboard() {
     const dataList = dataObject.map((data, index) =>{
       return {...data, id: data.sensorTag, sensorTagId: data.id}
     })
-    console.log(dataList);
+    // console.log(dataList);
+    // dataList.splice(0, 1);
+    // let maxXValue = 0;
+    // dataList.map((data, index) =>{
+    //   if(data.data.length >maxXValue){
+    //     maxXValue = data.data.length;
+    //   }
+    // });
+    // console.log(dataList);
+    // console.log(maxXValue);
     setDeviceGraphList(dataList);
   }
 
@@ -65,8 +74,10 @@ function Dashboard() {
     const dataList = dataObject.map((data, index) =>{
       return {...data, id: data.sensorTag, sensorTagId: data.id}
     })
+    // console.log(dataObject);
+    setDeviceSensorGraphList(dataObject);
+    console.log(lineChartData);
     console.log(dataObject);
-    // setDeviceSensorGraphList(dataObject);
   }
 
   const handleDeviceGraphException = (errorObject, errorMessage) => {
@@ -75,18 +86,18 @@ function Dashboard() {
   const handleDeviceSensorGraphException = (errorObject, errorMessage) => {
   };
   const handleSuccess = (dataObject) => {
-    const res = Object.values(dataObject.reduce((acc, {
-      parameterName, last_val, avg_val, min_val, max_val,
-    }) => {
-      acc[parameterName] = acc[parameterName] || {
-        parameterName, last_val: [], max_val: [], min_val: [], avg_val: [],
-      };
-      acc[parameterName].avg_val.push(avg_val);
-      acc[parameterName].min_val.push(min_val);
-      acc[parameterName].max_val.push(max_val);
-      acc[parameterName].last_val.push(last_val);
-      return acc;
-    }, {}));
+    // const res = Object.values(dataObject.reduce((acc, {
+    //   parameterName, last_val, avg_val, min_val, max_val,
+    // }) => {
+    //   acc[parameterName] = acc[parameterName] || {
+    //     parameterName, last_val: [], max_val: [], min_val: [], avg_val: [],
+    //   };
+    //   acc[parameterName].avg_val.push(avg_val);
+    //   acc[parameterName].min_val.push(min_val);
+    //   acc[parameterName].max_val.push(max_val);
+    //   acc[parameterName].last_val.push(last_val);
+    //   return acc;
+    // }, {}));
     console.log(dataObject);
     setArrayList(dataObject);
   };
