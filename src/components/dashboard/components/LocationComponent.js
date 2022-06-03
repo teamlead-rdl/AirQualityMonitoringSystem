@@ -6,7 +6,7 @@ import FacilityGridComponent from '../subComponent/siteDetailsComponent/Facility
 import FloorGridComponent from '../subComponent/siteDetailsComponent/FloorGridComponent'
 import LabGridComponent from '../subComponent/siteDetailsComponent/LabGridComponent'
 
-const LocationComponent = ({locationDetails, setLocationDetails}) => {
+const LocationComponent = ({locationDetails, setLocationDetails,setLocationCoordinationList, centerLat, centerLng}) => {
   const [locationState, setProgressState] = useState(0);
 
   useEffect(()=>{
@@ -17,7 +17,7 @@ const LocationComponent = ({locationDetails, setLocationDetails}) => {
     <div>
         LocationComponent
         {locationState === 0 ?
-          <LocationGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
+          <LocationGridComponent setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
         : ''}
         {locationState === 1 ?
         <BranchGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} /> 

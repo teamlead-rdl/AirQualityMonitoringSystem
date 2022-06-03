@@ -14,14 +14,19 @@ function Dashboard() {
     building_id: '',
     floor_id: '',
     lab_id: ''
-  })
+  });
+
+  const [locationCoordinationList, setLocationCoordinationList] = useState([]);
+  const [centerLat, setCenterLat] = useState(23.500);
+  const [centerLng, setCenterLng] = useState(80.500); 
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={8} sx={{
         marginTop: 1,
         backgroundColor: 'skyblue'
       }}>
-        <LocationComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} />
+        <LocationComponent setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} locationDetails={locationDetails} setLocationDetails={setLocationDetails} />
       </Grid>
       <Grid item xs={4} sx={{
         marginTop: 1,
@@ -37,7 +42,7 @@ function Dashboard() {
       <Grid item xs={4} sx={{
         backgroundColor: 'skyblue'
       }}>
-        <GeoLocationsComponent/>
+        <GeoLocationsComponent locationCoordination={locationCoordinationList} />
       </Grid>
     </Grid>
   );
