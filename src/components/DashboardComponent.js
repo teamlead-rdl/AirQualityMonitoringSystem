@@ -21,7 +21,7 @@ function Dashboard() {
         marginTop: 1,
         backgroundColor: 'skyblue'
       }}>
-        <LocationComponent locationDetails = {locationDetails, setLocationDetails}/>
+        <LocationComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} />
       </Grid>
       <Grid item xs={4} sx={{
         marginTop: 1,
