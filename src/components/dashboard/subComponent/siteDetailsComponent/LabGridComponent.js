@@ -1,8 +1,9 @@
+import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react'
 import { LabfetchService } from '../../../../services/LoginPageService';
 
-const LabGridComponent = ({locationDetails, setLocationDetails, setProgressState}) => {
+const LabGridComponent = ({locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels}) => {
   const [dataList, setDataList] = useState([]);
 
   const dataColumns = [
@@ -50,7 +51,12 @@ const LabGridComponent = ({locationDetails, setLocationDetails, setProgressState
       <h3 onClick={()=>{
         setLocationDetails((oldValue)=>{
           return {...oldValue, lab_id: selectedRow.id};
-        })
+        });
+
+        setBreadCrumbLabels((oldvalue)=>{
+          return { ...oldvalue, lablabel: selectedRow.labDepName}
+        });
+
         setProgressState(6);
       }}>
         {selectedRow.labDepName}
@@ -60,6 +66,29 @@ const LabGridComponent = ({locationDetails, setLocationDetails, setProgressState
   return (
     <div style={{ height: 400, width: '100%' }}>
       LabGridComponent
+      <Breadcrumbs aria-label="breadcrumb" separator="›">
+        <h3>
+          Location
+        </h3>
+        <h3>
+          {breadCrumbLabels.stateLabel}
+        </h3>
+        <h3>
+          {breadCrumbLabels.branchLabel}
+        </h3>
+        <h3>
+          {breadCrumbLabels.facilityLabel}
+        </h3>
+        <h3>
+          {breadCrumbLabels.buildingLabel}
+        </h3>
+        <Typography
+          underline="hover"
+          color="inherit"
+        >
+          {breadCrumbLabels.floorLabel}
+        </Typography>
+      </Breadcrumbs>
       <DataGrid
         rows={dataList}
         columns={dataColumns}

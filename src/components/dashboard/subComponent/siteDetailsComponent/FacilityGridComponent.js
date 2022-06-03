@@ -1,8 +1,9 @@
+import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react'
 import { FetchFacilitiyService } from '../../../../services/LoginPageService';
 
-const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgressState}) => {
+const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels}) => {
   const facilityColumns = [
     {
       field: 'facilityName',
@@ -51,7 +52,12 @@ const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgress
       <h3 onClick={()=>{
         setLocationDetails((oldValue)=>{
           return {...oldValue, facility_id: selectedRow.id};
-        })
+        });
+
+        setBreadCrumbLabels((oldvalue)=>{
+          return { ...oldvalue, facilityLabel: selectedRow.facilityName}
+        });
+
         setProgressState(3);
       }}>
         {selectedRow.facilityName}
@@ -62,6 +68,20 @@ const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgress
   return (
     <div style={{ height: 400, width: '100%' }}>
       FacilityGridComponent
+      <Breadcrumbs aria-label="breadcrumb" separator="›">
+        <h3>
+          Location
+        </h3>
+        <h3>
+          {breadCrumbLabels.stateLabel}
+        </h3>
+        <Typography
+          underline="hover"
+          color="inherit"
+        >
+          {breadCrumbLabels.branchLabel}
+        </Typography>
+      </Breadcrumbs>
       <DataGrid
         rows={dataList}
         columns={facilityColumns}

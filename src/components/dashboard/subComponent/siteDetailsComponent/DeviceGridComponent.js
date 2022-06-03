@@ -1,11 +1,11 @@
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react'
 import { DeviceFetchService } from '../../../../services/LoginPageService';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, Breadcrumbs, CircularProgress, Typography } from '@mui/material';
 import { PlayArrow, PlayDisabled, Science, Upgrade } from '@mui/icons-material';
 import { darken, lighten } from '@mui/material/styles';
 
-const DeviceGridComponent = ({locationDetails, setLocationDetails, setProgressState}) => {
+const DeviceGridComponent = ({locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels}) => {
   const columns = [
     {
         field: 'deviceName',
@@ -100,6 +100,32 @@ const DeviceGridComponent = ({locationDetails, setLocationDetails, setProgressSt
   return (
     <div>
         DeviceGridComponent
+        <Breadcrumbs aria-label="breadcrumb" separator="›">
+        <h3>
+          Location
+        </h3>
+        <h3>
+          {breadCrumbLabels.stateLabel}
+        </h3>
+        <h3>
+          {breadCrumbLabels.branchLabel}
+        </h3>
+        <h3>
+          {breadCrumbLabels.facilityLabel}
+        </h3>
+        <h3>
+          {breadCrumbLabels.buildingLabel}
+        </h3>
+        <h3>
+          {breadCrumbLabels.floorLabel}
+        </h3>
+        <Typography
+          underline="hover"
+          color="inherit"
+        >
+          {breadCrumbLabels.lablabel}
+        </Typography>
+      </Breadcrumbs>
         <Box
           sx={{
             height: 400,
