@@ -2,7 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react'
 import { FetchBranchService } from '../../../../services/LoginPageService';
 
-const BranchGridComponent = ({locationDetails, setLocationDetails, setProgressState}) => {
+const BranchGridComponent = ({locationDetails, setLocationDetails, setProgressState, setLocationCoordinationList, centerLat, centerLng}) => {
   const [dataList, setDataList] = useState([]);
 
   const branchColumns = [
@@ -38,6 +38,20 @@ const BranchGridComponent = ({locationDetails, setLocationDetails, setProgressSt
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);
     setProgressState(1);
+    const newArray = dataObject.data ? dataObject.data.map((item) => {
+      const coordinates = item.coordinates ? item.coordinates.replaceAll('"', '').split(',') : [];
+      return {
+        id: item.id,
+        name: item.stateName,
+        position: {
+          lat: parseFloat(coordinates[0]),
+          lng: parseFloat(coordinates[1]),
+        },        
+      };
+    })
+      : [];      
+    setLocationCoordinationList(newArray);  
+
   }
 
   const handleException = (errorObject) => {

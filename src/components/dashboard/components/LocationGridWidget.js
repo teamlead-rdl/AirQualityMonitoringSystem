@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import LocationGridComponent from '../subComponent/siteDetailsComponent/LocationGridComponent'
+import LocationGridComponent from '../subComponent/siteDetailsComponent/LocationGridWidget'
 import BranchGridComponent from '../subComponent/siteDetailsComponent/BranchGridComponent'
 import BuildingGridComponent from '../subComponent/siteDetailsComponent/BuildingGridComponent'
 import FacilityGridComponent from '../subComponent/siteDetailsComponent/FacilityGridComponent'
 import FloorGridComponent from '../subComponent/siteDetailsComponent/FloorGridComponent'
-import LabGridComponent from '../subComponent/siteDetailsComponent/LabGridComponent'
+import LabGridComponent from '../subComponent/siteDetailsComponent/LabGridWidget'
 
-<<<<<<< HEAD:src/components/dashboard/components/LocationComponent.js
-const LocationComponent = ({locationDetails, setLocationDetails,setLocationCoordinationList, centerLat, centerLng}) => {
-=======
-const LocationGridWidget = ({locationDetails, setLocationDetails}) => {
->>>>>>> 40d45398dd30c95d2223e27b09e9f9d90f786bdd:src/components/dashboard/components/LocationGridWidget.js
+
+const LocationGridWidget = ({locationDetails, setLocationDetails, setLocationCoordinationList, centerLat, centerLng}) => {
   const [locationState, setProgressState] = useState(0);
 
   useEffect(()=>{
@@ -24,7 +21,7 @@ const LocationGridWidget = ({locationDetails, setLocationDetails}) => {
           <LocationGridComponent setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
         : ''}
         {locationState === 1 ?
-        <BranchGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} /> 
+        <BranchGridComponent setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} /> 
         : ''}
         {locationState === 2 ?
         <FacilityGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
