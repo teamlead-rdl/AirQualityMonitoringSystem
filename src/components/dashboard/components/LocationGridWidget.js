@@ -34,6 +34,9 @@ const LocationGridWidget = ({locationDetails, setLocationDetails}) => {
         {locationState === 5 ?
          <LabGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
         : ''}
+        {
+          locationState === 6 ? 'Device List goes here...' : ''
+        }
     </div>
   )
 }

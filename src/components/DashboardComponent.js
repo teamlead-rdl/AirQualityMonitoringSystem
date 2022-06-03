@@ -17,7 +17,7 @@ function Dashboard() {
   return (
     <Grid container spacing={1}>
       <Grid item xs={8}>
-        <Grid container sx={12}>
+        <Grid container item xs={12}>
           <Grid item xs={12} sx={{
             marginTop: 1,
             backgroundColor: 'skyblue'
