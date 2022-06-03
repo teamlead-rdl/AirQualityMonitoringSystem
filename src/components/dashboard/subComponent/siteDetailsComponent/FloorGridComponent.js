@@ -2,7 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react'
 import { FloorfetchService } from '../../../../services/LoginPageService';
 
-const FloorGridComponent = ({locationDetails, setLocationDetails, setProgressState}) => {
+const FloorGridComponent = ({setImg,locationDetails, setLocationDetails, setProgressState}) => {
   const dataColumns = [
     {
       field: 'floorName',
@@ -52,6 +52,8 @@ const FloorGridComponent = ({locationDetails, setLocationDetails, setProgressSta
           return {...oldValue, floor_id: selectedRow.id};
         })
         setProgressState(5);
+        setImg(selectedRow.floorMap);
+
       }}>
         {selectedRow.floorName}
       </h3>

@@ -5,15 +5,18 @@ import BuildingGridComponent from '../subComponent/siteDetailsComponent/Building
 import FacilityGridComponent from '../subComponent/siteDetailsComponent/FacilityGridComponent'
 import FloorGridComponent from '../subComponent/siteDetailsComponent/FloorGridComponent'
 import LabGridComponent from '../subComponent/siteDetailsComponent/LabGridComponent'
+import DeviceGridComponent from '../subComponent/siteDetailsComponent/DeviceGridComponent'
 
-const LocationGridWidget = ({locationDetails, setLocationDetails, setLocationCoordinationList, centerLat, centerLng}) => {
+const LocationGridWidget = ({locationDetails, setLocationDetails, setImageState,setImg,  setLocationCoordinationList, centerLat, centerLng}) => {
   const [locationState, setProgressState] = useState(0);
 
   
   
 
   useEffect(()=>{
-
+      if(locationState === 4 || locationState === 5 || locationState === 6){
+        setImageState(1);
+      }
   },[locationState]);
 
   return (
@@ -29,16 +32,18 @@ const LocationGridWidget = ({locationDetails, setLocationDetails, setLocationCoo
         <FacilityGridComponent setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
         : ''}
         {locationState === 3 ?
-        <BuildingGridComponent setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
+        <BuildingGridComponent setImg={setImg} setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
         : ''}
-        {locationState === 4 ?
-         <FloorGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
+        {locationState === 4 ?        
+         <FloorGridComponent setImg={setImg} locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
         : ''}
         {locationState === 5 ?
          <LabGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
         : ''}
         {
-          locationState === 6 ? 'Device List goes here...' : ''
+          locationState === 6 ? 
+          <DeviceGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState}/> 
+        : ''
         }
     </div>
   )

@@ -2,7 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react'
 import { BuildingFetchService } from '../../../../services/LoginPageService';
 
-const BuildingGridComponent = ({locationDetails, setLocationDetails, setProgressState, setLocationCoordinationList, centerLat, centerLng}) => {
+const BuildingGridComponent = ({locationDetails, setLocationDetails, setImg, setProgressState, setLocationCoordinationList, centerLat, centerLng}) => {
   const dataColumns = [
     {
       field: 'buildingName',
@@ -60,8 +60,11 @@ const BuildingGridComponent = ({locationDetails, setLocationDetails, setProgress
       <h3 onClick={()=>{
         setLocationDetails((oldValue)=>{
           return {...oldValue, building_id: selectedRow.id};
+
         })
         setProgressState(4);
+        setImg(selectedRow.buildingImg);
+
       }}>
         {selectedRow.buildingName}
       </h3>
