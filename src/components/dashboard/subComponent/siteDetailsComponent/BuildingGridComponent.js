@@ -32,7 +32,7 @@ const BuildingGridComponent = ({locationDetails, setLocationDetails, setProgress
       branch_id: locationDetails.branch_id,
       facility_id: locationDetails.facility_id,
     }, handleSuccess, handleException);
-  },[]);
+  },[locationDetails]);
 
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);

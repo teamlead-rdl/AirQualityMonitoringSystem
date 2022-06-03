@@ -32,7 +32,6 @@ const BranchGridComponent = ({locationDetails, setLocationDetails, setProgressSt
     FetchBranchService({
       location_id : locationDetails.location_id,
     }, handleSuccess, handleException);
-    console.log(locationDetails);
   },[locationDetails]);
 
   const handleSuccess = (dataObject) => {
