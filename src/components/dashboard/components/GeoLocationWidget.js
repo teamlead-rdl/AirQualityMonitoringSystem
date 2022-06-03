@@ -32,7 +32,6 @@ const GeoLocationWidget = ({locationCoordination}) => {
         )
         : ''}
       </Grid>
-
     </div>
   )
 }
