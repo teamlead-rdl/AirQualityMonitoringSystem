@@ -10,10 +10,10 @@ const BranchGridComponent = ({locationDetails, setLocationDetails, setProgressSt
       field: 'branchName',
       headerName: 'Branch Name',
       width: 270,
-      // type: 'actions',
-      // getActions: (params) => [
-      //   <LinkTo selectedRow={params.row} />,
-      // ],
+      type: 'actions',
+      getActions: (params) => [
+        <LinkTo selectedRow={params.row} />,
+      ],
     },
     {
       field: 'totalFacilities',
@@ -42,6 +42,19 @@ const BranchGridComponent = ({locationDetails, setLocationDetails, setProgressSt
 
   const handleException = (errorObject) => {
   };
+
+  const LinkTo = ({selectedRow}) =>{
+    return (
+      <h3 onClick={()=>{
+        setLocationDetails((oldValue)=>{
+          return {...oldValue, branch_id: selectedRow.id};
+        })
+        setProgressState(2);
+      }}>
+        {selectedRow.branchName}
+      </h3>
+    )
+  }
 
   return (
     <div style={{ height: 400, width: '100%' }}>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './dashboard/dragResize.scss';
 import { Grid } from '@mui/material';
-import LocationComponent from './dashboard/components/LocationComponent';
+import LocationGridWidget from './dashboard/components/LocationGridWidget';
 import AlertComponent from './dashboard/components/AlertComponent';
 import AQIindexComponent from './dashboard/components/AQIindexComponent';
 import GeoLocationsComponent from './dashboard/components/GeoLocationsComponent';
@@ -26,7 +26,11 @@ function Dashboard() {
         marginTop: 1,
         backgroundColor: 'skyblue'
       }}>
+<<<<<<< HEAD
         <LocationComponent setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} locationDetails={locationDetails} setLocationDetails={setLocationDetails} />
+=======
+        <LocationGridWidget locationDetails={locationDetails} setLocationDetails={setLocationDetails} />
+>>>>>>> 40d45398dd30c95d2223e27b09e9f9d90f786bdd
       </Grid>
       <Grid item xs={4} sx={{
         marginTop: 1,
