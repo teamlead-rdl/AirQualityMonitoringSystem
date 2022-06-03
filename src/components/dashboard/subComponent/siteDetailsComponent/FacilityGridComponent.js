@@ -1,11 +1,12 @@
 import { DataGrid } from '@mui/x-data-grid';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { FetchFacilitiyService } from '../../../../services/LoginPageService';
 
 const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgressState}) => {
-  const branchColumns = [
+  const facilityColumns = [
     {
       field: 'facilityName',
-      headerName: 'Branch Name',
+      headerName: 'Facility Name',
       width: 170,
       type: 'actions',
       getActions: (params) => [
@@ -31,13 +32,40 @@ const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgress
 
   const [dataList, setDataList] = useState([]);
 
+  useEffect(()=>{
+    FetchFacilitiyService({
+      location_id: locationDetails.location_id,
+      branch_id: locationDetails.branch_id,
+    }, handleSuccess, handleException);
+  },[locationDetails]);
+
+  const handleSuccess = (dataObject) => {
+    setDataList(dataObject.data);
+  }
+
+  const handleException = (errorObject) => {
+  };
+
+  const LinkTo = ({selectedRow}) =>{
+    return (
+      <h3 onClick={()=>{
+        setLocationDetails((oldValue)=>{
+          return {...oldValue, facility_id: selectedRow.id};
+        })
+        setProgressState(3);
+      }}>
+        {selectedRow.facilityName}
+      </h3>
+    )
+  }
+
   return (
     <div style={{ height: 400, width: '100%' }}>
+      FacilityGridComponent
       <DataGrid
         rows={dataList}
-        columns={branchColumns}
+        columns={facilityColumns}
         pageSize={5}
-        loading={isLoading}
         rowsPerPageOptions={[5]}
         disableSelectionOnClick
         style={{ maxHeight: `${80}%` }}

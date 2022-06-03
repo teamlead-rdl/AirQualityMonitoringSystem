@@ -6,7 +6,7 @@ import FacilityGridComponent from '../subComponent/siteDetailsComponent/Facility
 import FloorGridComponent from '../subComponent/siteDetailsComponent/FloorGridComponent'
 import LabGridComponent from '../subComponent/siteDetailsComponent/LabGridComponent'
 
-const LocationComponent = ({locationDetails, setLocationDetails}) => {
+const LocationGridWidget = ({locationDetails, setLocationDetails}) => {
   const [locationState, setProgressState] = useState(0);
 
   useEffect(()=>{
@@ -15,7 +15,7 @@ const LocationComponent = ({locationDetails, setLocationDetails}) => {
 
   return (
     <div>
-        LocationComponent
+        LocationGridWidget
         {locationState === 0 ?
           <LocationGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
         : ''}
@@ -23,10 +23,10 @@ const LocationComponent = ({locationDetails, setLocationDetails}) => {
         <BranchGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} /> 
         : ''}
         {locationState === 2 ?
-        <BuildingGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
+        <FacilityGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
         : ''}
         {locationState === 3 ?
-        <FacilityGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
+        <BuildingGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
         : ''}
         {locationState === 4 ?
          <FloorGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
@@ -38,4 +38,4 @@ const LocationComponent = ({locationDetails, setLocationDetails}) => {
   )
 }
 
-export default LocationComponent
+export default LocationGridWidget
