@@ -19,6 +19,8 @@ function Dashboard() {
   const [centerLat, setCenterLat] = useState(23.500);
   const [centerLng, setCenterLng] = useState(80.500); 
 
+  
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={8}>
@@ -40,6 +42,7 @@ function Dashboard() {
         backgroundColor: 'pink',
         marginTop: 2
       }}>
+
         <GeoLocationWidget locationCoordination={locationCoordinationList}/>
       </Grid>
     </Grid>

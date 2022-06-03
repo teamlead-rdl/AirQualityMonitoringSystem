@@ -15,8 +15,8 @@ const GeoLocationWidget = ({locationCoordination}) => {
     const { locationDetails } = ApplicationStore().getStorage('userDetails');
     const { locationLabel, branchLabel, facilityLabel, buildingLabel } = ApplicationStore().getStorage('siteDetails');
     const { location_id, branch_id, facility_id } = locationDetails; 
-    setLocationCoordinationList(locationCoordination);    
-    console.log(locationCoordination);
+    setLocationCoordinationList(locationCoordination);  
+    
   }, [locationCoordination]);
   return (
     <div>

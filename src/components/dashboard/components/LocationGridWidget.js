@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import LocationGridComponent from '../subComponent/siteDetailsComponent/LocationGridWidget'
+import LocationGridComponent from '../subComponent/siteDetailsComponent/LocationGridComponent'
 import BranchGridComponent from '../subComponent/siteDetailsComponent/BranchGridComponent'
 import BuildingGridComponent from '../subComponent/siteDetailsComponent/BuildingGridComponent'
 import FacilityGridComponent from '../subComponent/siteDetailsComponent/FacilityGridComponent'
 import FloorGridComponent from '../subComponent/siteDetailsComponent/FloorGridComponent'
-import LabGridComponent from '../subComponent/siteDetailsComponent/LabGridWidget'
-
+import LabGridComponent from '../subComponent/siteDetailsComponent/LabGridComponent'
 
 const LocationGridWidget = ({locationDetails, setLocationDetails, setLocationCoordinationList, centerLat, centerLng}) => {
   const [locationState, setProgressState] = useState(0);
+
+  
+  
 
   useEffect(()=>{
 
@@ -18,7 +20,7 @@ const LocationGridWidget = ({locationDetails, setLocationDetails, setLocationCoo
     <div>
         LocationGridWidget
         {locationState === 0 ?
-          <LocationGridComponent setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
+          <LocationGridComponent setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} centerLnglocationDetails={locationDetails}  setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
         : ''}
         {locationState === 1 ?
         <BranchGridComponent setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} /> 
@@ -35,6 +37,9 @@ const LocationGridWidget = ({locationDetails, setLocationDetails, setLocationCoo
         {locationState === 5 ?
          <LabGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
         : ''}
+        {
+          locationState === 6 ? 'Device List goes here...' : ''
+        }
     </div>
   )
 }
