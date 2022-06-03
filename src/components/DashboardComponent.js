@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 import LocationGridWidget from './dashboard/components/LocationGridWidget';
 import AlertComponent from './dashboard/components/AlertComponent';
 import AQIindexComponent from './dashboard/components/AQIindexComponent';
-import GeoLocationsComponent from './dashboard/components/GeoLocationsComponent';
+import GeoLocationWidget from './dashboard/components/GeoLocationWidget';
 /* eslint-disable no-unused-vars */
 function Dashboard() {
   const [locationDetails, setLocationDetails] = useState({
@@ -37,7 +37,7 @@ function Dashboard() {
       <Grid item xs={4} sx={{
         backgroundColor: 'skyblue'
       }}>
-        <GeoLocationsComponent/>
+        <GeoLocationWidget/>
       </Grid>
     </Grid>
   );
