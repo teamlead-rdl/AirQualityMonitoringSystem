@@ -2,7 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react'
 import { FetchLocationService } from '../../../../services/LoginPageService';
 
-const LocationGridComponent = () => {
+const LocationGridComponent = ({locationDetails, setLocationDetails, setProgressState}) => {
   const [dataList, setDataList] = useState([]);
 
   const columns = [
@@ -10,10 +10,10 @@ const LocationGridComponent = () => {
       field: 'stateName',
       headerName: 'Location Name',
       width: 270,
-      // type: 'actions',
-      // getActions: (params) => [
-      //   <LinkTo selectedRow={params.row} />,
-      // ],
+      type: 'actions',
+      getActions: (params) => [
+        <LinkTo selectedRow={params.row} />,
+      ],
     },
     {
       field: 'totalBuildings',
@@ -32,6 +32,18 @@ const LocationGridComponent = () => {
     FetchLocationService(handleSuccess, handleException);
   },[]);
 
+  const LinkTo = ({selectedRow}) =>{
+    return (
+      <h3 onClick={()=>{
+        setLocationDetails((oldValue)=>{
+          return {...oldValue, location_id: selectedRow.id};
+        })
+        setProgressState(1);
+      }}>
+        {selectedRow.stateName}
+      </h3>
+    )
+  }
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);
   }
