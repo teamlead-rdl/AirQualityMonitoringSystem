@@ -13,7 +13,10 @@ function Dashboard() {
     building_id: '',
     floor_id: '',
     lab_id: ''
-  })
+  });
+
+  const [locationState, setProgressState] = useState(0);
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={8}>
@@ -22,7 +25,7 @@ function Dashboard() {
             marginTop: 1,
             backgroundColor: 'skyblue'
           }}>
-            <LocationGridWidget locationDetails={locationDetails} setLocationDetails={setLocationDetails} />
+            <LocationGridWidget locationDetails={locationDetails} setLocationDetails={setLocationDetails} locationState={locationState} setProgressState={setProgressState} />
           </Grid>
 
           <Grid item xs={12} sx={{

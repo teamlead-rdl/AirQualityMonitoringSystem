@@ -5,9 +5,9 @@ import BuildingGridComponent from '../subComponent/siteDetailsComponent/Building
 import FacilityGridComponent from '../subComponent/siteDetailsComponent/FacilityGridComponent'
 import FloorGridComponent from '../subComponent/siteDetailsComponent/FloorGridComponent'
 import LabGridComponent from '../subComponent/siteDetailsComponent/LabGridComponent'
+import DeviceGridComponent from '../subComponent/siteDetailsComponent/DeviceGridComponent'
 
-const LocationGridWidget = ({locationDetails, setLocationDetails}) => {
-  const [locationState, setProgressState] = useState(0);
+const LocationGridWidget = ({locationDetails, setLocationDetails, locationState, setProgressState}) => {
 
   useEffect(()=>{
 
@@ -35,7 +35,9 @@ const LocationGridWidget = ({locationDetails, setLocationDetails}) => {
          <LabGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState} />
         : ''}
         {
-          locationState === 6 ? 'Device List goes here...' : ''
+          locationState === 6 ? 
+          <DeviceGridComponent locationDetails={locationDetails} setLocationDetails={setLocationDetails} setProgressState={setProgressState}/> 
+        : ''
         }
     </div>
   )
