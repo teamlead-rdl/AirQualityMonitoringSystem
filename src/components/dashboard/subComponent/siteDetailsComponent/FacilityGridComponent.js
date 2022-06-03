@@ -2,7 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react'
 import { FetchFacilitiyService } from '../../../../services/LoginPageService';
 
-const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgressState}) => {
+const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgressState, setLocationCoordinationList, centerLat, centerLng}) => {
   const facilityColumns = [
     {
       field: 'facilityName',
@@ -41,6 +41,19 @@ const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgress
 
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);
+    const newArray = dataObject.data ? dataObject.data.map((item) => {
+      const coordinates = item.coordinates ? item.coordinates.replaceAll('"', '').split(',') : [];
+      return {
+        id: item.id,
+        name: item.facilityName,
+        position: {
+          lat: parseFloat(coordinates[0]),
+          lng: parseFloat(coordinates[1]),
+        },        
+      };
+    })
+      : [];      
+    setLocationCoordinationList(newArray);  
   }
 
   const handleException = (errorObject) => {

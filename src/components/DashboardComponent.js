@@ -22,14 +22,13 @@ function Dashboard() {
   return (
     <Grid container spacing={1}>
       <Grid item xs={8}>
-        <Grid container sx={12}>
+        <Grid container item xs={12}>
           <Grid item xs={12} sx={{
             marginTop: 1,
             backgroundColor: 'skyblue'
           }}>
-            <LocationGridWidget locationDetails={locationDetails} setLocationDetails={setLocationDetails} />
+            <LocationGridWidget setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} locationDetails={locationDetails} setLocationDetails={setLocationDetails} />
           </Grid>
-
           <Grid item xs={12} sx={{
             backgroundColor: 'pink'
           }}>
@@ -41,7 +40,7 @@ function Dashboard() {
         backgroundColor: 'pink',
         marginTop: 2
       }}>
-        <GeoLocationWidget/>
+        <GeoLocationWidget locationCoordination={locationCoordinationList}/>
       </Grid>
     </Grid>
   );

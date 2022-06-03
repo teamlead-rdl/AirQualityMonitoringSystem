@@ -42,7 +42,7 @@ const BranchGridComponent = ({locationDetails, setLocationDetails, setProgressSt
       const coordinates = item.coordinates ? item.coordinates.replaceAll('"', '').split(',') : [];
       return {
         id: item.id,
-        name: item.stateName,
+        name: item.branchName,
         position: {
           lat: parseFloat(coordinates[0]),
           lng: parseFloat(coordinates[1]),
