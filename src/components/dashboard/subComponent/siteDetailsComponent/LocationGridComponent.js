@@ -39,7 +39,7 @@ function LocationGridComponent({
 
   function LinkTo({ selectedRow }) {
     return (
-      <h3 onClick={() => {
+      <h3 style={{cursor: 'pointer'}} onClick={() => {
         setLocationDetails((oldValue) => {
           return { ...oldValue, location_id: selectedRow.id };
         });

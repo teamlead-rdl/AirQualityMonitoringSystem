@@ -9,7 +9,8 @@ import {
 import { darken, lighten } from '@mui/material/styles';
 import { DeviceFetchService } from '../../../../services/LoginPageService';
 /* eslint-disable no-unused-vars */
-
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function DeviceGridComponent({
   locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
 }) {
@@ -107,22 +108,22 @@ function DeviceGridComponent({
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
-        <h3>
+        <h3 onClick={() => setProgressState(0)} style={{ cursor: 'pointer' }}>
           Location
         </h3>
-        <h3>
+        <h3 onClick={() => setProgressState(1)} style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.stateLabel}
         </h3>
-        <h3>
+        <h3 onClick={() => setProgressState(2)} style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.branchLabel}
         </h3>
-        <h3>
+        <h3 onClick={() => setProgressState(3)} style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.facilityLabel}
         </h3>
-        <h3>
+        <h3 onClick={() => setProgressState(4)} style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.buildingLabel}
         </h3>
-        <h3>
+        <h3 onClick={() => setProgressState(5)} style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.floorLabel}
         </h3>
         <Typography

@@ -50,7 +50,7 @@ function BranchGridComponent({
 
   function LinkTo({ selectedRow }) {
     return (
-      <h3 onClick={(e) => {
+      <h3 style={{cursor: 'pointer'}} onClick={(e) => {
         setLocationDetails((oldValue) => {
           return { ...oldValue, branch_id: selectedRow.id };
         });
@@ -68,7 +68,7 @@ function BranchGridComponent({
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
-        <h3 onClick={() => setProgressState(0)}>
+        <h3 style={{cursor: 'pointer'}} onClick={() => setProgressState(0)}>
           Location
         </h3>
         <Typography
