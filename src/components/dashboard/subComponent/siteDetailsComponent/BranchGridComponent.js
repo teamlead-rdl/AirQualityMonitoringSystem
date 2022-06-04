@@ -1,8 +1,9 @@
+import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react'
 import { FetchBranchService } from '../../../../services/LoginPageService';
 
-const BranchGridComponent = ({locationDetails, setLocationDetails, setProgressState}) => {
+const BranchGridComponent = ({locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels }) => {
   const [dataList, setDataList] = useState([]);
 
   const branchColumns = [
@@ -32,7 +33,6 @@ const BranchGridComponent = ({locationDetails, setLocationDetails, setProgressSt
     FetchBranchService({
       location_id : locationDetails.location_id,
     }, handleSuccess, handleException);
-    console.log(locationDetails);
   },[locationDetails]);
 
   const handleSuccess = (dataObject) => {
@@ -48,7 +48,10 @@ const BranchGridComponent = ({locationDetails, setLocationDetails, setProgressSt
       <h3 onClick={()=>{
         setLocationDetails((oldValue)=>{
           return {...oldValue, branch_id: selectedRow.id};
-        })
+        });
+        setBreadCrumbLabels((oldvalue)=>{
+          return { ...oldvalue, branchLabel: selectedRow.branchName}
+        });
         setProgressState(2);
       }}>
         {selectedRow.branchName}
@@ -59,6 +62,17 @@ const BranchGridComponent = ({locationDetails, setLocationDetails, setProgressSt
   return (
     <div style={{ height: 400, width: '100%' }}>
       BranchGridComponent
+      <Breadcrumbs aria-label="breadcrumb" separator="›">
+        <h3 onClick={()=>setProgressState(0)}>
+          Location
+        </h3>
+        <Typography
+          underline="hover"
+          color="inherit"
+        >
+          {breadCrumbLabels.stateLabel}
+        </Typography>
+      </Breadcrumbs>
       <DataGrid
         rows={dataList}
         columns={branchColumns}
