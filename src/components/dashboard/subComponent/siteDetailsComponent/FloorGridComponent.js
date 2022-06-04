@@ -1,8 +1,10 @@
+import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react'
 import { FloorfetchService } from '../../../../services/LoginPageService';
 
-const FloorGridComponent = ({setImg,locationDetails, setLocationDetails, setProgressState}) => {
+const FloorGridComponent = ({setImg,locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels}) => {
+
   const dataColumns = [
     {
       field: 'floorName',
@@ -50,7 +52,12 @@ const FloorGridComponent = ({setImg,locationDetails, setLocationDetails, setProg
       <h3 onClick={()=>{
         setLocationDetails((oldValue)=>{
           return {...oldValue, floor_id: selectedRow.id};
-        })
+        });
+
+        setBreadCrumbLabels((oldvalue)=>{
+          return { ...oldvalue, floorLabel: selectedRow.floorName}
+        });
+
         setProgressState(5);
         setImg(selectedRow.floorMap);
 
@@ -63,6 +70,26 @@ const FloorGridComponent = ({setImg,locationDetails, setLocationDetails, setProg
   return (
     <div style={{ height: 400, width: '100%' }}>
       FloorGridComponent
+      <Breadcrumbs aria-label="breadcrumb" separator="›">
+        <h3>
+          Location
+        </h3>
+        <h3>
+          {breadCrumbLabels.stateLabel}
+        </h3>
+        <h3>
+          {breadCrumbLabels.branchLabel}
+        </h3>
+        <h3>
+          {breadCrumbLabels.facilityLabel}
+        </h3>
+        <Typography
+          underline="hover"
+          color="inherit"
+        >
+          {breadCrumbLabels.buildingLabel}
+        </Typography>
+      </Breadcrumbs>
       <DataGrid
         rows={dataList}
         columns={dataColumns}
