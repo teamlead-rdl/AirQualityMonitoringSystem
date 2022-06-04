@@ -1,9 +1,13 @@
 import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { FloorfetchService } from '../../../../services/LoginPageService';
-
-const FloorGridComponent = ({locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels}) => {
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+function FloorGridComponent({
+  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+}) {
   const dataColumns = [
     {
       field: 'floorName',
@@ -46,27 +50,27 @@ const FloorGridComponent = ({locationDetails, setLocationDetails, setProgressSta
   const handleException = (errorObject) => {
   };
 
-  const LinkTo = ({selectedRow}) =>{
+  function LinkTo({ selectedRow }) {
     return (
-      <h3 onClick={()=>{
-        setLocationDetails((oldValue)=>{
-          return {...oldValue, floor_id: selectedRow.id};
+      <h3 onClick={() => {
+        setLocationDetails((oldValue) => {
+          return { ...oldValue, floor_id: selectedRow.id };
         });
 
-        setBreadCrumbLabels((oldvalue)=>{
-          return { ...oldvalue, floorLabel: selectedRow.floorName}
+        setBreadCrumbLabels((oldvalue) => {
+          return { ...oldvalue, floorLabel: selectedRow.floorName };
         });
 
         setProgressState(5);
-      }}>
+      }}
+      >
         {selectedRow.floorName}
       </h3>
-    )
+    );
   }
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      FloorGridComponent
+    <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3>
           Location
@@ -93,10 +97,10 @@ const FloorGridComponent = ({locationDetails, setLocationDetails, setProgressSta
         pageSize={5}
         rowsPerPageOptions={[5]}
         disableSelectionOnClick
-        style={{ maxHeight: `${80}%` }}
+        style={{ maxHeight: `${93}%` }}
       />
     </div>
-  )
+  );
 }
 
-export default FloorGridComponent
+export default FloorGridComponent;

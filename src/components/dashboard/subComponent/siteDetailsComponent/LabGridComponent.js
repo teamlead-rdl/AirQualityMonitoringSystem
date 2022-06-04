@@ -1,9 +1,13 @@
 import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { LabfetchService } from '../../../../services/LoginPageService';
-
-const LabGridComponent = ({locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels}) => {
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+function LabGridComponent({
+  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+}) {
   const [dataList, setDataList] = useState([]);
 
   const dataColumns = [
@@ -46,26 +50,26 @@ const LabGridComponent = ({locationDetails, setLocationDetails, setProgressState
   const handleException = (errorObject) => {
   };
 
-  const LinkTo = ({selectedRow}) =>{
+  function LinkTo({ selectedRow }) {
     return (
-      <h3 onClick={()=>{
-        setLocationDetails((oldValue)=>{
-          return {...oldValue, lab_id: selectedRow.id};
+      <h3 onClick={() => {
+        setLocationDetails((oldValue) => {
+          return { ...oldValue, lab_id: selectedRow.id };
         });
 
-        setBreadCrumbLabels((oldvalue)=>{
-          return { ...oldvalue, lablabel: selectedRow.labDepName}
+        setBreadCrumbLabels((oldvalue) => {
+          return { ...oldvalue, lablabel: selectedRow.labDepName };
         });
 
         setProgressState(6);
-      }}>
+      }}
+      >
         {selectedRow.labDepName}
       </h3>
-    )
+    );
   }
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      LabGridComponent
+    <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3>
           Location
@@ -98,7 +102,7 @@ const LabGridComponent = ({locationDetails, setLocationDetails, setProgressState
         style={{ maxHeight: `${80}%` }}
       />
     </div>
-  )
+  );
 }
 
-export default LabGridComponent
+export default LabGridComponent;

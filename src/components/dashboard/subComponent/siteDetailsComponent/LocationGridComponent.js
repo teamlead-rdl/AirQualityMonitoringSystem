@@ -1,9 +1,13 @@
 import { Breadcrumbs } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { FetchLocationService } from '../../../../services/LoginPageService';
-
-const LocationGridComponent = ({locationDetails, setLocationDetails, setProgressState, setBreadCrumbLabels}) => {
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+function LocationGridComponent({
+  locationDetails, setLocationDetails, setProgressState, setBreadCrumbLabels,
+}) {
   const [dataList, setDataList] = useState([]);
 
   const columns = [
@@ -29,50 +33,51 @@ const LocationGridComponent = ({locationDetails, setLocationDetails, setProgress
       width: 150,
     },
   ];
-  useEffect(()=>{
+  useEffect(() => {
     FetchLocationService(handleSuccess, handleException);
-  },[]);
+  }, []);
 
-  const LinkTo = ({selectedRow}) =>{
+  function LinkTo({ selectedRow }) {
     return (
-      <h3 onClick={()=>{
-        setLocationDetails((oldValue)=>{
-          return {...oldValue, location_id: selectedRow.id};
+      <h3 onClick={() => {
+        setLocationDetails((oldValue) => {
+          return { ...oldValue, location_id: selectedRow.id };
         });
-        
-        setBreadCrumbLabels((oldvalue)=>{
-          return { ...oldvalue, stateLabel: selectedRow.stateName}
+
+        setBreadCrumbLabels((oldvalue) => {
+          return { ...oldvalue, stateLabel: selectedRow.stateName };
         });
 
         setProgressState(1);
-      }}>
+      }}
+      >
         {selectedRow.stateName}
       </h3>
-    )
+    );
   }
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);
-  }
+  };
 
   const handleException = (errorObject) => {
   };
   return (
-    <div style={{ height: 400, width: '100%' }}>LocationGridComponent
-    <Breadcrumbs aria-label="breadcrumb" separator="›">
-      <h3>
-        Location
-      </h3>
-    </Breadcrumbs>
+    <div style={{ height: '100%', width: '100%' }}>
+      <Breadcrumbs aria-label="breadcrumb" separator="›">
+        <h3>
+          Location
+        </h3>
+      </Breadcrumbs>
       <DataGrid
         rows={dataList}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
         disableSelectionOnClick
-        style={{ maxHeight: `${70}%` }}
+        style={{ maxHeight: `${93}%` }}
       />
     </div>
-  )
+  );
 }
 
-export default LocationGridComponent
+export default LocationGridComponent;

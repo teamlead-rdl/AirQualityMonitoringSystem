@@ -1,9 +1,13 @@
 import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { FetchFacilitiyService } from '../../../../services/LoginPageService';
-
-const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels}) => {
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+function FacilityGridComponent({
+  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+}) {
   const facilityColumns = [
     {
       field: 'facilityName',
@@ -33,41 +37,41 @@ const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgress
 
   const [dataList, setDataList] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     FetchFacilitiyService({
       location_id: locationDetails.location_id,
       branch_id: locationDetails.branch_id,
     }, handleSuccess, handleException);
-  },[locationDetails]);
+  }, [locationDetails]);
 
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);
-  }
+  };
 
   const handleException = (errorObject) => {
   };
 
-  const LinkTo = ({selectedRow}) =>{
+  function LinkTo({ selectedRow }) {
     return (
-      <h3 onClick={()=>{
-        setLocationDetails((oldValue)=>{
-          return {...oldValue, facility_id: selectedRow.id};
+      <h3 onClick={() => {
+        setLocationDetails((oldValue) => {
+          return { ...oldValue, facility_id: selectedRow.id };
         });
 
-        setBreadCrumbLabels((oldvalue)=>{
-          return { ...oldvalue, facilityLabel: selectedRow.facilityName}
+        setBreadCrumbLabels((oldvalue) => {
+          return { ...oldvalue, facilityLabel: selectedRow.facilityName };
         });
 
         setProgressState(3);
-      }}>
+      }}
+      >
         {selectedRow.facilityName}
       </h3>
-    )
+    );
   }
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      FacilityGridComponent
+    <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3>
           Location
@@ -88,10 +92,10 @@ const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgress
         pageSize={5}
         rowsPerPageOptions={[5]}
         disableSelectionOnClick
-        style={{ maxHeight: `${80}%` }}
+        style={{ maxHeight: `${93}%` }}
       />
     </div>
-  )
+  );
 }
 
-export default FacilityGridComponent
+export default FacilityGridComponent;
