@@ -1,10 +1,12 @@
 import { DataGrid } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { FetchLocationService } from '../../../../services/LoginPageService';
 
-const LocationGridComponent = ({locationDetails, setLocationDetails, setProgressState , setLocationCoordinationList, centerLat, centerLng, setBreadCrumbLabels}) => {
+function LocationGridComponent({
+  setLocationDetails, setProgressState, setLocationCoordinationList, setBreadCrumbLabels,
+}) {
   const [dataList, setDataList] = useState([]);
-
   const columns = [
     {
       field: 'stateName',
@@ -28,28 +30,33 @@ const LocationGridComponent = ({locationDetails, setLocationDetails, setProgress
       width: 150,
     },
   ];
-  useEffect(()=>{
-    FetchLocationService(handleSuccess, handleException);
-  },[]);
 
-  const LinkTo = ({selectedRow}) =>{
+  useEffect(() => {
+    FetchLocationService(handleSuccess, handleException);
+  }, []);
+
+  function LinkTo({ selectedRow }) {
     return (
-      <h3 onClick={()=>{
-        setLocationDetails((oldValue)=>{
-          return {...oldValue, location_id: selectedRow.id};
-        });
-        setBreadCrumbLabels((oldvalue)=>{
-          return { ...oldvalue, stateLabel: selectedRow.stateName}
-        });
-        setProgressState(1);
-      }}>
+      /* eslint-disable-next-line */
+      <h3
+        style={{ cursor: 'pointer' }}
+        onClick={() => {
+          setLocationDetails((oldValue) => {
+            return { ...oldValue, location_id: selectedRow.id };
+          });
+          setBreadCrumbLabels((oldvalue) => {
+            return { ...oldvalue, stateLabel: selectedRow.stateName };
+          });
+          setProgressState(1);
+        }}
+      >
         {selectedRow.stateName}
       </h3>
-    )
+    );
   }
+
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);
-  
     const newArray = dataObject.data ? dataObject.data.map((item) => {
       const coordinates = item.coordinates ? item.coordinates.replaceAll('"', '').split(',') : [];
       return {
@@ -58,17 +65,19 @@ const LocationGridComponent = ({locationDetails, setLocationDetails, setProgress
         position: {
           lat: parseFloat(coordinates[0]),
           lng: parseFloat(coordinates[1]),
-        },        
+        },
       };
     })
-      : [];      
-    setLocationCoordinationList(newArray);    
-  }
+      : [];
+    setLocationCoordinationList(newArray);
+  };
 
+  /* eslint-disable-next-line */
   const handleException = (errorObject) => {
   };
+
   return (
-    <div style={{ height: 400, width: '100%' }}>LocationGridComponent
+    <div style={{ height: 400, width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3>
           Location
@@ -83,7 +92,7 @@ const LocationGridComponent = ({locationDetails, setLocationDetails, setProgress
         style={{ maxHeight: `${70}%` }}
       />
     </div>
-  )
+  );
 }
 
-export default LocationGridComponent
+export default LocationGridComponent;

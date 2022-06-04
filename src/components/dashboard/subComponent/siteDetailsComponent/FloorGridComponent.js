@@ -1,10 +1,11 @@
 import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { FloorfetchService } from '../../../../services/LoginPageService';
 
-const FloorGridComponent = ({setImg,locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels}) => {
-
+function FloorGridComponent({
+  setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+}) {
   const dataColumns = [
     {
       field: 'floorName',
@@ -44,32 +45,35 @@ const FloorGridComponent = ({setImg,locationDetails, setLocationDetails, setProg
     setDataList(dataObject.data);
   };
 
+  /* eslint-disable-next-line */
   const handleException = (errorObject) => {
   };
 
-  const LinkTo = ({selectedRow}) =>{
+  function LinkTo({ selectedRow }) {
     return (
-      <h3 onClick={()=>{
-        setLocationDetails((oldValue)=>{
-          return {...oldValue, floor_id: selectedRow.id};
-        });
+      /* eslint-disable-next-line */
+      <h3
+        style={{ cursor: 'pointer' }}
+        onClick={() => {
+          setLocationDetails((oldValue) => {
+            return { ...oldValue, floor_id: selectedRow.id };
+          });
 
-        setBreadCrumbLabels((oldvalue)=>{
-          return { ...oldvalue, floorLabel: selectedRow.floorName}
-        });
+          setBreadCrumbLabels((oldvalue) => {
+            return { ...oldvalue, floorLabel: selectedRow.floorName };
+          });
 
-        setProgressState(5);
-        setImg(selectedRow.floorMap);
-
-      }}>
+          setProgressState(5);
+          setImg(selectedRow.floorMap);          
+        }}
+      >
         {selectedRow.floorName}
       </h3>
-    )
+    );
   }
 
   return (
     <div style={{ height: 400, width: '100%' }}>
-      FloorGridComponent
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3>
           Location
@@ -99,7 +103,7 @@ const FloorGridComponent = ({setImg,locationDetails, setLocationDetails, setProg
         style={{ maxHeight: `${80}%` }}
       />
     </div>
-  )
+  );
 }
 
-export default FloorGridComponent
+export default FloorGridComponent;

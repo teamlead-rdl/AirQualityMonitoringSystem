@@ -1,9 +1,11 @@
 import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { FetchFacilitiyService } from '../../../../services/LoginPageService';
 
-const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgressState, setLocationCoordinationList, centerLat, centerLng, breadCrumbLabels, setBreadCrumbLabels}) => {
+function FacilityGridComponent({
+  locationDetails, setLocationDetails, setProgressState, setLocationCoordinationList, breadCrumbLabels, setBreadCrumbLabels,
+}) {
   const facilityColumns = [
     {
       field: 'facilityName',
@@ -33,12 +35,12 @@ const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgress
 
   const [dataList, setDataList] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     FetchFacilitiyService({
       location_id: locationDetails.location_id,
       branch_id: locationDetails.branch_id,
     }, handleSuccess, handleException);
-  },[locationDetails]);
+  }, [locationDetails]);
 
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);
@@ -50,37 +52,39 @@ const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgress
         position: {
           lat: parseFloat(coordinates[0]),
           lng: parseFloat(coordinates[1]),
-        },        
+        },
       };
     })
-      : [];      
-    setLocationCoordinationList(newArray);  
-  }
+      : [];
+    setLocationCoordinationList(newArray);
+  };
 
+  /* eslint-disable-next-line */
   const handleException = (errorObject) => {
   };
 
-  const LinkTo = ({selectedRow}) =>{
+  function LinkTo({ selectedRow }) {
     return (
-      <h3 onClick={()=>{
-        setLocationDetails((oldValue)=>{
-          return {...oldValue, facility_id: selectedRow.id};
-        });
-
-        setBreadCrumbLabels((oldvalue)=>{
-          return { ...oldvalue, facilityLabel: selectedRow.facilityName}
-        });
-
-        setProgressState(3);
-      }}>
+      /* eslint-disable-next-line */
+      <h3
+        style={{ cursor: 'pointer' }}
+        onClick={() => {
+          setLocationDetails((oldValue) => {
+            return { ...oldValue, facility_id: selectedRow.id };
+          });
+          setBreadCrumbLabels((oldvalue) => {
+            return { ...oldvalue, facilityLabel: selectedRow.facilityName };
+          });
+          setProgressState(3);
+        }}
+      >
         {selectedRow.facilityName}
       </h3>
-    )
+    );
   }
 
   return (
     <div style={{ height: 400, width: '100%' }}>
-      FacilityGridComponent
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3>
           Location
@@ -104,7 +108,7 @@ const FacilityGridComponent = ({locationDetails, setLocationDetails, setProgress
         style={{ maxHeight: `${80}%` }}
       />
     </div>
-  )
+  );
 }
 
-export default FacilityGridComponent
+export default FacilityGridComponent;
