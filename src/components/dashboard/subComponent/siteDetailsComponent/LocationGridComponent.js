@@ -6,7 +6,7 @@ import { FetchLocationService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function LocationGridComponent({
-  locationDetails, setLocationDetails, setProgressState, setBreadCrumbLabels,
+  locationDetails, setLocationDetails, setProgressState, setBreadCrumbLabels, setLocationCoordinationList,
 }) {
   const [dataList, setDataList] = useState([]);
 
@@ -39,7 +39,8 @@ function LocationGridComponent({
 
   function LinkTo({ selectedRow }) {
     return (
-      <h3 onClick={() => {
+      /* eslint-disable-next-line */
+      <h3 onClick={() => {       
         setLocationDetails((oldValue) => {
           return { ...oldValue, location_id: selectedRow.id };
         });
@@ -47,7 +48,6 @@ function LocationGridComponent({
         setBreadCrumbLabels((oldvalue) => {
           return { ...oldvalue, stateLabel: selectedRow.stateName };
         });
-
         setProgressState(1);
       }}
       >
@@ -57,6 +57,19 @@ function LocationGridComponent({
   }
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);
+    const newArray = dataObject.data ? dataObject.data.map((item) => {
+      const coordinates = item.coordinates ? item.coordinates.replaceAll('"', '').split(',') : [];
+      return {
+        id: item.id,
+        name: item.stateName,
+        position: {
+          lat: parseFloat(coordinates[0]),
+          lng: parseFloat(coordinates[1]),
+        },
+      };
+    })
+      : [];
+    setLocationCoordinationList(newArray);
   };
 
   const handleException = (errorObject) => {

@@ -11,7 +11,7 @@ import { DeviceFetchService } from '../../../../services/LoginPageService';
 /* eslint-disable no-unused-vars */
 
 function DeviceGridComponent({
-  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setDeviceCoordsList, setBreadCrumbLabels,
 }) {
   const columns = [
     {
@@ -79,6 +79,13 @@ function DeviceGridComponent({
 
   const handleSuccess = (dataObject) => {
     setDeviceList(dataObject.data);
+    const deviceCoordinationsList = dataObject.data.map((data, index) => {
+      const coordination = data.floorCords;
+      const arrayList = coordination?.split(',');
+      return arrayList && { top: arrayList[0], left: arrayList[1] };
+    });
+    const filteredArray = deviceCoordinationsList.filter((x) => x != null);
+    setDeviceCoordsList(filteredArray || []);
   };
 
   const handleException = () => { };

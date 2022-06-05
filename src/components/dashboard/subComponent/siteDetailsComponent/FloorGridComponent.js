@@ -6,7 +6,7 @@ import { FloorfetchService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function FloorGridComponent({
-  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+  setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
 }) {
   const dataColumns = [
     {
@@ -62,6 +62,7 @@ function FloorGridComponent({
         });
 
         setProgressState(5);
+        setImg(selectedRow.floorMap);
       }}
       >
         {selectedRow.floorName}
