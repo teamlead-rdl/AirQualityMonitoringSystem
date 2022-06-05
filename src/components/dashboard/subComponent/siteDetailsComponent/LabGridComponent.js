@@ -9,7 +9,6 @@ function LabGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
 }) {
   const [dataList, setDataList] = useState([]);
-
   const dataColumns = [
     {
       field: 'labDepName',
@@ -47,8 +46,7 @@ function LabGridComponent({
     setDataList(dataObject.data);
   };
 
-  /* eslint-disable-next-line */
-  const handleException = (errorObject) => {
+  const handleException = () => {
   };
 
   function LinkTo({ selectedRow }) {
