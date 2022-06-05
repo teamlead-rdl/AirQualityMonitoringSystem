@@ -2,9 +2,11 @@ import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { FetchFacilitiyService } from '../../../../services/LoginPageService';
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function FacilityGridComponent({
-  locationDetails, setLocationDetails, setProgressState, setLocationCoordinationList, breadCrumbLabels, setBreadCrumbLabels,
+  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels, setLocationCoordinationList,
 }) {
   const facilityColumns = [
     {
@@ -59,24 +61,22 @@ function FacilityGridComponent({
     setLocationCoordinationList(newArray);
   };
 
-  /* eslint-disable-next-line */
   const handleException = (errorObject) => {
   };
 
   function LinkTo({ selectedRow }) {
     return (
-      /* eslint-disable-next-line */
-      <h3
-        style={{ cursor: 'pointer' }}
-        onClick={() => {
-          setLocationDetails((oldValue) => {
-            return { ...oldValue, facility_id: selectedRow.id };
-          });
-          setBreadCrumbLabels((oldvalue) => {
-            return { ...oldvalue, facilityLabel: selectedRow.facilityName };
-          });
-          setProgressState(3);
-        }}
+      <h3 onClick={() => {
+        setLocationDetails((oldValue) => {
+          return { ...oldValue, facility_id: selectedRow.id };
+        });
+
+        setBreadCrumbLabels((oldvalue) => {
+          return { ...oldvalue, facilityLabel: selectedRow.facilityName };
+        });
+
+        setProgressState(3);
+      }}
       >
         {selectedRow.facilityName}
       </h3>
@@ -84,7 +84,7 @@ function FacilityGridComponent({
   }
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3>
           Location
@@ -105,7 +105,7 @@ function FacilityGridComponent({
         pageSize={5}
         rowsPerPageOptions={[5]}
         disableSelectionOnClick
-        style={{ maxHeight: `${80}%` }}
+        style={{ maxHeight: `${93}%` }}
       />
     </div>
   );

@@ -8,9 +8,10 @@ import {
 } from '@mui/icons-material';
 import { darken, lighten } from '@mui/material/styles';
 import { DeviceFetchService } from '../../../../services/LoginPageService';
+/* eslint-disable no-unused-vars */
 
 function DeviceGridComponent({
-  locationDetails, breadCrumbLabels, setDeviceCoordsList,
+  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setDeviceCoordsList, setBreadCrumbLabels,
 }) {
   const columns = [
     {
@@ -78,7 +79,6 @@ function DeviceGridComponent({
 
   const handleSuccess = (dataObject) => {
     setDeviceList(dataObject.data);
-    /* eslint-disable-next-line */
     const deviceCoordinationsList = dataObject.data.map((data, index) => {
       const coordination = data.floorCords;
       const arrayList = coordination?.split(',');
@@ -112,7 +112,7 @@ function DeviceGridComponent({
     }
   }
   return (
-    <div>
+    <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3>
           Location
@@ -141,7 +141,7 @@ function DeviceGridComponent({
       </Breadcrumbs>
       <Box
         sx={{
-          height: 400,
+          height: '100%',
           '& .super-app-theme--calibration': {
             color: 'maroon',
             bgcolor: (theme) => getBackgroundColor('#FAE8FA', theme.palette.mode),
@@ -201,6 +201,7 @@ function DeviceGridComponent({
           rowsPerPageOptions={[5]}
           disableSelectionOnClick
           getRowClassName={(params) => `super-app-theme--${params.row.deviceMode}`}
+          style={{ maxHeight: `${85}%` }}
         />
       </Box>
     </div>

@@ -6,12 +6,10 @@ import FacilityGridComponent from '../subComponent/siteDetailsComponent/Facility
 import FloorGridComponent from '../subComponent/siteDetailsComponent/FloorGridComponent';
 import LabGridComponent from '../subComponent/siteDetailsComponent/LabGridComponent';
 import DeviceGridComponent from '../subComponent/siteDetailsComponent/DeviceGridComponent';
-
+/* eslint-disable max-len */
 function LocationGridWidget({
-  locationDetails, setLocationDetails, setImageState, setImg, setDeviceCoordsList, setLocationCoordinationList,
+  locationDetails, setLocationDetails, locationState, setProgressState,setImageState, setImg, setDeviceCoordsList, setLocationCoordinationList,
 }) {
-  const [locationState, setProgressState] = useState(0);
-
   const [breadCrumbLabels, setBreadCrumbLabels] = useState({
     stateLabel: 'State',
     branchLabel: 'Branch',
@@ -20,16 +18,15 @@ function LocationGridWidget({
     floorLabel: 'Floor',
     lablabel: 'Lab',
   });
-
   useEffect(() => {
-    if (locationState === 4 || locationState === 5 || locationState === 6) {
+    if(locationState === 4 || locationState === 5 || locationState === 6) {
       setImageState(1);
     }
   }, [locationState]);
 
   return (
-    <div>
-      {
+    <div style={{ height: '100%' }}>
+    {
         locationState === 0
           ? (
             <LocationGridComponent
@@ -41,7 +38,6 @@ function LocationGridWidget({
             />
           ) : ''
       }
-
       {
         locationState === 1
           ? (
@@ -55,7 +51,6 @@ function LocationGridWidget({
             />
           ) : ''
       }
-
       {
         locationState === 2
           ? (
@@ -69,7 +64,6 @@ function LocationGridWidget({
             />
           ) : ''
       }
-
       {
         locationState === 3
           ? (
@@ -84,7 +78,6 @@ function LocationGridWidget({
             />
           ) : ''
       }
-
       {
         locationState === 4
           ? (
@@ -98,7 +91,6 @@ function LocationGridWidget({
             />
           ) : ''
       }
-
       {locationState === 5
         ? (
           <LabGridComponent
@@ -109,19 +101,20 @@ function LocationGridWidget({
             breadCrumbLabels={breadCrumbLabels}
             setBreadCrumbLabels={setBreadCrumbLabels}
           />
-        ) : ''}
-
+        ) : ''
+      }
       {
         locationState === 6
           ? (
             <DeviceGridComponent
               locationDetails={locationDetails}
+              setLocationDetails={setLocationDetails}
               setDeviceCoordsList={setDeviceCoordsList}
+              setProgressState={setProgressState}
               breadCrumbLabels={breadCrumbLabels}
             />
           ) : ''
       }
-
     </div>
   );
 }

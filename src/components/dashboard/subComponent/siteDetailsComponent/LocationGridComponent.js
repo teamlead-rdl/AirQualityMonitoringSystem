@@ -1,12 +1,15 @@
+import { Breadcrumbs } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { FetchLocationService } from '../../../../services/LoginPageService';
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function LocationGridComponent({
-  setLocationDetails, setProgressState, setLocationCoordinationList, setBreadCrumbLabels,
+  locationDetails, setLocationDetails, setProgressState, setBreadCrumbLabels, setLocationCoordinationList,
 }) {
   const [dataList, setDataList] = useState([]);
+
   const columns = [
     {
       field: 'stateName',
@@ -30,7 +33,6 @@ function LocationGridComponent({
       width: 150,
     },
   ];
-
   useEffect(() => {
     FetchLocationService(handleSuccess, handleException);
   }, []);
@@ -38,23 +40,21 @@ function LocationGridComponent({
   function LinkTo({ selectedRow }) {
     return (
       /* eslint-disable-next-line */
-      <h3
-        style={{ cursor: 'pointer' }}
-        onClick={() => {
-          setLocationDetails((oldValue) => {
-            return { ...oldValue, location_id: selectedRow.id };
-          });
-          setBreadCrumbLabels((oldvalue) => {
-            return { ...oldvalue, stateLabel: selectedRow.stateName };
-          });
-          setProgressState(1);
-        }}
+      <h3 onClick={() => {       
+        setLocationDetails((oldValue) => {
+          return { ...oldValue, location_id: selectedRow.id };
+        });
+
+        setBreadCrumbLabels((oldvalue) => {
+          return { ...oldvalue, stateLabel: selectedRow.stateName };
+        });
+        setProgressState(1);
+      }}
       >
         {selectedRow.stateName}
       </h3>
     );
   }
-
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);
     const newArray = dataObject.data ? dataObject.data.map((item) => {
@@ -72,12 +72,10 @@ function LocationGridComponent({
     setLocationCoordinationList(newArray);
   };
 
-  /* eslint-disable-next-line */
   const handleException = (errorObject) => {
   };
-
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3>
           Location
@@ -89,7 +87,7 @@ function LocationGridComponent({
         pageSize={5}
         rowsPerPageOptions={[5]}
         disableSelectionOnClick
-        style={{ maxHeight: `${70}%` }}
+        style={{ maxHeight: `${93}%` }}
       />
     </div>
   );

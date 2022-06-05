@@ -2,7 +2,9 @@ import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { FloorfetchService } from '../../../../services/LoginPageService';
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function FloorGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
 }) {
@@ -45,35 +47,32 @@ function FloorGridComponent({
     setDataList(dataObject.data);
   };
 
-  /* eslint-disable-next-line */
   const handleException = (errorObject) => {
   };
 
   function LinkTo({ selectedRow }) {
     return (
-      /* eslint-disable-next-line */
-      <h3
-        style={{ cursor: 'pointer' }}
-        onClick={() => {
-          setLocationDetails((oldValue) => {
-            return { ...oldValue, floor_id: selectedRow.id };
-          });
+      <h3 onClick={() => {
+        setLocationDetails((oldValue) => {
+          return { ...oldValue, floor_id: selectedRow.id };
+        });
 
-          setBreadCrumbLabels((oldvalue) => {
-            return { ...oldvalue, floorLabel: selectedRow.floorName };
-          });
+        setBreadCrumbLabels((oldvalue) => {
+          return { ...oldvalue, floorLabel: selectedRow.floorName };
+        });
 
-          setProgressState(5);
-          setImg(selectedRow.floorMap);          
-        }}
+        setProgressState(5);
+        setImg(selectedRow.floorMap);
+      }}
       >
         {selectedRow.floorName}
+
       </h3>
     );
   }
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3>
           Location
@@ -100,7 +99,7 @@ function FloorGridComponent({
         pageSize={5}
         rowsPerPageOptions={[5]}
         disableSelectionOnClick
-        style={{ maxHeight: `${80}%` }}
+        style={{ maxHeight: `${93}%` }}
       />
     </div>
   );

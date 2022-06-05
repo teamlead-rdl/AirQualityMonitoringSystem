@@ -2,11 +2,15 @@ import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { FetchBranchService } from '../../../../services/LoginPageService';
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 
 function BranchGridComponent({
-  locationDetails, setLocationDetails, setProgressState, setLocationCoordinationList, breadCrumbLabels, setBreadCrumbLabels,
+  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setLocationCoordinationList, setBreadCrumbLabels,
 }) {
   const [dataList, setDataList] = useState([]);
+
   const branchColumns = [
     {
       field: 'branchName',
@@ -54,24 +58,20 @@ function BranchGridComponent({
     setLocationCoordinationList(newArray);
   };
 
-  /* eslint-disable-next-line */
   const handleException = (errorObject) => {
   };
 
   function LinkTo({ selectedRow }) {
     return (
-      /* eslint-disable-next-line */
-      <h3
-        style={{ cursor: 'pointer' }}
-        onClick={() => {
-          setLocationDetails((oldValue) => {
-            return { ...oldValue, branch_id: selectedRow.id };
-          });
-          setBreadCrumbLabels((oldvalue) => {
-            return { ...oldvalue, branchLabel: selectedRow.branchName };
-          });
-          setProgressState(2);
-        }}
+      <h3 onClick={(e) => {
+        setLocationDetails((oldValue) => {
+          return { ...oldValue, branch_id: selectedRow.id };
+        });
+        setBreadCrumbLabels((oldvalue) => {
+          return { ...oldvalue, branchLabel: selectedRow.branchName };
+        });
+        setProgressState(2);
+      }}
       >
         {selectedRow.branchName}
       </h3>
@@ -79,9 +79,8 @@ function BranchGridComponent({
   }
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
-        { /* eslint-disable-next-line */}
         <h3 onClick={() => setProgressState(0)}>
           Location
         </h3>
@@ -98,7 +97,7 @@ function BranchGridComponent({
         pageSize={5}
         rowsPerPageOptions={[5]}
         disableSelectionOnClick
-        style={{ maxHeight: `${80}%` }}
+        style={{ maxHeight: `${93}%` }}
       />
     </div>
   );

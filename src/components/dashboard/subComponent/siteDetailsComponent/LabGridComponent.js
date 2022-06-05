@@ -1,13 +1,15 @@
+import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import { Typography } from '@mui/material';
 import { LabfetchService } from '../../../../services/LoginPageService';
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function LabGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
 }) {
   const [dataList, setDataList] = useState([]);
+
   const dataColumns = [
     {
       field: 'labDepName',
@@ -51,26 +53,25 @@ function LabGridComponent({
 
   function LinkTo({ selectedRow }) {
     return (
-      /* eslint-disable-next-line */
-      <h3
-        style={{ cursor: 'pointer' }}
-        onClick={() => {
-          setLocationDetails((oldValue) => {
-            return { ...oldValue, lab_id: selectedRow.id };
-          });
-          setBreadCrumbLabels((oldvalue) => {
-            return { ...oldvalue, lablabel: selectedRow.labDepName };
-          });
-          setProgressState(6);
-          setImg(selectedRow.labDepMap);
-        }}
+      <h3 onClick={() => {
+        setLocationDetails((oldValue) => {
+          return { ...oldValue, lab_id: selectedRow.id };
+        });
+
+        setBreadCrumbLabels((oldvalue) => {
+          return { ...oldvalue, lablabel: selectedRow.labDepName };
+        });
+
+        setProgressState(6);
+        setImg(selectedRow.labDepMap);
+      }}
       >
         {selectedRow.labDepName}
       </h3>
     );
   }
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3>
           Location

@@ -1,9 +1,10 @@
 import { Breadcrumbs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
-
 import { BuildingFetchService } from '../../../../services/LoginPageService';
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function BuildingGridComponent({
   locationDetails, setLocationDetails, setImg, setProgressState, setLocationCoordinationList, breadCrumbLabels, setBreadCrumbLabels,
 }) {
@@ -55,34 +56,30 @@ function BuildingGridComponent({
     setLocationCoordinationList(newArray);
   };
 
-  /* eslint-disable-next-line */
   const handleException = (errorObject) => {
   };
 
   function LinkTo({ selectedRow }) {
     return (
-      /* eslint-disable-next-line */
-      <h3
-        style={{ cursor: 'pointer' }}
-        onClick={() => {
-          setLocationDetails((oldValue) => {
-            return { ...oldValue, building_id: selectedRow.id };
-          });
+      <h3 onClick={() => {
+        setLocationDetails((oldValue) => {
+          return { ...oldValue, building_id: selectedRow.id };
+        });
 
-          setBreadCrumbLabels((oldvalue) => {
-            return { ...oldvalue, buildingLabel: selectedRow.buildingName };
-          });
+        setBreadCrumbLabels((oldvalue) => {
+          return { ...oldvalue, buildingLabel: selectedRow.buildingName };
+        });
 
-          setProgressState(4);
-          setImg(selectedRow.buildingImg);
-        }}
+        setProgressState(4);
+        setImg(selectedRow.buildingImg);
+      }}
       >
         {selectedRow.buildingName}
       </h3>
     );
   }
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3>
           Location
@@ -106,7 +103,7 @@ function BuildingGridComponent({
         pageSize={5}
         rowsPerPageOptions={[5]}
         disableSelectionOnClick
-        style={{ maxHeight: `${80}%` }}
+        style={{ maxHeight: `${93}%` }}
       />
     </div>
   );

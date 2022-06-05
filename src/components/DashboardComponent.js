@@ -19,8 +19,6 @@ function Dashboard() {
   });
 
   const [locationCoordinationList, setLocationCoordinationList] = useState([]);
-  const [centerLat, setCenterLat] = useState(23.500);
-  const [centerLng, setCenterLng] = useState(80.500);
   const [locationState, setProgressState] = useState(0);
   const [Img, setImg] = useState('');
   const imgSrc = `http://varmatrix.com/Aqms/blog/public/${Img}`;
@@ -28,20 +26,32 @@ function Dashboard() {
   const [deviceCoordsList, setDeviceCoordsList] = useState([]);
 
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={8}>
-        <Grid container item xs={12}>
+    <Grid container spacing={1} style={{ height: '92.5%' }}>
+      <Grid
+        item
+        xs={12}
+        style={{ height: '50%' }}
+        sx={{
+          marginLeft: 1,
+        }}
+      >
+        <Grid
+          container
+          item
+          xs={12}
+          style={{ height: '100%' }}
+        >
           <Grid
             item
-            xs={12}
+            xs={8}
             sx={{
-              marginTop: 1,
-              backgroundColor: 'skyblue',
             }}
+            style={{ height: '100%' }}
           >
             <LocationGridWidget
               setLocationCoordinationList={setLocationCoordinationList}
               locationState={locationState}
+              setProgressState={setProgressState}
               setImg={setImg}
               setImageState={setImageState}
               locationDetails={locationDetails}
@@ -49,44 +59,32 @@ function Dashboard() {
               setDeviceCoordsList={setDeviceCoordsList}
             />
           </Grid>
-          <Grid
-            item
-            xs={12}
-            sx={{
-              backgroundColor: 'pink',
-            }}
-          >
-            <AlertWidget />
+          <Grid item xs={4}>
+            {
+              /* eslint-disable-next-line */
+              deviceCoordsList.length !== 0 ? (<ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} />)
+                : (ImageState === 1 ? (
+                  <img
+                    src={imgSrc}                    
+                    style={{ width: `${99}%`, height: `${56}vh` }}
+                    alt="Map"
+                  />
+                ) : <GeoLocationWidget locationCoordination={locationCoordinationList} />
+                )
+            }
           </Grid>
         </Grid>
       </Grid>
       <Grid
         item
-        xs={4}
+        xs={12}
         sx={{
-          backgroundColor: 'pink',
-          marginTop: 2,
+          padding: 1,
+          marginLeft: 1,
         }}
+        style={{ height: '50%' }}
       >
-
-        {
-          /* eslint-disable-next-line */
-          deviceCoordsList.length !== 0 ? (
-            <ImageMarkerList
-              labImage={imgSrc}
-              deviceCoordsList={deviceCoordsList}
-            />
-          )
-            : (ImageState === 1
-              ? (
-                <img
-                  src={imgSrc}
-                  style={{ width: `${99}%`, height: `${56}vh` }}
-                  alt="Map"
-                />
-              ) : <GeoLocationWidget locationCoordination={locationCoordinationList} />
-            )
-        }
+        <AlertWidget />
       </Grid>
     </Grid>
   );
