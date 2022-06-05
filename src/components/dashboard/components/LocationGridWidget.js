@@ -23,7 +23,6 @@ function LocationGridWidget({
       setImageState(1);
     }
   }, [locationState]);
-
   return (
     <div style={{ height: '100%' }}>
     {

@@ -66,7 +66,6 @@ function FloorGridComponent({
       }}
       >
         {selectedRow.floorName}
-
       </h3>
     );
   }
