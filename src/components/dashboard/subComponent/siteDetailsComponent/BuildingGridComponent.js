@@ -6,7 +6,7 @@ import { BuildingFetchService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function BuildingGridComponent({
-  locationDetails, setLocationDetails, setImg, setProgressState, setLocationCoordinationList, breadCrumbLabels, setBreadCrumbLabels,
+  setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels, setLocationCoordinationList
 }) {
   const dataColumns = [
     {
@@ -61,7 +61,7 @@ function BuildingGridComponent({
 
   function LinkTo({ selectedRow }) {
     return (
-      <h3 onClick={() => {
+      <h3 style={{cursor: 'pointer'}} onClick={() => {
         setLocationDetails((oldValue) => {
           return { ...oldValue, building_id: selectedRow.id };
         });
@@ -81,13 +81,13 @@ function BuildingGridComponent({
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
-        <h3>
+        <h3 onClick={() => setProgressState(0)} style={{ cursor: 'pointer' }}>
           Location
         </h3>
-        <h3>
+        <h3 onClick={() => setProgressState(1)} style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.stateLabel}
         </h3>
-        <h3>
+        <h3 onClick={() => setProgressState(2)} style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.branchLabel}
         </h3>
         <Typography
