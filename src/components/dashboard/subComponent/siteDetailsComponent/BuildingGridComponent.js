@@ -6,7 +6,7 @@ import { BuildingFetchService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function BuildingGridComponent({
-  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels, setLocationCoordinationList
 }) {
   const dataColumns = [
     {
@@ -41,6 +41,19 @@ function BuildingGridComponent({
 
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);
+    const newArray = dataObject.data ? dataObject.data.map((item) => {
+      const coordinates = item.coordinates ? item.coordinates.replaceAll('"', '').split(',') : [];
+      return {
+        id: item.id,
+        name: item.buildingName,
+        position: {
+          lat: parseFloat(coordinates[0]),
+          lng: parseFloat(coordinates[1]),
+        },
+      };
+    })
+      : [];
+    setLocationCoordinationList(newArray);
   };
 
   const handleException = (errorObject) => {
@@ -58,6 +71,7 @@ function BuildingGridComponent({
         });
 
         setProgressState(4);
+        setImg(selectedRow.buildingImg);
       }}
       >
         {selectedRow.buildingName}

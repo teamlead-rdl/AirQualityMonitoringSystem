@@ -1,11 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import Grid from '@mui/material/Grid';
+import MapsMultiplePoints from '../../maps/mapsMultiplePoints';
 
-const GeoLocationWidget = () => {
+function GeoLocationWidget({ locationCoordination }) {
+  const [locationCoordinationList, setLocationCoordinationList] = useState([]);
+  const [centerLat, setCenterLat] = useState('');
+  const [centerLng, setCenterLng] = useState('');
+
+  useEffect(() => {
+    setLocationCoordinationList(locationCoordination);
+    setCenterLat(23.500);
+    setCenterLng(80.500);
+  }, [locationCoordination]);
   return (
     <div>
-        GeoLocationWidget
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+        {locationCoordinationList.length !== 0
+          ? (
+            <MapsMultiplePoints
+              width="100%"
+              height="50vh"
+              markers={locationCoordinationList}
+              zoom={4}
+              center={{ lat: centerLat, lng: centerLng }}
+            />
+          )
+          : ''}
+      </Grid>
     </div>
-  )
+  );
 }
 
-export default GeoLocationWidget
+export default GeoLocationWidget;

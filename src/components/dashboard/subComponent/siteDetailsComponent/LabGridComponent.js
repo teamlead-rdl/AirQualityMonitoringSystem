@@ -6,10 +6,9 @@ import { LabfetchService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function LabGridComponent({
-  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+  setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
 }) {
   const [dataList, setDataList] = useState([]);
-
   const dataColumns = [
     {
       field: 'labDepName',
@@ -47,7 +46,7 @@ function LabGridComponent({
     setDataList(dataObject.data);
   };
 
-  const handleException = (errorObject) => {
+  const handleException = () => {
   };
 
   function LinkTo({ selectedRow }) {
@@ -62,6 +61,7 @@ function LabGridComponent({
         });
 
         setProgressState(6);
+        setImg(selectedRow.labDepMap);
       }}
       >
         {selectedRow.labDepName}

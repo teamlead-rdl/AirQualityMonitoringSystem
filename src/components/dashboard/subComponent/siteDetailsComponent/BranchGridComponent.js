@@ -7,7 +7,7 @@ import { FetchBranchService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 
 function BranchGridComponent({
-  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels, setLocationCoordinationList
 }) {
   const [dataList, setDataList] = useState([]);
 
@@ -43,6 +43,19 @@ function BranchGridComponent({
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);
     setProgressState(1);
+    const newArray = dataObject.data ? dataObject.data.map((item) => {
+      const coordinates = item.coordinates ? item.coordinates.replaceAll('"', '').split(',') : [];
+      return {
+        id: item.id,
+        name: item.branchName,
+        position: {
+          lat: parseFloat(coordinates[0]),
+          lng: parseFloat(coordinates[1]),
+        },
+      };
+    })
+      : [];
+    setLocationCoordinationList(newArray);
   };
 
   const handleException = (errorObject) => {

@@ -6,7 +6,7 @@ import { FetchFacilitiyService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function FacilityGridComponent({
-  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels, setLocationCoordinationList
 }) {
   const facilityColumns = [
     {
@@ -46,6 +46,19 @@ function FacilityGridComponent({
 
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);
+    const newArray = dataObject.data ? dataObject.data.map((item) => {
+      const coordinates = item.coordinates ? item.coordinates.replaceAll('"', '').split(',') : [];
+      return {
+        id: item.id,
+        name: item.facilityName,
+        position: {
+          lat: parseFloat(coordinates[0]),
+          lng: parseFloat(coordinates[1]),
+        },
+      };
+    })
+      : [];
+    setLocationCoordinationList(newArray);
   };
 
   const handleException = (errorObject) => {

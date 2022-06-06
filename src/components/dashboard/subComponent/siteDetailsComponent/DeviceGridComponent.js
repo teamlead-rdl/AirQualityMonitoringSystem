@@ -12,7 +12,7 @@ import { DeviceFetchService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function DeviceGridComponent({
-  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels, setDeviceCoordsList
 }) {
   const columns = [
     {
@@ -80,6 +80,13 @@ function DeviceGridComponent({
 
   const handleSuccess = (dataObject) => {
     setDeviceList(dataObject.data);
+    const deviceCoordinationsList = dataObject.data.map((data, index) => {
+      const coordination = data.floorCords;
+      const arrayList = coordination?.split(',');
+      return arrayList && { top: arrayList[0], left: arrayList[1] };
+    });
+    const filteredArray = deviceCoordinationsList.filter((x) => x != null);
+    setDeviceCoordsList(filteredArray || []);
   };
 
   const handleException = () => { };

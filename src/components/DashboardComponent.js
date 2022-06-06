@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import './dashboard/dragResize.scss';
 import { Grid } from '@mui/material';
+
 import LocationGridWidget from './dashboard/components/LocationGridWidget';
 import AlertWidget from './dashboard/components/AlertWidget';
 import GeoLocationWidget from './dashboard/components/GeoLocationWidget';
+import ImageMarkerList from './Device/subComponent/imageMarkerList';
+
 /* eslint-disable no-unused-vars */
 function Dashboard() {
   const [locationDetails, setLocationDetails] = useState({
@@ -15,7 +18,12 @@ function Dashboard() {
     lab_id: '',
   });
 
+  const [locationCoordinationList, setLocationCoordinationList] = useState([]);
   const [locationState, setProgressState] = useState(0);
+  const [Img, setImg] = useState('');
+  const imgSrc = `http://varmatrix.com/Aqms/blog/public/${Img}`;
+  const [ImageState, setImageState] = useState(0);
+  const [deviceCoordsList, setDeviceCoordsList] = useState([]);
 
   return (
     <Grid container spacing={1} style={{ height: '92.5%' }}>
@@ -41,15 +49,29 @@ function Dashboard() {
             style={{ height: '100%' }}
           >
             <LocationGridWidget
-              locationDetails={locationDetails}
-              setLocationDetails={setLocationDetails}
+              setLocationCoordinationList={setLocationCoordinationList}
               locationState={locationState}
               setProgressState={setProgressState}
+              setImg={setImg}
+              setImageState={setImageState}
+              locationDetails={locationDetails}
+              setLocationDetails={setLocationDetails}
+              setDeviceCoordsList={setDeviceCoordsList}
             />
           </Grid>
-
           <Grid item xs={4}>
-            <GeoLocationWidget />
+            {
+              /* eslint-disable-next-line */
+              deviceCoordsList.length !== 0 ? (<ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} />)
+                : (ImageState === 1 ? (
+                  <img
+                    src={imgSrc}                    
+                    style={{ width: `${99}%`, height: `${56}vh` }}
+                    alt="Map"
+                  />
+                ) : <GeoLocationWidget locationCoordination={locationCoordinationList} />
+                )
+            }
           </Grid>
         </Grid>
       </Grid>
