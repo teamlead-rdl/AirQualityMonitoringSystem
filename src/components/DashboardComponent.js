@@ -25,6 +25,10 @@ function Dashboard() {
     labImage: '',
   });
 
+  const [zoomLevel, setZoomLevel] = useState(4);
+  const [centerLatitude, setCenterLatitude] = useState(23.500);
+  const [centerLongitude, setCenterLongitude] = useState(80.500);
+
   const [locationCoordinationList, setLocationCoordinationList] = useState([]);
   const [locationState, setProgressState] = useState(0);
   const [Img, setImg] = useState('');
@@ -83,33 +87,15 @@ function Dashboard() {
                     setIsGeoMap={setIsGeoMap}
                     siteImages={siteImages}
                     setSiteImages={setSiteImages}
+                    setZoomLevel={setZoomLevel}
+                    setCenterLatitude={setCenterLatitude}
+                    setCenterLongitude={setCenterLongitude}
                   />
                 </Grid>
                 <Grid item xs={4}>
-                  {
-                    /* eslint-disable-next-line */
-                // deviceCoordsList.length !== 0 ? (<ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} />)
-                    //   : (ImageState === 1 ? (
-                  //     <img
-                  //       src={imgSrc}
-                  //       style={{ width: `${99}%`, height: `${56}vh` }}
-                  //       alt="Map"
-                  //     />
-                  //   ) : <GeoLocationWidget locationCoordination={locationCoordinationList} />
-                  //   )
-
-                  }
                   {/* eslint-disable-next-line */}
-              {isGeoMap === true ? <GeoLocationWidget locationCoordination={locationCoordinationList} />
+                  {isGeoMap === true ? <GeoLocationWidget locationCoordination={locationCoordinationList} zoomLevel={zoomLevel} centerLatitude={centerLatitude} centerLongitude={centerLongitude} />
                     : <ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} /> }
-                  {// deviceCoordsList.length !== 0 ? (
-                  //   )
-                  // : <img
-                  //   src={imgSrc}
-                  //   style={{ width: `${99}%`, height: `${56}vh` }}
-                  //   alt="Image"
-                  // />
-                  }
                 </Grid>
               </Grid>
             </Grid>

@@ -8,6 +8,7 @@ import { BuildingFetchService } from '../../../../services/LoginPageService';
 function BuildingGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
   setLocationCoordinationList, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages,
+  setZoomLevel, setCenterLatitude, setCenterLongitude,
 }) {
   const dataColumns = [
     {
@@ -55,6 +56,7 @@ function BuildingGridComponent({
     })
       : [];
     setLocationCoordinationList(newArray);
+    setZoomLevel(12);
   };
 
   const handleException = (errorObject) => {
@@ -90,8 +92,10 @@ function BuildingGridComponent({
         <h3
           onClick={() => {
             setProgressState(0);
-            setIsGeoMap(true);
             setDeviceCoordsList([]);
+            setCenterLatitude(23.500);
+            setCenterLongitude(80.000);
+            setIsGeoMap(true);
           }}
           style={{ cursor: 'pointer' }}
         >
@@ -100,8 +104,8 @@ function BuildingGridComponent({
         <h3
           onClick={() => {
             setProgressState(1);
-            setIsGeoMap(true);
             setDeviceCoordsList([]);
+            setIsGeoMap(true);
           }}
           style={{ cursor: 'pointer' }}
         >
@@ -110,8 +114,8 @@ function BuildingGridComponent({
         <h3
           onClick={() => {
             setProgressState(2);
-            setIsGeoMap(true);
             setDeviceCoordsList([]);
+            setIsGeoMap(true);
           }}
           style={{ cursor: 'pointer' }}
         >

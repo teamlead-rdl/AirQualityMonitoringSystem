@@ -7,7 +7,8 @@ import { FetchFacilitiyService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function FacilityGridComponent({
   locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
-  setLocationCoordinationList, setIsGeoMap, setDeviceCoordsList,
+  setLocationCoordinationList, setIsGeoMap, setDeviceCoordsList, 
+  setZoomLevel, setCenterLatitude, setCenterLongitude
 }) {
   const facilityColumns = [
     {
@@ -60,6 +61,7 @@ function FacilityGridComponent({
     })
       : [];
     setLocationCoordinationList(newArray);
+    setZoomLevel(9);
   };
 
   const handleException = (errorObject) => {
@@ -79,6 +81,9 @@ function FacilityGridComponent({
           });
 
           setProgressState(3);
+          const coordList = selectedRow.coordinates.replaceAll('"', '').split(',') || [];
+          setCenterLatitude(parseFloat(coordList[0]));
+          setCenterLongitude(parseFloat(coordList[1]));
         }}
       >
         {selectedRow.facilityName}
@@ -92,8 +97,10 @@ function FacilityGridComponent({
         <h3
           onClick={() => {
             setProgressState(0);
-            setIsGeoMap(true);
             setDeviceCoordsList([]);
+            setCenterLatitude(23.500);
+            setCenterLongitude(80.000);
+            setIsGeoMap(true);
           }}
           style={{ cursor: 'pointer' }}
         >
@@ -102,8 +109,8 @@ function FacilityGridComponent({
         <h3
           onClick={() => {
             setProgressState(1);
-            setIsGeoMap(true);
             setDeviceCoordsList([]);
+            setIsGeoMap(true);
           }}
           style={{ cursor: 'pointer' }}
         >

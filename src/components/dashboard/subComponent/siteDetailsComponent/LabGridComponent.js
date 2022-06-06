@@ -8,6 +8,7 @@ import { LabfetchService } from '../../../../services/LoginPageService';
 function LabGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels,
   setBreadCrumbLabels, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages,
+  setCenterLatitude, setCenterLongitude
 }) {
   const [dataList, setDataList] = useState([]);
   const dataColumns = [
@@ -80,8 +81,10 @@ function LabGridComponent({
         <h3
           onClick={() => {
             setProgressState(0);
-            setIsGeoMap(true);
             setDeviceCoordsList([]);
+            setCenterLatitude(23.500);
+            setCenterLongitude(80.000);
+            setIsGeoMap(true);
           }}
           style={{ cursor: 'pointer' }}
         >
@@ -90,8 +93,8 @@ function LabGridComponent({
         <h3
           onClick={() => {
             setProgressState(1);
-            setIsGeoMap(true);
             setDeviceCoordsList([]);
+            setIsGeoMap(true);
           }}
           style={{ cursor: 'pointer' }}
         >
@@ -100,8 +103,8 @@ function LabGridComponent({
         <h3
           onClick={() => {
             setProgressState(2);
-            setIsGeoMap(true);
             setDeviceCoordsList([]);
+            setIsGeoMap(true);
           }}
           style={{ cursor: 'pointer' }}
         >
@@ -110,8 +113,8 @@ function LabGridComponent({
         <h3
           onClick={() => {
             setProgressState(3);
-            setIsGeoMap(true);
             setDeviceCoordsList([]);
+            setIsGeoMap(true);
           }}
           style={{ cursor: 'pointer' }}
         >
@@ -120,9 +123,9 @@ function LabGridComponent({
         <h3
           onClick={() => {
             setProgressState(4);
-            setIsGeoMap(false);
             setDeviceCoordsList([]);
             setImg(siteImages.buildingImage);
+            setIsGeoMap(false);
           }}
           style={{ cursor: 'pointer' }}
         >

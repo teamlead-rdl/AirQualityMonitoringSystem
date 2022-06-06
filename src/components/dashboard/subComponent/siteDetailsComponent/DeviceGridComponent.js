@@ -12,8 +12,8 @@ import { DeviceFetchService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function DeviceGridComponent({
-  setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels, 
-  setDeviceCoordsList, setIsDashBoard, setIsGeoMap, siteImages,
+  setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+  setDeviceCoordsList, setIsDashBoard, setIsGeoMap, siteImages, setCenterLatitude, setCenterLongitude,
 }) {
   const columns = [
     {
@@ -44,29 +44,6 @@ function DeviceGridComponent({
       sortable: false,
       width: 180,
       disableClickEventBubbling: true,
-      // type: 'actions',
-      // cellClassName: 'actions',
-      // getActions: (params) => [
-      // <ChangeMode selectedRow={params.row} />,
-      // ],
-    },
-    {
-      field: 'firmwareVersion',
-      headerName: 'Firm Ware',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 100,
-    },
-    {
-      field: 'status',
-      type: 'actions',
-      headerName: 'Status',
-      width: 70,
-      cellClassName: 'actions',
-      disableClickEventBubbling: true,
-      getActions: (params) => [
-        <ChangeStatus selectedRow={params.row} />,
-      ],
     },
   ];
 
@@ -120,16 +97,18 @@ function DeviceGridComponent({
 
   function LinkTo({ selectedRow }) {
     return (
-      <h3 style={{cursor: 'pointer'}} onClick={() => {
-        setLocationDetails((oldValue) => {
-          return { ...oldValue, device_id: selectedRow.id };
-        });
-        setIsDashBoard(true);
+      <h3
+        style={{ cursor: 'pointer' }}
+        onClick={() => {
+          setLocationDetails((oldValue) => {
+            return { ...oldValue, device_id: selectedRow.id };
+          });
+          setIsDashBoard(true);
 
-        setBreadCrumbLabels((oldvalue) => {
-          return { ...oldvalue, deviceLabel: selectedRow.deviceName };
-        });
-      }}
+          setBreadCrumbLabels((oldvalue) => {
+            return { ...oldvalue, deviceLabel: selectedRow.deviceName };
+          });
+        }}
       >
         {selectedRow.deviceName}
       </h3>
@@ -138,50 +117,68 @@ function DeviceGridComponent({
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
-        <h3 onClick={() => {
-          setProgressState(0);
-          setIsGeoMap(true);
+        <h3
+          onClick={() => {
+            setCenterLatitude(23.500);
+            setCenterLongitude(80.000);
+            setDeviceCoordsList([]);
+            setIsGeoMap(true);
+            setProgressState(0);
           }}
-          style={{ cursor: 'pointer' }}>
+          style={{ cursor: 'pointer' }}
+        >
           Location
         </h3>
-        <h3 onClick={() => {
-          setProgressState(1);
-          setIsGeoMap(true);
+        <h3
+          onClick={() => {
+            setDeviceCoordsList([]);
+            setIsGeoMap(true);
+            setProgressState(1);
           }}
-          style={{ cursor: 'pointer' }}>
+          style={{ cursor: 'pointer' }}
+        >
           {breadCrumbLabels.stateLabel}
         </h3>
-        <h3 onClick={() => {
-          setProgressState(2);
-          setIsGeoMap(true);
+        <h3
+          onClick={() => {
+            setDeviceCoordsList([]);
+            setIsGeoMap(true);
+            setProgressState(2);
           }}
-          style={{ cursor: 'pointer' }}>
+          style={{ cursor: 'pointer' }}
+        >
           {breadCrumbLabels.branchLabel}
         </h3>
-        <h3 onClick={() => {
-          setProgressState(3);
-          setIsGeoMap(true);
+        <h3
+          onClick={() => {
+            setDeviceCoordsList([]);
+            setIsGeoMap(true);
+            setProgressState(3);
           }}
-          style={{ cursor: 'pointer' }}>
+          style={{ cursor: 'pointer' }}
+        >
           {breadCrumbLabels.facilityLabel}
         </h3>
-        <h3 onClick={() => {
-          setProgressState(4);
-          setIsGeoMap(false);
-          setDeviceCoordsList([]);
-          setImg(siteImages.buildingImage);
+        <h3
+          onClick={() => {
+            setIsGeoMap(false);
+            setDeviceCoordsList([]);
+            setImg(siteImages.buildingImage);
+            setProgressState(4);
           }}
-          style={{ cursor: 'pointer' }}>
+          style={{ cursor: 'pointer' }}
+        >
           {breadCrumbLabels.buildingLabel}
         </h3>
-        <h3 onClick={() => {
-          setProgressState(5);
-          setImg(siteImages.floorImage);
-          setDeviceCoordsList([]);
-          setIsGeoMap(false);
+        <h3
+          onClick={() => {
+            setImg(siteImages.floorImage);
+            setDeviceCoordsList([]);
+            setIsGeoMap(false);
+            setProgressState(5);
           }}
-          style={{ cursor: 'pointer' }}>
+          style={{ cursor: 'pointer' }}
+        >
           {breadCrumbLabels.floorLabel}
         </h3>
         <Typography

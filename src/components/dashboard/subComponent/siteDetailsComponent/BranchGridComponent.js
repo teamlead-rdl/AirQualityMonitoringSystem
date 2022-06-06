@@ -9,6 +9,7 @@ import { FetchBranchService } from '../../../../services/LoginPageService';
 function BranchGridComponent({
   locationDetails, setLocationDetails, setProgressState, breadCrumbLabels,
   setBreadCrumbLabels, setLocationCoordinationList, setIsGeoMap, setDeviceCoordsList,
+  setZoomLevel, setCenterLatitude, setCenterLongitude,
 }) {
   const [dataList, setDataList] = useState([]);
 
@@ -57,6 +58,7 @@ function BranchGridComponent({
     })
       : [];
     setLocationCoordinationList(newArray);
+    setZoomLevel(6);
   };
 
   const handleException = (errorObject) => {
@@ -74,6 +76,9 @@ function BranchGridComponent({
             return { ...oldvalue, branchLabel: selectedRow.branchName };
           });
           setProgressState(2);
+          const coordList = selectedRow.coordinates.replaceAll('"', '').split(',') || [];
+          setCenterLatitude(parseFloat(coordList[0]));
+          setCenterLongitude(parseFloat(coordList[1]));
         }}
       >
         {selectedRow.branchName}
@@ -88,8 +93,8 @@ function BranchGridComponent({
           style={{ cursor: 'pointer' }}
           onClick={() => {
             setProgressState(0);
-            setIsGeoMap(true);
             setDeviceCoordsList([]);
+            setIsGeoMap(true);
           }}
         >
           Location

@@ -8,7 +8,9 @@ import LabGridComponent from '../subComponent/siteDetailsComponent/LabGridCompon
 import DeviceGridComponent from '../subComponent/siteDetailsComponent/DeviceGridComponent';
 /* eslint-disable max-len */
 function LocationGridWidget({
-  locationDetails, setLocationDetails, locationState, setProgressState, setImageState, setImg, setDeviceCoordsList, setLocationCoordinationList, setIsDashBoard, setIsGeoMap, siteImages, setSiteImages,
+  locationDetails, setLocationDetails, locationState, setProgressState, setImageState, setImg,
+  setDeviceCoordsList, setLocationCoordinationList, setIsDashBoard, setIsGeoMap, siteImages, setSiteImages,
+  setZoomLevel, setCenterLatitude, setCenterLongitude,
 }) {
   const [breadCrumbLabels, setBreadCrumbLabels] = useState({
     stateLabel: 'State',
@@ -35,6 +37,9 @@ function LocationGridWidget({
               setProgressState={setProgressState}
               breadCrumbLabels={breadCrumbLabels}
               setBreadCrumbLabels={setBreadCrumbLabels}
+              setZoomLevel={setZoomLevel}
+              setCenterLatitude={setCenterLatitude}
+              setCenterLongitude={setCenterLongitude}
             />
           ) : ''
       }
@@ -50,6 +55,9 @@ function LocationGridWidget({
               setBreadCrumbLabels={setBreadCrumbLabels}
               setIsGeoMap={setIsGeoMap}
               setDeviceCoordsList={setDeviceCoordsList}
+              setZoomLevel={setZoomLevel}
+              setCenterLatitude={setCenterLatitude}
+              setCenterLongitude={setCenterLongitude}
             />
           ) : ''
       }
@@ -65,6 +73,9 @@ function LocationGridWidget({
               setBreadCrumbLabels={setBreadCrumbLabels}
               setIsGeoMap={setIsGeoMap}
               setDeviceCoordsList={setDeviceCoordsList}
+              setZoomLevel={setZoomLevel}
+              setCenterLatitude={setCenterLatitude}
+              setCenterLongitude={setCenterLongitude}
             />
           ) : ''
       }
@@ -83,6 +94,9 @@ function LocationGridWidget({
               setDeviceCoordsList={setDeviceCoordsList}
               siteImages={siteImages}
               setSiteImages={setSiteImages}
+              setZoomLevel={setZoomLevel}
+              setCenterLatitude={setCenterLatitude}
+              setCenterLongitude={setCenterLongitude}
             />
           ) : ''
       }
@@ -100,6 +114,8 @@ function LocationGridWidget({
               setDeviceCoordsList={setDeviceCoordsList}
               siteImages={siteImages}
               setSiteImages={setSiteImages}
+              setCenterLatitude={setCenterLatitude}
+              setCenterLongitude={setCenterLongitude}
             />
           ) : ''
       }
@@ -116,6 +132,8 @@ function LocationGridWidget({
             setDeviceCoordsList={setDeviceCoordsList}
             siteImages={siteImages}
             setSiteImages={setSiteImages}
+            setCenterLatitude={setCenterLatitude}
+            setCenterLongitude={setCenterLongitude}
           />
         ) : ''}
       {
@@ -132,6 +150,8 @@ function LocationGridWidget({
               setIsGeoMap={setIsGeoMap}
               siteImages={siteImages}
               setSiteImages={setSiteImages}
+              setCenterLatitude={setCenterLatitude}
+              setCenterLongitude={setCenterLongitude}
             />
           ) : ''
       }

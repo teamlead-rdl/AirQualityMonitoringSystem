@@ -6,7 +6,8 @@ import { FetchLocationService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function LocationGridComponent({
-  locationDetails, setLocationDetails, setProgressState, setBreadCrumbLabels, setLocationCoordinationList,
+  locationDetails, setLocationDetails, setProgressState, setBreadCrumbLabels, setLocationCoordinationList, 
+  setZoomLevel, setCenterLatitude, setCenterLongitude,
 }) {
   const [dataList, setDataList] = useState([]);
 
@@ -48,6 +49,9 @@ function LocationGridComponent({
           return { ...oldvalue, stateLabel: selectedRow.stateName };
         });
         setProgressState(1);
+        const coordList = selectedRow.coordinates.replaceAll('"', '').split(',') || [];
+        setCenterLatitude(parseFloat(coordList[0]));
+        setCenterLongitude(parseFloat(coordList[1]));
       }}
       >
         {selectedRow.stateName}
@@ -69,6 +73,7 @@ function LocationGridComponent({
     })
       : [];
     setLocationCoordinationList(newArray);
+    setZoomLevel(4);
   };
 
   const handleException = (errorObject) => {
