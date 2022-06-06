@@ -6,7 +6,8 @@ import { FloorfetchService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function FloorGridComponent({
-  setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+  setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels,
+  setBreadCrumbLabels, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages,
 }) {
   const dataColumns = [
     {
@@ -52,18 +53,23 @@ function FloorGridComponent({
 
   function LinkTo({ selectedRow }) {
     return (
-      <h3 style={{cursor: 'pointer'}} onClick={() => {
-        setLocationDetails((oldValue) => {
-          return { ...oldValue, floor_id: selectedRow.id };
-        });
+      <h3
+        style={{ cursor: 'pointer' }}
+        onClick={() => {
+          setLocationDetails((oldValue) => {
+            return { ...oldValue, floor_id: selectedRow.id };
+          });
 
-        setBreadCrumbLabels((oldvalue) => {
-          return { ...oldvalue, floorLabel: selectedRow.floorName };
-        });
+          setBreadCrumbLabels((oldvalue) => {
+            return { ...oldvalue, floorLabel: selectedRow.floorName };
+          });
 
-        setProgressState(5);
-        setImg(selectedRow.floorMap);
-      }}
+          setProgressState(5);
+          setImg(selectedRow.floorMap);
+          setSiteImages((oldValue) => {
+            return { ...oldValue, floorImage: selectedRow.floorMap };
+          });
+        }}
       >
         {selectedRow.floorName}
       </h3>
@@ -73,16 +79,44 @@ function FloorGridComponent({
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
-        <h3 onClick={() => setProgressState(0)} style={{ cursor: 'pointer' }}>
+        <h3
+          onClick={() => {
+            setProgressState(0);
+            setIsGeoMap(true);
+            setDeviceCoordsList([]);
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           Location
         </h3>
-        <h3 onClick={() => setProgressState(1)} style={{ cursor: 'pointer' }}>
+        <h3
+          onClick={() => {
+            setProgressState(1);
+            setIsGeoMap(true);
+            setDeviceCoordsList([]);
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           {breadCrumbLabels.stateLabel}
         </h3>
-        <h3 onClick={() => setProgressState(2)} style={{ cursor: 'pointer' }}>
+        <h3
+          onClick={() => {
+            setProgressState(2);
+            setIsGeoMap(true);
+            setDeviceCoordsList([]);
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           {breadCrumbLabels.branchLabel}
         </h3>
-        <h3 onClick={() => setProgressState(3)} style={{ cursor: 'pointer' }}>
+        <h3
+          onClick={() => {
+            setProgressState(3);
+            setIsGeoMap(true);
+            setDeviceCoordsList([]);
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           {breadCrumbLabels.facilityLabel}
         </h3>
         <Typography

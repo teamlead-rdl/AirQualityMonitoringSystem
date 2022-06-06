@@ -12,7 +12,8 @@ import { DeviceFetchService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function DeviceGridComponent({
-  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels, setDeviceCoordsList, setIsDashBoard,
+  setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels, 
+  setDeviceCoordsList, setIsDashBoard, setIsGeoMap, siteImages,
 }) {
   const columns = [
     {
@@ -128,7 +129,6 @@ function DeviceGridComponent({
         setBreadCrumbLabels((oldvalue) => {
           return { ...oldvalue, deviceLabel: selectedRow.deviceName };
         });
-
       }}
       >
         {selectedRow.deviceName}
@@ -138,22 +138,50 @@ function DeviceGridComponent({
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
-        <h3 onClick={() => setProgressState(0)} style={{ cursor: 'pointer' }}>
+        <h3 onClick={() => {
+          setProgressState(0);
+          setIsGeoMap(true);
+          }}
+          style={{ cursor: 'pointer' }}>
           Location
         </h3>
-        <h3 onClick={() => setProgressState(1)} style={{ cursor: 'pointer' }}>
+        <h3 onClick={() => {
+          setProgressState(1);
+          setIsGeoMap(true);
+          }}
+          style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.stateLabel}
         </h3>
-        <h3 onClick={() => setProgressState(2)} style={{ cursor: 'pointer' }}>
+        <h3 onClick={() => {
+          setProgressState(2);
+          setIsGeoMap(true);
+          }}
+          style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.branchLabel}
         </h3>
-        <h3 onClick={() => setProgressState(3)} style={{ cursor: 'pointer' }}>
+        <h3 onClick={() => {
+          setProgressState(3);
+          setIsGeoMap(true);
+          }}
+          style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.facilityLabel}
         </h3>
-        <h3 onClick={() => setProgressState(4)} style={{ cursor: 'pointer' }}>
+        <h3 onClick={() => {
+          setProgressState(4);
+          setIsGeoMap(false);
+          setDeviceCoordsList([]);
+          setImg(siteImages.buildingImage);
+          }}
+          style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.buildingLabel}
         </h3>
-        <h3 onClick={() => setProgressState(5)} style={{ cursor: 'pointer' }}>
+        <h3 onClick={() => {
+          setProgressState(5);
+          setImg(siteImages.floorImage);
+          setDeviceCoordsList([]);
+          setIsGeoMap(false);
+          }}
+          style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.floorLabel}
         </h3>
         <Typography
