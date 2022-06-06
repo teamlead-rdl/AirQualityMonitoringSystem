@@ -12,13 +12,17 @@ import { DeviceFetchService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function DeviceGridComponent({
-  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels, setDeviceCoordsList
+  locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels, setDeviceCoordsList, setIsDashBoard,
 }) {
   const columns = [
     {
       field: 'deviceName',
       headerName: 'Device Name',
       width: 150,
+      type: 'actions',
+      getActions: (params) => [
+        <LinkTo selectedRow={params.row} />,
+      ],
     },
     {
       field: 'deviceCategory',
@@ -111,6 +115,25 @@ function DeviceGridComponent({
     default:
       return <PlayArrow />;
     }
+  }
+
+  function LinkTo({ selectedRow }) {
+    return (
+      <h3 style={{cursor: 'pointer'}} onClick={() => {
+        setLocationDetails((oldValue) => {
+          return { ...oldValue, device_id: selectedRow.id };
+        });
+        setIsDashBoard(true);
+
+        setBreadCrumbLabels((oldvalue) => {
+          return { ...oldvalue, deviceLabel: selectedRow.deviceName };
+        });
+
+      }}
+      >
+        {selectedRow.deviceName}
+      </h3>
+    );
   }
   return (
     <div style={{ height: '100%', width: '100%' }}>
