@@ -8,7 +8,7 @@ import LabGridComponent from '../subComponent/siteDetailsComponent/LabGridCompon
 import DeviceGridComponent from '../subComponent/siteDetailsComponent/DeviceGridComponent';
 /* eslint-disable max-len */
 function LocationGridWidget({
-  locationDetails, setLocationDetails, locationState, setProgressState,setImageState, setImg, setDeviceCoordsList, setLocationCoordinationList,
+  locationDetails, setLocationDetails, locationState, setProgressState,setImageState, setImg, setDeviceCoordsList, setLocationCoordinationList, setIsDashBoard
 }) {
   const [breadCrumbLabels, setBreadCrumbLabels] = useState({
     stateLabel: 'State',
@@ -17,6 +17,7 @@ function LocationGridWidget({
     buildingLabel: 'Building',
     floorLabel: 'Floor',
     lablabel: 'Lab',
+    deviceLabel: '',
   });
   useEffect(() => {
     if(locationState === 4 || locationState === 5 || locationState === 6) {
@@ -111,6 +112,7 @@ function LocationGridWidget({
               setDeviceCoordsList={setDeviceCoordsList}
               setProgressState={setProgressState}
               breadCrumbLabels={breadCrumbLabels}
+              setIsDashBoard={setIsDashBoard}
             />
           ) : ''
       }

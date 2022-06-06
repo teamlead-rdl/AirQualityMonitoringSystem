@@ -51,7 +51,7 @@ function LabGridComponent({
 
   function LinkTo({ selectedRow }) {
     return (
-      <h3 onClick={() => {
+      <h3 style={{cursor: 'pointer'}} onClick={() => {
         setLocationDetails((oldValue) => {
           return { ...oldValue, lab_id: selectedRow.id };
         });
@@ -71,19 +71,19 @@ function LabGridComponent({
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
-        <h3>
+        <h3 onClick={() => setProgressState(0)} style={{ cursor: 'pointer' }}>
           Location
         </h3>
-        <h3>
+        <h3 onClick={() => setProgressState(1)} style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.stateLabel}
         </h3>
-        <h3>
+        <h3 onClick={() => setProgressState(2)} style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.branchLabel}
         </h3>
-        <h3>
+        <h3 onClick={() => setProgressState(3)} style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.facilityLabel}
         </h3>
-        <h3>
+        <h3 onClick={() => setProgressState(4)} style={{ cursor: 'pointer' }}>
           {breadCrumbLabels.buildingLabel}
         </h3>
         <Typography
