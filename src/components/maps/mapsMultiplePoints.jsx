@@ -61,7 +61,7 @@ function MapsMultiplePoints(props) {
                         onClick={() => handleActiveMarker(index)}
                     >
                         {activeMarker === index ? (
-                            <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                            <InfoWindow onCloseClick={() => setActiveMarker(null)} >
                                 <div>{name}</div>
                             </InfoWindow>
                         ) : null}
