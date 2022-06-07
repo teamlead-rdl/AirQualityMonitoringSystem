@@ -35,7 +35,7 @@ function LayoutMachine({
             <Grid item xs={12} sm={6} md={3} lg={3} key={data.sensorTagId}>
               <MachineCard
                 setOpen={setOpen}
-                id={data.id}
+                id={data.sensorTagId}
                 sensorName={data.sensorTag}
                 cardTitle={data.cardTitle}
                 actualValue={data.actualValue}
@@ -53,7 +53,7 @@ function LayoutMachine({
             <Grid item xs={12} sm={6} md={3} lg={3} key={data.sensorTagId}>
               <MachineCard
                 setOpen={setOpen}
-                id={data.id}
+                id={data.sensorTagId}
                 sensorName={data.sensorTag}
                 cardTitle={data.cardTitle}
                 actualValue={data.actualValue}

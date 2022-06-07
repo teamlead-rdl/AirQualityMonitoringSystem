@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import MapsMultiplePoints from '../../maps/mapsMultiplePoints';
 
 function GeoLocationWidget({
-  locationCoordination, zoomLevel, centerLatitude, centerLongitude,
+  locationCoordination, zoomLevel, centerLatitude, centerLongitude, height
 }) {
   const [locationCoordinationList, setLocationCoordinationList] = useState([]);
   const [centerLat, setCenterLat] = useState('');
@@ -21,7 +21,7 @@ function GeoLocationWidget({
           ? (
             <MapsMultiplePoints
               width="100%"
-              height="50vh"
+              height= {height || "50vh"}
               markers={locationCoordinationList}
               zoom={zoomLevel}
               center={{ lat: centerLat, lng: centerLng }}
