@@ -19,6 +19,15 @@ function Dashboard() {
     lab_id: '',
     device_id: '',
   });
+  const [siteImages, setSiteImages] = useState({
+    buildingImage: '',
+    floorImage: '',
+    labImage: '',
+  });
+
+  const [zoomLevel, setZoomLevel] = useState(4);
+  const [centerLatitude, setCenterLatitude] = useState(23.500);
+  const [centerLongitude, setCenterLongitude] = useState(80.500);
 
   const [locationCoordinationList, setLocationCoordinationList] = useState([]);
   const [locationState, setProgressState] = useState(0);
@@ -27,7 +36,7 @@ function Dashboard() {
   const [ImageState, setImageState] = useState(0);
   const [deviceCoordsList, setDeviceCoordsList] = useState([]);
   const [isdashboard, setIsDashBoard] = useState(false);
-
+  const [isGeoMap, setIsGeoMap] = useState(true);
   return (
     <Grid container spacing={1} style={{ height: '92.5%' }}>
       {isdashboard === true
@@ -75,21 +84,18 @@ function Dashboard() {
                     setLocationDetails={setLocationDetails}
                     setDeviceCoordsList={setDeviceCoordsList}
                     setIsDashBoard={setIsDashBoard}
-        />
+                    setIsGeoMap={setIsGeoMap}
+                    siteImages={siteImages}
+                    setSiteImages={setSiteImages}
+                    setZoomLevel={setZoomLevel}
+                    setCenterLatitude={setCenterLatitude}
+                    setCenterLongitude={setCenterLongitude}
+                  />
                 </Grid>
                 <Grid item xs={4}>
-                  {
-                    /* eslint-disable-next-line */
-                deviceCoordsList.length !== 0 ? (<ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} />)
-                      : (ImageState === 1 ? (
-                        <img
-                          src={imgSrc}
-                          style={{ width: `${99}%`, height: `${56}vh` }}
-                          alt="Map"
-                        />
-                      ) : <GeoLocationWidget locationCoordination={locationCoordinationList} />
-                      )
-                  }
+                  {/* eslint-disable-next-line */}
+                  {isGeoMap === true ? <GeoLocationWidget locationCoordination={locationCoordinationList} zoomLevel={zoomLevel} centerLatitude={centerLatitude} centerLongitude={centerLongitude} />
+                    : <ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} /> }
                 </Grid>
               </Grid>
             </Grid>

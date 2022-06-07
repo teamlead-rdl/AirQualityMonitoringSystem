@@ -6,7 +6,9 @@ import { LabfetchService } from '../../../../services/LoginPageService';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 function LabGridComponent({
-  setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
+  setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels,
+  setBreadCrumbLabels, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages,
+  setCenterLatitude, setCenterLongitude
 }) {
   const [dataList, setDataList] = useState([]);
   const dataColumns = [
@@ -51,18 +53,23 @@ function LabGridComponent({
 
   function LinkTo({ selectedRow }) {
     return (
-      <h3 style={{cursor: 'pointer'}} onClick={() => {
-        setLocationDetails((oldValue) => {
-          return { ...oldValue, lab_id: selectedRow.id };
-        });
+      <h3
+        style={{ cursor: 'pointer' }}
+        onClick={() => {
+          setLocationDetails((oldValue) => {
+            return { ...oldValue, lab_id: selectedRow.id };
+          });
 
-        setBreadCrumbLabels((oldvalue) => {
-          return { ...oldvalue, lablabel: selectedRow.labDepName };
-        });
+          setBreadCrumbLabels((oldvalue) => {
+            return { ...oldvalue, lablabel: selectedRow.labDepName };
+          });
 
-        setProgressState(6);
-        setImg(selectedRow.labDepMap);
-      }}
+          setProgressState(6);
+          setImg(selectedRow.labDepMap);
+          setSiteImages((oldValue) => {
+            return { ...oldValue, labImage: selectedRow.labDepMap };
+          });
+        }}
       >
         {selectedRow.labDepName}
       </h3>
@@ -71,19 +78,57 @@ function LabGridComponent({
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
-        <h3 onClick={() => setProgressState(0)} style={{ cursor: 'pointer' }}>
+        <h3
+          onClick={() => {
+            setProgressState(0);
+            setDeviceCoordsList([]);
+            setCenterLatitude(23.500);
+            setCenterLongitude(80.000);
+            setIsGeoMap(true);
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           Location
         </h3>
-        <h3 onClick={() => setProgressState(1)} style={{ cursor: 'pointer' }}>
+        <h3
+          onClick={() => {
+            setProgressState(1);
+            setDeviceCoordsList([]);
+            setIsGeoMap(true);
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           {breadCrumbLabels.stateLabel}
         </h3>
-        <h3 onClick={() => setProgressState(2)} style={{ cursor: 'pointer' }}>
+        <h3
+          onClick={() => {
+            setProgressState(2);
+            setDeviceCoordsList([]);
+            setIsGeoMap(true);
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           {breadCrumbLabels.branchLabel}
         </h3>
-        <h3 onClick={() => setProgressState(3)} style={{ cursor: 'pointer' }}>
+        <h3
+          onClick={() => {
+            setProgressState(3);
+            setDeviceCoordsList([]);
+            setIsGeoMap(true);
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           {breadCrumbLabels.facilityLabel}
         </h3>
-        <h3 onClick={() => setProgressState(4)} style={{ cursor: 'pointer' }}>
+        <h3
+          onClick={() => {
+            setProgressState(4);
+            setDeviceCoordsList([]);
+            setImg(siteImages.buildingImage);
+            setIsGeoMap(false);
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           {breadCrumbLabels.buildingLabel}
         </h3>
         <Typography
