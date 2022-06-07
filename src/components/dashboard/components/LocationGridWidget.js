@@ -146,6 +146,7 @@ function LocationGridWidget({
               setDeviceCoordsList={setDeviceCoordsList}
               setProgressState={setProgressState}
               breadCrumbLabels={breadCrumbLabels}
+              setBreadCrumbLabels={setBreadCrumbLabels}
               setIsDashBoard={setIsDashBoard}
               setIsGeoMap={setIsGeoMap}
               siteImages={siteImages}

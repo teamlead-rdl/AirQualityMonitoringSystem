@@ -275,3 +275,9 @@ export const BumpTestFetchService = (data, successCallback, errorCallBack) => _f
 export const FetchUserLogService = (data, successCallback, errorCallBack) => _fetchService('userListDetails', 'POST', data, successCallback, errorCallBack);
 
 export const FetchUserLogDetails = (data, successCallback, errorCallBack) => _fetchService('userLog', 'POST', data, successCallback, errorCallBack);
+
+// ----- Dashboard API ------------------------------- //
+
+export const DashboardSensorListDetails = (data, successCallback, errorCallBack) => _fetchService('lastUpdatedData', 'POST', data, successCallback, errorCallBack);
+
+export const DashboardIndividualSensorDetails = (data, successCallback, errorCallBack) => _fetchService('sensorTagIdData', 'POST', data, successCallback, errorCallBack);
