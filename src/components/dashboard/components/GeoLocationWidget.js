@@ -22,7 +22,7 @@ function GeoLocationWidget({ locationCoordination }) {
               height="50vh"
               markers={locationCoordinationList}
               zoom={4}
-              center={{ lat: centerLat, lng: centerLng }}
+              center={{ lat: centerLat, lng: centerLng }}              
             />
           )
           : ''}

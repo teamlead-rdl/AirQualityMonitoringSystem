@@ -27,82 +27,85 @@ function Dashboard() {
   const [ImageState, setImageState] = useState(0);
   const [deviceCoordsList, setDeviceCoordsList] = useState([]);
   const [isdashboard, setIsDashBoard] = useState(false);
+
   return (
     <Grid container spacing={1} style={{ height: '92.5%' }}>
-      {isdashboard === true ?
-      <Grid
-        item
-        xs={12}
-        sx={{
-          marginLeft: 1,
-        }}
-      >
-        <LandingPageComponent />
-      </Grid>
-      :
-      <>
-        <Grid
-          item
-          xs={12}
-          style={{ height: '50%' }}
-          sx={{
-            marginLeft: 1,
-          }}
-        >
+      {isdashboard === true
+        ? (
           <Grid
-            container
             item
             xs={12}
-            style={{ height: '100%' }}
+            sx={{
+              marginLeft: 1,
+            }}
           >
+            <LandingPageComponent />
+          </Grid>
+        )
+        : (
+          <>
             <Grid
               item
-              xs={8}
+              xs={12}
+              style={{ height: '50%' }}
               sx={{
+                marginLeft: 1,
               }}
-              style={{ height: '100%' }}
             >
-              <LocationGridWidget
-                setLocationCoordinationList={setLocationCoordinationList}
-                locationState={locationState}
-                setProgressState={setProgressState}
-                setImg={setImg}
-                setImageState={setImageState}
-                locationDetails={locationDetails}
-                setLocationDetails={setLocationDetails}
-                setDeviceCoordsList={setDeviceCoordsList}
-                setIsDashBoard={setIsDashBoard}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              {
-                /* eslint-disable-next-line */
+              <Grid
+                container
+                item
+                xs={12}
+                style={{ height: '100%' }}
+              >
+                <Grid
+                  item
+                  xs={8}
+                  sx={{
+                  }}
+                  style={{ height: '100%' }}
+                >
+                  <LocationGridWidget
+                    setLocationCoordinationList={setLocationCoordinationList}
+                    locationState={locationState}
+                    setProgressState={setProgressState}
+                    setImg={setImg}
+                    setImageState={setImageState}
+                    locationDetails={locationDetails}
+                    setLocationDetails={setLocationDetails}
+                    setDeviceCoordsList={setDeviceCoordsList}
+                    setIsDashBoard={setIsDashBoard}
+        />
+                </Grid>
+                <Grid item xs={4}>
+                  {
+                    /* eslint-disable-next-line */
                 deviceCoordsList.length !== 0 ? (<ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} />)
-                  : (ImageState === 1 ? (
-                    <img
-                      src={imgSrc}                    
-                      style={{ width: `${99}%`, height: `${56}vh` }}
-                      alt="Map"
-                    />
-                  ) : <GeoLocationWidget locationCoordination={locationCoordinationList} />
-                  )
-              }
+                      : (ImageState === 1 ? (
+                        <img
+                          src={imgSrc}
+                          style={{ width: `${99}%`, height: `${56}vh` }}
+                          alt="Map"
+                        />
+                      ) : <GeoLocationWidget locationCoordination={locationCoordinationList} />
+                      )
+                  }
+                </Grid>
+              </Grid>
             </Grid>
-          </Grid>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sx={{
-            padding: 1,
-            marginLeft: 1,
-          }}
-          style={{ height: '50%' }}
-        >
-          <AlertWidget />
-        </Grid>
-      </>
-      }
+            <Grid
+              item
+              xs={12}
+              sx={{
+                padding: 1,
+                marginLeft: 1,
+              }}
+              style={{ height: '50%' }}
+            >
+              <AlertWidget />
+            </Grid>
+          </>
+        )}
     </Grid>
   );
 }
