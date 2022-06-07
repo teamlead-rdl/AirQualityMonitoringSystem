@@ -37,6 +37,7 @@ function Dashboard() {
   const [deviceCoordsList, setDeviceCoordsList] = useState([]);
   const [isdashboard, setIsDashBoard] = useState(false);
   const [isGeoMap, setIsGeoMap] = useState(true);
+
   return (
     <Grid container spacing={1} style={{ height: '92.5%' }}>
       {isdashboard === true
@@ -48,7 +49,7 @@ function Dashboard() {
               marginLeft: 1,
             }}
           >
-            <LandingPageComponent />
+            <LandingPageComponent locationDetails={locationDetails} />
           </Grid>
         )
         : (
