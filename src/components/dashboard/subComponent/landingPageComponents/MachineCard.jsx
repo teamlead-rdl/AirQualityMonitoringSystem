@@ -25,7 +25,7 @@ function MachineCard(props) {
             spacing={1}
           >
             <Typography style={{ color: '#004d99' }}>
-              {props.cardTitle}
+              {props.sensorNameUnit}
 
             </Typography>
             <Typography style={{ color: '#004d99' }}>
@@ -46,7 +46,7 @@ function MachineCard(props) {
               width: 90, height: 90, float: 'left', marginTop: 2,
             }}
             >
-              <MachineCircularProgressbar score={props.reviewScore} />
+              <MachineCircularProgressbar score={props.last} />
             </div>
           </Stack>
           <Stack
@@ -66,7 +66,7 @@ function MachineCard(props) {
                 component="div"
                 style={{ fontWeight: 600, color: '#7F8487', marginLeft: 9 }}
               >
-                {props.actualValue}
+                {props.min}
               </Typography>
             </div>
             <div>
@@ -80,7 +80,7 @@ function MachineCard(props) {
                 component="div"
                 style={{ fontWeight: 600, color: '#7F8487', marginLeft: 9 }}
               >
-                {props.plannedValue}
+                {props.max}
               </Typography>
             </div>
             <div>
@@ -94,7 +94,7 @@ function MachineCard(props) {
                 component="div"
                 style={{ fontWeight: 600, color: '#7F8487', marginLeft: 9 }}
               >
-                {props.capacityValue}
+                {props.avg}
               </Typography>
             </div>
           </Stack>
