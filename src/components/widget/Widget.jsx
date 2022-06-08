@@ -53,9 +53,9 @@ const Widget = ({ type }) => {
       break;
     case "devices":
       data = {
-        title: "Total Devices",
-        link: "View Devices",
-        figure: 298,
+        title: "Total Sensors",
+        link: "View Details",
+        figure: 10,
         diff: '40%',
         icon: (
           <DeviceThermostat
@@ -65,9 +65,9 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "calibration":
+    case "alerts":
       data = {
-        title: "Devices due for calibration",
+        title: "Active Alerts",
         link: "See details",
         figure: 45,
         diff: '50%',
