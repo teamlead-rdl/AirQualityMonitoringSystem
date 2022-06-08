@@ -6,7 +6,7 @@ import { DashboardSensorListDetails } from '../../../../services/LoginPageServic
 import { Button, IconButton } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 
-function LandingPageComponent({ locationDetails }) {
+function LandingPageComponent({ locationDetails, setIsDashBoard }) {
   const [open, setOpen] = useState(false);
   const [analogSensorList, setAnalogSensorList] = useState([]);
   const [digitalSensorList, setDigitalSensorList] = useState([]);
@@ -30,7 +30,9 @@ function LandingPageComponent({ locationDetails }) {
 
   return (
     <div style={{textAlignLast :'left'}}>
-      <IconButton aria-label="delete" color="primary" >
+      <IconButton aria-label="delete" color="primary" onClick={()=>{
+        setIsDashBoard(false);
+      }}>
         <ArrowBack />
       </IconButton>
       <div className="widgets" style={{textAlignLast :'auto', paddingLeft: '10px', paddingTop: '5px'}}>

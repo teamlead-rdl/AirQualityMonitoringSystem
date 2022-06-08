@@ -49,7 +49,7 @@ function Dashboard() {
               marginLeft: 1,
             }}
           >
-            <LandingPageComponent locationDetails={locationDetails} />
+            <LandingPageComponent locationDetails={locationDetails} setIsDashBoard={setIsDashBoard} />
           </Grid>
         )
         : (
