@@ -93,10 +93,10 @@ function Dashboard() {
                     setCenterLongitude={setCenterLongitude}
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={4} style={{border: '2px solid black'}}>
                   {/* eslint-disable-next-line */}
-                  {isGeoMap === true ? <GeoLocationWidget locationCoordination={locationCoordinationList} zoomLevel={zoomLevel} centerLatitude={centerLatitude} centerLongitude={centerLongitude} />
-                    : <ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} /> }
+                  {isGeoMap === true ? <GeoLocationWidget locationCoordination={locationCoordinationList} zoomLevel={zoomLevel} centerLatitude={centerLatitude} centerLongitude={centerLongitude} height="45vh"/>
+                    : <ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} height="h-72"/> }
                 </Grid>
               </Grid>
             </Grid>

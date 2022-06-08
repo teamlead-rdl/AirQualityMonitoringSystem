@@ -33,6 +33,7 @@ function LandingPageComponent({ locationDetails }) {
         <Widget type="labs" />
         <Widget type="devices" />
         <Widget type="calibration" />
+        <Widget type="time" />
       </div>
       <LayoutMachine
         setOpen={setOpen}

@@ -4,20 +4,25 @@ import {
   Groups,
   DeviceThermostat,
   Science,
-  Sensors
+  Sensors,
+  AccessTime
 } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 
 const Widget = ({ type }) => {
   let data;
   const amount = 100;
-  const diff = 20;
-
+  const [dateTime, setDateTime] = useState({
+    time: '',
+    date: ''
+  })
   switch (type) {
     case "user":
       data = {
         title: "AQMS Users",
         figure: 45,
         link: "See all users",
+        diff: '20%',
         icon: (
           <Groups
             className="icon"
@@ -34,6 +39,7 @@ const Widget = ({ type }) => {
         title: "Labs under your location",
         link: "View Details",
         figure: 15,
+        diff: '30%',
         icon: (
           <Science
             className="icon"
@@ -50,6 +56,7 @@ const Widget = ({ type }) => {
         title: "Total Devices",
         link: "View Devices",
         figure: 298,
+        diff: '40%',
         icon: (
           <DeviceThermostat
             className="icon"
@@ -63,8 +70,26 @@ const Widget = ({ type }) => {
         title: "Devices due for calibration",
         link: "See details",
         figure: 45,
+        diff: '50%',
         icon: (
           <Sensors
+            className="icon"
+            style={{
+              backgroundColor: "rgba(128, 0, 128, 0.2)",
+              color: "purple",
+            }}
+          />
+        ),
+      };
+      break;
+    case "time":
+      data = {
+        title: "Time",
+        link: "",
+        figure: dateTime.time,
+        diff: '',
+        icon: (
+          <AccessTime
             className="icon"
             style={{
               backgroundColor: "rgba(128, 0, 128, 0.2)",
@@ -77,7 +102,16 @@ const Widget = ({ type }) => {
     default:
       break;
   }
-
+  useEffect(()=>{
+    setInterval(()=>{
+      let currentTime = new Date();
+      setDateTime(()=>{
+        return {
+          time: currentTime.toLocaleTimeString('en', { hour: 'numeric', hour12: true, minute: 'numeric', second: 'numeric' })
+        }
+      })
+    });
+  },[]);
   return (
     <div className="widget">
       <div className="left">
@@ -89,8 +123,8 @@ const Widget = ({ type }) => {
       </div>
       <div className="right">
         <div className="percentage positive">
-          <KeyboardArrowUp />
-          {diff} %
+        {data.diff && <KeyboardArrowUp /> }
+          {data.diff}
         </div>
         {data.icon}
       </div>

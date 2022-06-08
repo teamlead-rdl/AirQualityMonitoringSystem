@@ -53,8 +53,8 @@ function LayoutMachine({
             <Grid item xs={12} sm={6} md={3} lg={3} key={data.sensorTagId}>
               <MachineCard
                 setOpen={setOpen}
-                id={data.id}
-                sensorName={data.sensorTagId}
+                id={data.sensorTagId}
+                sensorName={data.sensorTag}
                 sensorNameUnit={data.sensorNameUnit}
                 min={data.min}
                 max={data.max}

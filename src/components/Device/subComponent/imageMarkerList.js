@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ImageMarker from 'react-image-marker';
 import building from '../../../images/floorPlan.png';
 
-function ImageMarkerList({ labImage, deviceCoordsList }) {
+function ImageMarkerList({ labImage, deviceCoordsList, height }) {
   const [markers, setMarkers] = useState(deviceCoordsList);
 
   function CustomMarker() {
@@ -24,7 +24,7 @@ function ImageMarkerList({ labImage, deviceCoordsList }) {
         markers={deviceCoordsList}
         onAddMarker={(marker) => { setFloorCoordinations(marker); setMarkers([...markers, marker]); }}
         markerComponent={CustomMarker}
-        extraClass="h-96"
+        extraClass={height || "h-96"}
       />
     </div>
 
