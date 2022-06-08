@@ -19,13 +19,13 @@ function LayoutMachine({
                 setOpen={setOpen}
                 id={data.sensorTagId}
                 sensorName={data.sensorTag}
-                cardTitle={data.sensorNameUnit}
-                actualValue={data.actualValue}
-                plannedValue={data.plannedValue}
-                capacityValue={data.capacityValue}
-                reviewScore={data.reviewScore}
-                color="#a5f3fc"
+                sensorNameUnit={data.sensorNameUnit}
+                min={data.min}
+                max={data.max}
+                avg={data.avg}
+                last={data.last}
                 setSensorTagId={setSensorTagId}
+                color="#a5f3fc"                
               />
             </Grid>
           );
@@ -34,16 +34,16 @@ function LayoutMachine({
           return (
             <Grid item xs={12} sm={6} md={3} lg={3} key={data.sensorTagId}>
               <MachineCard
-                setOpen={setOpen}
-                id={data.id}
-                sensorName={data.sensorTag}
-                cardTitle={data.cardTitle}
-                actualValue={data.actualValue}
-                plannedValue={data.plannedValue}
-                capacityValue={data.capacityValue}
-                reviewScore={data.reviewScore}
-                color="#f5d0fe"
-                setSensorTagId={setSensorTagId}
+               setOpen={setOpen}
+               id={data.sensorTagId}
+               sensorName={data.sensorTag}
+               sensorNameUnit={data.sensorNameUnit}
+               min={data.min}
+               max={data.max}
+               avg={data.avg}
+               last={data.last}
+               setSensorTagId={setSensorTagId}
+                color="#f5d0fe"                
               />
             </Grid>
           );
@@ -54,14 +54,15 @@ function LayoutMachine({
               <MachineCard
                 setOpen={setOpen}
                 id={data.id}
-                sensorName={data.sensorTag}
-                cardTitle={data.cardTitle}
-                actualValue={data.actualValue}
-                plannedValue={data.plannedValue}
-                capacityValue={data.capacityValue}
-                reviewScore={data.reviewScore}
-                color="#fecdd3"
+                sensorName={data.sensorTagId}
+                sensorNameUnit={data.sensorNameUnit}
+                min={data.min}
+                max={data.max}
+                avg={data.avg}
+                last={data.last}
                 setSensorTagId={setSensorTagId}
+                color="#fecdd3"
+                
               />
             </Grid>
           );
