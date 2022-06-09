@@ -3,8 +3,10 @@ import Widget from '../../../widget/Widget';
 import LayoutMachine from '../landingPageComponents/LayoutMachine';
 import SensorGraphComponent from '../landingPageComponents/SensorGraphComponent';
 import { DashboardSensorListDetails } from '../../../../services/LoginPageService';
+import { Button, IconButton } from '@mui/material';
+import { ArrowBack } from '@mui/icons-material';
 
-function LandingPageComponent({ locationDetails }) {
+function LandingPageComponent({ locationDetails, setIsDashBoard }) {
   const [open, setOpen] = useState(false);
   const [analogSensorList, setAnalogSensorList] = useState([]);
   const [digitalSensorList, setDigitalSensorList] = useState([]);
@@ -27,12 +29,17 @@ function LandingPageComponent({ locationDetails }) {
   };
 
   return (
-    <div>
-      <div className="widgets">
+    <div style={{textAlignLast :'left'}}>
+      <IconButton aria-label="delete" color="primary" onClick={()=>{
+        setIsDashBoard(false);
+      }}>
+        <ArrowBack />
+      </IconButton>
+      <div className="widgets" style={{textAlignLast :'auto', paddingLeft: '10px', paddingTop: '5px'}}>
         <Widget type="user" />
         <Widget type="labs" />
         <Widget type="devices" />
-        <Widget type="calibration" />
+        <Widget type="alerts" />
         <Widget type="time" />
       </div>
       <LayoutMachine

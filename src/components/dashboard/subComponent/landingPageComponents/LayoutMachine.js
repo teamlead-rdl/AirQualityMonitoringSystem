@@ -7,7 +7,7 @@ function LayoutMachine({
   setOpen, analogSensorList, digitalSensorList, modbusSensorList, setSensorTagId,
 }) {
   return (
-    <Container>
+    <Container style={{paddingLeft: '10px'}}>
       <Grid
         container
         spacing={3}
