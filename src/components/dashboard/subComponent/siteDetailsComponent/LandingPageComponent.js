@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Button } from '@mui/material';
+import { ArrowBack } from '@mui/icons-material';
 import Widget from '../../../widget/Widget';
 import LayoutMachine from '../landingPageComponents/LayoutMachine';
 import SensorGraphComponent from '../landingPageComponents/SensorGraphComponent';
@@ -10,8 +12,9 @@ function LandingPageComponent({ locationDetails }) {
   const [digitalSensorList, setDigitalSensorList] = useState([]);
   const [modbusSensorList, setModbusSensorList] = useState([]);
   const [sensorTagId, setSensorTagId] = useState('');
+  const [sensorTag, setSensorTag] = useState('');
   const [segretionInterval, setSegretionInterval] = useState('60');
-  const [rangeInterval, setRangeInterval] = useState('160*60');
+  const [rangeInterval, setRangeInterval] = useState('6*60');
 
   useEffect(() => {
     DashboardSensorListDetails({ device_id: locationDetails.device_id }, fetchSenosorListSuccess, fetchSenosorListException);
@@ -27,7 +30,10 @@ function LandingPageComponent({ locationDetails }) {
   };
 
   return (
-    <div>
+    <div style={{ textAlignLast: 'left' }}>
+      <Button variant="outlined" startIcon={<ArrowBack />}>
+        Back to Data Logger
+      </Button>
       <div className="widgets">
         <Widget type="user" />
         <Widget type="labs" />
@@ -41,6 +47,7 @@ function LandingPageComponent({ locationDetails }) {
         digitalSensorList={digitalSensorList}
         modbusSensorList={modbusSensorList}
         setSensorTagId={setSensorTagId}
+        setSensorTag={setSensorTag}
       />
       <SensorGraphComponent
         open={open}
@@ -50,6 +57,7 @@ function LandingPageComponent({ locationDetails }) {
         setSegretionInterval={setSegretionInterval}
         rangeInterval={rangeInterval}
         setRangeInterval={setRangeInterval}
+        sensorTag={sensorTag}
       />
     </div>
   );
