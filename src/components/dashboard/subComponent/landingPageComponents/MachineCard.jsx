@@ -13,6 +13,7 @@ function MachineCard(props) {
       sx={{ minWidth: 200 }}
       onClick={() => {
         props.setSensorTagId(props.id);
+        props.setSensorTag(props.sensorName);
         props.setOpen(true);
       }}
     >

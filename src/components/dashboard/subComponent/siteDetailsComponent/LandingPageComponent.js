@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Button } from '@mui/material';
+import { ArrowBack } from '@mui/icons-material';
 import Widget from '../../../widget/Widget';
 import LayoutMachine from '../landingPageComponents/LayoutMachine';
 import SensorGraphComponent from '../landingPageComponents/SensorGraphComponent';
@@ -12,8 +14,9 @@ function LandingPageComponent({ locationDetails, setIsDashBoard }) {
   const [digitalSensorList, setDigitalSensorList] = useState([]);
   const [modbusSensorList, setModbusSensorList] = useState([]);
   const [sensorTagId, setSensorTagId] = useState('');
+  const [sensorTag, setSensorTag] = useState('');
   const [segretionInterval, setSegretionInterval] = useState('60');
-  const [rangeInterval, setRangeInterval] = useState('160*60');
+  const [rangeInterval, setRangeInterval] = useState('6*60');
 
   useEffect(() => {
     DashboardSensorListDetails({ device_id: locationDetails.device_id }, fetchSenosorListSuccess, fetchSenosorListException);
@@ -29,12 +32,12 @@ function LandingPageComponent({ locationDetails, setIsDashBoard }) {
   };
 
   return (
-    <div style={{textAlignLast :'left'}}>
-      <IconButton aria-label="delete" color="primary" onClick={()=>{
+    <div style={{ textAlignLast: 'left' }}>
+      <Button variant="outlined" startIcon={<ArrowBack />} onClick={()=>{
         setIsDashBoard(false);
       }}>
-        <ArrowBack />
-      </IconButton>
+        Back to Data Logger
+      </Button>
       <div className="widgets" style={{textAlignLast :'auto', paddingLeft: '10px', paddingTop: '5px'}}>
         <Widget type="user" />
         <Widget type="labs" />
@@ -48,6 +51,7 @@ function LandingPageComponent({ locationDetails, setIsDashBoard }) {
         digitalSensorList={digitalSensorList}
         modbusSensorList={modbusSensorList}
         setSensorTagId={setSensorTagId}
+        setSensorTag={setSensorTag}
       />
       <SensorGraphComponent
         open={open}
@@ -57,6 +61,7 @@ function LandingPageComponent({ locationDetails, setIsDashBoard }) {
         setSegretionInterval={setSegretionInterval}
         rangeInterval={rangeInterval}
         setRangeInterval={setRangeInterval}
+        sensorTag={sensorTag}
       />
     </div>
   );
