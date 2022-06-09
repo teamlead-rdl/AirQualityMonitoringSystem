@@ -1,6 +1,6 @@
 import { Delete } from '@mui/icons-material';
 import {
-  Button, Dialog, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, Typography,
+  Button, Dialog, DialogContent, DialogTitle, TextField, Typography,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useState } from 'react';
@@ -23,7 +23,7 @@ function AlertWidget() {
     },
   ]);
   const [clearAlert, setClearAlert] = useState(false);
-  const [clearAlertReason, setAlertReason] = useState('Reason 1');
+  const [clearAlertReason, setAlertReason] = useState('');
   const [alertId, setAlertId] = useState('');
   const columns = [
     {
@@ -77,13 +77,14 @@ function AlertWidget() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setClearAlert(false);
+    setAlertReason('');
   };
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Typography
         underline="hover"
         color="inherit"
-        component={'h1'}
+        component="h1"
       >
         Alerts
       </Typography>
@@ -109,7 +110,7 @@ function AlertWidget() {
               <div className="container mx-auto outline-black ">
                 <div className="inline ">
                   <div className="w-1/3  lg:w-3/5  pr-3 pl-3">
-                    <FormControl fullWidth>
+                    {/* <FormControl fullWidth>
                       <InputLabel id="demo-simple-select-label">Select reason</InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
@@ -124,7 +125,16 @@ function AlertWidget() {
                         <MenuItem value="Reason 2">Reason 2</MenuItem>
                         <MenuItem value="Reason 3">Reason 3</MenuItem>
                       </Select>
-                    </FormControl>
+                    </FormControl> */}
+                    <TextField
+                      id="outlined-name"
+                      label="Reason"
+                      value={clearAlertReason}
+                      required
+                      onChange={(e) => {
+                        setAlertReason(e.target.value);
+                      }}
+                    />
                   </div>
                 </div>
               </div>
@@ -138,6 +148,7 @@ function AlertWidget() {
                   <Button
                     onClick={() => {
                       setClearAlert(false);
+                      setAlertReason('');
                     }}
                   >
                     Cancel
