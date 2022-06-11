@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import {
-  Button, Dialog, DialogContent, DialogTitle,TextField
+  Button, Dialog, DialogContent, DialogTitle, TextField,
 } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -40,18 +40,18 @@ function SensorGraphComponent({
           <Grid item xs={4}>
             <FormControl fullWidth margin="normal" sx={{ marginTop: 2 }}>
               <TextField
-                    sx={{ marginTop: 0 }}
-                    margin="dense"
-                    id="outlined-required"
-                    label="Sensor Tag"
-                    defaultValue=""
-                    fullWidth
-                    type="text"
-                    disabled="true"
-                    value={sensorTag}  
-                    autoComplete="off"             
-                  />
-              </FormControl>        
+                sx={{ marginTop: 0 }}
+                margin="dense"
+                id="outlined-required"
+                label="Sensor Tag"
+                defaultValue=""
+                fullWidth
+                type="text"
+                disabled="true"
+                value={sensorTag}
+                autoComplete="off"
+              />
+            </FormControl>
           </Grid>
           <Grid item xs={2}>
             <FormControl fullWidth margin="normal" sx={{ marginTop: 2 }}>

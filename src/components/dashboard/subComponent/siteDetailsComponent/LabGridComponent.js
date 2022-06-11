@@ -8,7 +8,7 @@ import { LabfetchService } from '../../../../services/LoginPageService';
 function LabGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels,
   setBreadCrumbLabels, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages,
-  setCenterLatitude, setCenterLongitude
+  setCenterLatitude, setCenterLongitude, setIsDashBoard,
 }) {
   const [dataList, setDataList] = useState([]);
   const dataColumns = [
@@ -63,8 +63,7 @@ function LabGridComponent({
           setBreadCrumbLabels((oldvalue) => {
             return { ...oldvalue, lablabel: selectedRow.labDepName };
           });
-
-          setProgressState(6);
+          setIsDashBoard(2);
           setImg(selectedRow.labDepMap);
           setSiteImages((oldValue) => {
             return { ...oldValue, labImage: selectedRow.labDepMap };
