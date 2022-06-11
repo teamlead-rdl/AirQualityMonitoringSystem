@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import {
-  Button, Dialog, DialogContent, DialogTitle,
+  Button, Dialog, DialogContent, DialogTitle,TextField
 } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -38,16 +38,30 @@ function SensorGraphComponent({
       <DialogContent>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={4}>
-            {sensorTag}
+            <FormControl fullWidth margin="normal" sx={{ marginTop: 2 }}>
+              <TextField
+                    sx={{ marginTop: 0 }}
+                    margin="dense"
+                    id="outlined-required"
+                    label="Sensor Tag"
+                    defaultValue=""
+                    fullWidth
+                    type="text"
+                    disabled="true"
+                    value={sensorTag}  
+                    autoComplete="off"             
+                  />
+              </FormControl>        
           </Grid>
-          <Grid item xs={4}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">segretionInterval</InputLabel>
+          <Grid item xs={2}>
+            <FormControl fullWidth margin="normal" sx={{ marginTop: 2 }}>
+              <InputLabel id="demo-simple-select-label">Grouping Interval</InputLabel>
               <Select
+                sx={{ marginTop: 0 }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={segretionInterval}
-                label="Age"
+                label="Grouping Interval"
                 onChange={(e) => {
                   setSegretionInterval(e.target.value);
                 }}
@@ -58,18 +72,19 @@ function SensorGraphComponent({
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={4} style={{ paddingTop: 2 }}>
-            <FormControl fullWidth style={{ marginTop: 2 }}>
-              <InputLabel id="demo-simple-select-label">Range Interval</InputLabel>
+          <Grid item xs={2}>
+            <FormControl fullWidth margin="normal" sx={{ marginTop: 2 }}>
+              <InputLabel id="demo-simple-select-label">Last </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={rangeInterval}
-                label="Range Interval"
+                label="Last"
                 onChange={(e) => {
                   setRangeInterval(e.target.value);
                 }}
               >
+                <MenuItem value="30">30 Min</MenuItem>
                 <MenuItem value="1*60">1 Hr</MenuItem>
                 <MenuItem value="3*60">3 Hr</MenuItem>
                 <MenuItem value="6*60">6 Hr</MenuItem>
@@ -98,7 +113,7 @@ function SensorGraphComponent({
                 id: 'dots',
                 type: 'patternDots',
                 background: 'inherit',
-                color: '#38bcb2',
+                color: 'red',
                 size: 4,
                 padding: 1,
                 stagger: true,
@@ -107,7 +122,7 @@ function SensorGraphComponent({
                 id: 'lines',
                 type: 'patternLines',
                 background: 'inherit',
-                color: '#eed312',
+                color: 'red',
                 rotation: -45,
                 lineWidth: 6,
                 spacing: 10,

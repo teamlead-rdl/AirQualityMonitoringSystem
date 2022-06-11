@@ -27,7 +27,7 @@ const MachineCircularProgressbar = (props) => {
         <ValueProvider valueStart={0} valueEnd={score}>
             {(value) => (<CircularProgressbar
                 value={value}
-                text={`${value}`}
+                text={`${value} mg/m3`}                
                 circleRatio={0.7}
                 styles={{
                     trail: {
@@ -42,8 +42,9 @@ const MachineCircularProgressbar = (props) => {
                         stroke: calcColor(value, 0, 120),
                     },
                     text: {
-                        fill: "#787A91"
-                    },
+                        fill: "#003380",    
+                        fontSize: '16px',                  
+                    },                   
                 }}
                 strokeWidth={10}
             />)}

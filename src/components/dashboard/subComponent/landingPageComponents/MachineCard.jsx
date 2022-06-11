@@ -10,7 +10,7 @@ import MachineCircularProgressbar from './MachineCircularProgressbar';
 function MachineCard(props) {
   return (
     <Card
-      sx={{ minWidth: 200 }}
+      sx={{ minWidth: 200, boxShadow: 5 ,borderRadius: 2}}    
       onClick={() => {
         props.setSensorTagId(props.id);
         props.setSensorTag(props.sensorName);

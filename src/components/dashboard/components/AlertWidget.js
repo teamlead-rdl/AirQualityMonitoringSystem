@@ -3,47 +3,62 @@ import {
   Button, Dialog, DialogContent, DialogTitle, TextField, Typography,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { SensorIdAlertUpdate } from "../../../services/LoginPageService";
+import NotificationBar from '../../notification/ServiceNotificationBar';
+
 /* eslint-disable no-unused-vars */
-function AlertWidget() {
-  const [dataList, setDataList] = useState([
-    {
-      id: 0,
-      time: '21-9-2022 06:00 PM',
-      alertDescription: 'Sensor reading exceeding Danger level.',
-      alarmType: 'Critical-Alert',
-      sensorName: 'NH3 Sensor',
-    },
-    {
-      id: 1,
-      time: '10-05-2022 10:00 AM',
-      alertDescription: 'Sensor not reading any data. Make sure the sensor is connected properly.',
-      alarmType: 'Out-of-Range',
-      sensorName: 'O2 Sensor',
-    },
-  ]);
+function AlertWidget({dataList, setRefreshData }) { 
   const [clearAlert, setClearAlert] = useState(false);
-  const [clearAlertReason, setAlertReason] = useState('');
-  const [alertId, setAlertId] = useState('');
+  const [clearAlertReason, setAlertReason] = useState('');  
+  const [sensorId, setSensorId] = useState('');
+  const [errorObject, setErrorObject] = useState({});
+  const [openNotification, setNotification] = useState({
+    status: false,
+    type: 'error',
+    message: '',
+  });
+
+
   const columns = [
     {
-      field: 'time',
+      field: 'a_date',
+      headerName:'Date',
+      width: 120
+    },
+    {
+      field: 'a_time',
       headerName: 'Time',
-      width: 120,
+      width: 120
     },
     {
-      field: 'alertDescription',
-      headerName: 'Alert Description',
-      width: 450,
+      field: 'sensorTag',
+      headerName: 'Sensor Tag',
+      width: 130
     },
     {
-      field: 'alarmType',
-      headerName: 'Alarm Type',
+      field: 'alertType',
+      headerName: 'Alert Type',
+      width: 130
+    },
+    {
+      field: 'value',
+      headerName: 'Value',
+      width: 100
+    },
+    {
+      field: 'msg',
+      headerName: 'Message',
+      width: 200,
+    },    
+    {
+      field: 'statusMessage',
+      headerName: 'statusMessage',
       width: 200,
     },
     {
-      field: 'sensorName',
-      headerName: 'Sensor Name',
+      field: 'alarmType',
+      headerName: 'Alarm',
       width: 200,
     },
     {
@@ -65,7 +80,7 @@ function AlertWidget() {
         color="success"
         startIcon={<Delete />}
         onClick={(e) => {
-          setAlertId(selectedRow.id);
+          setSensorId(selectedRow.sensorId);
           setClearAlert(true);
         }}
       >
@@ -74,11 +89,48 @@ function AlertWidget() {
     );
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    await SensorIdAlertUpdate({
+      sensor_id:sensorId, clearAlertReason,
+    }, handleSuccess, handleException);
+
     setClearAlert(false);
     setAlertReason('');
   };
+
+
+  const handleSuccess = (dataObject) => {
+    setNotification({
+      status: true,
+      type: 'success',
+      message: dataObject.message,
+    });
+    setRefreshData((oldvalue) => !oldvalue);
+    setTimeout(() => {
+      handleClose();     
+      setErrorObject({});
+    }, 5000);
+  };
+
+  const handleException = (errorObject, errorMessage) => {
+    setNotification({
+      status: true,
+      type: 'error',
+      message: errorMessage,
+    });
+    setErrorObject({});
+  };
+
+  const handleClose = () => {
+    setNotification({
+      status: false,
+      type: '',
+      message: '',
+    });
+  };
+
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Typography
@@ -158,6 +210,13 @@ function AlertWidget() {
             </div>
           </form>
         </DialogContent>
+        <NotificationBar
+          handleClose={handleClose}
+          notificationContent={openNotification.message}
+          openNotification={openNotification.status}
+          // openNotification={true}
+          type={openNotification.type}
+        />
       </Dialog>
     </div>
   );

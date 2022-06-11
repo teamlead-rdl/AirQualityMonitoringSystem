@@ -281,3 +281,7 @@ export const FetchUserLogDetails = (data, successCallback, errorCallBack) => _fe
 export const DashboardSensorListDetails = (data, successCallback, errorCallBack) => _fetchService('lastUpdatedData', 'POST', data, successCallback, errorCallBack);
 
 export const DashboardIndividualSensorDetails = (data, successCallback, errorCallBack) => _fetchService('sensorTagIdData', 'POST', data, successCallback, errorCallBack);
+
+export const DeviceIdAlerts = (data, successCallback, errorCallBack) =>  _fetchService('alertData', 'POST', data, successCallback, errorCallBack);
+
+export const SensorIdAlertUpdate = (data, successCallback, errorCallBack) =>  _fetchService('alertDataUpdate', 'POST', data, successCallback, errorCallBack);
