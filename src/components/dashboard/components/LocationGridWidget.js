@@ -1,26 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import LocationGridComponent from '../subComponent/siteDetailsComponent/LocationGridComponent';
 import BranchGridComponent from '../subComponent/siteDetailsComponent/BranchGridComponent';
 import BuildingGridComponent from '../subComponent/siteDetailsComponent/BuildingGridComponent';
 import FacilityGridComponent from '../subComponent/siteDetailsComponent/FacilityGridComponent';
 import FloorGridComponent from '../subComponent/siteDetailsComponent/FloorGridComponent';
 import LabGridComponent from '../subComponent/siteDetailsComponent/LabGridComponent';
-import DeviceGridComponent from '../subComponent/siteDetailsComponent/DeviceGridComponent';
 /* eslint-disable max-len */
 function LocationGridWidget({
   locationDetails, setLocationDetails, locationState, setProgressState, setImageState, setImg,
   setDeviceCoordsList, setLocationCoordinationList, setIsDashBoard, setIsGeoMap, siteImages, setSiteImages,
-  setZoomLevel, setCenterLatitude, setCenterLongitude,
+  setZoomLevel, setCenterLatitude, setCenterLongitude, breadCrumbLabels, setBreadCrumbLabels,
 }) {
-  const [breadCrumbLabels, setBreadCrumbLabels] = useState({
-    stateLabel: 'State',
-    branchLabel: 'Branch',
-    facilityLabel: 'Facility',
-    buildingLabel: 'Building',
-    floorLabel: 'Floor',
-    lablabel: 'Lab',
-    deviceLabel: '',
-  });
   useEffect(() => {
     if (locationState === 4 || locationState === 5 || locationState === 6) {
       setImageState(1);
@@ -128,6 +118,7 @@ function LocationGridWidget({
             setProgressState={setProgressState}
             breadCrumbLabels={breadCrumbLabels}
             setBreadCrumbLabels={setBreadCrumbLabels}
+            setIsDashBoard={setIsDashBoard}
             setIsGeoMap={setIsGeoMap}
             setDeviceCoordsList={setDeviceCoordsList}
             siteImages={siteImages}
@@ -136,26 +127,6 @@ function LocationGridWidget({
             setCenterLongitude={setCenterLongitude}
           />
         ) : ''}
-      {
-        locationState === 6
-          ? (
-            <DeviceGridComponent
-              setImg={setImg}
-              locationDetails={locationDetails}
-              setLocationDetails={setLocationDetails}
-              setDeviceCoordsList={setDeviceCoordsList}
-              setProgressState={setProgressState}
-              breadCrumbLabels={breadCrumbLabels}
-              setBreadCrumbLabels={setBreadCrumbLabels}
-              setIsDashBoard={setIsDashBoard}
-              setIsGeoMap={setIsGeoMap}
-              siteImages={siteImages}
-              setSiteImages={setSiteImages}
-              setCenterLatitude={setCenterLatitude}
-              setCenterLongitude={setCenterLongitude}
-            />
-          ) : ''
-      }
     </div>
   );
 }

@@ -1,13 +1,11 @@
-import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Breadcrumbs, CircularProgress, Typography,
+  Breadcrumbs, Typography, Grid,
 } from '@mui/material';
-import {
-  PlayArrow, PlayDisabled, Science, Upgrade,
-} from '@mui/icons-material';
-import { darken, lighten } from '@mui/material/styles';
 import { DeviceFetchService } from '../../../../services/LoginPageService';
+import DeviceWidget from '../deviceCard/DeviceWidget';
+import NotificationWidget from '../deviceCard/NotificationWidget';
+
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -15,39 +13,9 @@ function DeviceGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
   setDeviceCoordsList, setIsDashBoard, setIsGeoMap, siteImages, setCenterLatitude, setCenterLongitude,
 }) {
-  const columns = [
-    {
-      field: 'deviceName',
-      headerName: 'Device Name',
-      width: 150,
-      type: 'actions',
-      getActions: (params) => [
-        <LinkTo selectedRow={params.row} />,
-      ],
-    },
-    {
-      field: 'deviceCategory',
-      headerName: 'Device Category',
-      width: 120,
-    },
-    {
-      field: 'deviceTag',
-      headerName: 'Device Tag',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 150,
-    },
-    {
-      field: 'deviceMode',
-      headerName: 'Mode',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 180,
-      disableClickEventBubbling: true,
-    },
-  ];
-
   const [deviceList, setDeviceList] = useState([]);
+  const [deviceTotal, setDeviceTotal] = useState('0');
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     DeviceFetchService({
@@ -69,53 +37,19 @@ function DeviceGridComponent({
     });
     const filteredArray = deviceCoordinationsList.filter((x) => x != null);
     setDeviceCoordsList(filteredArray || []);
+    setDeviceTotal(dataObject.totalData);
   };
 
   const handleException = () => { };
 
-  const getBackgroundColor = (color, mode) => (mode === 'dark' ? darken(color, 0.6) : lighten(color, 0.6));
-  const getHoverBackgroundColor = (color, mode) => (mode === 'dark' ? darken(color, 0.5) : lighten(color, 0.5));
-
-  function ChangeStatus(props) {
-    switch (props.selectedRow.deviceMode) {
-    case 'calibration':
-      return <Upgrade />;
-    case 'firmwareUpgradation':
-      return (
-        <Box sx={{ width: '50%' }}>
-          <CircularProgress color="secondary" style={{ width: 20, height: 20 }} />
-        </Box>
-      );
-    case 'disabled':
-      return <PlayDisabled />;
-    case 'bumpTest':
-      return <Science />;
-    default:
-      return <PlayArrow />;
-    }
-  }
-
-  function LinkTo({ selectedRow }) {
-    return (
-      <h3
-        style={{ cursor: 'pointer' }}
-        onClick={() => {
-          setLocationDetails((oldValue) => {
-            return { ...oldValue, device_id: selectedRow.id };
-          });
-          setIsDashBoard(true);
-
-          setBreadCrumbLabels((oldvalue) => {
-            return { ...oldvalue, deviceLabel: selectedRow.deviceName };
-          });
-        }}
-      >
-        {selectedRow.deviceName}
-      </h3>
-    );
-  }
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
   return (
-    <div style={{ height: '100%', width: '100%' }}>
+    <div style={{
+      height: '98%', width: '100%', marginTop: 10, marginLeft: 10, paddingLeft: 5, paddingTop: 5,
+    }}
+    >
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3
           onClick={() => {
@@ -124,6 +58,7 @@ function DeviceGridComponent({
             setDeviceCoordsList([]);
             setIsGeoMap(true);
             setProgressState(0);
+            setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
         >
@@ -134,6 +69,7 @@ function DeviceGridComponent({
             setDeviceCoordsList([]);
             setIsGeoMap(true);
             setProgressState(1);
+            setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
         >
@@ -144,6 +80,7 @@ function DeviceGridComponent({
             setDeviceCoordsList([]);
             setIsGeoMap(true);
             setProgressState(2);
+            setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
         >
@@ -154,6 +91,7 @@ function DeviceGridComponent({
             setDeviceCoordsList([]);
             setIsGeoMap(true);
             setProgressState(3);
+            setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
         >
@@ -165,6 +103,7 @@ function DeviceGridComponent({
             setDeviceCoordsList([]);
             setImg(siteImages.buildingImage);
             setProgressState(4);
+            setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
         >
@@ -176,6 +115,7 @@ function DeviceGridComponent({
             setDeviceCoordsList([]);
             setIsGeoMap(false);
             setProgressState(5);
+            setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
         >
@@ -188,71 +128,51 @@ function DeviceGridComponent({
           {breadCrumbLabels.lablabel}
         </Typography>
       </Breadcrumbs>
-      <Box
-        sx={{
-          height: '100%',
-          '& .super-app-theme--calibration': {
-            color: 'maroon',
-            bgcolor: (theme) => getBackgroundColor('#FAE8FA', theme.palette.mode),
-            '&:hover': {
-              bgcolor: (theme) => getHoverBackgroundColor('#FAE8FA', theme.palette.mode),
-            },
-            ':hover': { backgroundColor: '#FAE8FA' },
-          },
-          '& .super-app-theme--firmwareUpgradation': {
-            color: 'purple',
-            bgcolor: (theme) => getBackgroundColor('#9fa8da', theme.palette.mode),
-            '&:hover': {
-              bgcolor: (theme) => getHoverBackgroundColor(
-                '#9fa8da',
-                theme.palette.mode,
-              ),
-            },
-          },
-          '& .super-app-theme--disabled': {
-            bgcolor: (theme) => getBackgroundColor('#ffcdd2', theme.palette.mode),
-            '&:hover': {
-              bgcolor: (theme) => getHoverBackgroundColor(
-                '#ffcdd2',
-                theme.palette.mode,
-              ),
-            },
-          },
-          '& .super-app-theme--enabled': {
-            bgcolor: (theme) => getBackgroundColor('#A5D6A7', theme.palette.mode),
-            '&:hover': {
-              bgcolor: (theme) => getHoverBackgroundColor(
-                '#A5D6A7',
-                theme.palette.mode,
-              ),
-            },
-          },
-          '& .super-app-theme--bumpTest': {
-            color: 'darkgoldenrod',
-            bgcolor: (theme) => getBackgroundColor('#FFFCE3', theme.palette.mode),
-            '&:hover': {
-              bgcolor: (theme) => getHoverBackgroundColor('#FFFCE3', theme.palette.mode),
-            },
-          },
-          '& .super-app-theme--config': {
-            color: 'green',
-            bgcolor: (theme) => getBackgroundColor('#F2FFF2', theme.palette.mode),
-            '&:hover': {
-              bgcolor: (theme) => getHoverBackgroundColor('#F2FFF2', theme.palette.mode),
-            },
-          },
+      <div className="widgets" style={{ height: '20vh', backgroundColor: '#fafafa', padding: 10 }}>
+        <NotificationWidget type="user" />
+        <NotificationWidget type="labs" />
+        <NotificationWidget type="devices" deviceTotal={deviceTotal} />
+        <NotificationWidget type="alerts" />
+        <NotificationWidget type="time" />
+      </div>
+      <div
+        className=""
+        style={{
+          marginTop: 5,
+          maxHeight: '65vh',
+          overflow: 'auto',
+        // display: 'flex',
+        // padding: '20px',
+        // gap: '20px',
+        // flexWrap: 'wrap',
+        // flexDirection: 'row'
         }}
       >
-        <DataGrid
-          rows={deviceList}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          disableSelectionOnClick
-          getRowClassName={(params) => `super-app-theme--${params.row.deviceMode}`}
-          style={{ maxHeight: `${85}%` }}
-        />
-      </Box>
+        <Grid container sx={{ width: '100%' }}>
+          {deviceList.map((data, index) => {
+            return (
+              <Grid
+                item
+                sm={12}
+                xs={12}
+                md={4}
+                lg={3}
+                xl={3}
+                key={index}
+                sx={{ padding: 1 }}
+              >
+                <DeviceWidget
+                  type="aqmi"
+                  data={data}
+                  setLocationDetails={setLocationDetails}
+                  setIsDashBoard={setIsDashBoard}
+                  setBreadCrumbLabels={setBreadCrumbLabels}
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </div>
     </div>
   );
 }
