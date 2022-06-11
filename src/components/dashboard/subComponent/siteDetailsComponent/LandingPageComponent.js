@@ -5,8 +5,6 @@ import Widget from '../../../widget/Widget';
 import LayoutMachine from '../landingPageComponents/LayoutMachine';
 import SensorGraphComponent from '../landingPageComponents/SensorGraphComponent';
 import { DashboardSensorListDetails } from '../../../../services/LoginPageService';
-import { Button, IconButton } from '@mui/material';
-import { ArrowBack } from '@mui/icons-material';
 
 function LandingPageComponent({ locationDetails, setIsDashBoard }) {
   const [open, setOpen] = useState(false);
@@ -33,12 +31,17 @@ function LandingPageComponent({ locationDetails, setIsDashBoard }) {
 
   return (
     <div style={{ textAlignLast: 'left' }}>
-      <Button variant="outlined" startIcon={<ArrowBack />} onClick={()=>{
-        setIsDashBoard(false);
-      }}>
+      <Button
+        variant="outlined"
+        style={{ marginLeft: '10px', marginTop: '5px' }}
+        startIcon={<ArrowBack />}
+        onClick={() => {
+          setIsDashBoard(2);
+        }}
+      >
         Back to Data Logger
       </Button>
-      <div className="widgets" style={{textAlignLast :'auto', paddingLeft: '10px', paddingTop: '5px'}}>
+      <div className="widgets" style={{ textAlignLast: 'auto', paddingLeft: '10px', paddingTop: '5px' }}>
         <Widget type="user" />
         <Widget type="labs" />
         <Widget type="devices" />

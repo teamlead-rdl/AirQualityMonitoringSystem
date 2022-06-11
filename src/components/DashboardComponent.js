@@ -7,6 +7,7 @@ import AlertWidget from './dashboard/components/AlertWidget';
 import GeoLocationWidget from './dashboard/components/GeoLocationWidget';
 import ImageMarkerList from './Device/subComponent/imageMarkerList';
 import LandingPageComponent from './dashboard/subComponent/siteDetailsComponent/LandingPageComponent';
+import DeviceGridComponent from './dashboard/subComponent/siteDetailsComponent/DeviceGridComponent';
 
 /* eslint-disable no-unused-vars */
 function Dashboard() {
@@ -19,6 +20,17 @@ function Dashboard() {
     lab_id: '',
     device_id: '',
   });
+
+  const [breadCrumbLabels, setBreadCrumbLabels] = useState({
+    stateLabel: 'State',
+    branchLabel: 'Branch',
+    facilityLabel: 'Facility',
+    buildingLabel: 'Building',
+    floorLabel: 'Floor',
+    lablabel: 'Lab',
+    deviceLabel: '',
+  });
+
   const [siteImages, setSiteImages] = useState({
     buildingImage: '',
     floorImage: '',
@@ -35,24 +47,13 @@ function Dashboard() {
   const imgSrc = `http://varmatrix.com/Aqms/blog/public/${Img}`;
   const [ImageState, setImageState] = useState(0);
   const [deviceCoordsList, setDeviceCoordsList] = useState([]);
-  const [isdashboard, setIsDashBoard] = useState(false);
+  const [isdashboard, setIsDashBoard] = useState(0);
   const [isGeoMap, setIsGeoMap] = useState(true);
 
   return (
     <Grid container spacing={1} style={{ height: '92.5%' }}>
-      {isdashboard === true
-        ? (
-          <Grid
-            item
-            xs={12}
-            sx={{
-              marginLeft: 1,
-            }}
-          >
-            <LandingPageComponent locationDetails={locationDetails} setIsDashBoard={setIsDashBoard} />
-          </Grid>
-        )
-        : (
+      {isdashboard === 0
+        && (
           <>
             <Grid
               item
@@ -91,12 +92,14 @@ function Dashboard() {
                     setZoomLevel={setZoomLevel}
                     setCenterLatitude={setCenterLatitude}
                     setCenterLongitude={setCenterLongitude}
+                    breadCrumbLabels={breadCrumbLabels}
+                    setBreadCrumbLabels={setBreadCrumbLabels}
                   />
                 </Grid>
-                <Grid item xs={4} style={{border: '2px solid black'}}>
+                <Grid item xs={4} style={{ border: '2px solid black' }}>
                   {/* eslint-disable-next-line */}
-                  {isGeoMap === true ? <GeoLocationWidget locationCoordination={locationCoordinationList} zoomLevel={zoomLevel} centerLatitude={centerLatitude} centerLongitude={centerLongitude} height="45vh"/>
-                    : <ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} height="h-72"/> }
+                {isGeoMap === true ? <GeoLocationWidget locationCoordination={locationCoordinationList} zoomLevel={zoomLevel} centerLatitude={centerLatitude} centerLongitude={centerLongitude} height="45vh"/>
+                    : <ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} height="h-72" /> }
                 </Grid>
               </Grid>
             </Grid>
@@ -112,6 +115,36 @@ function Dashboard() {
               <AlertWidget />
             </Grid>
           </>
+        )}
+      {isdashboard === 1
+        && (
+          <Grid
+            item
+            xs={12}
+            sx={{
+              marginLeft: 1,
+            }}
+          >
+            <LandingPageComponent locationDetails={locationDetails} setIsDashBoard={setIsDashBoard} />
+          </Grid>
+        )}
+      {isdashboard === 2
+        && (
+          <DeviceGridComponent
+            setImg={setImg}
+            locationDetails={locationDetails}
+            setLocationDetails={setLocationDetails}
+            setDeviceCoordsList={setDeviceCoordsList}
+            setProgressState={setProgressState}
+            breadCrumbLabels={breadCrumbLabels}
+            setBreadCrumbLabels={setBreadCrumbLabels}
+            setIsDashBoard={setIsDashBoard}
+            setIsGeoMap={setIsGeoMap}
+            siteImages={siteImages}
+            setSiteImages={setSiteImages}
+            setCenterLatitude={setCenterLatitude}
+            setCenterLongitude={setCenterLongitude}
+          />
         )}
     </Grid>
   );
