@@ -1,10 +1,10 @@
 import './notificationWidget.scss';
 import {
   Groups,
-  DeviceThermostat,
-  Science,
   Sensors,
   AccessTime,
+  NotificationsActiveOutlined,
+  SensorsOff,
 } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -26,8 +26,8 @@ function NotificationWidget({ type, deviceTotal }) {
         <Groups
           className="icon"
           style={{
-            color: 'crimson',
-            backgroundColor: 'rgba(255, 0, 0, 0.2)',
+            color: 'goldenrod',
+            backgroundColor: 'rgba(218, 165, 32, 0.2)',
           }}
         />
       ),
@@ -35,16 +35,14 @@ function NotificationWidget({ type, deviceTotal }) {
     break;
   case 'labs':
     data = {
-      title: 'Labs under your location',
-      link: 'View Details',
-      figure: 15,
-      diff: '30%',
+      title: 'Disconnected Devices',
+      figure: 3,
       icon: (
-        <Science
+        <SensorsOff
           className="icon"
           style={{
-            backgroundColor: 'rgba(218, 165, 32, 0.2)',
-            color: 'goldenrod',
+            backgroundColor: 'rgba(255, 0, 0, 0.2)',
+            color: 'crimson',
           }}
         />
       ),
@@ -55,7 +53,7 @@ function NotificationWidget({ type, deviceTotal }) {
       title: 'Total Devices',
       figure: deviceTotal,
       icon: (
-        <DeviceThermostat
+        <Sensors
           className="icon"
           style={{ backgroundColor: 'rgba(0, 128, 0, 0.2)', color: 'green' }}
         />
@@ -67,7 +65,7 @@ function NotificationWidget({ type, deviceTotal }) {
       title: 'Active Alerts',
       figure: 45,
       icon: (
-        <Sensors
+        <NotificationsActiveOutlined
           className="icon"
           style={{
             backgroundColor: 'rgba(128, 0, 128, 0.2)',
@@ -87,8 +85,8 @@ function NotificationWidget({ type, deviceTotal }) {
         <AccessTime
           className="icon"
           style={{
-            backgroundColor: 'rgba(128, 0, 128, 0.2)',
-            color: 'purple',
+            backgroundColor: '#e1f5fe',
+            color: '#0288d1',
           }}
         />
       ),
