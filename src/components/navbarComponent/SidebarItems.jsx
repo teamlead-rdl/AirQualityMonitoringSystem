@@ -47,7 +47,7 @@ const SidebarItems = {
   ],
 };
 
-function DrawerObject(props) {
+function DrawerObject() {
   const allowedItems = allowedSidebarItems();
   const sectionCollection = {};
   for (const section in SidebarItems) {
@@ -94,7 +94,6 @@ function DrawerObject(props) {
           <div className="">
             <Link to="Dashboard">
               <img
-
                 src={companyLogo}
                 alt=""
                 className="avatar"
