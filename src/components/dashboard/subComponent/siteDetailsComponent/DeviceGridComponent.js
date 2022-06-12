@@ -149,6 +149,7 @@ function DeviceGridComponent({
         }}
       >
         <Grid container sx={{ width: '100%' }}>
+
           {deviceList.map((data, index) => {
             return (
               <Grid
@@ -158,6 +159,7 @@ function DeviceGridComponent({
                 md={4}
                 lg={3}
                 xl={3}
+                /* eslint-disable-next-line */
                 key={index}
                 sx={{ padding: 1 }}
               >

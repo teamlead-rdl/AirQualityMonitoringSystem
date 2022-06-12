@@ -9,8 +9,10 @@ import {
 } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 
-function Widget({ type }) {
-  let data;
+function Widget({ type , setAlertOpen, totalSensors, totalAlerts }) {
+  let data; 
+
+
   const [dateTime, setDateTime] = useState({
     time: '',
     date: '',
@@ -37,7 +39,7 @@ function Widget({ type }) {
     data = {
       title: 'Labs under your location',
       link: 'View Details',
-      figure: 15,
+      figure: 8,
       diff: '30%',
       icon: (
         <Science
@@ -54,7 +56,7 @@ function Widget({ type }) {
     data = {
       title: 'Total Sensors',
       link: 'View Details',
-      figure: 10,
+      figure: totalSensors,
       diff: '40%',
       icon: (
         <DeviceThermostat
@@ -68,7 +70,7 @@ function Widget({ type }) {
     data = {
       title: 'Active Alerts',
       link: 'See details',
-      figure: 45,
+      figure: totalAlerts,
       diff: '50%',
       icon: (
         <Sensors
@@ -115,8 +117,8 @@ function Widget({ type }) {
   }, []);
   return (
     <div className="widget" onClick={() => {
-        type === 'alerts' && 
-        console.log(data); // remove console once you started to implement the click functionality
+        type === 'alerts' &&        
+        setAlertOpen(true);
       }}
       style={{ cursor: type === 'alerts' && 'pointer' }}
     >

@@ -4,10 +4,10 @@ import Container from '@mui/material/Container';
 import MachineCard from './MachineCard';
 
 function LayoutMachine({
-  setOpen, analogSensorList, digitalSensorList, modbusSensorList, setSensorTagId, setSensorTag,
+  setOpen, analogSensorList, digitalSensorList, modbusSensorList, setSensorTagId,setSensorTag
 }) {
   return (
-    <Container style={{paddingLeft: '10px'}}>
+    <Container>
       <Grid
         container
         spacing={3}
@@ -26,7 +26,7 @@ function LayoutMachine({
                 last={data.last}
                 setSensorTagId={setSensorTagId}
                 setSensorTag={setSensorTag}
-                color="#a5f3fc"
+                color="#a5f3fc"                
               />
             </Grid>
           );
@@ -35,17 +35,17 @@ function LayoutMachine({
           return (
             <Grid item xs={12} sm={6} md={3} lg={3} key={data.sensorTagId}>
               <MachineCard
-                setOpen={setOpen}
-                id={data.sensorTagId}
-                sensorName={data.sensorTag}
-                sensorNameUnit={data.sensorNameUnit}
-                min={data.min}
-                max={data.max}
-                avg={data.avg}
-                last={data.last}
-                setSensorTagId={setSensorTagId}
-                setSensorTag={setSensorTag}
-                color="#f5d0fe"
+               setOpen={setOpen}
+               id={data.sensorTagId}
+               sensorName={data.sensorTag}
+               sensorNameUnit={data.sensorNameUnit}
+               min={data.min}
+               max={data.max}
+               avg={data.avg}
+               last={data.last}
+               setSensorTagId={setSensorTagId}
+               setSensorTag={setSensorTag}
+                color="#f5d0fe"                
               />
             </Grid>
           );
@@ -65,7 +65,7 @@ function LayoutMachine({
                 setSensorTagId={setSensorTagId}
                 setSensorTag={setSensorTag}
                 color="#fecdd3"
-
+                
               />
             </Grid>
           );
