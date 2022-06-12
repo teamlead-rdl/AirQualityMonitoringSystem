@@ -1,16 +1,38 @@
 import './deviceWidget.scss';
 import {
+  Link,
+  LinkOff,
   NotificationsActiveOutlined,
 } from '@mui/icons-material';
+import { Badge, Chip } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 function DeviceWidget({
   type, data, setLocationDetails, setBreadCrumbLabels, setIsDashBoard,
 }) {
-  switch (type) {
-  case 'aqmi': break;
-  case 'aqmo': break;
-  default: break;
-  }
+  
+  const [modeColor, setModeColor] = useState('primary');
+  const [alarmColor, setAlarmColor] = useState('primary');
+
+  useEffect(()=>{
+    if(data){
+      switch(data.deviceMode){
+        case 'enabled' : setModeColor('#1b5e20');
+          break;
+        case 'config' : setModeColor('#4a148c');
+          break;
+        case 'calibration' : setModeColor('#f57f17');
+          break;
+        case 'disabled' : setModeColor('#b71c1c');
+          break;
+        case 'bumpTest' : setModeColor('#01579b');
+          break;
+        case 'firmwareUpgradation' : setModeColor('#c2185b');
+          break;
+        default : break;
+      }
+    }
+  },[]);
 
   const handleClick = () => {
     setLocationDetails((oldValue) => {
@@ -26,7 +48,6 @@ function DeviceWidget({
     <div
       className="widget"
       onClick={() => {
-        console.log(data);
         handleClick(data);
       }}
       style={{
@@ -42,7 +63,13 @@ function DeviceWidget({
           alignContent: 'space-between',
         }}
       >
-        <div style={{ display: 'inline', alignContent: 'center', height: 40 }}>
+        <div style={{ display: 'flex', 
+          alignContent: 'center', height: 40,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignContent: 'stretch',
+          alignItems: 'center' }}
+        >
           <div>
             <span className="title" style={{ float: 'left', marginTop: 5, marginLeft: 5 }}>{data.deviceName}</span>
           </div>
@@ -63,7 +90,8 @@ function DeviceWidget({
         <div className="percentage" style={{ height: 150 }}>
           <div className="percentage positive" style={{ width: '35%', overflow: 'auto', display: 'block' }}>
             <div style={{ alignContent: 'center' }}>
-              {data.deviceTag}
+              {data.deviceCategory === 'AQMII' ? <Link color="success" style={{ fontSize: '80px'}}/> : <LinkOff color="error" style={{ fontSize: '80px'}}/>}
+              
             </div>
           </div>
           <div style={{ width: '65%', height: '100%' }}>
@@ -75,11 +103,18 @@ function DeviceWidget({
               alignContent: 'center',
             }}
             >
-              <NotificationsActiveOutlined style={{ fontSize: 80 }} color="warning" />
+              <Badge badgeContent={data.id} color="error" max={999}>
+                <NotificationsActiveOutlined style={{ fontSize: 80 }} color="warning" />
+              </Badge>
             </div>
             <div style={{ height: '20%', display: 'block' }}>
               <span>
-                {data.deviceMode}
+                <Chip label={data.deviceMode}
+                variant="outlined" 
+                sx={{
+                  color: modeColor,
+                  borderColor: modeColor
+                }} />
               </span>
             </div>
           </div>
