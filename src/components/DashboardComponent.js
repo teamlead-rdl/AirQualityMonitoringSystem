@@ -51,7 +51,7 @@ function Dashboard() {
   const [isGeoMap, setIsGeoMap] = useState(true);
 
   return (
-    <Grid container spacing={1} style={{ height: '92.5%' }}>
+    <Grid container spacing={1} style={{ height: '138%' }}>
       {isdashboard === 0
         && (
           <>
@@ -67,11 +67,14 @@ function Dashboard() {
                 container
                 item
                 xs={12}
-                style={{ height: '100%' }}
+                style={{ height: '100%'}}
               >
                 <Grid
                   item
-                  xs={8}
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={8}
                   sx={{
                   }}
                   style={{ height: '100%' }}
@@ -96,7 +99,7 @@ function Dashboard() {
                     setBreadCrumbLabels={setBreadCrumbLabels}
                   />
                 </Grid>
-                <Grid item xs={4} style={{ border: '2px solid black' }}>
+                <Grid item xs={12} sm={12} md={12} lg={4} style={{ border: '2px solid black' }}>
                   {/* eslint-disable-next-line */}
                 {isGeoMap === true ? <GeoLocationWidget locationCoordination={locationCoordinationList} zoomLevel={zoomLevel} centerLatitude={centerLatitude} centerLongitude={centerLongitude} height="45vh"/>
                     : <ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} height="h-72" /> }

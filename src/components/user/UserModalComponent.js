@@ -343,7 +343,7 @@ function UserModal({
               ) }
             <div className="rounded-md -space-y-px mb-2">
               <TextField
-                sx={{ mb: 2 }}
+                sx={{ mb: 2, mt: 2 }}
                 label="Employee Id"
                 type="text"
                 value={empId}
@@ -463,25 +463,27 @@ function UserModal({
                 </FormControl>
               </div>
             </div>
-            <div className="">
+            {isSuperAdmin ? '' : 
               <div className="">
-                <FormGroup sx={{ display: 'block' }}>
-                  <FormControlLabel
-                    control={(
-                      <Switch
-                      /* eslint-disable-next-line */
-                        checked={empNotification != 0}
-                        onChange={(e) => {
-                          setEmpNotification(e.target.checked);
-                        }}
-                        color="warning"
-                      />
-                    )}
-                    label="Enable Notification"
-                  />
-                </FormGroup>
+                <div className="">
+                  <FormGroup sx={{ display: 'block' }}>
+                    <FormControlLabel
+                      control={(
+                        <Switch
+                        /* eslint-disable-next-line */
+                          checked={empNotification != 0}
+                          onChange={(e) => {
+                            setEmpNotification(e.target.checked);
+                          }}
+                          color="warning"
+                        />
+                      )}
+                      label="Enable Notification"
+                    />
+                  </FormGroup>
+                </div>
               </div>
-            </div>
+            }
             <div className="rounded-md -space-y-px float-right">
               {isAddButton ? ''
                 : (
