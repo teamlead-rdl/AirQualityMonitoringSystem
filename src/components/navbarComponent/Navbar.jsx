@@ -10,7 +10,7 @@ import {
 } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import {
-  IconButton, Toolbar, Menu, MenuItem, ListSubheader, ListItemAvatar, ListItemText, ListItem,
+  IconButton, Toolbar, Menu, MenuItem, ListSubheader, ListItemAvatar, ListItemText, ListItem, Typography
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -138,7 +138,9 @@ function Navbar(props) {
             display: 'block',
           }}
         >
-          {customerDisplayName}
+          <Typography variant="h5" gutterBottom component="div">
+            {customerDisplayName}
+          </Typography>
         </div>
         <div className="items">
           <div className="item">

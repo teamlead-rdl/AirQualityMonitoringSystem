@@ -19,7 +19,7 @@ export default function Sidebar(props) {
   // }, [location])
 
   const openedMixin = () => ({
-    width: 240,
+    width: 165,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -35,7 +35,7 @@ export default function Sidebar(props) {
     overflowX: 'hidden',
     width: `calc(${theme.spacing(7)} + 1px)`,
     [theme.breakpoints.up('sm')]: {
-      width: `calc(${theme.spacing(8)} + 1px)`,
+      width: `calc(${theme.spacing(8)} - 7px)`,
     },
   });
 
@@ -57,7 +57,7 @@ export default function Sidebar(props) {
   );
 
   const hamBurgerMenu = () => {
-    const drawerWidth = 240;
+    const drawerWidth = 170;
     return (
       <Box sx={{ flexGrow: 1, display: { xs: 'block', sm: 'block', md: 'none' } }}>
         <Drawer
