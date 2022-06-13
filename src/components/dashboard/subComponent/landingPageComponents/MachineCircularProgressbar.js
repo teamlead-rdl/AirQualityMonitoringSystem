@@ -35,7 +35,7 @@ const MachineCircularProgressbar = (props) => {
                         transform: "rotate(-126deg)",
                         transformOrigin: 'center center',
                     },
-                    path: {
+                    path: { 
                         strokeLinecap: 'butt',
                         transform: "rotate(-126deg)",
                         transformOrigin: 'center center',

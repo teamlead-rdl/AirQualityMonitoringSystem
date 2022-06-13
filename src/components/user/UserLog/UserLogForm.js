@@ -113,13 +113,8 @@ export default function UserLogForm() {
     setGridLoading(false);
   };
 
-  const UserLogDetailsHandleSuccess = (dataObject) => {
-    const userLog = dataObject.map((data, index)=>{
-      const createdDate = getFullDate(data.created_at);
-      const createdTime = getFullTime(data.created_at);
-      return {...data, createdDate, createdTime};
-    })
-    setUserLogList(userLog);
+  const UserLogDetailsHandleSuccess = (dataObject) => {    
+    setUserLogList(dataObject.data);
     setGridLoading(false);
   };
 

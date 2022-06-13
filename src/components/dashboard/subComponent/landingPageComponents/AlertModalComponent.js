@@ -30,8 +30,8 @@ function AlertModalComponent({alertOpen, setAlertOpen, locationDetails}) {
 
   return (
     <Dialog
-      sx={{ '& .MuiDialog-paper': { minWidth: '80%' } }}
-      maxWidth="sm"
+      sx={{ '& .MuiDialog-paper': { minWidth: '95%', height:'95vh' } }}
+      maxWidth="lg"
       open={alertOpen}
     >
       <DialogTitle>
@@ -53,7 +53,7 @@ function AlertModalComponent({alertOpen, setAlertOpen, locationDetails}) {
         >
           <DialogContent>
               <div style={{
-                height: 300,
+                height: 390,
                 width: '100%',
                 margin: '0px',
                 '& .super-app.Pass': {
@@ -65,17 +65,20 @@ function AlertModalComponent({alertOpen, setAlertOpen, locationDetails}) {
               >
                 <AlertWidget dataList={dataList} setRefreshData={setRefreshData} />
               </div>
-          </DialogContent>            
-        </Grid>        
-        <Button
-          sx={{ m: 1 }}
-          size="large"
-          onClick={() => {
-            setAlertOpen(false);
-          }}
-        >
-          Cancel
-        </Button>
+          </DialogContent>  
+            <div className='float-right'>
+            <Button
+              sx={{ m: 1 }}
+              size="large"
+              onClick={() => {
+                setAlertOpen(false);
+              }}
+            >
+              Cancel
+            </Button>
+          </div>           
+        </Grid>    
+                   
       </DialogContent>
     </Dialog>
   );
