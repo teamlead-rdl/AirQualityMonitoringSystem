@@ -51,7 +51,7 @@ function DeviceWidget({
         handleClick(data);
       }}
       style={{
-        height: '200px', cursor: 'pointer', display: 'block', padding: 1,
+        height: '190px', cursor: 'pointer', display: 'block', padding: 1,
       }}
     >
       <div
@@ -71,13 +71,18 @@ function DeviceWidget({
           alignItems: 'center' }}
         >
           <div>
-            <span className="title" style={{ float: 'left', marginTop: 5, marginLeft: 5 }}>{data.deviceName}</span>
+            <span className="title" style={{ float: 'left', marginTop: 5, marginLeft: 5,
+              color: data.deviceCategory === 'AQMII' ? '#388e3c' : data.deviceCategory === 'AQMO' ? '#ffa000' : '#d32f2f'
+            }}>
+              {data.deviceName}
+            </span>
           </div>
           <div>
             <span
               className="counter"
               style={{
                 float: 'right', marginRight: 5, fontWeight: 500, color: '#757575',
+              color: data.deviceCategory === 'AQMII' ? '#388e3c' : data.deviceCategory === 'AQMO' ? '#ffa000' : '#d32f2f'
               }}
             >
               {data.deviceCategory}
@@ -87,39 +92,52 @@ function DeviceWidget({
         <span className="link">{data.link}</span>
       </div>
       <div className="right">
-        <div className="percentage" style={{ height: 150 }}>
-          <div className="percentage positive" style={{ width: '35%', overflow: 'auto', display: 'block' }}>
-            <div style={{ alignContent: 'center' }}>
-              {data.deviceCategory === 'AQMII' ? <Link color="success" style={{ fontSize: '80px'}}/> : <LinkOff color="error" style={{ fontSize: '80px'}}/>}
-              
+        <div className="percentage" style={{ height: 150, display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'space-between',
+          alignContent: 'center'
+         }}>
+          <div style={{ height: '70%', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ width: '100%', height: '50%', overflow: 'auto', display: 'flex', alignItems: 'flex-end' }}>
+              <div style={{width: '60%', textAlignLast: 'center', paddingLeft: 10, }}>
+                Active Alarms :
+              </div>
+              <div style={{ width: '40%', alignContent: 'center', color: 'black', marginTop: 5 }}>
+                <Badge badgeContent={data.id} color="error" max={999}>
+                  <NotificationsActiveOutlined style={{ fontSize: '40px' }} sx={{ color: data.deviceCategory === 'AQMII' ? '#388e3c' : data.deviceCategory === 'AQMO' ? '#ffa000' : '#d32f2f'}} />
+                </Badge>
+              </div>
+            </div>
+            <div style={{ height: '50%', width: '100%', overflow: 'auto', display: 'flex', alignItems: 'center' }}>
+              <div style={{width: '60%', textAlignLast: 'right', paddingLeft: 10}} >
+                Connectivity Status :
+              </div>
+              <div style={{ width: '40%', alignContent: 'center', color: 'black' }}>
+                {data.deviceCategory === 'AQMII' ? <Link color="success" style={{ fontSize: '40px'}}/> : <LinkOff color="error" style={{ fontSize: '40px'}}/>}
+                
+              </div>
             </div>
           </div>
-          <div style={{ width: '65%', height: '100%' }}>
+          <div style={{ height: '30%', width: '100%', display: 'flex', overflow: 'auto', alignItems: 'center', justifyContent: 'flex-end', marginRight: 15}}>
             <div style={{
-              height: '80%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              alignContent: 'center',
-            }}
-            >
-              <Badge badgeContent={data.id} color="error" max={999}>
-                <NotificationsActiveOutlined style={{ fontSize: 80 }} color="warning" />
-              </Badge>
+              // width: '38%',
+               textAlignLast: 'left', textAlign: 'justify', paddingLeft: 10, marginRight: 5}}>
+              Device Mode :
             </div>
-            <div style={{ height: '20%', display: 'block' }}>
-              <span>
+            <div style={{ 
+              // width: '62%',
+               alignContent: 'center', color: 'black', textAlignLast: 'right' }}>
                 <Chip label={data.deviceMode}
                 variant="outlined" 
                 sx={{
                   color: modeColor,
-                  borderColor: modeColor
+                  borderColor: modeColor,
+                  height: '100%'
                 }} />
-              </span>
             </div>
           </div>
         </div>
-        {data.icon}
       </div>
 
     </div>
