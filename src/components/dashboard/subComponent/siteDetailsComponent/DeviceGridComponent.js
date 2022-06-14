@@ -141,11 +141,6 @@ function DeviceGridComponent({
           marginTop: 5,
           maxHeight: '65vh',
           overflow: 'auto',
-        // display: 'flex',
-        // padding: '20px',
-        // gap: '20px',
-        // flexWrap: 'wrap',
-        // flexDirection: 'row'
         }}
       >
         <Grid container sx={{ width: '100%' }}>
@@ -154,8 +149,8 @@ function DeviceGridComponent({
             return (
               <Grid
                 item
-                sm={12}
-                xs={12}
+                sm={6}
+                xs={6}
                 md={4}
                 lg={3}
                 xl={3}
