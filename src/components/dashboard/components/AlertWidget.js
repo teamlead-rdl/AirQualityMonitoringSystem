@@ -24,23 +24,18 @@ function AlertWidget({dataList, setRefreshData }) {
     {
       field: 'a_date',
       headerName:'Date',
-      width: 120
+      width: 100
     },
     {
       field: 'a_time',
       headerName: 'Time',
-      width: 120
+      width: 100
     },
     {
       field: 'sensorTag',
       headerName: 'Sensor Tag',
-      width: 130
-    },
-    {
-      field: 'alertType',
-      headerName: 'Alert Type',
-      width: 130
-    },
+      width: 100
+    },    
     {
       field: 'value',
       headerName: 'Value',
@@ -49,17 +44,17 @@ function AlertWidget({dataList, setRefreshData }) {
     {
       field: 'msg',
       headerName: 'Message',
-      width: 200,
+      width: 300,
     },    
     {
       field: 'statusMessage',
       headerName: 'statusMessage',
-      width: 200,
+      width: 100,
     },
     {
       field: 'alarmType',
       headerName: 'Alarm',
-      width: 200,
+      width: 100,
     },
     {
       field: 'actions',
@@ -107,7 +102,7 @@ function AlertWidget({dataList, setRefreshData }) {
       type: 'success',
       message: dataObject.message,
     });
-    setRefreshData((oldvalue) => !oldvalue);
+    setRefreshData((oldvalue) => !oldvalue); 
     setTimeout(() => {
       handleClose();     
       setErrorObject({});
@@ -149,7 +144,7 @@ function AlertWidget({dataList, setRefreshData }) {
         style={{ maxHeight: `${90}%` }}
       />
       <Dialog
-        sx={{ '& .MuiDialog-paper': { minWidth: '60%' } }}
+        sx={{ '& .MuiDialog-paper': { minWidth: '30%' } }}
         maxWidth="sm"
         open={clearAlert}
       >
@@ -183,6 +178,8 @@ function AlertWidget({dataList, setRefreshData }) {
                       label="Reason"
                       value={clearAlertReason}
                       required
+                      multiline
+                      rows={3}
                       onChange={(e) => {
                         setAlertReason(e.target.value);
                       }}

@@ -16,7 +16,7 @@ function LandingPageComponent({ locationDetails, setIsDashBoard }) {
   const [sensorTagId, setSensorTagId] = useState('');
   const [sensorTag, setSensorTag] = useState('');
   const [segretionInterval, setSegretionInterval] = useState('15');
-  const [rangeInterval, setRangeInterval] = useState('1*60');
+  const [rangeInterval, setRangeInterval] = useState('200*60');
   const [totalSensors, setTotalSensors] = useState(0);
   const [totalAlerts, setTotalALerts] = useState(0);
 
