@@ -55,7 +55,7 @@ function Analog({
                   setSensorType(e.target.value);
                 }}
               >
-                <FormControlLabel value="4-20v" control={<Radio required />} label="4-20v" />
+                <FormControlLabel value="4-20v" control={<Radio required />} label="4-20mA" />
                 <FormControlLabel value="0-10v" control={<Radio required />} label="0-10v" />
               </RadioGroup>
             </FormControl>
