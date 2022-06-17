@@ -88,7 +88,7 @@ function DrawerObject() {
   }, []);
 
   return (
-    <div className="block">
+    <div className="block" >
       <div className="wrapper" style={{ display: 'flex' }}>
         <div className="items">
           <div className="">

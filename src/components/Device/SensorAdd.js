@@ -45,6 +45,7 @@ function DeviceAdd({
   const [digitalHighAlert, setDigitalHighAlert] = useState(editData?.digitalHighAlert || '');
   // -----analog----//
   const [sensorType, setSensorType] = useState(editData?.sensorType || '');
+  const [relayOutput, setRelayOutput] = useState(editData?.relayOutput || 'ON');
   const [units, setUnits] = useState(editData?.units || '');
   const [minRatedReading, setMinRatedReading] = useState(editData?.minRatedReading || '');
   const [minRatedReadingChecked, setMinRatedReadingChecked] = useState(editData?.minRatedReadingChecked || '0');
@@ -141,7 +142,7 @@ function DeviceAdd({
   };
 
   const sensorHandleSuccess = (dataObject) => {
-    setSensorList(dataObject.data);
+    setSensorList(dataObject.data || []);
   };
 
   const loadData = () => {
@@ -175,6 +176,7 @@ function DeviceAdd({
         digitalHighAlert,
         sensorType,
         units,
+        relayOutput,
         minRatedReading,
         minRatedReadingChecked,
         minRatedReadingScale,
@@ -241,6 +243,7 @@ function DeviceAdd({
         digitalHighAlert,
         sensorType,
         units,
+        relayOutput,
         minRatedReading,
         minRatedReadingChecked,
         minRatedReadingScale,
@@ -333,6 +336,7 @@ function DeviceAdd({
     setDigitalLowAlert('');
     setDigitalHighAlert('');
     setSensorType('');
+    setRelayOutput('ON');
     setUnits('');
     setMinRatedReading('');
     setMinRatedReadingScale('');
@@ -365,9 +369,11 @@ function DeviceAdd({
     setOutofrangeHighAlert('');
   };
   return (
-    <div className="w-full" style={{ marginTop: 0 }}>
+    <div className="w-full" style={{ marginTop: 0 , overflow: 'auto'}}>
       <form className="mt-0 p-0 w-full" onSubmit={handleSubmit}>
-        <DialogContent sx={{ px: 0, p: 0 }}>
+        <DialogContent sx={{ px: 0, p: 0 }} style={{
+          height: '78vh'
+        }} >
           <Grid container spacing={1} sx={{ mt: 0 }}>
             <Grid
               sx={{ mt: 0, padding: 0 }}
@@ -466,6 +472,7 @@ function DeviceAdd({
                     onChange={(e) => {
                       setSensorCategoryId(e.target.value);
                       setSensorList([]);
+                      SensorFetchService(e.target.value, sensorHandleSuccess, handleException);
                     }}
                   >
                     {sensorCategoryList.map((data) => {
@@ -509,8 +516,6 @@ function DeviceAdd({
                 >
                   <Box>
                     <Autocomplete
-                      id="asynchronous-demo"
-                      sx={{}}
                       open={open}
                       value={sensorList[0]?.sensorName}
                       onOpen={() => {
@@ -532,6 +537,7 @@ function DeviceAdd({
                         setSensorType(data.sensorType);
                         // -- analog --//
                         setUnits(data.units);
+                        setRelayOutput(data.relayOutput);
                         setMinRatedReading(data.minRatedReading);
                         setMinRatedReadingChecked(data.minRatedReadingChecked);
                         setMinRatedReadingScale(data.minRatedReadingScale);
@@ -743,6 +749,8 @@ function DeviceAdd({
                   setUnits={setUnits}
                   sensorType={sensorType}
                   setSensorType={setSensorType}
+                  relayOutput={relayOutput}
+                  setRelayOutput={setRelayOutput}
                   minRatedReading={minRatedReading}
                   setMinRatedReading={setMinRatedReading}
                   minRatedReadingChecked={minRatedReadingChecked}
@@ -807,6 +815,8 @@ function DeviceAdd({
                     setUnits={setUnits}
                     sensorType={sensorType}
                     setSensorType={setSensorType}
+                    relayOutput={relayOutput}
+                    setRelayOutput={setRelayOutput}
                     minRatedReading={minRatedReading}
                     setMinRatedReading={setMinRatedReading}
                     minRatedReadingChecked={minRatedReadingChecked}

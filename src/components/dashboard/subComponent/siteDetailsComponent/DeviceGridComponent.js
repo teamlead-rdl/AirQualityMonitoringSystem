@@ -18,14 +18,21 @@ function DeviceGridComponent({
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
-    DeviceFetchService({
-      location_id: locationDetails.location_id,
-      branch_id: locationDetails.branch_id,
-      facility_id: locationDetails.facility_id,
-      building_id: locationDetails.building_id,
-      floor_id: locationDetails.floor_id,
-      lab_id: locationDetails.lab_id,
-    }, handleSuccess, handleException);
+    const devicePolling = setInterval(()=>{
+      DeviceFetchService({
+        location_id: locationDetails.location_id,
+        branch_id: locationDetails.branch_id,
+        facility_id: locationDetails.facility_id,
+        building_id: locationDetails.building_id,
+        floor_id: locationDetails.floor_id,
+        lab_id: locationDetails.lab_id,
+      }, handleSuccess, handleException);
+    }, 5000);
+
+    return () =>{
+      console.log('clearing interval');
+      clearInterval(devicePolling);
+    }
   }, [locationDetails]);
 
   const handleSuccess = (dataObject) => {
