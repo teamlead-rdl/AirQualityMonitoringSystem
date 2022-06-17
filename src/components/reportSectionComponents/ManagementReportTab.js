@@ -38,7 +38,6 @@ function TabPanel(props) {
     );
 }
 
-
 TabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.number.isRequired,
@@ -63,7 +62,6 @@ export default function ManagementReportTab() {
     const handleChange1 = (event) => {
         setAge(event.target.value);
     };
-
 
     return (
         <>
@@ -176,10 +174,7 @@ export default function ManagementReportTab() {
                         </Box>
                     </Stack>
                 </Grid>
-
                 <Grid item xs={12} >
-
-
                     <Box sx={{ width: '100%' }}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider', marginTop: 0 }}>
                             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" selectionFollowsFocus  >

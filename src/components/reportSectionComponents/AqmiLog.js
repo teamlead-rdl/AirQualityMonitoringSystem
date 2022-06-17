@@ -26,8 +26,6 @@ const columns = [
     { field: 'Aqmio', headerName: 'Aqmi/o', width: 130 },
     { field: 'PreviousValue', headerName: 'Previous Value', width: 130 },
     { field: 'UpdatedValue', headerName: 'Updated Value', width: 130 },
-
-
 ];
 
 const rows = [
@@ -76,15 +74,12 @@ const AqmiLog = () => {
                 />
 
             </Stack>
-
-
             <div style={{ height: 300, width: '100%', marginTop: 25 }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     pageSize={4}
                     rowsPerPageOptions={[4]}
-
                 />
             </div>
             <Button sx={{ marginTop: 2 }} variant="contained" startIcon={<DownloadIcon />}>

@@ -16,30 +16,15 @@ import TablePagination from '@mui/material/TablePagination';
 import DownloadIcon from '@mui/icons-material/Download';
 import Button from '@mui/material/Button';
 
-const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'firstName', headerName: 'First name', width: 130 },
-    { field: 'lastName', headerName: 'Last name', width: 130 },
-    { field: 'age', headerName: 'Age', type: 'number', width: 90, },
-
-];
-
-
-
 const sample = [
     { date: "04-06-2022", detail: ["Min", "Max", "Avg", "Status"], values: ["50", "100", "60", "#1234"] },
     { date: "05-06-2022", detail: ["Min", "Max", "Avg", "Status"], values: ["4", "4", "4", "4"] },
     { date: "05-06-2022", detail: ["Min", "Max", "Avg", "Status"], values: ["54", "4", "23", "54"] },
 ];
 
-
-
-
-
 const IndividualReportForm = () => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(2);
-
     const [age, setAge] = React.useState('');
 
     const handleChange = (event) => {
@@ -94,9 +79,7 @@ const IndividualReportForm = () => {
                         </Select>
                     </FormControl>
                 </Box>
-
             </Stack>
-
             <Table sx={{ marginTop: 3 }} aria-label="a dense table">
                 <TableHead>
                     <TableRow>
@@ -150,7 +133,6 @@ const IndividualReportForm = () => {
                     Download
                 </Button>
             </Stack>
-
         </>
     )
 }

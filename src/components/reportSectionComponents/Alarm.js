@@ -34,9 +34,7 @@ const rows = [
 
 const Alarm = () => {
 
-
     const [age, setAge] = React.useState('');
-
     const handleChange = (event) => {
         setAge(event.target.value);
     };
@@ -99,7 +97,7 @@ const Alarm = () => {
                     Download
                 </Button>
             </Stack>
-        </div >
+        </div>
     )
 }
 

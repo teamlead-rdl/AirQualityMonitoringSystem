@@ -27,8 +27,6 @@ const columns = [
     { field: 'Sensor', headerName: 'Sensor', width: 130 },
     { field: 'PreviousValue', headerName: 'Previous Value', width: 130 },
     { field: 'UpdatedValue', headerName: 'Updated Value', width: 130 },
-
-
 ];
 
 const rows = [
@@ -79,7 +77,6 @@ const SensorLog = () => {
                     columns={columns}
                     pageSize={4}
                     rowsPerPageOptions={[4]}
-
                 />
             </div>
             <Button sx={{ marginTop: 2 }} variant="contained" startIcon={<DownloadIcon />}>

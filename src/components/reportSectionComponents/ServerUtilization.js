@@ -16,8 +16,6 @@ const rows = [
 
 ];
 
-
-
 const ServerUtilization = () => {
     return (
         <>
