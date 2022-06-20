@@ -51,14 +51,17 @@ function Dashboard() {
   const [isGeoMap, setIsGeoMap] = useState(true);
 
   return (
-    <Grid container spacing={1} style={{ height: '138%' }}>
+    <Grid container spacing={1} style={{ height: '100%', width: '100%', padding: 2 }}>
       {isdashboard === 0
         && (
-          <>
+          <div style={{ height: '100%', width: '100%' }}>
             <Grid
               item
               xs={12}
-              style={{ height: '50%' }}
+              style={{ 
+                height: '140%',
+                width: '100%'
+              }}
               sx={{
                 marginLeft: 1,
               }}
@@ -67,17 +70,21 @@ function Dashboard() {
                 container
                 item
                 xs={12}
-                style={{ height: '100%'}}
+                style={{ 
+                  height: '100%',
+                  width: '100%',
+                  overflow: 'auto',
+                }}
               >
                 <Grid
                   item
                   xs={12}
                   sm={12}
-                  md={12}
+                  md={8}
                   lg={8}
                   sx={{
                   }}
-                  style={{ height: '100%' }}
+                  style={{ minHeight: '300px', height: '50%', marginTop: 10 }}
                 >
                   <LocationGridWidget
                     setLocationCoordinationList={setLocationCoordinationList}
@@ -99,25 +106,27 @@ function Dashboard() {
                     setBreadCrumbLabels={setBreadCrumbLabels}
                   />
                 </Grid>
-                <Grid item xs={12} sm={12} md={12} lg={4} style={{ border: '2px solid black' }}>
+                <Grid item xs={12} sm={12} md={4} lg={4} style={{ border: '2px solid black', height: '50%', minHeight: '304px', maxHeight: '300px', marginTop: 10 }}>
                   {/* eslint-disable-next-line */}
-                {isGeoMap === true ? <GeoLocationWidget locationCoordination={locationCoordinationList} zoomLevel={zoomLevel} centerLatitude={centerLatitude} centerLongitude={centerLongitude} height="45vh"/>
+                {isGeoMap === true ? <GeoLocationWidget locationCoordination={locationCoordinationList} zoomLevel={zoomLevel} centerLatitude={centerLatitude} centerLongitude={centerLongitude} height="300px"/>
                     : <ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} height="h-72" /> }
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12} 
+                  md={12}
+                  style={{
+                    padding: 1,
+                    marginLeft: 1,
+                    height: '50%'
+                  }}
+                >
+                  <AlertWidget />
                 </Grid>
               </Grid>
             </Grid>
-            <Grid
-              item
-              xs={12}
-              sx={{
-                padding: 1,
-                marginLeft: 1,
-              }}
-              style={{ height: '50%' }}
-            >
-              <AlertWidget />
-            </Grid>
-          </>
+          </div>
         )}
       {isdashboard === 1
         && (
