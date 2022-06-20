@@ -1,15 +1,6 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Grid';
+import { Tabs, Tab, Typography, Box, InputLabel, MenuItem, FormControl, Select, Stack, Grid } from '@mui/material';
 import SitesReportForm from './SitesReportForm';
 import Alarm from './Alarm';
 import ServerUtilization from './ServerUtilization';
@@ -20,14 +11,13 @@ import AqmiLog from './AqmiLog';
 import SensorLog from './SensorLog';
 
 function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+    const { children, value, index } = props;
     return (
         <div
             role="tabpanel"
             hidden={value !== index}
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
-            {...other}
         >
             {value === index && (
                 <Box sx={{ p: 3 }}>
@@ -57,7 +47,7 @@ export default function ManagementReportTab() {
         setValue(newValue);
     };
 
-    const [age, setAge] = React.useState('');
+    const [age, setAge] = useState('');
 
     const handleChange1 = (event) => {
         setAge(event.target.value);
@@ -78,10 +68,8 @@ export default function ManagementReportTab() {
                     >
                         <Box sx={{ minWidth: 130 }}>
                             <FormControl fullWidth size="small" style={{ minWidth: 170 }}>
-                                <InputLabel id="demo-simple-select-label">Location</InputLabel>
+                                <InputLabel >Location</InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
                                     value={age}
                                     label="Age"
                                     onChange={handleChange1}
@@ -94,10 +82,8 @@ export default function ManagementReportTab() {
                         </Box>
                         <Box sx={{ minWidth: 130 }}>
                             <FormControl fullWidth size="small" style={{ minWidth: 170 }}>
-                                <InputLabel id="demo-simple-select-label">Branch</InputLabel>
+                                <InputLabel >Branch</InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
                                     value={age}
                                     label="Age"
                                     onChange={handleChange1}
@@ -110,10 +96,8 @@ export default function ManagementReportTab() {
                         </Box>
                         <Box sx={{ minWidth: 130 }} >
                             <FormControl fullWidth size="small" style={{ minWidth: 170 }}>
-                                <InputLabel id="demo-simple-select-label">Facility</InputLabel>
+                                <InputLabel>Facility</InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
                                     value={age}
                                     label="Age"
                                     onChange={handleChange1}
@@ -126,10 +110,8 @@ export default function ManagementReportTab() {
                         </Box>
                         <Box sx={{ minWidth: 130 }}>
                             <FormControl fullWidth size="small" style={{ minWidth: 170 }}>
-                                <InputLabel id="demo-simple-select-label">Building</InputLabel>
+                                <InputLabel>Building</InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
                                     value={age}
                                     label="Age"
                                     onChange={handleChange1}
@@ -142,10 +124,8 @@ export default function ManagementReportTab() {
                         </Box>
                         <Box sx={{ minWidth: 130 }}>
                             <FormControl fullWidth size="small" style={{ minWidth: 170 }}>
-                                <InputLabel id="demo-simple-select-label">Floor</InputLabel>
+                                <InputLabel >Floor</InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
                                     value={age}
                                     label="Age"
                                     onChange={handleChange1}
@@ -158,10 +138,8 @@ export default function ManagementReportTab() {
                         </Box>
                         <Box sx={{ minWidth: 130 }}>
                             <FormControl fullWidth size="small" style={{ minWidth: 170 }}>
-                                <InputLabel id="demo-simple-select-label">Lab</InputLabel>
+                                <InputLabel>Lab</InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
                                     value={age}
                                     label="Age"
                                     onChange={handleChange1}

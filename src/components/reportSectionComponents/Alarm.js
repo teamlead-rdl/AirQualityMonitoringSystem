@@ -1,14 +1,7 @@
-import React from 'react'
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
+import React, { useState } from 'react'
+import { Box, InputLabel, MenuItem, FormControl, Select, TextField, Stack, Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import DownloadIcon from '@mui/icons-material/Download';
-import Button from '@mui/material/Button';
 
 const columns = [
     { field: 'date', headerName: 'Date', width: 70 },
@@ -34,7 +27,7 @@ const rows = [
 
 const Alarm = () => {
 
-    const [age, setAge] = React.useState('');
+    const [age, setAge] = useState('');
     const handleChange = (event) => {
         setAge(event.target.value);
     };
@@ -43,7 +36,7 @@ const Alarm = () => {
         <div>
             <Stack direction="row" spacing={2} marginTop={1.5}>
                 <TextField sx={{ minWidth: 320 }}
-                    label="From date"
+                    label="From Date"
                     type="date"
                     variant="outlined"
                     required

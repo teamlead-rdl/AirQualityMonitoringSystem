@@ -1,12 +1,5 @@
-import React from 'react'
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
+import React, { useState } from 'react'
+import { Box, InputLabel, MenuItem, FormControl, Select, TextField, Stack, Button } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import DownloadIcon from '@mui/icons-material/Download';
 import { DataGrid } from '@mui/x-data-grid';
@@ -35,7 +28,7 @@ const rows = [
 ];
 
 const ReportSectionForm = () => {
-    const [age, setAge] = React.useState('');
+    const [age, setAge] = useState('');
 
     const handleChange = (event) => {
         setAge(event.target.value);
@@ -46,23 +39,18 @@ const ReportSectionForm = () => {
             <Stack direction="row" spacing={2} marginTop={1.5}>
                 <Box sx={{ minWidth: 320 }}>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Sites</InputLabel>
+                        <InputLabel >Sites</InputLabel>
                         <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
                             value={age}
                             label="Age"
                             onChange={handleChange}
                         >
-                            {/* <MenuItem value={10}>Site</MenuItem>
-                            <MenuItem value={20}>Branch</MenuItem>
-                            <MenuItem value={30}>Facilities</MenuItem> */}
                         </Select>
                     </FormControl>
                 </Box>
                 <TextField
                     sx={{ minWidth: 320 }}
-                    label="From date"
+                    label="From Date"
                     type="date"
                     variant="outlined"
                     required
@@ -83,7 +71,6 @@ const ReportSectionForm = () => {
                     }}
                 />
             </Stack>
-
             <div style={{ height: 300, width: '100%', marginTop: 20 }}>
                 <DataGrid
                     rows={rows}
@@ -105,7 +92,6 @@ const ReportSectionForm = () => {
                     Download
                 </Button>
             </Stack>
-
         </div>
     )
 }

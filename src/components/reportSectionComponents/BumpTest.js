@@ -1,15 +1,7 @@
-import React from 'react'
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
+import React, { useState } from 'react'
+import { Box, InputLabel, MenuItem, FormControl, Select, TextField, Stack, Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import DownloadIcon from '@mui/icons-material/Download';
-import Button from '@mui/material/Button';
-
 
 const columns = [
     { field: 'id', headerName: 'Date', width: 90 },
@@ -26,7 +18,7 @@ const columns = [
 
 const BumpTest = () => {
 
-    const [age, setAge] = React.useState('');
+    const [age, setAge] = useState('');
 
     const handleChange = (event) => {
         setAge(event.target.value);
@@ -37,7 +29,7 @@ const BumpTest = () => {
             <Stack direction="row" spacing={2} marginTop={1.5}>
                 <TextField
                     sx={{ minWidth: 320 }}
-                    label="From date"
+                    label="From Date"
                     type="date"
                     variant="outlined"
                     required
@@ -59,20 +51,15 @@ const BumpTest = () => {
                 />
                 <Box sx={{ minWidth: 320 }}>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Device</InputLabel>
+                        <InputLabel >Device</InputLabel>
                         <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
                             value={age}
                             label="Age"
                             onChange={handleChange}
                         >
-                            {/* <MenuItem value={10}>TWE Date</MenuItem>
-                            <MenuItem value={20}>Bump Test Result</MenuItem> */}
                         </Select>
                     </FormControl>
                 </Box>
-
             </Stack>
             <div style={{ height: 300, width: '100%', marginTop: 25 }}>
                 <DataGrid
@@ -81,14 +68,12 @@ const BumpTest = () => {
                     rowsPerPageOptions={[5]}
                 />
             </div>
-
             <Stack
                 direction="row"
                 justifyContent="center"
                 alignItems="center"
                 spacing={2}
                 marginTop={4}
-
             >
                 <Button variant="contained" startIcon={<DownloadIcon />}>
                     Download

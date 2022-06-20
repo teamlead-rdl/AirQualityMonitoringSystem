@@ -1,9 +1,7 @@
 import React from 'react'
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
+import { TextField, Stack, Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import DownloadIcon from '@mui/icons-material/Download';
-import Button from '@mui/material/Button';
 
 const columns = [
     { field: 'id', headerName: 'Rate', width: 150 },
@@ -21,7 +19,7 @@ const ServerUtilization = () => {
         <>
             <Stack direction="row" spacing={2} marginTop={1.5}>
                 <TextField sx={{ minWidth: 320 }}
-                    label="From date"
+                    label="From Date"
                     type="date"
                     variant="outlined"
                     required

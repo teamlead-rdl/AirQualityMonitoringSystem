@@ -1,7 +1,7 @@
 import {
   Dashboard, Group, BusinessOutlined, LockReset, Map,
   Storefront,
-  ChatBubbleOutline,
+  ChatBubbleOutline
 } from '@mui/icons-material';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import { Link } from 'react-router-dom';
@@ -27,7 +27,7 @@ const SidebarItems = {
   },
   {
     name: 'Report',
-    route: 'ReportAqms',
+    route: 'Report',
     icon: <SummarizeIcon className="sidebarIcon" />,
   }
   ],

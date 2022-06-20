@@ -1,20 +1,6 @@
-import React, { Fragment } from 'react'
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TablePagination from '@mui/material/TablePagination';
+import React, { Fragment, useState } from 'react'
+import { Box, InputLabel, FormControl, Select, TextField, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Button } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
-import Button from '@mui/material/Button';
 
 const sample = [
     { date: "04-06-2022", detail: ["Min", "Max", "Avg", "Status"], values: ["50", "100", "60", "#1234"] },
@@ -25,7 +11,7 @@ const sample = [
 const IndividualReportForm = () => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(2);
-    const [age, setAge] = React.useState('');
+    const [age, setAge] = useState('');
 
     const handleChange = (event) => {
         setAge(event.target.value);
@@ -44,7 +30,7 @@ const IndividualReportForm = () => {
         <>
             <Stack direction="row" spacing={2} marginTop={1.5}>
                 <TextField sx={{ minWidth: 320 }}
-                    label="From date"
+                    label="From Date"
                     type="date"
                     variant="outlined"
                     required
@@ -73,9 +59,6 @@ const IndividualReportForm = () => {
                             label="Age"
                             onChange={handleChange}
                         >
-                            {/* <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem> */}
                         </Select>
                     </FormControl>
                 </Box>

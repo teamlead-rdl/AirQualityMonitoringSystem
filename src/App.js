@@ -42,7 +42,7 @@ function App() {
               <Route path="CustomerManagement/*" element={<CustomerManagement />} />
               <Route path="UserManagement/*" element={<UserManagement />} />
               <Route path="Vendor/*" element={<VendorManagement />} />
-              <Route path="ReportAqms/*" element={<ManagementReportTab />} />
+              <Route path="Report/*" element={<ManagementReportTab />} />
               <Route path="ChangePassword/*" element={<UserResetPassword />} />
               <Route path="Dashboard/*" element={<Dashboard />} />
               <Route path="Location/*" element={<SiteDetails />} />
