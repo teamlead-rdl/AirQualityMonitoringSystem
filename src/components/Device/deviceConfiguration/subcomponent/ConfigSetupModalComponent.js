@@ -171,7 +171,7 @@ function ConfigSetupModal({
               label="Account Name"
               variant="outlined"
               fullWidth
-              required
+              
               // onBlur={() =>validateForNullValue(ftpAccountName, 'ftpAccountName')}
               onChange={(e) => { setFtpAccountName(e.target.value); }}
               autoComplete="off"
@@ -182,7 +182,7 @@ function ConfigSetupModal({
               id="outlined-basic"
               label="User name"
               variant="outlined"
-              required
+              
               //  onBlur={() =>validateForNullValue(userName, 'userName')}
               onChange={(e) => { setUserName(e.target.value); }}
               autoComplete="off"
@@ -196,7 +196,7 @@ function ConfigSetupModal({
               label="password"
               variant="outlined"
               fullWidth
-              required
+              
               //  onBlur={() =>validateForNullValue(ftpPassword, 'ftpPassword')}
               onChange={(e) => { setFtpPassword(e.target.value); }}
               autoComplete="off"
@@ -210,7 +210,7 @@ function ConfigSetupModal({
               label="Port"
               variant="outlined"
               fullWidth
-              required
+              
               //  onBlur={() =>validateForNullValue(port, 'port')}
               onChange={(e) => { setPort(e.target.value); }}
               autoComplete="off"

@@ -47,7 +47,7 @@ function MachineCard(props) {
               width: 90, height: 90, float: 'left', marginTop: 2,
             }}
             >
-              <MachineCircularProgressbar score={props.last} />
+              <MachineCircularProgressbar score={props.last} color={props.alertColor} />
             </div>
           </Stack>
           <Stack

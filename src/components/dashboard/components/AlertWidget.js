@@ -1,11 +1,12 @@
 import { Delete } from '@mui/icons-material';
 import {
-  Button, Dialog, DialogContent, DialogTitle, TextField, Typography,
+  Button, Dialog, DialogContent, DialogTitle, TextField, Typography,Stack
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useState, useEffect } from 'react';
 import { SensorIdAlertUpdate } from "../../../services/LoginPageService";
 import NotificationBar from '../../notification/ServiceNotificationBar';
+
 
 /* eslint-disable no-unused-vars */
 function AlertWidget({dataList, setRefreshData }) { 
@@ -144,7 +145,8 @@ function AlertWidget({dataList, setRefreshData }) {
         style={{ maxHeight: `${90}%` }}
       />
       <Dialog
-        sx={{ '& .MuiDialog-paper': { minWidth: '30%' } }}
+        sx={{ '& .MuiDialog-paper': { minWidth: '40%' } }}
+        // style={{ maxHeight: `${90}%` }}
         maxWidth="sm"
         open={clearAlert}
       >
@@ -153,10 +155,8 @@ function AlertWidget({dataList, setRefreshData }) {
         </DialogTitle>
         <DialogContent>
           <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
-            <div className="rounded-md -space-y-px " style={{ textAlign: '-webkit-center' }}>
-              <div className="container mx-auto outline-black ">
-                <div className="inline ">
-                  <div className="w-1/3  lg:w-3/5  pr-3 pl-3">
+            <div className="rounded-md -space-y-px " style={{ textAlign: '-webkit-center' }}>            
+                  {/* <div className="w-1/3  lg:w-3/5  pr-3 pl-3"> */}
                     {/* <FormControl fullWidth>
                       <InputLabel id="demo-simple-select-label">Select reason</InputLabel>
                       <Select
@@ -173,28 +173,36 @@ function AlertWidget({dataList, setRefreshData }) {
                         <MenuItem value="Reason 3">Reason 3</MenuItem>
                       </Select>
                     </FormControl> */}
+
                     <TextField
                       id="outlined-name"
                       label="Reason"
                       value={clearAlertReason}
+                      fullWidth
                       required
                       multiline
-                      rows={3}
+                      rows={5}
                       onChange={(e) => {
                         setAlertReason(e.target.value);
                       }}
                     />
-                  </div>
-                </div>
-              </div>
-              <div className="float-right">
-                <div className="rounded-md -space-y-px">
-                  <Button
-                    type="submit"
+                 
+              {/* </div> */}
+             
+              <Stack
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+                spacing={3}
+                style={{marginTop:'30px'}} 
+              >
+                 <Button                   
+                    type="submit"                    
                   >
                     Clear
                   </Button>
-                  <Button
+                  <Button        
+                              
                     onClick={() => {
                       setClearAlert(false);
                       setAlertReason('');
@@ -202,8 +210,9 @@ function AlertWidget({dataList, setRefreshData }) {
                   >
                     Cancel
                   </Button>
-                </div>
-              </div>
+              </Stack>              
+               
+            
             </div>
           </form>
         </DialogContent>

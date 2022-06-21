@@ -4,24 +4,15 @@ import "react-circular-progressbar/dist/styles.css";
 import ValueProvider from "./ValueProvider";
 
 const MachineCircularProgressbar = (props) => {
-    const { score } = props;
+    const { score, color } = props;
+    
+    
     const calcColor = (parent, start, end) => {
         let a = parent / 100,
             b = (end - start) * a,
-            c = b + start;
-
-        //Abhishek -> hardcoded for timebeing return color for progressbar based on value     
-        if(parent < 50){
-            return "hsl(60, 100%,70%)";
-        }
-        if(parent < 160){
-            return "hsl(120, 100%,20%)";
-        }
-        if(parent < 300){
-            return "hsl(356, 100%,50%)";
-        }
+            c = b + start;   
         
-        // return "hsl(" + c + ", 100%,50%)";
+        return color;
     }
     return (
         <ValueProvider valueStart={0} valueEnd={score}>

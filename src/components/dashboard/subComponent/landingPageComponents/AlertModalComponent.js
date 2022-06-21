@@ -30,7 +30,7 @@ function AlertModalComponent({alertOpen, setAlertOpen, locationDetails}) {
 
   return (
     <Dialog
-      sx={{ '& .MuiDialog-paper': { minWidth: '95%', height:'95vh' } }}
+      sx={{ '& .MuiDialog-paper': { minWidth: '95%', height:'90vh' } }}
       maxWidth="lg"
       open={alertOpen}
     >

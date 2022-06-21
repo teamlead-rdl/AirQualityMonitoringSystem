@@ -24,6 +24,7 @@ function LayoutMachine({
                 max={data.max}
                 avg={data.avg}
                 last={data.last}
+                alertColor={data.alertColor}
                 setSensorTagId={setSensorTagId}
                 setSensorTag={setSensorTag}
                 color="#a5f3fc"                
@@ -43,9 +44,10 @@ function LayoutMachine({
                max={data.max}
                avg={data.avg}
                last={data.last}
+               alertColor={data.alertColor}
                setSensorTagId={setSensorTagId}
                setSensorTag={setSensorTag}
-                color="#f5d0fe"                
+              color="#f5d0fe"                
               />
             </Grid>
           );
@@ -62,10 +64,10 @@ function LayoutMachine({
                 max={data.max}
                 avg={data.avg}
                 last={data.last}
+                alertColor={data.alertColor}
                 setSensorTagId={setSensorTagId}
                 setSensorTag={setSensorTag}
-                color="#fecdd3"
-                
+                color="#fecdd3"                
               />
             </Grid>
           );

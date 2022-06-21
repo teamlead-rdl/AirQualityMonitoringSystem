@@ -15,8 +15,8 @@ function LandingPageComponent({ locationDetails, setIsDashBoard }) {
   const [modbusSensorList, setModbusSensorList] = useState([]);
   const [sensorTagId, setSensorTagId] = useState('');
   const [sensorTag, setSensorTag] = useState('');
-  const [segretionInterval, setSegretionInterval] = useState('15');
-  const [rangeInterval, setRangeInterval] = useState('200*60');
+  const [segretionInterval, setSegretionInterval] = useState('1');
+  const [rangeInterval, setRangeInterval] = useState('24*30*60');
   const [totalSensors, setTotalSensors] = useState(0);
   const [totalAlerts, setTotalALerts] = useState(0);
 
