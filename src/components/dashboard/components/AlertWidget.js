@@ -142,7 +142,7 @@ function AlertWidget({dataList, setRefreshData }) {
         pageSize={5}
         rowsPerPageOptions={[5]}
         disableSelectionOnClick
-        style={{ maxHeight: `${90}%` }}
+        style={{ maxHeight: `${250}px` }}
       />
       <Dialog
         sx={{ '& .MuiDialog-paper': { minWidth: '40%' } }}

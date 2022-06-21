@@ -38,6 +38,7 @@ function SensorConfig({
   // -----analog----//
   const [sensorType, setSensorType] = useState(editData.sensorType || '');
   const [units, setUnits] = useState(editData.units || '');
+  const [relayOutput, setRelayOutput] = useState(editData?.relayOutput || 'ON');
   const [minRatedReading, setMinRatedReading] = useState(editData.minRatedReading || '');
   const [minRatedReadingChecked, setMinRatedReadingChecked] = useState(editData.minRatedReadingChecked || 0);
   const [minRatedReadingScale, setMinRatedReadingScale] = useState(editData.minRatedReadingScale || '');
@@ -127,6 +128,7 @@ function SensorConfig({
         sensorOutput,
         sensorType,
         units,
+        relayOutput,
         minRatedReading,
         minRatedReadingChecked,
         minRatedReadingScale,
@@ -174,6 +176,7 @@ function SensorConfig({
         sensorOutput,
         sensorType,
         units,
+        relayOutput,
         minRatedReading,
         minRatedReadingChecked,
         minRatedReadingScale,
@@ -445,6 +448,8 @@ function SensorConfig({
                     setErrorObject={setErrorObject}
                     units={units}
                     setUnits={setUnits}
+                    relayOutput={relayOutput}
+                    setRelayOutput={setRelayOutput}
                     sensorType={sensorType}
                     setSensorType={setSensorType}
                     minRatedReading={minRatedReading}
@@ -466,6 +471,8 @@ function SensorConfig({
                     setErrorObject={setErrorObject}
                     units={units}
                     setUnits={setUnits}
+                    relayOutput={relayOutput}
+                    setRelayOutput={setRelayOutput}
                     sensorType={sensorType}
                     setSensorType={setSensorType}
                     minRatedReading={minRatedReading}

@@ -18,14 +18,21 @@ function DeviceGridComponent({
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
-    DeviceFetchService({
-      location_id: locationDetails.location_id,
-      branch_id: locationDetails.branch_id,
-      facility_id: locationDetails.facility_id,
-      building_id: locationDetails.building_id,
-      floor_id: locationDetails.floor_id,
-      lab_id: locationDetails.lab_id,
-    }, handleSuccess, handleException);
+    const devicePolling = setInterval(()=>{
+      DeviceFetchService({
+        location_id: locationDetails.location_id,
+        branch_id: locationDetails.branch_id,
+        facility_id: locationDetails.facility_id,
+        building_id: locationDetails.building_id,
+        floor_id: locationDetails.floor_id,
+        lab_id: locationDetails.lab_id,
+      }, handleSuccess, handleException);
+    }, 5000);
+
+    return () =>{
+      console.log('clearing interval');
+      clearInterval(devicePolling);
+    }
   }, [locationDetails]);
 
   const handleSuccess = (dataObject) => {
@@ -141,11 +148,6 @@ function DeviceGridComponent({
           marginTop: 5,
           maxHeight: '65vh',
           overflow: 'auto',
-        // display: 'flex',
-        // padding: '20px',
-        // gap: '20px',
-        // flexWrap: 'wrap',
-        // flexDirection: 'row'
         }}
       >
         <Grid container sx={{ width: '100%' }}>
@@ -154,8 +156,8 @@ function DeviceGridComponent({
             return (
               <Grid
                 item
-                sm={12}
-                xs={12}
+                sm={6}
+                xs={6}
                 md={4}
                 lg={3}
                 xl={3}
