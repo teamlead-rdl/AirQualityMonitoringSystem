@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Tab, Typography, Box, InputLabel, MenuItem, FormControl, Select, Stack, Grid } from '@mui/material';
 import SitesReportForm from './SitesReportForm';
@@ -9,6 +9,15 @@ import BumpTest from './BumpTest';
 import IndividualReportForm from './IndividualReportForm';
 import AqmiLog from './AqmiLog';
 import SensorLog from './SensorLog';
+
+import {
+    FetchLocationService,
+    FetchBranchService,
+    FetchFacilitiyService,
+    BuildingFetchService,
+    FloorfetchService,
+    LabfetchService
+} from '../../services/LoginPageService'
 
 function TabPanel(props) {
     const { children, value, index } = props;
@@ -42,15 +51,92 @@ function a11yProps(index) {
 }
 
 export default function ManagementReportTab() {
+
+    const [location_id, setLocation_id] = useState('');
+    const [locationList, setLocationList] = useState([]);
+    const [branch_id, setBranch_id] = useState([]);
+    const [branchList, setBranchList] = useState([]);
+    const [facility_id, setFacility_id] = useState('');
+    const [facilityList, setFacilityList] = useState([]);
+    const [building_id, setBuilding_id] = useState('');
+    const [buildingList, setBuildingList] = useState([]);
+    const [floor_id, setFloor_id] = useState('');
+    const [floorList, setFloorList] = useState([]);
+    const [lab_id, setLab_id] = useState('');
+    const [labList, setLabList] = useState([]);
+
+    useEffect(() => {
+        loadLocation();
+    }, []);
+
+    const loadLocation = () => {
+        FetchLocationService(LocationHandleSuccess, LocationHandleException);
+    };
+
+    const LocationHandleSuccess = (dataObject) => {
+        setLocationList(dataObject.data);
+    }
+    const LocationHandleException = () => { };
+
+    const LocationChanged = (location_id) => {
+        setLocation_id(location_id);
+        FetchBranchService({ location_id }, BranchHandleSuccess, BranchHandleException);
+
+
+    }
+    const BranchHandleSuccess = (dataObject) => {
+        setBranchList(dataObject.data);
+
+    }
+    const BranchHandleException = () => { };
+
+    const BranchChanged = (branch_id) => {
+        setBranch_id(branch_id);
+        FetchFacilitiyService({ location_id, branch_id }, FacilityHandleSuccess, FacilityHandleException);
+
+    };
+    const FacilityHandleSuccess = (dataObject) => {
+        setFacilityList(dataObject.data);
+    }
+
+    const FacilityHandleException = () => { };
+
+    const FacilityChanged = (facility_id) => {
+        setFacility_id(facility_id)
+        BuildingFetchService({ location_id, branch_id, facility_id }, BuildingHandleSuccess, BuildingHandleException);
+    }
+
+    const BuildingHandleSuccess = (dataObject) => {
+        setBuildingList(dataObject.data)
+    }
+
+    const BuildingHandleException = () => { };
+
+    const BuildingChanged = (building_id) => {
+        setBuilding_id(building_id);
+        FloorfetchService({ location_id, branch_id, facility_id, building_id }, FloorHandleSuccess, FloorHandleException);
+    }
+
+    const FloorHandleSuccess = (dataObject) => {
+        setFloorList(dataObject.data)
+    }
+    const FloorHandleException = () => { };
+
+    const FloorChanged = (floor_id) => {
+        setFloor_id(floor_id);
+        LabfetchService({ location_id, branch_id, facility_id, building_id, floor_id }, LabHandleSuccess, LabHandleException);
+    }
+
+    const LabHandleSuccess = (dataObject) => {
+        setLabList(dataObject.data);
+
+    };
+
+    const LabHandleException = () => { };
+
     const [value, setValue] = React.useState(0);
     const handleChange = (event, newValue) => {
         setValue(newValue);
-    };
-
-    const [age, setAge] = useState('');
-
-    const handleChange1 = (event) => {
-        setAge(event.target.value);
     };
 
     return (
@@ -70,13 +156,15 @@ export default function ManagementReportTab() {
                             <FormControl fullWidth size="small" style={{ minWidth: 170 }}>
                                 <InputLabel >Location</InputLabel>
                                 <Select
-                                    value={age}
+                                    value={location_id}
                                     label="Age"
-                                    onChange={handleChange1}
+                                    onChange={(e) => {
+                                        LocationChanged(e.target.value);
+                                    }}
                                 >
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    {locationList.map((data) => (
+                                        <MenuItem value={data.id}>{data.stateName}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Box>
@@ -84,13 +172,15 @@ export default function ManagementReportTab() {
                             <FormControl fullWidth size="small" style={{ minWidth: 170 }}>
                                 <InputLabel >Branch</InputLabel>
                                 <Select
-                                    value={age}
+                                    value={branch_id}
                                     label="Age"
-                                    onChange={handleChange1}
+                                    onChange={(e) => {
+                                        BranchChanged(e.target.value);
+                                    }}
                                 >
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    {branchList.map((data) => (
+                                        <MenuItem value={data.id}>{data.branchName}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Box>
@@ -98,13 +188,16 @@ export default function ManagementReportTab() {
                             <FormControl fullWidth size="small" style={{ minWidth: 170 }}>
                                 <InputLabel>Facility</InputLabel>
                                 <Select
-                                    value={age}
+                                    value={facility_id}
                                     label="Age"
-                                    onChange={handleChange1}
+                                    onChange={(e) => {
+                                        FacilityChanged(e.target.value);
+
+                                    }}
                                 >
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    {facilityList.map((data) => (
+                                        <MenuItem value={data.id}>{data.facilityName}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Box>
@@ -112,13 +205,15 @@ export default function ManagementReportTab() {
                             <FormControl fullWidth size="small" style={{ minWidth: 170 }}>
                                 <InputLabel>Building</InputLabel>
                                 <Select
-                                    value={age}
+                                    value={building_id}
                                     label="Age"
-                                    onChange={handleChange1}
+                                    onChange={(e) => {
+                                        BuildingChanged(e.target.value)
+                                    }}
                                 >
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    {buildingList.map((data) => (
+                                        <MenuItem value={data.id}>{data.buildingName}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Box>
@@ -126,13 +221,15 @@ export default function ManagementReportTab() {
                             <FormControl fullWidth size="small" style={{ minWidth: 170 }}>
                                 <InputLabel >Floor</InputLabel>
                                 <Select
-                                    value={age}
+                                    value={floor_id}
                                     label="Age"
-                                    onChange={handleChange1}
+                                    onChange={(e) => {
+                                        FloorChanged(e.target.value);
+                                    }}
                                 >
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    {floorList.map((data) => (
+                                        <MenuItem value={data.id}>{data.floorName}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Box>
@@ -140,13 +237,15 @@ export default function ManagementReportTab() {
                             <FormControl fullWidth size="small" style={{ minWidth: 170 }}>
                                 <InputLabel>Lab</InputLabel>
                                 <Select
-                                    value={age}
+                                    value={lab_id}
                                     label="Age"
-                                    onChange={handleChange1}
+                                    onChange={(e) => {
+                                        setLab_id(e.target.value)
+                                    }}
                                 >
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    {labList.map((data) => (
+                                        <MenuItem value={data.id}>{data.labName}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Box>
