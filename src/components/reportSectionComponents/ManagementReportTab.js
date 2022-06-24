@@ -16,7 +16,8 @@ import {
     FetchFacilitiyService,
     BuildingFetchService,
     FloorfetchService,
-    LabfetchService
+    LabfetchService,
+    DeviceFetchService
 } from '../../services/LoginPageService'
 
 function TabPanel(props) {
@@ -51,7 +52,6 @@ function a11yProps(index) {
 }
 
 export default function ManagementReportTab() {
-
     const [location_id, setLocation_id] = useState('');
     const [locationList, setLocationList] = useState([]);
     const [branch_id, setBranch_id] = useState([]);
@@ -64,6 +64,8 @@ export default function ManagementReportTab() {
     const [floorList, setFloorList] = useState([]);
     const [lab_id, setLab_id] = useState('');
     const [labList, setLabList] = useState([]);
+    const [device_id, setDevice_id] = useState('');
+    const [deviceList, setDeviceList] = useState([]);
 
     useEffect(() => {
         loadLocation();
@@ -81,9 +83,8 @@ export default function ManagementReportTab() {
     const LocationChanged = (location_id) => {
         setLocation_id(location_id);
         FetchBranchService({ location_id }, BranchHandleSuccess, BranchHandleException);
-
-
     }
+
     const BranchHandleSuccess = (dataObject) => {
         setBranchList(dataObject.data);
 
@@ -129,10 +130,19 @@ export default function ManagementReportTab() {
 
     const LabHandleSuccess = (dataObject) => {
         setLabList(dataObject.data);
-
     };
 
     const LabHandleException = () => { };
+
+    const LabHandleChange = (lab_id) => {
+        setLab_id(lab_id);
+        DeviceFetchService({ location_id, branch_id, facility_id, building_id, floor_id, lab_id }, DeviceHandleSuccess, DeviceHandleException);
+    };
+
+    const DeviceHandleSuccess = (dataObject) => {
+        setDeviceList(dataObject.data)
+    }
+    const DeviceHandleException = () => { };
 
     const [value, setValue] = React.useState(0);
     const handleChange = (event, newValue) => {
@@ -240,11 +250,12 @@ export default function ManagementReportTab() {
                                     value={lab_id}
                                     label="Age"
                                     onChange={(e) => {
-                                        setLab_id(e.target.value)
+
+                                        LabHandleChange(e.target.value);
                                     }}
                                 >
                                     {labList.map((data) => (
-                                        <MenuItem value={data.id}>{data.labName}</MenuItem>
+                                        <MenuItem value={data.id}>{data.labDepName}</MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
@@ -272,7 +283,7 @@ export default function ManagementReportTab() {
                             <IndividualReportForm />
                         </TabPanel>
                         <TabPanel value={value} index={2}>
-                            <Alarm />
+                            <Alarm deviceList={deviceList} />
                         </TabPanel>
                         <TabPanel value={value} index={3}>
                             <AqmiLog />
@@ -287,7 +298,7 @@ export default function ManagementReportTab() {
                             <FirmwareVersion />
                         </TabPanel>
                         <TabPanel value={value} index={7}>
-                            <BumpTest />
+                            <BumpTest deviceList={deviceList} />
                         </TabPanel>
                     </Box>
                 </Grid>
