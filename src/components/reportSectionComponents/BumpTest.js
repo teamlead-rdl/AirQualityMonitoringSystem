@@ -54,7 +54,7 @@ const BumpTest = (props) => {
         },
         {
             field: 'labDepName',
-            headerName: 'Lab',
+            headerName: 'Zone',
             width: 100,
         },
         {

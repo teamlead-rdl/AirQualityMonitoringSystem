@@ -14,7 +14,7 @@ function LabGridComponent({
   const dataColumns = [
     {
       field: 'labDepName',
-      headerName: 'Lab Name',
+      headerName: 'Zone Name',
       width: 170,
       type: 'actions',
       getActions: (params) => [

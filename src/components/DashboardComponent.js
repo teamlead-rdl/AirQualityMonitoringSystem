@@ -27,7 +27,7 @@ function Dashboard() {
     facilityLabel: 'Facility',
     buildingLabel: 'Building',
     floorLabel: 'Floor',
-    lablabel: 'Lab',
+    lablabel: 'Zone',
     deviceLabel: '',
   });
 
@@ -58,7 +58,7 @@ function Dashboard() {
             <Grid
               item
               xs={12}
-              style={{ 
+              style={{
                 height: '140%',
                 width: '100%'
               }}
@@ -70,7 +70,7 @@ function Dashboard() {
                 container
                 item
                 xs={12}
-                style={{ 
+                style={{
                   height: '100%',
                   width: '100%',
                   overflow: 'auto',
@@ -108,13 +108,13 @@ function Dashboard() {
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={4} style={{ border: '2px solid black', height: '50%', minHeight: '304px', maxHeight: '300px', marginTop: 10 }}>
                   {/* eslint-disable-next-line */}
-                {isGeoMap === true ? <GeoLocationWidget locationCoordination={locationCoordinationList} zoomLevel={zoomLevel} centerLatitude={centerLatitude} centerLongitude={centerLongitude} height="300px"/>
-                    : <ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} height="h-72" /> }
+                  {isGeoMap === true ? <GeoLocationWidget locationCoordination={locationCoordinationList} zoomLevel={zoomLevel} centerLatitude={centerLatitude} centerLongitude={centerLongitude} height="300px" />
+                    : <ImageMarkerList labImage={imgSrc} deviceCoordsList={deviceCoordsList} height="h-72" />}
                 </Grid>
                 <Grid
                   item
                   xs={12}
-                  sm={12} 
+                  sm={12}
                   md={12}
                   style={{
                     padding: 1,

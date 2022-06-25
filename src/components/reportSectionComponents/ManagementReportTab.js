@@ -245,7 +245,7 @@ export default function ManagementReportTab() {
                         </Box>
                         <Box sx={{ minWidth: 130 }}>
                             <FormControl fullWidth size="small" style={{ minWidth: 170 }}>
-                                <InputLabel>Lab</InputLabel>
+                                <InputLabel>Zone</InputLabel>
                                 <Select
                                     value={lab_id}
                                     label="Age"

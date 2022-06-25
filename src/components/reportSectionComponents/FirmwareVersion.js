@@ -10,7 +10,7 @@ const columns = [
     { field: 'Branch', headerName: 'Branch', width: 130 },
     { field: 'Building', headerName: 'Building', width: 130 },
     { field: 'Floor', headerName: 'Floor', width: 130 },
-    { field: 'Lab', headerName: 'Lab', width: 130 },
+    { field: 'Lab', headerName: 'Zone', width: 130 },
     { field: 'AQMI/O ID', headerName: 'AQMI/O ID', width: 130 },
     { field: 'Firmware Version', headerName: 'Firmware Version', width: 130 },
     { field: 'Hardware Version', headerName: 'Hardware Version', width: 130 },
