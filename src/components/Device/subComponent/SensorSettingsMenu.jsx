@@ -16,10 +16,13 @@ function SensorSettingsMenu(props) {
   };
 
   const updateSensorStatus = () => {
-    setSensorStatus(!sensorStatus);
+    setSensorStatus((oldValue) => {
+      const status = oldValue === '0' ? '1' : '0';
+      return status;
+    });
     props.updateService(sensorId, {
       ...props.sensorProperties,
-      sensorStatus: !sensorStatus,
+      sensorStatus: sensorStatus === '0' ? '1' : '0',
     });
   };
 
@@ -68,7 +71,7 @@ function SensorSettingsMenu(props) {
     >
       <MenuItem onClick={props.handleClose} disableRipple>
         <FormControlLabel
-          control={<Switch checked={sensorStatus} onChange={updateSensorStatus} color="warning" />}
+          control={<Switch checked={sensorStatus === '1'} onChange={updateSensorStatus} color="warning" />}
           label="Enabled"
         />
       </MenuItem>
@@ -79,7 +82,7 @@ function SensorSettingsMenu(props) {
         />
       </MenuItem>
       <Divider sx={{ my: 0.5 }} />
-      <MenuItem disabled={moduleAccess.delete == false ?  true : false} onClick={() => props.deleteSensor(sensorId)} disableRipple>
+      <MenuItem disabled={moduleAccess.delete == false} onClick={() => props.deleteSensor(sensorId)} disableRipple>
         <Delete />
         {' '}
         Delete Sensor

@@ -26,22 +26,24 @@ const SiteDetails = () => {
   }, [locationCoordinationList]);
 
   return (
-    <Container maxWidth={false} style={{marginTop:0}}>
-      <Grid item sx={{ mt: 1 }}  xs={12} sm={12} md={12} lg={12} xl={12}>
-        <LocationListResults setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} />
-      </Grid>
-      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-      {locationCoordinationList.length !== 0
-          ? (
-        <MapsMultiplePoints 
-          width="100%"
-          height="50vh"
-          markers={locationCoordinationList}
-          zoom={4}
-          center={{ lat: centerLat, lng: centerLng }}
-        />
-        )
-        : ''}
+    <Container maxWidth={false} style={{marginTop:0, height: '77%', width: '100%'}}>
+      <Grid container style={{overflow: 'auto', height: '100%', width: '100%'}}>
+        <Grid item sx={{ mt: 1 }}  xs={12} sm={12} md={12} lg={12} xl={12}>
+          <LocationListResults setLocationCoordinationList={setLocationCoordinationList} centerLat={centerLat} centerLng={centerLng} />
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+        {locationCoordinationList.length !== 0
+            ? (
+          <MapsMultiplePoints 
+            width="100%"
+            height="50vh"
+            markers={locationCoordinationList}
+            zoom={4}
+            center={{ lat: centerLat, lng: centerLng }}
+          />
+          )
+          : ''}
+        </Grid>
       </Grid>
     </Container>
   )

@@ -18,7 +18,7 @@ function DeviceGridComponent({
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
-    const devicePolling = setInterval(()=>{
+    const devicePolling = setInterval(() => {
       DeviceFetchService({
         location_id: locationDetails.location_id,
         branch_id: locationDetails.branch_id,
@@ -29,10 +29,9 @@ function DeviceGridComponent({
       }, handleSuccess, handleException);
     }, 5000);
 
-    return () =>{
-      console.log('clearing interval');
+    return () => {
       clearInterval(devicePolling);
-    }
+    };
   }, [locationDetails]);
 
   const handleSuccess = (dataObject) => {
@@ -135,7 +134,7 @@ function DeviceGridComponent({
           {breadCrumbLabels.lablabel}
         </Typography>
       </Breadcrumbs>
-      <div className="widgets" style={{ height: '20vh', backgroundColor: '#fafafa', padding: 10 }}>
+      <div className="widgets" style={{ height: 'auto', backgroundColor: '#fafafa', padding: 10 }}>
         <NotificationWidget type="user" />
         <NotificationWidget type="labs" />
         <NotificationWidget type="devices" deviceTotal={deviceTotal} />
@@ -146,7 +145,7 @@ function DeviceGridComponent({
         className=""
         style={{
           marginTop: 5,
-          maxHeight: '65vh',
+          maxHeight: '60vh',
           overflow: 'auto',
         }}
       >

@@ -10,7 +10,7 @@ import {
 } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import {
-  IconButton, Toolbar, Menu, MenuItem, ListSubheader, ListItemAvatar, ListItemText, ListItem, Typography
+  IconButton, Toolbar, Menu, MenuItem, ListSubheader, ListItemAvatar, ListItemText, ListItem, Typography, Tooltip, Zoom,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -27,36 +27,6 @@ function Navbar(props) {
   const { userDetails } = ApplicationStore().getStorage('userDetails');
   const [userDisplayName, setUserDisplayName] = useState('');
   const [customerDisplayName, setCustomerDisplayName] = useState('Company Name Here...');
-  const notificationList = [
-    {
-      id: 1,
-      date: '10-04-2022',
-      primary: 'Warning!',
-      secondary: 'Warning level reached of DataLoger004 at Chem-Lab in 3rd Floor',
-      type: 'warning',
-    },
-    {
-      id: 2,
-      date: '10-04-2022',
-      primary: 'Alert!',
-      secondary: 'Critical level reached of DataLoger011 at Test-Lab in 5th Floor',
-      type: 'alert',
-    },
-    {
-      id: 3,
-      date: '11-04-2022',
-      primary: 'Warning!',
-      secondary: 'I am try out this new BBQ recipe, I think this might be amazing',
-      type: 'warning',
-    },
-    {
-      id: 4,
-      date: '11-04-2022',
-      primary: 'Alert!',
-      secondary: 'I have the tickets to the ReactConf for this year.',
-      type: 'alert',
-    },
-  ];
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElNotification, setAnchorElNotification] = useState(null);
@@ -71,6 +41,9 @@ function Navbar(props) {
       setUserDisplayName(userDetails.userName);
       setCustomerDisplayName(userDetails.companyName);
     }
+    setInterval(() => {
+      // Alert Api here
+    }, 1000);
   }, []);
 
   const handleMenu = (event) => {
@@ -143,15 +116,30 @@ function Navbar(props) {
           </Typography>
         </div>
         <div className="items">
-          <div className="item">
-            <NotificationsNoneOutlined className="icon" />
-            <div className="counter">1</div>
+          <Tooltip title="Alerts" placement="bottom" TransitionComponent={Zoom} arrow>
+            <div className="item">
+              <NotificationsNoneOutlined
+                className="icon"
+                style={{
+                  cursor: 'pointer',
+                }}
+              />
+              <div className="counter">1</div>
 
-          </div>
-          <div className="item">
-            <ChatBubbleOutlineOutlined className="icon" onClick={handleNotificationMenu} />
-            <div className="counter">{notificationList.length}</div>
-          </div>
+            </div>
+          </Tooltip>
+          <Tooltip title="Notifications" placement="bottom" TransitionComponent={Zoom} arrow>
+            <div className="item">
+              <ChatBubbleOutlineOutlined
+                className="icon"
+                onClick={handleNotificationMenu}
+                style={{
+                  cursor: 'pointer',
+                }}
+              />
+              <div className="counter">{props.notificationList.length}</div>
+            </div>
+          </Tooltip>
           <Menu
             id="menu-appbar1"
             anchorEl={anchorElNotification}
@@ -162,43 +150,71 @@ function Navbar(props) {
             keepMounted
             transformOrigin={{
               vertical: 'top',
-              horizontal: 'right',
+              horizontal: 'left',
             }}
             open={Boolean(anchorElNotification)}
             onClose={handleClose}
-            sx={{ height: '50vh', width: '100%' }}
-            style={{ overflow: 'none' }}
+            sx={{ height: '60vh', width: '100%' }}
+            style={{ overflow: 'none', marginTop: 28 }}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                overflow: 'visible',
+                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                mt: 1.5,
+                '& .MuiAvatar-root': {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                '&:before': {
+                  content: '""',
+                  display: 'block',
+                  position: 'absolute',
+                  top: 0,
+                  right: 145,
+                  width: 10,
+                  height: 10,
+                  bgcolor: 'background.paper',
+                  transform: 'translateY(-50%) rotate(45deg)',
+                  zIndex: 0,
+                },
+              },
+            }}
           >
-            {notificationList.map(({
-              id, primary, date, secondary, type,
-            }) => (
-              <div key={id}>
-                {/* {id === 1 && (
-                  <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                    Today
-                    </ListSubheader>
-                    )}
+            <div style={{ overflow: 'auto', height: '50vh' }}>
+              {props.notificationList.map(({
+                id, primary, date, secondary, type,
+              }) => (
+                <div key={id}>
+                  {/* {id === 1 && (
+                    <ListSubheader sx={{ bgcolor: 'background.paper' }}>
+                      Today
+                      </ListSubheader>
+                      )}
 
-                    {id === 3 && (
+                      {id === 3 && (
+                    <ListSubheader sx={{ bgcolor: 'background.paper' }}>
+                    Yesterday
+                    </ListSubheader>
+                  )} */}
                   <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                  Yesterday
+                    {date}
                   </ListSubheader>
-                )} */}
-                <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                  {date}
-                </ListSubheader>
-                <ListItem button onClick={handleClose} style={{ maxWidth: 300 }}>
-                  <ListItemAvatar>
-                    {/* <Avatar alt="Profile Picture" src={person} /> */}
-                    {type === 'alert'
-                    // <ErrorOutlineOutlinedIcon/>
-                      ? <ErrorOutlineOutlined sx={{ color: 'red' }} />
-                      : <WarningAmber sx={{ color: 'yellow' }} />}
-                  </ListItemAvatar>
-                  <ListItemText primary={primary} secondary={secondary} />
-                </ListItem>
-              </div>
-            ))}
+                  <ListItem button onClick={handleClose} style={{ maxWidth: 500, minWidth: '300px' }}>
+                    <ListItemAvatar>
+                      {/* <Avatar alt="Profile Picture" src={person} /> */}
+                      {type === 'alert'
+                      // <ErrorOutlineOutlinedIcon/>
+                        ? <ErrorOutlineOutlined sx={{ color: 'red' }} />
+                        : <WarningAmber sx={{ color: 'yellow' }} />}
+                    </ListItemAvatar>
+                    <ListItemText primary={primary} secondary={secondary} />
+                  </ListItem>
+                </div>
+              ))}
+            </div>
           </Menu>
           <IconButton
             size="small"
@@ -216,7 +232,7 @@ function Navbar(props) {
             id="menu-appbar"
             anchorEl={anchorEl}
             anchorOrigin={{
-              vertical: 'top',
+              vertical: 'bottom',
               horizontal: 'right',
             }}
             keepMounted
