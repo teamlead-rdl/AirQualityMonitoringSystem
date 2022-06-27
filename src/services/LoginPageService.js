@@ -285,3 +285,7 @@ export const DashboardIndividualSensorDetails = (data, successCallback, errorCal
 export const DeviceIdAlerts = (data, successCallback, errorCallBack) =>  _fetchService('alertData', 'POST', data, successCallback, errorCallBack);
 
 export const SensorIdAlertUpdate = (data, successCallback, errorCallBack) =>  _fetchService('alertDataUpdate', 'POST', data, successCallback, errorCallBack);
+
+// ---------- Alert Notification --------------------------//
+
+export const NotificationAlerts = (data, successCallback, errorCallBack) =>  _fetchService('getAlerts', 'POST', data, successCallback, errorCallBack);

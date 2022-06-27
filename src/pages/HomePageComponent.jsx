@@ -5,7 +5,9 @@ import Navbar from '../components/navbarComponent/Navbar';
 import './css/home.scss';
 import { UserAccessProvider } from '../context/UserAccessProvider';
 import ApplicationStore from '../utils/localStorageUtil';
-import { FetchBranchService, FetchFacilitiyService, FetchLocationService } from '../services/LoginPageService';
+import {
+  FetchBranchService, FetchFacilitiyService, FetchLocationService, NotificationAlerts,
+} from '../services/LoginPageService';
 import GlobalNotifier from '../components/notification/GlobalNotificationBar';
 
 function HomePageComponent() {
@@ -14,45 +16,17 @@ function HomePageComponent() {
   const [facilityLabel, setFacilityLabel] = useState('');
   const [mobileMenu, setMobileOpen] = useState(true);
   const [notifierState, setNotifierState] = useState({
-    open: true,
+    open: false,
     message: 'New have new notification !',
     color: '#ffca28', // amber : '#ffca28', green: '#4caf50'
   });
+  const [anchorElNotification, setAnchorElNotification] = useState(null);
   const { locationDetails } = ApplicationStore().getStorage('userDetails');
   const {
     location_id, branch_id, facility_id,
   } = locationDetails;
 
-  const [notificationList, setNotificationList] = useState([
-    {
-      id: 1,
-      date: '10-04-2022',
-      primary: 'Warning!',
-      secondary: 'Warning level reached of DataLoger004 at Chem-Lab in 3rd Floor',
-      type: 'warning',
-    },
-    {
-      id: 2,
-      date: '10-04-2022',
-      primary: 'Alert!',
-      secondary: 'Critical level reached of DataLoger011 at Test-Lab in 5th Floor',
-      type: 'alert',
-    },
-    {
-      id: 3,
-      date: '11-04-2022',
-      primary: 'Warning!',
-      secondary: 'I am try out this new BBQ recipe, I think this might be amazing',
-      type: 'warning',
-    },
-    {
-      id: 4,
-      date: '11-04-2022',
-      primary: 'Alert!',
-      secondary: 'I have the tickets to the ReactConf for this year.',
-      type: 'alert',
-    },
-  ]);
+  const [notificationList, setNotificationList] = useState([]);
 
   useEffect(() => {
     FetchLocationService(handleSuccess, handleException);
@@ -62,39 +36,60 @@ function HomePageComponent() {
       locationLabel, branchLabel, facilityLabel,
     });
     const notifierInterval = setInterval(() => {
-      setNotifierState((oldValue) => {
-        return { ...oldValue, open: true };
-      });
-    }, 300000);
+      NotificationAlerts({ location_id, branch_id, facility_id }, handleNotificationSuccess, handleNotificationException);
+      // setNotifierState((oldValue) => {
+      //   return { ...oldValue, open: true, color: '#4caf50' };
+      // });
+    }, 5000);
 
     return () => {
       clearInterval(notifierInterval);
     };
-  });
+  }, []);
 
   const handleSuccess = (dataObject) => {
     dataObject?.data.map((datas) => {
-      if (datas.id === location_id) {
+      if (datas.id === parseInt(location_id)) {
         setLocationLabel(datas.stateName);
       }
     });
   };
   const handleBranchSuccess = (dataObject) => {
     dataObject?.data.map((datas) => {
-      if (datas.id === branch_id) {
+      if (datas.id === parseInt(branch_id)) {
         setBranchLabel(datas.branchName);
       }
     });
   };
   const handleFacilitySuccess = (dataObject) => {
     dataObject?.data.map((datas) => {
-      if (datas.id === facility_id) {
+      if (datas.id === parseInt(facility_id)) {
         setFacilityLabel(datas.facilityName);
       }
     });
   };
 
   const handleException = () => {};
+
+  const handleNotificationSuccess = (dataObject) => {
+    setNotificationList(dataObject.data);
+    let colorCode = '#4caf50';
+    const setColor = dataObject.data.find((data) => {
+      const color = data.alertType === 'Critical' ? '#e53935' : data.alertType === 'outOfRange' ? '#ffc107' : colorCode;
+      colorCode = color;
+      return color;
+    });
+
+    setNotifierState((oldValue) => {
+      return {
+        ...oldValue,
+        open: true,
+        color: colorCode,
+      };
+    });
+  };
+
+  const handleNotificationException = () => {};
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileMenu);
@@ -107,8 +102,16 @@ function HomePageComponent() {
         <GlobalNotifier
           notifierState={notifierState}
           setNotifierState={setNotifierState}
+          anchorElNotification={anchorElNotification}
+          setAnchorElNotification={setAnchorElNotification}
         />
-        <Navbar handleDrawerToggle={handleDrawerToggle} mobileMenu={mobileMenu} notificationList={notificationList} />
+        <Navbar
+          handleDrawerToggle={handleDrawerToggle}
+          mobileMenu={mobileMenu}
+          notificationList={notificationList}
+          anchorElNotification={anchorElNotification}
+          setAnchorElNotification={setAnchorElNotification}
+        />
         <UserAccessProvider>
           <Outlet />
         </UserAccessProvider>

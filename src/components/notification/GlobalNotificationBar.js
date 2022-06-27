@@ -1,8 +1,9 @@
-import { Close } from '@mui/icons-material';
-import { IconButton, Snackbar } from '@mui/material';
+import { Button, Snackbar } from '@mui/material';
 import React from 'react';
 
-function GlobalNotifier({ notifierState, setNotifierState }) {
+function GlobalNotifier({
+  notifierState, setNotifierState, setAnchorElNotification,
+}) {
   const handleClose = (e) => {
     e.preventDefault();
     setNotifierState((currentProps) => {
@@ -10,15 +11,38 @@ function GlobalNotifier({ notifierState, setNotifierState }) {
     });
   };
 
+  const handleMenu = (e) => {
+    setNotifierState((currentProps) => {
+      return { ...currentProps, open: false };
+    });
+    setAnchorElNotification({ ...e.currentTarget, top: '16px', left: '708px' });
+  };
+
   const action = (
-    <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
-      onClick={handleClose}
-    >
-      <Close fontSize="small" />
-    </IconButton>
+    <>
+      <Button
+        variant="text"
+        onClick={handleMenu}
+        style={{ color: 'white', textTransform: 'none' }}
+      >
+        Go
+      </Button>
+      <Button
+        onClick={handleClose}
+        variant="contained"
+        style={{ backgroundColor: '#cfd8dc', color: 'black', textTransform: 'none' }}
+      >
+        Ignore
+      </Button>
+      {/* <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <Close fontSize="small" />
+      </IconButton> */}
+    </>
   );
   return (
     <Snackbar
