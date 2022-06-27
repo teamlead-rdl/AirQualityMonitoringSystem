@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/AirQualityMonitoringSystem/static/css/main.c799f457.css",
-    "main.js": "/AirQualityMonitoringSystem/static/js/main.681f488b.js",
+    "main.js": "/AirQualityMonitoringSystem/static/js/main.b68c354f.js",
     "static/media/floorPlan.png": "/AirQualityMonitoringSystem/static/media/floorPlan.47d4fece78e0a5062aeb.png",
     "static/media/dataloger.gif": "/AirQualityMonitoringSystem/static/media/dataloger.d9457bf8c01358576781.gif",
     "static/media/dataloger1.gif": "/AirQualityMonitoringSystem/static/media/dataloger1.610d1cdbe7e811a8291c.gif",
@@ -20,10 +20,10 @@
     "static/media/logo.svg": "/AirQualityMonitoringSystem/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/AirQualityMonitoringSystem/index.html",
     "main.c799f457.css.map": "/AirQualityMonitoringSystem/static/css/main.c799f457.css.map",
-    "main.681f488b.js.map": "/AirQualityMonitoringSystem/static/js/main.681f488b.js.map"
+    "main.b68c354f.js.map": "/AirQualityMonitoringSystem/static/js/main.b68c354f.js.map"
   },
   "entrypoints": [
     "static/css/main.c799f457.css",
-    "static/js/main.681f488b.js"
+    "static/js/main.b68c354f.js"
   ]
 }
