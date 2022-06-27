@@ -11,7 +11,7 @@ const columns = [
     { field: 'Facilities', headerName: 'Facilities', width: 130 },
     { field: 'Building', headerName: 'Building', width: 130 },
     { field: 'Floor', headerName: 'Floor', width: 130 },
-    { field: 'Lab', headerName: 'Lab', width: 130 },
+    { field: 'Lab', headerName: 'Zone', width: 130 },
     { field: 'AQI Status ', headerName: 'AQI Status', width: 130 },
 ];
 
