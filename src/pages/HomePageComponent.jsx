@@ -61,15 +61,15 @@ function HomePageComponent() {
     ApplicationStore().setStorage('siteDetails', {
       locationLabel, branchLabel, facilityLabel,
     });
-    const notifierInterval = setInterval(() => {
-      setNotifierState((oldValue) => {
-        return { ...oldValue, open: true };
-      });
-    }, 300000);
+    // const notifierInterval = setInterval(() => {
+    //   setNotifierState((oldValue) => {
+    //     return { ...oldValue, open: true };
+    //   });
+    // }, 300000);
 
-    return () => {
-      clearInterval(notifierInterval);
-    };
+    // return () => {
+    //   clearInterval(notifierInterval);
+    // };
   });
 
   const handleSuccess = (dataObject) => {
