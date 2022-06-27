@@ -74,7 +74,7 @@ export default function UserLogForm() {
     setLocationList(dataObject.data);
   };
 
-  const LocationHandleException = () => {};
+  const LocationHandleException = () => { };
   /* eslint-disable-next-line */
   const LocationChanged = (location_id) => {
     setLocation_id(location_id);
@@ -93,15 +93,15 @@ export default function UserLogForm() {
     setBranchList(dataObject.data);
   };
 
-  const branchHandleException = () => {};
+  const branchHandleException = () => { };
 
-  const userHandleException = () => {};
+  const userHandleException = () => { };
 
   const FacilityHandleSuccess = (dataObject) => {
     setFacilityList(dataObject.data);
   };
 
-  const FacilityHandleException = () => {};
+  const FacilityHandleException = () => { };
 
   const FacilityChanged = (facility_id) => {
     setFacility(facility_id);
@@ -114,16 +114,11 @@ export default function UserLogForm() {
   };
 
   const UserLogDetailsHandleSuccess = (dataObject) => {
-    const userLog = dataObject.map((data, index)=>{
-      const createdDate = getFullDate(data.created_at);
-      const createdTime = getFullTime(data.created_at);
-      return {...data, createdDate, createdTime};
-    })
-    setUserLogList(userLog);
+    setUserLogList(dataObject.data);
     setGridLoading(false);
   };
 
-  const userLogDetailsHandleException = () => {};
+  const userLogDetailsHandleException = () => { };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -263,7 +258,7 @@ export default function UserLogForm() {
             <TextField
               fullWidth
               sx={{ mb: 1 }}
-              label="From date"
+              label="From Date"
               type="date"
               value={fromDate}
               variant="outlined"

@@ -19,7 +19,7 @@ export function LabListToolbar(props) {
         sx={{ m: 1 }}
         variant="h5"
       >
-        Laboratory
+        Zone
       </Typography>
       {props.userAccess.add && (
         <Box
@@ -33,7 +33,7 @@ export function LabListToolbar(props) {
           <Stack direction="row" spacing={2}>
             <Fab variant="extended" size="medium" color="primary" aria-label="add">
               <AddIcon sx={{ mr: 1 }} />
-              Add Lab
+              Add Zone
             </Fab>
           </Stack>
         </Box>

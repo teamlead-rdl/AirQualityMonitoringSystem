@@ -275,3 +275,22 @@ export const BumpTestFetchService = (data, successCallback, errorCallBack) => _f
 export const FetchUserLogService = (data, successCallback, errorCallBack) => _fetchService('userListDetails', 'POST', data, successCallback, errorCallBack);
 
 export const FetchUserLogDetails = (data, successCallback, errorCallBack) => _fetchService('userLog', 'POST', data, successCallback, errorCallBack);
+
+// ----- Dashboard API ------------------------------- //
+
+export const DashboardSensorListDetails = (data, successCallback, errorCallBack) => _fetchService('lastUpdatedData', 'POST', data, successCallback, errorCallBack);
+
+export const DashboardIndividualSensorDetails = (data, successCallback, errorCallBack) => _fetchService('sensorTagIdData', 'POST', data, successCallback, errorCallBack);
+
+export const DeviceIdAlerts = (data, successCallback, errorCallBack) => _fetchService('alertData', 'POST', data, successCallback, errorCallBack);
+
+export const SensorIdAlertUpdate = (data, successCallback, errorCallBack) => _fetchService('alertDataUpdate', 'POST', data, successCallback, errorCallBack);
+
+//-------------- Reports API-------------------------------//
+
+export const FetchBumpTestReportDetails = (data, successCallback, errorCallBack) => _fetchService('reportBumpTest', 'POST', data, successCallback, errorCallBack);
+
+export const FetchAlarmReportDetails = (data, successCallback, errorCallBack) => _fetchService('alarmReport', 'POST', data, successCallback, errorCallBack);
+
+
+

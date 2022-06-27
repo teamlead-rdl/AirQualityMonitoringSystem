@@ -55,6 +55,7 @@ function SensorModel({
   const [anchorEl, setAnchorEl] = useState(null);
   const [popperOpen, setPopperOpen] = useState(false);
   const [sensorUpdateId, setSensorUpdateId] = useState('');
+  const [sensorStatus, setSensorStatus] = useState('0');
 
   useEffect(() => {
   }, [analogSensorList || digitalSensorList || modbusSensorList]);
@@ -206,9 +207,10 @@ function SensorModel({
     SensorPropertiesUpdateService({ ...id, ...sensorProperties }, successSensorUpdate, handleFailure);
   };
 
-  const setSensorIdForOptions = (sensorId) => {
+  const setSensorIdForOptions = (sensorId, sensorStatus) => {
     setPopperOpen(true);
     setSensorUpdateId(sensorId);
+    setSensorStatus(sensorStatus);
   };
 
   return (
@@ -229,7 +231,7 @@ function SensorModel({
               setPopperOpen={setPopperOpen}
               sensorProperties={{
                 id: sensorUpdateId,
-                sensorStatus: true,
+                sensorStatus,
                 sensorNotificationStatus: true,
               }}
               deleteSensor={deleteSensor}
@@ -248,7 +250,9 @@ function SensorModel({
                           return (
                             <ListItem component="li" disablePadding>
                               <ListItemButton sx={{ height: 56 }}>
-                                <Grid container style={{display: 'contents'}}
+                                <Grid
+                                  container
+                                  style={{ display: 'contents' }}
                                   onClick={() => {
                                     setEditData(data);
                                     setProgressStatus(2);
@@ -262,18 +266,18 @@ function SensorModel({
                                   <ListItemText
                                     primary={data.sensorTag}
                                     secondary={data.sensorNameUnit}
-                                  >
-                                  </ListItemText>
+                                  />
                                 </Grid>
                                 {
-                                  moduleAccess.edit == true ?
-                                  <SensorSettingsButton
-                                    setAnchorEl={setAnchorEl}
-                                    setPopperOpen={() => setSensorIdForOptions(data.id)}
-                                    handleClose={handleClose}
-                                  />
-                                  :
-                                  <></>
+                                  moduleAccess.edit == true
+                                    ? (
+                                      <SensorSettingsButton
+                                        setAnchorEl={setAnchorEl}
+                                        setPopperOpen={() => setSensorIdForOptions(data.id, data.sensorStatus)}
+                                        handleClose={handleClose}
+                                      />
+                                    )
+                                    : <></>
                                 }
                               </ListItemButton>
                             </ListItem>
@@ -301,31 +305,34 @@ function SensorModel({
                           return (
                             <ListItem component="li" disablePadding>
                               <ListItemButton sx={{ height: 56 }}>
-                              <Grid container style={{display: 'contents'}}
-                                onClick={() => {
-                                  setEditData(data);
-                                  setProgressStatus(2);
-                                }}
-                              >
-                                <ListItemAvatar>
-                                  <Avatar>
-                                    <SensorsIcon />
-                                  </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText
-                                  primary={data.sensorTag}
-                                  secondary={data.sensorNameUnit}
-                                />
-                              </Grid>
+                                <Grid
+                                  container
+                                  style={{ display: 'contents' }}
+                                  onClick={() => {
+                                    setEditData(data);
+                                    setProgressStatus(2);
+                                  }}
+                                >
+                                  <ListItemAvatar>
+                                    <Avatar>
+                                      <SensorsIcon />
+                                    </Avatar>
+                                  </ListItemAvatar>
+                                  <ListItemText
+                                    primary={data.sensorTag}
+                                    secondary={data.sensorNameUnit}
+                                  />
+                                </Grid>
                                 {
-                                  moduleAccess.edit == true ?
-                                    <SensorSettingsButton
-                                      setAnchorEl={setAnchorEl}
-                                      setPopperOpen={() => setSensorIdForOptions(data.id)}
-                                      handleClose={handleClose}
-                                    />
-                                  :
-                                    <></>
+                                  moduleAccess.edit == true
+                                    ? (
+                                      <SensorSettingsButton
+                                        setAnchorEl={setAnchorEl}
+                                        setPopperOpen={() => setSensorIdForOptions(data.id)}
+                                        handleClose={handleClose}
+                                      />
+                                    )
+                                    : <></>
                                 }
                               </ListItemButton>
                             </ListItem>
@@ -360,31 +367,34 @@ function SensorModel({
                           return (
                             <ListItem component="li" disablePadding>
                               <ListItemButton sx={{ height: 56 }}>
-                              <Grid container style={{display: 'contents'}}
-                                onClick={() => {
-                                  setEditData(data);
-                                  setProgressStatus(2);
-                                }}
-                              >
-                                <ListItemAvatar>
-                                  <Avatar>
-                                    <SensorsIcon />
-                                  </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText
-                                  primary={data.sensorTag}
-                                  secondary={data.sensorNameUnit}
+                                <Grid
+                                  container
+                                  style={{ display: 'contents' }}
+                                  onClick={() => {
+                                    setEditData(data);
+                                    setProgressStatus(2);
+                                  }}
+                                >
+                                  <ListItemAvatar>
+                                    <Avatar>
+                                      <SensorsIcon />
+                                    </Avatar>
+                                  </ListItemAvatar>
+                                  <ListItemText
+                                    primary={data.sensorTag}
+                                    secondary={data.sensorNameUnit}
                                   />
-                              </Grid>
+                                </Grid>
                                 {
-                                  moduleAccess.edit == true ?
-                                    <SensorSettingsButton
-                                      setAnchorEl={setAnchorEl}
-                                      setPopperOpen={() => setSensorIdForOptions(data.id)}
-                                      handleClose={handleClose}
-                                    />
-                                    :
-                                    <></>
+                                  moduleAccess.edit == true
+                                    ? (
+                                      <SensorSettingsButton
+                                        setAnchorEl={setAnchorEl}
+                                        setPopperOpen={() => setSensorIdForOptions(data.id)}
+                                        handleClose={handleClose}
+                                      />
+                                    )
+                                    : ''
                                 }
                               </ListItemButton>
                             </ListItem>

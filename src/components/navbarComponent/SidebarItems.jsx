@@ -1,8 +1,9 @@
 import {
   Dashboard, Group, BusinessOutlined, LockReset, Map,
   Storefront,
-  ChatBubbleOutline,
+  ChatBubbleOutline
 } from '@mui/icons-material';
+import SummarizeIcon from '@mui/icons-material/Summarize';
 import { Link } from 'react-router-dom';
 
 import { useEffect, useState } from 'react';
@@ -23,7 +24,13 @@ const SidebarItems = {
     name: 'Vendor',
     route: 'Vendor',
     icon: <Group className="sidebarIcon" />,
-  }],
+  },
+  {
+    name: 'Report',
+    route: 'Report',
+    icon: <SummarizeIcon className="sidebarIcon" />,
+  }
+  ],
   'Customer Management': [{
     name: 'Customer',
     route: 'CustomerManagement',
@@ -47,7 +54,7 @@ const SidebarItems = {
   ],
 };
 
-function DrawerObject(props) {
+function DrawerObject() {
   const allowedItems = allowedSidebarItems();
   const sectionCollection = {};
   for (const section in SidebarItems) {
@@ -88,13 +95,12 @@ function DrawerObject(props) {
   }, []);
 
   return (
-    <div className="block">
+    <div className="block" >
       <div className="wrapper" style={{ display: 'flex' }}>
         <div className="items">
           <div className="">
             <Link to="Dashboard">
               <img
-
                 src={companyLogo}
                 alt=""
                 className="avatar"

@@ -122,7 +122,7 @@ function LabModal({
       open={open}
     >
       <DialogTitle>
-        {isAddButton ? 'Add Lab' : 'Edit Lab'}
+        {isAddButton ? 'Add Zone' : 'Edit Zone'}
       </DialogTitle>
       <DialogContent>
         <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
@@ -134,7 +134,7 @@ function LabModal({
                     <TextField
                       fullWidth
                       sx={{ mb: 1 }}
-                      label="Lab Name"
+                      label="Zone Name"
                       type="text"
                       value={labDepName}
                       variant="outlined"
@@ -151,7 +151,7 @@ function LabModal({
                   <div className="rounded-md -space-y-px mb-2">
                     <TextField
                       fullWidth
-                      label="Lab Image"
+                      label="Zone Image"
                       required={!!isAddButton}
                       onBlur={() => {
                         validateForNullValue(labDepMap, 'buildingImg');
@@ -201,7 +201,7 @@ function LabModal({
             <div className="float-right">
               <div className="rounded-md -space-y-px">
                 <Button
-                  sx={{ m:1 }}
+                  sx={{ m: 1 }}
                   type="submit"
                   size="large"
                   disabled={errorObject?.labDepName?.errorStatus}
@@ -209,7 +209,7 @@ function LabModal({
                   {isAddButton ? 'Add' : 'Update'}
                 </Button>
                 <Button
-                  sx={{ m:1 }}
+                  sx={{ m: 1 }}
                   size="large"
                   onClick={(e) => {
                     setOpen(false);

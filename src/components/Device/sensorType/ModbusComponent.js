@@ -1,7 +1,7 @@
 import {
-  Checkbox, DialogContent, FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField,
+  Checkbox, DialogContent, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { AnalogSensorValidate } from '../../../validation/formValidation';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 
@@ -11,9 +11,8 @@ function Modbus({
   maxRatedReading, setMaxRatedReading, maxRatedReadingChecked, setMaxRatedReadingChecked,
   maxRatedReadingScale, setMaxRatedReadingScale, slaveId, setSlaveId,
   registerId, setRegisterId, length, setLength, registerType, setRegisterType, conversionType,
-  setConversionType, ipAddress, setIpAddress, subnetMask, setSubnetMask,
+  setConversionType, ipAddress, setIpAddress, subnetMask, setSubnetMask, relayOutput, setRelayOutput,
 }) {
-  // const [errorObject, setErrorObject] = useState({});
   const moduleAccess = useUserAccess()('devicelocation');
   const validateForNullValue = (value, type) => {
     AnalogSensorValidate(value, type, setErrorObject);
@@ -308,23 +307,46 @@ function Modbus({
           xl={3}
         >
           <div className="rounded-md -space-y-px">
-            <TextField
-              sx={{ marginTop: 0 }}
-              value={units}
-              disabled={disable || false}
-              onBlur={() => validateForNullValue(units, 'units')}
-              onChange={(e) => {
-                setUnits(e.target.value);
-              }}
-              margin="normal"
-              required
-              id="outlined-required"
-              label="Units"
-              fullWidth
-              error={errorObject?.units?.errorStatus}
-              helperText={errorObject?.units?.helperText}
-              autoComplete="off"
-            />
+            <FormControl fullWidth>
+              <InputLabel
+                id="demo-simple-select-label"
+                error={errorObject?.units?.errorStatus}
+              >
+                Units
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                label="Units"
+                required
+                disabled={disable || false}
+                value={units}
+                onChange={(e) => {
+                  setUnits(e.target.value);
+                }}
+                onBlur={() => validateForNullValue(units, 'units')}
+                error={errorObject?.units?.errorStatus}
+                helperText={errorObject?.units?.helperText}
+              >
+                <MenuItem value="ppb">ppb</MenuItem>
+                <MenuItem value="ppm">ppm</MenuItem>
+                <MenuItem value="µg/m3">µg/m3</MenuItem>
+                <MenuItem value="mg/m3">mg/m3</MenuItem>
+                <MenuItem value="%vol">%vol</MenuItem>
+                <MenuItem value="mmHg">mmHg</MenuItem>
+                <MenuItem value="Pa">Pa</MenuItem>
+                <MenuItem value="Bar">Bar</MenuItem>
+                <MenuItem value="°C">°C</MenuItem>
+                <MenuItem value="°F">°F</MenuItem>
+                <MenuItem value="CFM">CFM</MenuItem>
+                <MenuItem value="mm">mm</MenuItem>
+                <MenuItem value="m/s">m/s</MenuItem>
+                <MenuItem value="degree">degree</MenuItem>
+                <MenuItem value="W/mt2">W/mt2</MenuItem>
+                <MenuItem value="m">m</MenuItem>
+                <MenuItem value="psi">psi</MenuItem>
+                <MenuItem value="%">%</MenuItem>
+              </Select>
+            </FormControl>
           </div>
 
         </Grid>
@@ -417,7 +439,23 @@ function Modbus({
           lg={3}
           xl={3}
         >
-          <div className="rounded-md -space-y-px" />
+          <div className="rounded-md -space-y-px">
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Relay Output</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                label="Relay Output"
+                disabled={disable || false}
+                value={relayOutput}
+                onChange={(e) => {
+                  setRelayOutput(e.target.value);
+                }}
+              >
+                <MenuItem value="ON">On</MenuItem>
+                <MenuItem value="OFF">Off</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
         </Grid>
         <Grid
           sx={{ mt: 0, padding: 0 }}
