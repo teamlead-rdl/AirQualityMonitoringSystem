@@ -37,7 +37,7 @@ const Alarm = (props) => {
         },
         {
             field: 'labDepName',
-            headerName: 'Lab',
+            headerName: 'Zone',
             width: 130,
         },
         {

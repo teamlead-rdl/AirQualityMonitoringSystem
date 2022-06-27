@@ -15,7 +15,7 @@ export function LabListResults({ img }) {
   const dataColumns = [
     {
       field: 'labDepName',
-      headerName: 'Lab Name',
+      headerName: 'Zone Name',
       width: 170,
       type: 'actions',
       getActions: (params) => [
@@ -180,7 +180,7 @@ export function LabListResults({ img }) {
         <Link underline="hover" color="inherit" to="/Location">
           Location
         </Link>
-        { locationLabel
+        {locationLabel
           ? (
             <Typography
               underline="hover"
