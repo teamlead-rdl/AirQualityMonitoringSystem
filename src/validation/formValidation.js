@@ -321,6 +321,63 @@ const AddCustomerValidate = (value, type, setErrorObject) => {
       };
     });
       break;
+    case 'alertLogInterval': setErrorObject((oldErrorState) => {
+        let status = {};
+        if (!validate('number', value)) {
+          status = {
+            errorStatus: true,
+            helperText: 'Enter value in sec',
+          };
+        } else {
+          status = {
+            errorStatus: false,
+            helperText: '',
+          };
+        }
+        return {
+          ...oldErrorState,
+          alertLogInterval: status,
+        };
+      });
+      break;
+    case 'deviceLogInterval': setErrorObject((oldErrorState) => {
+        let status = {};
+        if (!validate('number', value)) {
+          status = {
+            errorStatus: true,
+            helperText: 'Enter value in sec',
+          };
+        } else {
+          status = {
+            errorStatus: false,
+            helperText: '',
+          };
+        }
+        return {
+          ...oldErrorState,
+          deviceLogInterval: status,
+        };
+      });
+      break;
+    case 'sensorLogInterval': setErrorObject((oldErrorState) => {
+        let status = {};
+        if (!validate('number', value)) {
+          status = {
+            errorStatus: true,
+            helperText: 'Enter value in sec',
+          };
+        } else {
+          status = {
+            errorStatus: false,
+            helperText: '',
+          };
+        }
+        return {
+          ...oldErrorState,
+          sensorLogInterval: status,
+        };
+      });
+      break;
     default: break;
   }
 };
