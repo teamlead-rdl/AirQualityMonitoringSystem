@@ -9,6 +9,11 @@ import {
   FetchBranchService, FetchFacilitiyService, FetchLocationService, NotificationAlerts,
 } from '../services/LoginPageService';
 import GlobalNotifier from '../components/notification/GlobalNotificationBar';
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable array-callback-return */
+/* eslint-disable radix */
 
 function HomePageComponent() {
   const [locationLabel, setLocationLabel] = useState('');
@@ -40,12 +45,12 @@ function HomePageComponent() {
       // setNotifierState((oldValue) => {
       //   return { ...oldValue, open: true, color: '#4caf50' };
       // });
-    }, 5000);
+    }, 10000);
 
     return () => {
       clearInterval(notifierInterval);
     };
-  }, []);
+  });
 
   const handleSuccess = (dataObject) => {
     dataObject?.data.map((datas) => {
@@ -72,20 +77,80 @@ function HomePageComponent() {
   const handleException = () => {};
 
   const handleNotificationSuccess = (dataObject) => {
-    setNotificationList(dataObject.data);
-    let colorCode = '#4caf50';
-    const setColor = dataObject.data.find((data) => {
-      const color = data.alertType === 'Critical' ? '#e53935' : data.alertType === 'outOfRange' ? '#ffc107' : colorCode;
-      colorCode = color;
-      return color;
-    });
+    setNotificationList((oldValue) => {
+      const arraySet = dataObject.data.filter((object1) => {
+        return !oldValue.some((object2) => {
+          return object1.id === object2.id;
+        });
+      });
 
-    setNotifierState((oldValue) => {
-      return {
-        ...oldValue,
-        open: true,
-        color: colorCode,
-      };
+      if (arraySet.length !== 0) {
+        let alertDetails = {
+          locationIdList: [],
+          branchIdList: [],
+          facilityIdList: [],
+          buildingIdList: [],
+          floorIdList: [],
+          labIdList: [],
+          deviceIdList: [],
+          sensorIdList: [],
+        };
+
+        arraySet?.map((data, index) => {
+          alertDetails = {
+            locationIdList: [...alertDetails.locationIdList, {
+              id: data.location_id,
+              alertType: data.alertType,
+            }],
+            branchIdList: [...alertDetails.branchIdList, {
+              id: data.branch_id,
+              alertType: data.alertType,
+            }],
+            facilityIdList: [...alertDetails.facilityIdList, {
+              id: data.facility_id,
+              alertType: data.alertType,
+            }],
+            buildingIdList: [...alertDetails.buildingIdList, {
+              id: data.building_id,
+              alertType: data.alertType,
+            }],
+            floorIdList: [...alertDetails.floorIdList, {
+              id: data.floor_id,
+              alertType: data.alertType,
+            }],
+            labIdList: [...alertDetails.labIdList, {
+              id: data.lab_id,
+              alertType: data.alertType,
+            }],
+            deviceIdList: [...alertDetails.deviceIdList, {
+              id: data.deviceId,
+              alertType: data.alertType,
+            }],
+            sensorIdList: [...alertDetails.sensorIdList, {
+              id: data.sensorId,
+              alertType: data.alertType,
+            }],
+          };
+        });
+
+        ApplicationStore().setStorage('alertDetails', alertDetails);
+        let colorCode = '#4caf50';
+        const setColor = arraySet?.find((data) => {
+          const color = data.alertType === 'Critical' ? '#e53935' : data.alertType === 'outOfRange' ? '#ffc107' : colorCode;
+          colorCode = color;
+          return color;
+        });
+
+        setNotifierState((oldValue) => {
+          return {
+            ...oldValue,
+            open: true,
+            color: colorCode,
+          };
+        });
+      }
+
+      return [...oldValue, ...arraySet];
     });
   };
 

@@ -1,34 +1,58 @@
-import { Breadcrumbs, Typography } from '@mui/material';
+import { Breadcrumbs, Chip, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { BuildingFetchService } from '../../../../services/LoginPageService';
+import ApplicationStore from '../../../../utils/localStorageUtil';
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable radix */
 function BuildingGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
   setLocationCoordinationList, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages,
   setZoomLevel, setCenterLatitude, setCenterLongitude,
 }) {
+  const { buildingIdList } = ApplicationStore().getStorage('alertDetails');
+
   const dataColumns = [
     {
       field: 'buildingName',
       headerName: 'Building Name',
-      width: 170,
+      width: 400,
       type: 'actions',
       getActions: (params) => [
         <LinkTo selectedRow={params.row} />,
       ],
     },
     {
-      field: 'buildingTotalFloors',
-      headerName: 'Total Floors',
-      width: 230,
-    },
-    {
-      field: 'buildingTag',
-      headerName: 'Building Tag',
-      width: 230,
+      field: 'id',
+      headerName: 'Status',
+      width: 100,
+      renderCell: ((params) => {
+        let alertObject = { alertType: 'Good' };
+        alertObject = buildingIdList?.find((alert) => {
+          return params.row.id === parseInt(alert.id);
+        });
+        let alertLabel = 'Good';
+        let alertColor = 'green';
+        switch (alertObject?.alertType) {
+        case 'Critical': alertLabel = 'Critical';
+          alertColor = 'red';
+          break;
+        default: break;
+        }
+
+        return (
+          <Chip
+            variant="outlined"
+            label={alertLabel}
+            style={{
+              color: alertColor,
+              borderColor: alertColor,
+            }}
+          />
+        );
+      }),
     },
   ];
   const [dataList, setDataList] = useState([]);

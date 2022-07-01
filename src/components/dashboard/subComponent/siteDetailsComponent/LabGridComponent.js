@@ -1,37 +1,59 @@
-import { Breadcrumbs, Typography } from '@mui/material';
+import { Breadcrumbs, Chip, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { LabfetchService } from '../../../../services/LoginPageService';
+import ApplicationStore from '../../../../utils/localStorageUtil';
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable radix */
 function LabGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels,
   setBreadCrumbLabels, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages,
   setCenterLatitude, setCenterLongitude, setIsDashBoard,
 }) {
+  const { labIdList } = ApplicationStore().getStorage('alertDetails');
+
   const [dataList, setDataList] = useState([]);
   const dataColumns = [
     {
       field: 'labDepName',
       headerName: 'Zone Name',
-      width: 170,
+      width: 400,
       type: 'actions',
       getActions: (params) => [
         <LinkTo selectedRow={params.row} />,
       ],
     },
     {
-      field: 'totalLabs',
-      headerName: 'Total Labs',
-      width: 230,
-    },
-    {
-      field: 'totalAssets',
-      headerName: 'Total Assets',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 160,
+      field: 'id',
+      headerName: 'Status',
+      width: 100,
+      renderCell: ((params) => {
+        let alertObject = { alertType: 'Good' };
+        alertObject = labIdList?.find((alert) => {
+          return params.row.id === parseInt(alert.id);
+        });
+        let alertLabel = 'Good';
+        let alertColor = 'green';
+        switch (alertObject?.alertType) {
+        case 'Critical': alertLabel = 'Critical';
+          alertColor = 'red';
+          break;
+        default: break;
+        }
+
+        return (
+          <Chip
+            variant="outlined"
+            label={alertLabel}
+            style={{
+              color: alertColor,
+              borderColor: alertColor,
+            }}
+          />
+        );
+      }),
     },
   ];
   useEffect(() => {

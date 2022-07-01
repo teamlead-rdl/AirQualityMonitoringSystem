@@ -1,39 +1,59 @@
-import { Breadcrumbs, Typography } from '@mui/material';
+import { Breadcrumbs, Chip, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { FetchFacilitiyService } from '../../../../services/LoginPageService';
+import ApplicationStore from '../../../../utils/localStorageUtil';
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable radix */
+
 function FacilityGridComponent({
   locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
-  setLocationCoordinationList, setIsGeoMap, setDeviceCoordsList, 
-  setZoomLevel, setCenterLatitude, setCenterLongitude
+  setLocationCoordinationList, setIsGeoMap, setDeviceCoordsList,
+  setZoomLevel, setCenterLatitude, setCenterLongitude,
 }) {
+  const { facilityIdList } = ApplicationStore().getStorage('alertDetails');
+
   const facilityColumns = [
     {
       field: 'facilityName',
       headerName: 'Facility Name',
-      width: 170,
+      width: 400,
       type: 'actions',
       getActions: (params) => [
         <LinkTo selectedRow={params.row} />,
       ],
     },
     {
-      field: 'latitude',
-      headerName: 'Latitude',
-      width: 170,
-    },
-    {
-      field: 'longitude',
-      headerName: 'Longitude',
-      width: 170,
-    },
-    {
-      field: 'totalBuildings',
-      headerName: 'Total buildings',
-      width: 230,
+      field: 'id',
+      headerName: 'Status',
+      width: 100,
+      renderCell: ((params) => {
+        let alertObject = { alertType: 'Good' };
+        alertObject = facilityIdList?.find((alert) => {
+          return params.row.id === parseInt(alert.id);
+        });
+        let alertLabel = 'Good';
+        let alertColor = 'green';
+        switch (alertObject?.alertType) {
+        case 'Critical': alertLabel = 'Critical';
+          alertColor = 'red';
+          break;
+        default: break;
+        }
+
+        return (
+          <Chip
+            variant="outlined"
+            label={alertLabel}
+            style={{
+              color: alertColor,
+              borderColor: alertColor,
+            }}
+          />
+        );
+      }),
     },
   ];
 

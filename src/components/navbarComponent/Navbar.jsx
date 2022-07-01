@@ -74,6 +74,7 @@ function Navbar(props) {
       handleNotificationClose();
       ApplicationStore().setStorage('userDetails', '');
       ApplicationStore().setStorage('siteDetails', '');
+      ApplicationStore().setStorage('alertDetails', '');
       navigate('/login');
     }, 2000);
   };

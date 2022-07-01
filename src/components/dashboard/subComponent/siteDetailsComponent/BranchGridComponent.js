@@ -1,10 +1,13 @@
-import { Breadcrumbs, Typography } from '@mui/material';
+import { Breadcrumbs, Chip, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { FetchBranchService } from '../../../../services/LoginPageService';
+import ApplicationStore from '../../../../utils/localStorageUtil';
+
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable radix */
 
 function BranchGridComponent({
   locationDetails, setLocationDetails, setProgressState, breadCrumbLabels,
@@ -12,28 +15,46 @@ function BranchGridComponent({
   setZoomLevel, setCenterLatitude, setCenterLongitude,
 }) {
   const [dataList, setDataList] = useState([]);
-
+  const { branchIdList } = ApplicationStore().getStorage('alertDetails');
   const branchColumns = [
     {
       field: 'branchName',
       headerName: 'Branch Name',
-      width: 270,
+      width: 400,
       type: 'actions',
       getActions: (params) => [
         <LinkTo selectedRow={params.row} />,
       ],
     },
     {
-      field: 'totalFacilities',
-      headerName: 'Total Facilities',
-      width: 170,
-    },
-    {
-      field: 'totalAssets',
-      headerName: 'Total Assets',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 160,
+      field: 'id',
+      headerName: 'Status',
+      width: 100,
+      renderCell: ((params) => {
+        let alertObject = { alertType: 'Good' };
+        alertObject = branchIdList?.find((alert) => {
+          return params.row.id === parseInt(alert.id);
+        });
+        let alertLabel = 'Good';
+        let alertColor = 'green';
+        switch (alertObject?.alertType) {
+        case 'Critical': alertLabel = 'Critical';
+          alertColor = 'red';
+          break;
+        default: break;
+        }
+
+        return (
+          <Chip
+            variant="outlined"
+            label={alertLabel}
+            style={{
+              color: alertColor,
+              borderColor: alertColor,
+            }}
+          />
+        );
+      }),
     },
   ];
   useEffect(() => {
