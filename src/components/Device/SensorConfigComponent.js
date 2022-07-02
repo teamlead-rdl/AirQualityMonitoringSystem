@@ -262,18 +262,22 @@ function SensorConfig({
                     sx={{ mt: 0, padding: 0 }}
                     item
                     xs={12}
-                    sm={4}
+                    sm={6}
                     md={4}
                     lg={4}
                     xl={4}
                   >
-                    <Box sx={{ minWidth: 200 }}>
+                    <Box sx={{ 
+                      // minWidth: 200 
+                      }}>
                       <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
                         <InputLabel id="demo-simple-select-label">
                           Sensor Category
                         </InputLabel>
                         <Select
-                          sx={{ minWidth: 250 }}
+                          sx={{ 
+                            // minWidth: 250
+                          }}
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
                           value={sensorCategoryId}
@@ -298,7 +302,7 @@ function SensorConfig({
                     sx={{ mt: 0, padding: 0 }}
                     item
                     xs={12}
-                    sm={4}
+                    sm={6}
                     md={4}
                     lg={4}
                     xl={4}
@@ -410,19 +414,49 @@ function SensorConfig({
                   <Grid
                     sx={{ mt: 0, padding: 0 }}
                     item
-                    xs={12}
-                    sm={6}
+                    xs={6}
+                    sm={4}
                     md={4}
                     lg={4}
                     xl={4}
                   >
-                    <Box sx={{ minWidth: 200 }}>
+                    <div className="rounded-md -space-y-px">
+                      <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Relay Output</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          label="Relay Output"
+                          value={relayOutput}
+                          onChange={(e) => {
+                            setRelayOutput(e.target.value);
+                          }}
+                        >
+                          <MenuItem value="ON">Enable</MenuItem>
+                          <MenuItem value="OFF">Disable</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </div>
+                  </Grid>
+                  <Grid
+                    sx={{ mt: 0, padding: 0 }}
+                    item
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    lg={4}
+                    xl={4}
+                  >
+                    <Box sx={{ 
+                      // minWidth: 200
+                       }}>
                       <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
                         <InputLabel id="demo-simple-select-label">
                           Sensor Output
                         </InputLabel>
                         <Select
-                          sx={{ minWidth: 250 }}
+                          sx={{ 
+                            // minWidth: 250
+                           }}
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
                           value={sensorOutput}

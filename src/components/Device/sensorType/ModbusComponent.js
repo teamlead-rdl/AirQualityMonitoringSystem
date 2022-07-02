@@ -249,7 +249,9 @@ function Modbus({
               Register type
             </InputLabel>
             <Select
-              sx={{ minWidth: 250 }}
+              sx={{ 
+                // minWidth: 250
+               }}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={registerType}
@@ -279,7 +281,9 @@ function Modbus({
               Conversion Type
             </InputLabel>
             <Select
-              sx={{ minWidth: 250 }}
+              sx={{ 
+                // minWidth: 250
+               }}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={conversionType}
@@ -385,7 +389,7 @@ function Modbus({
           sx={{ mt: 0, padding: 0, alignSelf: 'center' }}
           item
           xs={12}
-          sm={0.5}
+          sm={1}
           md={0.5}
           lg={0.5}
           xl={1}
@@ -403,7 +407,7 @@ function Modbus({
           sx={{ mt: 0, padding: 0 }}
           item
           xs={6}
-          sm={3}
+          sm={2.5}
           md={3}
           lg={3}
           xl={3}
@@ -439,7 +443,7 @@ function Modbus({
           lg={3}
           xl={3}
         >
-          <div className="rounded-md -space-y-px">
+          {/* <div className="rounded-md -space-y-px">
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Relay Output</InputLabel>
               <Select
@@ -455,7 +459,7 @@ function Modbus({
                 <MenuItem value="OFF">Off</MenuItem>
               </Select>
             </FormControl>
-          </div>
+          </div> */}
         </Grid>
         <Grid
           sx={{ mt: 0, padding: 0 }}
@@ -492,7 +496,7 @@ function Modbus({
           sx={{ mt: 0, padding: 0, alignSelf: 'center' }}
           item
           xs={12}
-          sm={0.5}
+          sm={1}
           md={0.5}
           lg={0.5}
           xl={1}
@@ -508,7 +512,7 @@ function Modbus({
           sx={{ mt: 0, padding: 0 }}
           item
           xs={6}
-          sm={3}
+          sm={2.5}
           md={3}
           lg={3}
           xl={3}

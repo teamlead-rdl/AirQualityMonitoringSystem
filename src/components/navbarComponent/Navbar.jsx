@@ -75,6 +75,7 @@ function Navbar(props) {
       ApplicationStore().setStorage('userDetails', '');
       ApplicationStore().setStorage('siteDetails', '');
       ApplicationStore().setStorage('alertDetails', '');
+      ApplicationStore().setStorage('notificationDetails', '');
       navigate('/login');
     }, 2000);
   };
@@ -184,8 +185,8 @@ function Navbar(props) {
             }}
           >
             <div style={{ overflow: 'auto', maxHeight: '50vh' }}>
-              {props.notificationList.length !== 0
-                ? props.notificationList.map(({
+              {props.notificationList?.length !== 0
+                ? props.notificationList?.map(({
                   id, sensorTag, a_date, a_time, msg, alertType,
                 }) => (
                   <div key={id}>

@@ -41,6 +41,9 @@ function BranchGridComponent({
         case 'Critical': alertLabel = 'Critical';
           alertColor = 'red';
           break;
+        case 'outOfRange': alertLabel = 'outOfRange';
+        alertColor = 'orange';
+        break;
         default: break;
         }
 
