@@ -201,18 +201,19 @@ function Navbar(props) {
                       Yesterday
                       </ListSubheader>
                     )} */}
-                    <ListSubheader sx={{ bgcolor: 'background.paper' }}>
+                    <ListSubheader sx={{ bgcolor: 'background.paper', height: '20px'}} style={{backgroundColor: '#e6f8ff', paddingTop: '0px', lineHeight: 'inherit' }}>
                       {a_date}
-                      {' '}
-                      {a_time}
+                      <div style={{float: 'right', height: '20px'}}>
+                        {a_time}
+                      </div>
                     </ListSubheader>
-                    <ListItem button onClick={handleClose} style={{ maxWidth: 500, minWidth: '300px' }}>
+                    <ListItem button onClick={handleClose} style={{ maxWidth: 500, minWidth: '300px', paddingTop: '0px', paddingBottom: '0px' }}>
                       <ListItemAvatar>
                         {/* <Avatar alt="Profile Picture" src={person} /> */}
                         {alertType === 'Critical'
                         // <ErrorOutlineOutlinedIcon/>
-                          ? <ErrorOutlineOutlined sx={{ color: 'red' }} />
-                          : <WarningAmber sx={{ color: 'yellow' }} />}
+                          ? <ErrorOutlineOutlined sx={{ color: 'red', fontSize: 30 }} />
+                          : <WarningAmber sx={{ color: 'yellow', fontSize: 30 }} />}
                       </ListItemAvatar>
                       <ListItemText primary={sensorTag} secondary={msg} />
                     </ListItem>

@@ -9,12 +9,14 @@ import ApplicationStore from '../../../../utils/localStorageUtil';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable radix */
-function LocationGridComponent({
-  locationDetails, setLocationDetails, setProgressState, setBreadCrumbLabels, setLocationCoordinationList,
-  setZoomLevel, setCenterLatitude, setCenterLongitude,
-}) {
+function LocationGridComponent(props) {
+  const {
+    setLocationDetails, setProgressState, setBreadCrumbLabels, setLocationCoordinationList,
+    setZoomLevel, setCenterLatitude, setCenterLongitude, newNotification, notificationList, alertDetailsList
+  } = props;
   const [dataList, setDataList] = useState([]);
-  const { locationIdList } = ApplicationStore().getStorage('alertDetails');
+  let { locationIdList } = ApplicationStore().getStorage('alertDetails');
+  const [ notificationStatus, setNotificationStatus ] = useState(locationIdList);
   const columns = [
     {
       field: 'stateName',
@@ -28,46 +30,48 @@ function LocationGridComponent({
     {
       field: 'id',
       headerName: 'Status',
-      width: 100,
+      width: 170,
       renderCell: ((params) => {
-        let alertObject = { alertType: 'Good' };
-        alertObject = locationIdList?.find((alert) => {
+        let element = {
+          alertLabel: 'Good',
+          alertColor : 'green',
+          alertPriority: 3
+        }
+        let alertObject = notificationStatus?.filter((alert) => {
           return params.row.id === parseInt(alert.id);
         });
-        let alertLabel = 'Good';
-        let alertColor = 'green';
-        switch (alertObject?.alertType) {
-        case 'Critical': alertLabel = 'Critical';
-          alertColor = 'red';
-          break;
-        case 'outOfRange': alertLabel = 'outOfRange';
-        alertColor = 'orange';
-        break;
-        default: break;
-        }
+
+        alertObject?.map((data)=>{
+          element = element.alertPriority < data.alertPriority ? element : 
+            { 
+              alertLabel: data.alertType === 'Critical'? 'Critical' : data.alertType === 'outOfRange'? 'Out Of Range' : 'Good',
+              alertColor : data.alertType === 'Critical'? 'red' : data.alertType === 'outOfRange'? 'orange' : 'green',
+              alertPriority: data.alertType === 'Critical'? 1 : data.alertType === 'outOfRange'? 2 : 3
+            }
+        });
 
         return (
           <Chip
             variant="outlined"
-            label={alertLabel}
+            label={element.alertLabel}
             style={{
-              color: alertColor,
-              borderColor: alertColor,
+              color: element.alertColor,
+              borderColor: element.alertColor,
             }}
           />
         );
       }),
     },
   ];
-  const [alertType, setAlertType] = useState('Normal');
 
   useEffect(() => {
     FetchLocationService(handleSuccess, handleException);
   }, []);
 
-  useEffect(() => {
-    setAlertType('');
-  }, [locationIdList]);
+  useEffect(()=>{
+    setNotificationStatus(alertDetailsList);
+  }, [notificationList]);
+
   function LinkTo({ selectedRow }) {
     return (
       <h3

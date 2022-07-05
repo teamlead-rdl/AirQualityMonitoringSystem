@@ -72,7 +72,9 @@ function LoginPage() {
           deviceIdList: [],
           sensorIdList: [],
         });
-        ApplicationStore().setStorage('notificationDetails', {notificationList: []});
+        ApplicationStore().setStorage('notificationDetails', {notificationList: []
+          , newNotification: false
+        });
         setUserAuthetication(data.response);
         setTimeout(() => {
           setLoading(false);

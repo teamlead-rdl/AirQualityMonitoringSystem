@@ -28,31 +28,33 @@ function FacilityGridComponent({
     {
       field: 'id',
       headerName: 'Status',
-      width: 100,
+      width: 170,
       renderCell: ((params) => {
-        let alertObject = { alertType: 'Good' };
-        alertObject = facilityIdList?.find((alert) => {
+        let element = {
+          alertLabel: 'Good',
+          alertColor : 'green',
+          alertPriority: 3
+        }
+        let alertObject = facilityIdList?.filter((alert) => {
           return params.row.id === parseInt(alert.id);
         });
-        let alertLabel = 'Good';
-        let alertColor = 'green';
-        switch (alertObject?.alertType) {
-        case 'Critical': alertLabel = 'Critical';
-          alertColor = 'red';
-          break;
-        case 'outOfRange': alertLabel = 'outOfRange';
-          alertColor = 'orange';
-          break;
-        default: break;
-        }
+
+        alertObject?.map((data)=>{
+          element = element.alertPriority < data.alertPriority ? element : 
+            { 
+              alertLabel: data.alertType === 'Critical'? 'Critical' : data.alertType === 'outOfRange'? 'Out Of Range' : 'Good',
+              alertColor : data.alertType === 'Critical'? 'red' : data.alertType === 'outOfRange'? 'orange' : 'green',
+              alertPriority: data.alertType === 'Critical'? 1 : data.alertType === 'outOfRange'? 2 : 3
+            }
+        });
 
         return (
           <Chip
             variant="outlined"
-            label={alertLabel}
+            label={element.alertLabel}
             style={{
-              color: alertColor,
-              borderColor: alertColor,
+              color: element.alertColor,
+              borderColor: element.alertColor,
             }}
           />
         );

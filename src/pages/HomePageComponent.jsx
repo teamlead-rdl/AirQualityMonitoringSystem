@@ -9,6 +9,7 @@ import {
   FetchBranchService, FetchFacilitiyService, FetchLocationService, NotificationAlerts,
 } from '../services/LoginPageService';
 import GlobalNotifier from '../components/notification/GlobalNotificationBar';
+import { alertSeverityCode, setAlertColor } from '../utils/helperFunctions';
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 /* eslint-disable no-nested-ternary */
@@ -25,9 +26,10 @@ function HomePageComponent() {
     message: 'New have new notification !',
     color: '#ffca28', // amber : '#ffca28', green: '#4caf50'
   });
+  const [newNotification, setNewNotification] = useState(false);
   const [anchorElNotification, setAnchorElNotification] = useState(null);
-  const { locationDetails } = ApplicationStore().getStorage('userDetails');
   const { notificationList } = ApplicationStore().getStorage('notificationDetails');
+  const { locationDetails } = ApplicationStore().getStorage('userDetails');
   const {
     location_id, branch_id, facility_id,
   } = locationDetails;
@@ -51,7 +53,7 @@ function HomePageComponent() {
       // setNotifierState((oldValue) => {
       //   return { ...oldValue, open: true, color: '#4caf50' };
       // });
-    }, 10000);
+    }, 10000); // pick data from 'userDetails'(sessionData)
   
     return () => {
       clearInterval(notifierInterval);
@@ -83,103 +85,22 @@ function HomePageComponent() {
   const handleException = () => {};
 
   const handleNotificationSuccess = (dataObject) => {
-    // setNotificationList((oldValue) => {
-    // });
-    const arraySet = dataObject.data.filter((object1) => {
+    // limit the notification count
+    let newDataObject = dataObject.data.sort((firstElement, secondElement) => secondElement.id - firstElement.id).slice(0, 12);
+    // Check for new alert with existing stack
+    const arraySet = newDataObject.filter((object1) => {
       return !notificationList.some((object2) => {
         return object1.id === object2.id;
       });
     });
-
-    // Managing stack limit in notification list 
-    console.log(notificationList);
-    let availableStack = 12 - notificationList.length;
-    let requiredStack = arraySet.length - availableStack;
-    console.log(requiredStack);
-    if( requiredStack > 0){
-        // remove 'requiredStack' number of elements from the old stack
-        let requiredStack = arraySet.length - availableStack;
-        notificationList.splice(12 - requiredStack);
-        console.log(requiredStack);
-      } else
-      {
-        // remoeve all elements from the old stack
-        // notificationList.length = 0;
-        console.log(notificationList);
-      }
-
-    console.log(notificationList);
-    console.log(arraySet);
-    console.log(arraySet.length);
-
+    // make an alert if we have new alert
+    let newNotificationValue = newNotification;
     if (arraySet.length !== 0) {
-      let updatedAlertDetails = {
-        locationIdList: [...locationIdList],
-        branchIdList: [...branchIdList],
-        facilityIdList: [...facilityIdList],
-        buildingIdList: [...buildingIdList],
-        floorIdList: [...floorIdList],
-        labIdList: [...labIdList],
-        deviceIdList: [...deviceIdList],
-        sensorIdList: [...sensorIdList],
-      };
-
-      arraySet?.map((data, index) => {
-        updatedAlertDetails = {
-          locationIdList: [...updatedAlertDetails.locationIdList, {
-            id: data.location_id,
-            alertType: data.alertType,
-          }],
-          // branchIdList: [...updatedAlertDetails.branchIdList, {
-          //   id: data.branch_id,
-          //   alertType: data.alertType,
-          // }],
-          // facilityIdList: [...updatedAlertDetails.facilityIdList, {
-          //   id: data.facility_id,
-          //   alertType: data.alertType,
-          // }],
-          // buildingIdList: [...updatedAlertDetails.buildingIdList, {
-          //   id: data.building_id,
-          //   alertType: data.alertType,
-          // }],
-          // floorIdList: [...updatedAlertDetails.floorIdList, {
-          //   id: data.floor_id,
-          //   alertType: data.alertType,
-          // }],
-          // labIdList: [...updatedAlertDetails.labIdList, {
-          //   id: data.lab_id,
-          //   alertType: data.alertType,
-          // }],
-          // deviceIdList: [...updatedAlertDetails.deviceIdList, {
-          //   id: data.deviceId,
-          //   alertType: data.alertType,
-          // }],
-          // sensorIdList: [...updatedAlertDetails.sensorIdList, {
-          //   id: data.sensorId,
-          //   alertType: data.alertType,
-          // }],
-        };
+      setNewNotification((oldValue)=>{
+        newNotificationValue = !oldValue;
+        return !oldValue;
       });
-
-
-      ApplicationStore().setStorage('alertDetails', updatedAlertDetails);
-      let colorCode = {
-        priority: 3,
-        color: '#4caf50'
-      };
-      const setColor = arraySet?.map((data) => {
-        const color = data.alertType === 'Critical' ? {
-          priority: 1,
-          color: '#e53935'
-        } : data.alertType === 'outOfRange' ? {
-          priority: 2,
-          color: '#ffc107'
-        } : colorCode;
-
-        colorCode = colorCode.priority < color.priority ? colorCode : color;
-        return color;
-      });
-      console.log(setColor);
+      let colorCode = setAlertColor(arraySet);
       setNotifierState((oldValue) => {
         return {
           ...oldValue,
@@ -187,10 +108,70 @@ function HomePageComponent() {
           color: colorCode.color,
         };
       });
+      ApplicationStore().setStorage('notificationDetails', {notificationList: newDataObject, newNotification: newNotificationValue});
     }
+    
+    ApplicationStore().setStorage('notificationDetails', {notificationList: newDataObject,
+       newNotification: newNotificationValue
+      });
 
-    ApplicationStore().setStorage('notificationDetails', {notificationList: [...arraySet, ...notificationList]});
-    // return [...oldValue, ...arraySet];
+    let updatedAlertDetails = {
+      locationIdList: [],
+      branchIdList: [],
+      facilityIdList: [],
+      buildingIdList: [],
+      floorIdList: [],
+      labIdList: [],
+      deviceIdList: [],
+      sensorIdList: [],
+    };
+
+    newDataObject?.map((data, index) => {
+      updatedAlertDetails = {
+        locationIdList: [...updatedAlertDetails.locationIdList, {
+          id: data.location_id,
+          alertType: data.alertType,
+          alertPriority: alertSeverityCode(data.alertType)
+        }],
+        branchIdList: [...updatedAlertDetails.branchIdList, {
+          id: data.branch_id,
+          alertType: data.alertType,
+          alertPriority: alertSeverityCode(data.alertType)
+        }],
+        facilityIdList: [...updatedAlertDetails.facilityIdList, {
+          id: data.facility_id,
+          alertType: data.alertType,
+          alertPriority: alertSeverityCode(data.alertType)
+        }],
+        buildingIdList: [...updatedAlertDetails.buildingIdList, {
+          id: data.building_id,
+          alertType: data.alertType,
+          alertPriority: alertSeverityCode(data.alertType)
+        }],
+        floorIdList: [...updatedAlertDetails.floorIdList, {
+          id: data.floor_id,
+          alertType: data.alertType,
+          alertPriority: alertSeverityCode(data.alertType)
+        }],
+        labIdList: [...updatedAlertDetails.labIdList, {
+          id: data.lab_id,
+          alertType: data.alertType,
+          alertPriority: alertSeverityCode(data.alertType)
+        }],
+        deviceIdList: [...updatedAlertDetails.deviceIdList, {
+          id: data.deviceId,
+          alertType: data.alertType,
+          alertPriority: alertSeverityCode(data.alertType)
+        }],
+        sensorIdList: [...updatedAlertDetails.sensorIdList, {
+          id: data.sensorId,
+          alertType: data.alertType,
+          alertPriority: alertSeverityCode(data.alertType)
+        }],
+      };
+    });
+
+    ApplicationStore().setStorage('alertDetails', {...updatedAlertDetails});
   };
 
   const handleNotificationException = () => {};

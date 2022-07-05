@@ -5,12 +5,15 @@ import BuildingGridComponent from '../subComponent/siteDetailsComponent/Building
 import FacilityGridComponent from '../subComponent/siteDetailsComponent/FacilityGridComponent';
 import FloorGridComponent from '../subComponent/siteDetailsComponent/FloorGridComponent';
 import LabGridComponent from '../subComponent/siteDetailsComponent/LabGridComponent';
+import ApplicationStore from '../../../utils/localStorageUtil';
 /* eslint-disable max-len */
 function LocationGridWidget({
   locationDetails, setLocationDetails, locationState, setProgressState, setImageState, setImg,
   setDeviceCoordsList, setLocationCoordinationList, setIsDashBoard, setIsGeoMap, siteImages, setSiteImages,
   setZoomLevel, setCenterLatitude, setCenterLongitude, breadCrumbLabels, setBreadCrumbLabels,
 }) {
+  const { newNotification } = ApplicationStore().getStorage('notificationDetails');
+
   useEffect(() => {
     if (locationState === 4 || locationState === 5 || locationState === 6) {
       setImageState(1);
@@ -22,6 +25,7 @@ function LocationGridWidget({
         locationState === 0
           ? (
             <LocationGridComponent
+              newNotification={newNotification}
               setLocationCoordinationList={setLocationCoordinationList}
               setLocationDetails={setLocationDetails}
               setProgressState={setProgressState}
