@@ -292,5 +292,6 @@ export const FetchBumpTestReportDetails = (data, successCallback, errorCallBack)
 
 export const FetchAlarmReportDetails = (data, successCallback, errorCallBack) => _fetchService('alarmReport', 'POST', data, successCallback, errorCallBack);
 
+// ---------- Alert Notification --------------------------//
 
-
+export const NotificationAlerts = (data, successCallback, errorCallBack) =>  _fetchService('getAlerts', 'POST', data, successCallback, errorCallBack);

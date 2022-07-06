@@ -1,34 +1,63 @@
-import { Breadcrumbs, Typography } from '@mui/material';
+import { Breadcrumbs, Chip, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { BuildingFetchService } from '../../../../services/LoginPageService';
+import ApplicationStore from '../../../../utils/localStorageUtil';
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable radix */
 function BuildingGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
   setLocationCoordinationList, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages,
   setZoomLevel, setCenterLatitude, setCenterLongitude,
 }) {
+  const { buildingIdList } = ApplicationStore().getStorage('alertDetails');
+
   const dataColumns = [
     {
       field: 'buildingName',
       headerName: 'Building Name',
-      width: 170,
+      width: 400,
       type: 'actions',
       getActions: (params) => [
         <LinkTo selectedRow={params.row} />,
       ],
     },
     {
-      field: 'buildingTotalFloors',
-      headerName: 'Total Floors',
-      width: 230,
-    },
-    {
-      field: 'buildingTag',
-      headerName: 'Building Tag',
-      width: 230,
+      field: 'id',
+      headerName: 'Status',
+      width: 170,
+      renderCell: ((params) => {
+        let element = {
+          alertLabel: 'Good',
+          alertColor : 'green',
+          alertPriority: 3
+        }
+        let alertObject = buildingIdList?.filter((alert) => {
+          return params.row.id === parseInt(alert.id);
+        });
+
+        alertObject?.map((data)=>{
+          element = element.alertPriority < data.alertPriority ? element : 
+            { 
+              alertLabel: data.alertType === 'Critical'? 'Critical' : data.alertType === 'outOfRange'? 'Out Of Range' : 'Good',
+              alertColor : data.alertType === 'Critical'? 'red' : data.alertType === 'outOfRange'? 'orange' : 'green',
+              alertPriority: data.alertType === 'Critical'? 1 : data.alertType === 'outOfRange'? 2 : 3
+            }
+        });
+
+        return (
+          <Chip
+            variant="outlined"
+            label={element.alertLabel}
+            style={{
+              color: element.alertColor,
+              borderColor: element.alertColor,
+            }}
+          />
+        );
+      }),
     },
   ];
   const [dataList, setDataList] = useState([]);

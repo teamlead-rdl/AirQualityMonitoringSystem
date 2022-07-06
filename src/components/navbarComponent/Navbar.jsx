@@ -29,7 +29,6 @@ function Navbar(props) {
   const [customerDisplayName, setCustomerDisplayName] = useState('Company Name Here...');
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [anchorElNotification, setAnchorElNotification] = useState(null);
   const [openNotification, setNotification] = useState({
     status: false,
     type: '',
@@ -51,12 +50,12 @@ function Navbar(props) {
   };
 
   const handleNotificationMenu = (event) => {
-    setAnchorElNotification(event.currentTarget);
+    props.setAnchorElNotification(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-    setAnchorElNotification(null);
+    props.setAnchorElNotification(null);
   };
 
   const logout = () => {
@@ -75,6 +74,8 @@ function Navbar(props) {
       handleNotificationClose();
       ApplicationStore().setStorage('userDetails', '');
       ApplicationStore().setStorage('siteDetails', '');
+      ApplicationStore().setStorage('alertDetails', '');
+      ApplicationStore().setStorage('notificationDetails', '');
       navigate('/login');
     }, 2000);
   };
@@ -142,7 +143,7 @@ function Navbar(props) {
           </Tooltip>
           <Menu
             id="menu-appbar1"
-            anchorEl={anchorElNotification}
+            anchorEl={props.anchorElNotification}
             anchorOrigin={{
               vertical: 'top',
               horizontal: 'right',
@@ -152,9 +153,9 @@ function Navbar(props) {
               vertical: 'top',
               horizontal: 'left',
             }}
-            open={Boolean(anchorElNotification)}
+            open={Boolean(props.anchorElNotification)}
             onClose={handleClose}
-            sx={{ height: '60vh', width: '100%' }}
+            sx={{ height: 'auto', maxHeight: '60vh', width: '100%' }}
             style={{ overflow: 'none', marginTop: 28 }}
             PaperProps={{
               elevation: 0,
@@ -183,37 +184,48 @@ function Navbar(props) {
               },
             }}
           >
-            <div style={{ overflow: 'auto', height: '50vh' }}>
-              {props.notificationList.map(({
-                id, primary, date, secondary, type,
-              }) => (
-                <div key={id}>
-                  {/* {id === 1 && (
-                    <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                      Today
-                      </ListSubheader>
-                      )}
+            <div style={{ overflow: 'auto', maxHeight: '50vh' }}>
+              {props.notificationList?.length !== 0
+                ? props.notificationList?.map(({
+                  id, sensorTag, a_date, a_time, msg, alertType,
+                }) => (
+                  <div key={id}>
+                    {/* {id === 1 && (
+                      <ListSubheader sx={{ bgcolor: 'background.paper' }}>
+                        Today
+                        </ListSubheader>
+                        )}
 
-                      {id === 3 && (
-                    <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                    Yesterday
+                        {id === 3 && (
+                      <ListSubheader sx={{ bgcolor: 'background.paper' }}>
+                      Yesterday
+                      </ListSubheader>
+                    )} */}
+                    <ListSubheader sx={{ bgcolor: 'background.paper', height: '20px'}} style={{backgroundColor: '#e6f8ff', paddingTop: '0px', lineHeight: 'inherit' }}>
+                      {a_date}
+                      <div style={{float: 'right', height: '20px'}}>
+                        {a_time}
+                      </div>
                     </ListSubheader>
-                  )} */}
-                  <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                    {date}
-                  </ListSubheader>
-                  <ListItem button onClick={handleClose} style={{ maxWidth: 500, minWidth: '300px' }}>
-                    <ListItemAvatar>
-                      {/* <Avatar alt="Profile Picture" src={person} /> */}
-                      {type === 'alert'
-                      // <ErrorOutlineOutlinedIcon/>
-                        ? <ErrorOutlineOutlined sx={{ color: 'red' }} />
-                        : <WarningAmber sx={{ color: 'yellow' }} />}
-                    </ListItemAvatar>
-                    <ListItemText primary={primary} secondary={secondary} />
-                  </ListItem>
-                </div>
-              ))}
+                    <ListItem button onClick={handleClose} style={{ maxWidth: 500, minWidth: '300px', paddingTop: '0px', paddingBottom: '0px' }}>
+                      <ListItemAvatar>
+                        {/* <Avatar alt="Profile Picture" src={person} /> */}
+                        {alertType === 'Critical'
+                        // <ErrorOutlineOutlinedIcon/>
+                          ? <ErrorOutlineOutlined sx={{ color: 'red', fontSize: 30 }} />
+                          : <WarningAmber sx={{ color: 'yellow', fontSize: 30 }} />}
+                      </ListItemAvatar>
+                      <ListItemText primary={sensorTag} secondary={msg} />
+                    </ListItem>
+                  </div>
+                ))
+                : (
+                  <div>
+                    <ListItem button onClick={handleClose} style={{ maxWidth: 500, minWidth: '300px', textAlign: 'center' }}>
+                      <ListItemText primary="" secondary="No Notifications found" />
+                    </ListItem>
+                  </div>
+                )}
             </div>
           </Menu>
           <IconButton

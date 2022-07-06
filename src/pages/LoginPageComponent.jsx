@@ -62,6 +62,19 @@ function LoginPage() {
         };
       }).then((data) => {
         ApplicationStore().setStorage('userDetails', data);
+        ApplicationStore().setStorage('alertDetails', {
+          locationIdList: [],
+          branchIdList: [],
+          facilityIdList: [],
+          buildingIdList: [],
+          floorIdList: [],
+          labIdList: [],
+          deviceIdList: [],
+          sensorIdList: [],
+        });
+        ApplicationStore().setStorage('notificationDetails', {notificationList: []
+          , newNotification: false
+        });
         setUserAuthetication(data.response);
         setTimeout(() => {
           setLoading(false);

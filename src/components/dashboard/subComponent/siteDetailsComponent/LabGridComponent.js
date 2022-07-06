@@ -1,37 +1,64 @@
-import { Breadcrumbs, Typography } from '@mui/material';
+import { Breadcrumbs, Chip, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { LabfetchService } from '../../../../services/LoginPageService';
+import ApplicationStore from '../../../../utils/localStorageUtil';
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable radix */
 function LabGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels,
   setBreadCrumbLabels, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages,
   setCenterLatitude, setCenterLongitude, setIsDashBoard,
 }) {
+  const { labIdList } = ApplicationStore().getStorage('alertDetails');
+
   const [dataList, setDataList] = useState([]);
   const dataColumns = [
     {
       field: 'labDepName',
       headerName: 'Zone Name',
-      width: 170,
+      width: 400,
       type: 'actions',
       getActions: (params) => [
         <LinkTo selectedRow={params.row} />,
       ],
     },
     {
-      field: 'totalLabs',
-      headerName: 'Total Labs',
-      width: 230,
-    },
-    {
-      field: 'totalAssets',
-      headerName: 'Total Assets',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 160,
+      field: 'id',
+      headerName: 'Status',
+      width: 170,
+      renderCell: ((params) => {
+        let element = {
+          alertLabel: 'Good',
+          alertColor : 'green',
+          alertPriority: 3
+        }
+        let alertObject = labIdList?.filter((alert) => {
+          return params.row.id === parseInt(alert.id);
+        });
+
+        alertObject?.map((data)=>{
+          element = element.alertPriority < data.alertPriority ? element : 
+            { 
+              alertLabel: data.alertType === 'Critical'? 'Critical' : data.alertType === 'outOfRange'? 'Out Of Range' : 'Good',
+              alertColor : data.alertType === 'Critical'? 'red' : data.alertType === 'outOfRange'? 'orange' : 'green',
+              alertPriority: data.alertType === 'Critical'? 1 : data.alertType === 'outOfRange'? 2 : 3
+            }
+        });
+
+        return (
+          <Chip
+            variant="outlined"
+            label={element.alertLabel}
+            style={{
+              color: element.alertColor,
+              borderColor: element.alertColor,
+            }}
+          />
+        );
+      }),
     },
   ];
   useEffect(() => {
