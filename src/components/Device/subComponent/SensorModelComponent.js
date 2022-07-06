@@ -35,6 +35,7 @@ function SensorModel({
   progressStatus,
   setProgressStatus,
   deployedSensorTagList,
+  setSensorRefresh,
 }) {
   const moduleAccess = useUserAccess()('devicelocation');
   const [editData, setEditData] = useState('');
@@ -199,6 +200,8 @@ function SensorModel({
 
   const successSensorUpdate = () => {
     setPopperOpen(false);
+    // Refresh sensor data
+    setSensorRefresh(oldvalue => !oldvalue);
   };
 
   const handleFailure = () => {};
@@ -207,10 +210,10 @@ function SensorModel({
     SensorPropertiesUpdateService({ ...id, ...sensorProperties }, successSensorUpdate, handleFailure);
   };
 
-  const setSensorIdForOptions = (sensorId, sensorStatus) => {
+  const setSensorIdForOptions = (data) => {
     setPopperOpen(true);
-    setSensorUpdateId(sensorId);
-    setSensorStatus(sensorStatus);
+    setSensorUpdateId(data.id);
+    setSensorStatus(data.sensorStatus || '0');
   };
 
   return (
@@ -273,7 +276,7 @@ function SensorModel({
                                     ? (
                                       <SensorSettingsButton
                                         setAnchorEl={setAnchorEl}
-                                        setPopperOpen={() => setSensorIdForOptions(data.id, data.sensorStatus)}
+                                        setPopperOpen={() => setSensorIdForOptions(data)}
                                         handleClose={handleClose}
                                       />
                                     )
@@ -328,7 +331,7 @@ function SensorModel({
                                     ? (
                                       <SensorSettingsButton
                                         setAnchorEl={setAnchorEl}
-                                        setPopperOpen={() => setSensorIdForOptions(data.id)}
+                                        setPopperOpen={() => setSensorIdForOptions(data)}
                                         handleClose={handleClose}
                                       />
                                     )
@@ -390,7 +393,7 @@ function SensorModel({
                                     ? (
                                       <SensorSettingsButton
                                         setAnchorEl={setAnchorEl}
-                                        setPopperOpen={() => setSensorIdForOptions(data.id)}
+                                        setPopperOpen={() => setSensorIdForOptions(data)}
                                         handleClose={handleClose}
                                       />
                                     )
@@ -439,7 +442,7 @@ function SensorModel({
       )}
       {progressStatus === 2 && (
         <div style={{ textAlign: 'center', padding: 5 }}>
-          <SensorAdd isUpdate editData={editData} locationDetails={locationDetails} setProgressStatus={setProgressStatus} />
+          <SensorAdd isUpdate editData={editData} locationDetails={locationDetails} setProgressStatus={setProgressStatus} setSensorRefresh={setSensorRefresh} />
         </div>
       )}
       {progressStatus === 3 && (

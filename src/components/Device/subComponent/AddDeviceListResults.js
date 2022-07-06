@@ -89,6 +89,8 @@ function AddDeviceListResults(props) {
     },
   ];
   const [progressStatus, setProgressStatus] = useState(3);
+  const [device_id, setDeviceId] = useState('0');
+  const [sensorRefresh, setSensorRefresh] = useState(false);
   const [open, setOpen] = useState(false);
   const [deleteDailogOpen, setDeleteDailogOpen] = useState(false);
   const [deleteId, setDeleteId] = useState('');
@@ -293,6 +295,7 @@ function AddDeviceListResults(props) {
           event.stopPropagation();
           setEditDevice(props.selectedRow);
           fetchSensorList(props.selectedRow.id);
+          setDeviceId(props.selectedRow.id);
         }}
       />
     );
@@ -301,6 +304,12 @@ function AddDeviceListResults(props) {
     SensorDeployFetchService({ ...props.locationDetails, device_id }, fetchSenosorListSuccess, fetchSenosorListException);
   };
 
+  useEffect(()=>{
+    if(device_id !== '0'){
+      fetchSensorList(device_id);
+    }
+  }, [sensorRefresh]);
+  
   const fetchSenosorListSuccess = (dataObject) => {
     setAnalogSensorList(dataObject.Analog.data || []);
     setDigitalSensorList(dataObject.Digital.data || []);
@@ -482,6 +491,7 @@ function AddDeviceListResults(props) {
         setRefreshData={setRefreshData}
       />
       <SensorModel
+        setSensorRefresh={setSensorRefresh}
         analogSensorList={analogSensorList}
         digitalSensorList={digitalSensorList}
         modbusSensorList={modbusSensorList}

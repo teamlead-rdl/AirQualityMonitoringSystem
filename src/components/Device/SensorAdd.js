@@ -24,7 +24,7 @@ import StelTWA from './sensorType/StelTWAComponent';
 import { useUserAccess } from '../../context/UserAccessProvider';
 
 function DeviceAdd({
-  locationDetails, setProgressStatus, editData, isUpdate,
+  locationDetails, setProgressStatus, editData, isUpdate, setSensorRefresh
 }) {
   const moduleAccess = useUserAccess()('devicelocation');
   const id = editData?.id || '';
@@ -310,6 +310,7 @@ function DeviceAdd({
       handleClose();
       setProgressStatus(1);
     }, 3000);
+    setSensorRefresh(oldvalue => !oldvalue);
   };
 
   const senserAddException = (resErrorObject, errorMessage) => {
