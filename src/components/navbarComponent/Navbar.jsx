@@ -10,13 +10,15 @@ import {
 } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import {
-  IconButton, Toolbar, Menu, MenuItem, ListSubheader, ListItemAvatar, ListItemText, ListItem, Typography, Tooltip, Zoom,
+  IconButton, Toolbar, Menu, MenuItem, ListSubheader, ListItemAvatar, ListItemText, ListItem, Typography, Tooltip, Zoom, Dialog, DialogTitle, DialogContent, Grid, Button, TextField,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import { LogoutService } from '../../services/LoginPageService';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import ApplicationStore from '../../utils/localStorageUtil';
+import { Box } from '@mui/system';
+import LogIntervalSetting from './LogIntervalSettingComponent';
 
 // import { DarkModeContext } from "../../context/darkModeContext";
 // import { useContext } from "react";
@@ -25,9 +27,10 @@ function Navbar(props) {
   // const { dispatch } = useContext(DarkModeContext);
   const navigate = useNavigate();
   const { userDetails } = ApplicationStore().getStorage('userDetails');
+  const isSystemSpecialist = userDetails?.userRole === 'systemSpecialist' ? true : false;
   const [userDisplayName, setUserDisplayName] = useState('');
   const [customerDisplayName, setCustomerDisplayName] = useState('Company Name Here...');
-
+  const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openNotification, setNotification] = useState({
     status: false,
@@ -190,17 +193,6 @@ function Navbar(props) {
                   id, sensorTag, a_date, a_time, msg, alertType,
                 }) => (
                   <div key={id}>
-                    {/* {id === 1 && (
-                      <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                        Today
-                        </ListSubheader>
-                        )}
-
-                        {id === 3 && (
-                      <ListSubheader sx={{ bgcolor: 'background.paper' }}>
-                      Yesterday
-                      </ListSubheader>
-                    )} */}
                     <ListSubheader sx={{ bgcolor: 'background.paper', height: '20px'}} style={{backgroundColor: '#e6f8ff', paddingTop: '0px', lineHeight: 'inherit' }}>
                       {a_date}
                       <div style={{float: 'right', height: '20px'}}>
@@ -209,9 +201,7 @@ function Navbar(props) {
                     </ListSubheader>
                     <ListItem button onClick={handleClose} style={{ maxWidth: 500, minWidth: '300px', paddingTop: '0px', paddingBottom: '0px' }}>
                       <ListItemAvatar>
-                        {/* <Avatar alt="Profile Picture" src={person} /> */}
                         {alertType === 'Critical'
-                        // <ErrorOutlineOutlinedIcon/>
                           ? <ErrorOutlineOutlined sx={{ color: 'red', fontSize: 30 }} />
                           : <WarningAmber sx={{ color: 'yellow', fontSize: 30 }} />}
                       </ListItemAvatar>
@@ -255,6 +245,14 @@ function Navbar(props) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
+            {isSystemSpecialist && 
+              <MenuItem onClick={()=>{
+                handleClose();
+                setOpen(oldValue => !oldValue);
+              }}>
+                Settings
+              </MenuItem>
+            }
             <MenuItem onClick={logout}>Logout</MenuItem>
           </Menu>
           <div className="item">
@@ -262,6 +260,13 @@ function Navbar(props) {
           </div>
         </div>
       </div>
+      
+      <LogIntervalSetting 
+        open={open}
+        setOpen={setOpen}
+        setNotification={setNotification}
+        handleClose={handleClose}
+      />
       <NotificationBar
         handleClose={handleNotificationClose}
         notificationContent={openNotification.message}
