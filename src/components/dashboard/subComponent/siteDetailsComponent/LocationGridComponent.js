@@ -12,7 +12,7 @@ import ApplicationStore from '../../../../utils/localStorageUtil';
 function LocationGridComponent(props) {
   const {
     setLocationDetails, setProgressState, setBreadCrumbLabels, setLocationCoordinationList,
-    setZoomLevel, setCenterLatitude, setCenterLongitude, newNotification
+    setZoomLevel, setCenterLatitude, setCenterLongitude
   } = props;
   const [dataList, setDataList] = useState([]);
   let { locationIdList } = ApplicationStore().getStorage('alertDetails');
