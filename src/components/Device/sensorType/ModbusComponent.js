@@ -43,13 +43,13 @@ function Modbus({
           xl={2.5}
         >
           <div className="rounded-md -space-y-px">
-            <FormControl className="float-left" disabled={disable || false}>
+            <FormControl className="float-left" disabled={disable || false} required>
               <RadioGroup
                 row
                 aria-labelledby="demo-row-radio-buttons-group-label"
                 name="row-radio-buttons-group"
                 value={sensorType}
-                onClick={(e) => {
+                onChange={(e) => {
                   setSensorType(e.target.value);
                 }}
               >
@@ -219,13 +219,13 @@ function Modbus({
           xl={2.5}
         >
           <div className="rounded-md -space-y-px">
-            <FormControl className="float-left" disabled={disable || false}>
+            <FormControl className="float-left" disabled={disable || false} required>
               <RadioGroup
                 row
                 aria-labelledby="demo-row-radio-buttons-group-label2"
                 name="row-radio-buttons-group-2"
                 value={length}
-                onClick={(e) => {
+                onChange={(e) => {
                   setLength(e.target.value);
                 }}
               >
@@ -397,6 +397,7 @@ function Modbus({
           <div className="rounded-md -space-y-px flex">
             <Checkbox
               checked={minRatedReadingChecked != 0 || moduleAccess.edit === false && true}
+              disabled={moduleAccess.edit === false && true || disable}
               onChange={(e) => {
                 setMinRatedReadingChecked(e.target.checked);
               }}
@@ -504,6 +505,7 @@ function Modbus({
           <div className="rounded-md -space-y-px flex">
             <Checkbox
               checked={maxRatedReadingChecked != 0 || moduleAccess.edit === false && true}
+              disabled={moduleAccess.edit === false && true || disable}
               onChange={(e) => { setMaxRatedReadingChecked(e.target.checked); }}
             />
           </div>

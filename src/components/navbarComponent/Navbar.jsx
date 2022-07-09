@@ -26,7 +26,7 @@ import LogIntervalSetting from './LogIntervalSettingComponent';
 function Navbar(props) {
   // const { dispatch } = useContext(DarkModeContext);
   const navigate = useNavigate();
-  const { userDetails } = ApplicationStore().getStorage('userDetails');
+  const { userDetails, intervalDetails } = ApplicationStore().getStorage('userDetails');
   const isSystemSpecialist = userDetails?.userRole === 'systemSpecialist' ? true : false;
   const [userDisplayName, setUserDisplayName] = useState('');
   const [customerDisplayName, setCustomerDisplayName] = useState('Company Name Here...');
@@ -266,6 +266,7 @@ function Navbar(props) {
         setOpen={setOpen}
         setNotification={setNotification}
         handleClose={handleClose}
+        intervalDetails={intervalDetails}
       />
       <NotificationBar
         handleClose={handleNotificationClose}

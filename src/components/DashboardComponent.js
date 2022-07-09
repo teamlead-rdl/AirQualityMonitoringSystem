@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './dashboard/dragResize.scss';
 import { Grid } from '@mui/material';
 
@@ -8,6 +8,8 @@ import GeoLocationWidget from './dashboard/components/GeoLocationWidget';
 import ImageMarkerList from './Device/subComponent/imageMarkerList';
 import LandingPageComponent from './dashboard/subComponent/siteDetailsComponent/LandingPageComponent';
 import DeviceGridComponent from './dashboard/subComponent/siteDetailsComponent/DeviceGridComponent';
+import ApplicationStore from '../utils/localStorageUtil';
+import { FetchFacilitiyService } from '../services/LoginPageService';
 
 /* eslint-disable no-unused-vars */
 function Dashboard() {
@@ -49,6 +51,56 @@ function Dashboard() {
   const [deviceCoordsList, setDeviceCoordsList] = useState([]);
   const [isdashboard, setIsDashBoard] = useState(0);
   const [isGeoMap, setIsGeoMap] = useState(true);
+
+  useEffect(()=>{
+    const { locationDetails } = ApplicationStore().getStorage('userDetails');
+    const { locationLabel, facilityLabel, branchLabel } = ApplicationStore().getStorage('siteDetails');
+
+    setLocationDetails((oldValue)=>{
+      return {...oldValue, location_id: locationDetails.location_id, branch_id: locationDetails.branch_id, facility_id: locationDetails.facility_id}
+    });
+    setBreadCrumbLabels((oldValue)=>{
+      return {...oldValue, stateLabel: locationLabel, branchLabel: branchLabel, facilityLabel: facilityLabel}
+    })
+    setProgressState((oldValue)=>{
+      let newValue = 0;
+      if(locationDetails.facility_id){
+        newValue = 2;
+        fetchfacility();
+      } 
+      else if(locationDetails.branch_id){
+        newValue = 1;
+      } 
+      return newValue;
+    });
+
+  },[]);
+  const fetchfacility = () =>{
+    const { locationDetails } = ApplicationStore().getStorage('userDetails');
+    FetchFacilitiyService({
+      location_id: locationDetails?.location_id,
+      branch_id: locationDetails?.branch_id,
+    }, handleFetchSuccess, handleFetchException);
+  }
+
+  const handleFetchSuccess = (dataObject) => {
+    const newArray = dataObject.data ? dataObject.data.map((item) => {
+      const coordinates = item.coordinates ? item.coordinates.replaceAll('"', '').split(',') : [];
+      return {
+        id: item.id,
+        name: item.facilityName,
+        position: {
+          lat: parseFloat(coordinates[0]),
+          lng: parseFloat(coordinates[1]),
+        },
+      };
+    })
+      : [];
+    setCenterLatitude(parseFloat(newArray[0]?.position.lat));
+    setCenterLongitude(parseFloat(newArray[0]?.position.lng));
+  };
+
+  const handleFetchException = (errorObject) => { };
 
   return (
     <Grid container spacing={1} style={{ height: '100%', width: '100%', padding: 2 }}>

@@ -225,9 +225,8 @@ function SensorModel({
     >
       {progressStatus === 1 && (
         <>
-          <DialogTitle>Sensors for device</DialogTitle>
-          <DialogContent>
-
+          <DialogTitle style={{padding: '0px', paddingLeft: '26px', paddingTop: '10px'}}>Sensors for device</DialogTitle>
+          <DialogContent style={{padding: '10px'}}>
             <SensorSettingsMenu
               anchorEl={anchorEl}
               popperOpen={popperOpen}

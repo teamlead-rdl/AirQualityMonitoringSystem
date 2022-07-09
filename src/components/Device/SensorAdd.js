@@ -9,6 +9,7 @@ import {
   Grid,
   Autocomplete,
   Box,
+  DialogTitle,
 } from '@mui/material';
 import {
   CategoryFetchService, DeviceFetchService, SensorCategoryFetchService, SensorDeployAddService, SensorDeployEditService, SensorFetchService,
@@ -36,7 +37,7 @@ function DeviceAdd({
   const [deviceList, setDeviceList] = useState([]);
   const [sensorCategoryList, setSensorCategoryList] = useState([]);
   const [alerts, setAlert] = useState('');
-  const [sensorCategoryId, setSensorCategoryId] = useState(editData?.sensorCategoryId || '');
+  const [sensorCategoryId, setSensorCategoryId] = useState(editData?.sensorCategoryId || '0');
   const [sensorName, setSensorName] = useState(editData?.sensorName || '');
   const [sensorOutput, setSensorOutput] = useState(editData?.sensorOutput || 'Digital');
   // -- Digital --/
@@ -127,7 +128,7 @@ function DeviceAdd({
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [editData]);
 
   const categoryHandleSuccess = (dataObject) => {
     setCategoryList(dataObject.data);
@@ -149,8 +150,8 @@ function DeviceAdd({
     CategoryFetchService(categoryHandleSuccess, handleException);
     SensorCategoryFetchService(sensorCategoryHandleSuccess, handleException);
     /* eslint-disable-next-line */
-    editData?.deviceId && DeviceFetchService({ ...locationDetails, sensorCategoryId }, deviceHandleSuccess, handleException);
-    SensorFetchService(sensorCategoryId, sensorHandleSuccess, handleException);
+    DeviceFetchService({ ...locationDetails, sensorCategoryId: categoryId }, deviceHandleSuccess, handleException);
+    // SensorFetchService(sensorCategoryId, sensorHandleSuccess, handleException);
   };
   /* eslint-disable-next-line */
   const deviceChanged = (sensorCategoryId) => {
@@ -372,9 +373,12 @@ function DeviceAdd({
   return (
     <div className="w-full" style={{ marginTop: 0 , overflow: 'auto'}}>
       <form className="mt-0 p-0 w-full" onSubmit={handleSubmit}>
-        <DialogContent sx={{ px: 0, p: 0 }} style={{
+        <DialogContent sx={{ px: 0, p: 3 }} style={{
           height: '78vh'
         }} >
+          <DialogTitle style={{float: 'left', padding: '0px', marginBottom: '10px'}}>
+            Edit Sensor
+          </DialogTitle>
           <Grid container spacing={1} sx={{ mt: 0 }}>
             <Grid
               sx={{ mt: 0, padding: 0 }}

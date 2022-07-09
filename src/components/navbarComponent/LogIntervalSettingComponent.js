@@ -2,15 +2,14 @@ import { Button, Dialog, DialogContent, DialogTitle, Grid, TextField, Typography
 import React, { useState } from 'react'
 import { CompanyLogInterval } from '../../services/LoginPageService';
 import ApplicationStore from '../../utils/localStorageUtil';
-const { intervalDetails } = ApplicationStore().getStorage('userDetails');
 
-const LogIntervalSetting = ({ open, setOpen, setNotification, handleClose}) => {
+const LogIntervalSetting = ({ open, setOpen, setNotification, handleClose, intervalDetails}) => {
 
-    const [alertLogInterval, setAlertLogInterval] = useState(intervalDetails.alertLogInterval || '15');
-    const [deviceLogInterval, setDeviceLogInterval] = useState(intervalDetails.deviceLogInterval || '15');
-    const [sensorLogInterval, setSensorLogInterval] = useState(intervalDetails.sensorLogInterval || '15');
-    const [periodicBackupInterval, setPeriodicBackupInterval] = useState(intervalDetails.periodicBackupInterval || '12');
-    const [dataRetentionPeriodInterval, setDataRetentionPeriodInterval] = useState(intervalDetails.dataRetentionPeriodInterval || '12');
+    const [alertLogInterval, setAlertLogInterval] = useState(intervalDetails?.alertLogInterval || '15');
+    const [deviceLogInterval, setDeviceLogInterval] = useState(intervalDetails?.deviceLogInterval || '15');
+    const [sensorLogInterval, setSensorLogInterval] = useState(intervalDetails?.sensorLogInterval || '15');
+    const [periodicBackupInterval, setPeriodicBackupInterval] = useState(intervalDetails?.periodicBackupInterval || '12');
+    const [dataRetentionPeriodInterval, setDataRetentionPeriodInterval] = useState(intervalDetails?.dataRetentionPeriodInterval || '12');
 
     const handleSubmit = (e) =>{
         e.preventDefault();
@@ -54,7 +53,7 @@ const LogIntervalSetting = ({ open, setOpen, setNotification, handleClose}) => {
                 <Grid container>
                   <Grid item sx={{width: '50%', textAlign: 'center', alignSelf: 'center', paddingTop: 2}} >
                     <Typography>
-                      Alert Log Interval :
+                      Alert Refresh Interval :
                     </Typography>
                   </Grid>
                   <Grid item sx={{width: '50%', paddingTop: 2}} >
@@ -75,7 +74,7 @@ const LogIntervalSetting = ({ open, setOpen, setNotification, handleClose}) => {
                 <Grid container>
                   <Grid item sx={{width: '50%', textAlign: 'center', alignSelf: 'center', paddingTop: 2}} >
                     <Typography>
-                        Sensor Log Interval :
+                        Sensor Refresh Interval :
                     </Typography>
                   </Grid>
                   <Grid item sx={{width: '50%', paddingTop: 2}} >
@@ -96,7 +95,7 @@ const LogIntervalSetting = ({ open, setOpen, setNotification, handleClose}) => {
                 <Grid container>
                   <Grid item sx={{width: '50%', textAlign: 'center', alignSelf: 'center', paddingTop: 2}} >
                     <Typography>
-                        Device Log Interval :
+                        Device Refresh Interval :
                     </Typography>
                   </Grid>
                   <Grid item sx={{width: '50%', paddingTop: 2}} >

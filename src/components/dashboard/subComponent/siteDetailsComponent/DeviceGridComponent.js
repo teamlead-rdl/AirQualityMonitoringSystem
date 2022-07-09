@@ -5,6 +5,7 @@ import {
 import { DeviceFetchService } from '../../../../services/LoginPageService';
 import DeviceWidget from '../deviceCard/DeviceWidget';
 import NotificationWidget from '../deviceCard/NotificationWidget';
+import ApplicationStore from '../../../../utils/localStorageUtil';
 
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -51,6 +52,21 @@ function DeviceGridComponent({
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
+  const setLocationlabel = () =>{
+    const { locationDetails } = ApplicationStore().getStorage('userDetails');
+    setProgressState((oldValue)=>{
+      let newValue = 0;
+      if(locationDetails.facility_id){
+        newValue = 2;
+      } 
+      else if(locationDetails.branch_id){
+        newValue = 1;
+      } 
+      return newValue;
+    });
+  }
+
   return (
     <div style={{
       height: '98%', width: '100%', marginTop: 10, marginLeft: 10, paddingLeft: 5, paddingTop: 5,
@@ -63,7 +79,8 @@ function DeviceGridComponent({
             setCenterLongitude(80.000);
             setDeviceCoordsList([]);
             setIsGeoMap(true);
-            setProgressState(0);
+            setLocationlabel();
+            // setProgressState(0);
             setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
@@ -74,7 +91,8 @@ function DeviceGridComponent({
           onClick={() => {
             setDeviceCoordsList([]);
             setIsGeoMap(true);
-            setProgressState(1);
+            setLocationlabel();
+            // setProgressState(1);
             setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
@@ -85,7 +103,8 @@ function DeviceGridComponent({
           onClick={() => {
             setDeviceCoordsList([]);
             setIsGeoMap(true);
-            setProgressState(2);
+            setLocationlabel();
+            // setProgressState(2);
             setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}

@@ -67,6 +67,21 @@ function BranchGridComponent({
       location_id: locationDetails.location_id,
     }, handleSuccess, handleException);
   }, [locationDetails]);
+  
+  // useEffect(()=>{
+  //   const { locationDetails } = ApplicationStore().getStorage('userDetails');
+  
+  //   setProgressState((oldValue)=>{
+  //     let newValue = 0;
+  //     if(locationDetails.facility_id){
+  //       newValue = 2;
+  //     } 
+  //     else if(locationDetails.branch_id){
+  //       newValue = 1;
+  //     } 
+  //     return newValue;
+  //   });
+  // }, []);
 
   const handleSuccess = (dataObject) => {
     setDataList(dataObject.data);

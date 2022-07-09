@@ -42,12 +42,12 @@ function HomePageComponent() {
     FetchLocationService(handleSuccess, handleException);
     FetchBranchService({ location_id }, handleBranchSuccess, handleException);
     FetchFacilitiyService({ location_id, branch_id }, handleFacilitySuccess, handleException);
-    ApplicationStore().setStorage('siteDetails', {
-      locationLabel, branchLabel, facilityLabel,
-    });
   },[]);
   
   useEffect(()=>{
+    ApplicationStore().setStorage('siteDetails', {
+      locationLabel, branchLabel, facilityLabel,
+    });
     const notifierInterval = setInterval(() => {
       NotificationAlerts({ location_id, branch_id, facility_id }, handleNotificationSuccess, handleNotificationException);
       // setNotifierState((oldValue) => {

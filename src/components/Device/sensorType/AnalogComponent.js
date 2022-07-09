@@ -148,12 +148,12 @@ function Analog({
           sm={1}
           md={0.5}
           lg={0.5}
-          xl={1}
+          xl={0.5}
         >
           <div className="rounded-md -space-y-px flex">
             <Checkbox
               checked={minRatedReadingChecked != 0}
-              disabled={moduleAccess.edit === false && true}
+              disabled={moduleAccess.edit === false && true || disable}
               onChange={(e) => {
                 setMinRatedReadingChecked(e.target.checked);
               }}
@@ -254,12 +254,12 @@ function Analog({
           sm={1}
           md={0.5}
           lg={0.5}
-          xl={1}
+          xl={0.5}
         >
           <div className="rounded-md -space-y-px flex">
             <Checkbox
               checked={maxRatedReadingChecked != 0}
-              disabled={moduleAccess.edit === false && true}
+              disabled={moduleAccess.edit === false && true || disable}
               onChange={(e) => {
                 setMaxRatedReadingChecked(e.target.checked);
               }}

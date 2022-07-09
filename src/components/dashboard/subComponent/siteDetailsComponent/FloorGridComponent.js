@@ -104,12 +104,27 @@ function FloorGridComponent({
     );
   }
 
+  const setLocationlabel = () =>{
+    const { locationDetails } = ApplicationStore().getStorage('userDetails');
+    setProgressState((oldValue)=>{
+      let newValue = 0;
+      if(locationDetails.facility_id){
+        newValue = 2;
+      } 
+      else if(locationDetails.branch_id){
+        newValue = 1;
+      } 
+      return newValue;
+    });
+  }
+
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3
           onClick={() => {
-            setProgressState(0);
+            setLocationlabel();
+            // setProgressState(0);
             setDeviceCoordsList([]);
             setCenterLatitude(23.500);
             setCenterLongitude(80.000);
@@ -121,7 +136,8 @@ function FloorGridComponent({
         </h3>
         <h3
           onClick={() => {
-            setProgressState(1);
+            setLocationlabel();
+            // setProgressState(1);
             setDeviceCoordsList([]);
             setIsGeoMap(true);
           }}
@@ -131,7 +147,8 @@ function FloorGridComponent({
         </h3>
         <h3
           onClick={() => {
-            setProgressState(2);
+            setLocationlabel();
+            // setProgressState(2);
             setDeviceCoordsList([]);
             setIsGeoMap(true);
           }}
