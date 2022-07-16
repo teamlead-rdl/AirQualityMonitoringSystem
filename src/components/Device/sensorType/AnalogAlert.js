@@ -1,9 +1,8 @@
 import {
   DialogContent, FormControl, Grid, InputLabel, MenuItem, Select, TextField,
 } from '@mui/material';
-import { Box } from '@mui/system';
 import React from 'react';
-import { AddCategoryValidate, AnalogSensorValidate } from '../../../validation/formValidation';
+import { AnalogSensorValidate } from '../../../validation/formValidation';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 
 function AnalogAlert({
@@ -14,18 +13,21 @@ function AnalogAlert({
   criticalAlertType, setCriticalAlertType,
   criticalLowAlert, setCriticalLowAlert,
   criticalHighAlert, setCriticalHighAlert,
+  criticalRefMinValue, criticalRefMaxValue,
 
   warningMinValue, setWarningMinValue,
   warningMaxValue, setWarningMaxValue,
   warningAlertType, setWarningAlertType,
   warningLowAlert, setWarningLowAlert,
   warningHighAlert, setWarningHighAlert,
+  warningRefMinValue, warningRefMaxValue,
 
   outofrangeMinValue, setOutofrangeMinValue,
   outofrangeMaxValue, setOutofrangeMaxValue,
   outofrangeAlertType, setOutofrangeAlertType,
   outofrangeLowAlert, setOutofrangeLowAlert,
   outofrangeHighAlert, setOutofrangeHighAlert,
+  outofrangeRefMinValue, outofrangeRefMaxValue,
 }) {
   const moduleAccess = useUserAccess()('devicelocation');
   const validateForNullValue = (value, type) => {
@@ -98,8 +100,8 @@ function AnalogAlert({
               label="Sensor alert"
               onChange={(e) => {
                 setCriticalAlertType(e.target.value);
-                setCriticalMinValue('');
-                setCriticalMaxValue('');
+                setCriticalMinValue(criticalMinValue);
+                setCriticalMaxValue(criticalMaxValue);
               }}
             >
               <MenuItem value="High">High</MenuItem>
@@ -119,7 +121,7 @@ function AnalogAlert({
           style={{ float: 'right' }}
         >
 
-          {criticalAlertType == 'Low' || criticalAlertType == 'Both'
+          {criticalAlertType === 'Low' || criticalAlertType === 'Both'
             ? (
               <Grid
                 sx={{ mt: 0, padding: 0 }}
@@ -152,7 +154,7 @@ function AnalogAlert({
               </Grid>
             )
             : ''}
-          {criticalAlertType == 'Both' || criticalAlertType == 'High'
+          {criticalAlertType === 'Both' || criticalAlertType === 'High'
             ? (
               <Grid
                 sx={{ mt: 0, padding: 0 }}
@@ -199,8 +201,12 @@ function AnalogAlert({
             <TextField
               sx={{ marginTop: 0 }}
               value={criticalMinValue}
-              disabled={criticalAlertType === "High" || criticalAlertType === "" || moduleAccess.edit === false && true}
+              disabled={criticalAlertType === 'High' || criticalAlertType === '' || (moduleAccess.edit === false && true)}
               type="number"
+              inputProps={{
+                min: criticalRefMinValue,
+                max: criticalRefMaxValue,
+              }}
               onBlur={() => validateForNullValue(criticalMinValue, 'criticalMinValue')}
               onChange={(e) => {
                 setCriticalMinValue(e.target.value);
@@ -230,8 +236,12 @@ function AnalogAlert({
               sx={{ marginTop: 0 }}
               value={criticalMaxValue}
               type="number"
-              disabled={criticalAlertType === "Low" || criticalAlertType === "" || moduleAccess.edit === false && true}
+              disabled={criticalAlertType === 'Low' || criticalAlertType === '' || (moduleAccess.edit === false && true)}
               onBlur={() => validateForNullValue(criticalMaxValue, 'criticalMaxValue')}
+              inputProps={{
+                min: criticalRefMinValue,
+                max: criticalRefMaxValue,
+              }}
               onChange={(e) => {
                 setCriticalMaxValue(e.target.value);
               }}
@@ -283,8 +293,8 @@ function AnalogAlert({
               required
               onChange={(e) => {
                 setWarningAlertType(e.target.value);
-                setWarningMinValue("");
-                setWarningMaxValue("");
+                setWarningMinValue(warningMinValue);
+                setWarningMaxValue(warningMaxValue);
               }}
             >
               <MenuItem value="High">High</MenuItem>
@@ -304,7 +314,7 @@ function AnalogAlert({
           style={{ float: 'right' }}
         >
 
-          {warningAlertType == 'Low' || warningAlertType == 'Both'
+          {warningAlertType === 'Low' || warningAlertType === 'Both'
             ? (
               <Grid
                 sx={{ mt: 0, padding: 0 }}
@@ -337,7 +347,7 @@ function AnalogAlert({
               </Grid>
             )
             : ''}
-          {warningAlertType == 'High' || warningAlertType == 'Both'
+          {warningAlertType === 'High' || warningAlertType === 'Both'
             ? (
               <Grid
                 sx={{ mt: 0, padding: 0 }}
@@ -385,8 +395,12 @@ function AnalogAlert({
               sx={{ marginTop: 0 }}
               value={warningMinValue}
               type="number"
-              disabled={warningAlertType === "High" || warningAlertType === "" || moduleAccess.edit === false && true }
+              disabled={warningAlertType === 'High' || warningAlertType === '' || (moduleAccess.edit === false && true)}
               onBlur={() => validateForNullValue(warningMinValue, 'warningMinValue')}
+              inputProps={{
+                min: warningRefMinValue,
+                max: warningRefMaxValue,
+              }}
               onChange={(e) => {
                 setWarningMinValue(e.target.value);
               }}
@@ -415,8 +429,12 @@ function AnalogAlert({
               sx={{ marginTop: 0 }}
               value={warningMaxValue}
               type="number"
-              disabled={warningAlertType === "Low" || warningAlertType === "" || moduleAccess.edit === false && true}
+              disabled={warningAlertType === 'Low' || warningAlertType === '' || (moduleAccess.edit === false && true)}
               onBlur={() => validateForNullValue(warningMaxValue, 'warningMaxValue')}
+              inputProps={{
+                min: warningRefMinValue,
+                max: warningRefMaxValue,
+              }}
               onChange={(e) => {
                 setWarningMaxValue(e.target.value);
               }}
@@ -468,8 +486,8 @@ function AnalogAlert({
               label="Sensor alert"
               onChange={(e) => {
                 setOutofrangeAlertType(e.target.value);
-                setOutofrangeMaxValue('');
-                setOutofrangeMinValue('');
+                setOutofrangeMinValue(outofrangeMinValue);
+                setOutofrangeMaxValue(outofrangeMaxValue);
               }}
             >
               <MenuItem value="High">High</MenuItem>
@@ -488,7 +506,7 @@ function AnalogAlert({
           xl={6}
           style={{ float: 'right' }}
         >
-          {outofrangeAlertType == 'Low' || outofrangeAlertType == 'Both'
+          {outofrangeAlertType === 'Low' || outofrangeAlertType === 'Both'
             ? (
               <Grid
                 sx={{ mt: 0, padding: 0 }}
@@ -521,7 +539,7 @@ function AnalogAlert({
               </Grid>
             )
             : ''}
-          {outofrangeAlertType == 'High' || outofrangeAlertType == 'Both'
+          {outofrangeAlertType === 'High' || outofrangeAlertType === 'Both'
             ? (
               <Grid
                 sx={{ mt: 0, padding: 0 }}
@@ -570,8 +588,12 @@ function AnalogAlert({
               sx={{ marginTop: 0 }}
               value={outofrangeMinValue}
               type="number"
-              disabled={outofrangeAlertType === "High" || outofrangeAlertType === "" || moduleAccess.edit === false && true}
+              disabled={outofrangeAlertType === 'High' || outofrangeAlertType === '' || (moduleAccess.edit === false && true)}
               onBlur={() => validateForNullValue(outofrangeMinValue, 'outofrangeMinValue')}
+              inputProps={{
+                min: outofrangeRefMinValue,
+                max: outofrangeRefMaxValue,
+              }}
               onChange={(e) => {
                 setOutofrangeMinValue(e.target.value);
               }}
@@ -600,8 +622,12 @@ function AnalogAlert({
               sx={{ marginTop: 0 }}
               value={outofrangeMaxValue}
               type="number"
-              disabled={outofrangeAlertType === "Low" || outofrangeAlertType === "" || moduleAccess.edit === false && true}
+              disabled={outofrangeAlertType === 'Low' || outofrangeAlertType === '' || (moduleAccess.edit === false && true)}
               onBlur={() => validateForNullValue(outofrangeMaxValue, 'outofrangeMaxValue')}
+              inputProps={{
+                min: outofrangeRefMinValue,
+                max: outofrangeRefMaxValue,
+              }}
               onChange={(e) => {
                 setOutofrangeMaxValue(e.target.value);
               }}

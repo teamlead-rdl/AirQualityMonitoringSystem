@@ -1,6 +1,5 @@
 import './navbar.scss';
 import {
-  NotificationsNoneOutlined,
   ChatBubbleOutlineOutlined,
   AccountCircle,
   ErrorOutlineOutlined,
@@ -10,14 +9,13 @@ import {
 } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import {
-  IconButton, Toolbar, Menu, MenuItem, ListSubheader, ListItemAvatar, ListItemText, ListItem, Typography, Tooltip, Zoom, Dialog, DialogTitle, DialogContent, Grid, Button, TextField,
+  IconButton, Toolbar, Menu, MenuItem, ListSubheader, ListItemAvatar, ListItemText, ListItem, Typography, Tooltip, Zoom,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import { LogoutService } from '../../services/LoginPageService';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import ApplicationStore from '../../utils/localStorageUtil';
-import { Box } from '@mui/system';
 import LogIntervalSetting from './LogIntervalSettingComponent';
 
 // import { DarkModeContext } from "../../context/darkModeContext";
@@ -27,7 +25,7 @@ function Navbar(props) {
   // const { dispatch } = useContext(DarkModeContext);
   const navigate = useNavigate();
   const { userDetails, intervalDetails } = ApplicationStore().getStorage('userDetails');
-  const isSystemSpecialist = userDetails?.userRole === 'systemSpecialist' ? true : false;
+  const isSystemSpecialist = userDetails?.userRole === 'systemSpecialist';
   const [userDisplayName, setUserDisplayName] = useState('');
   const [customerDisplayName, setCustomerDisplayName] = useState('Company Name Here...');
   const [open, setOpen] = useState(false);
@@ -44,7 +42,6 @@ function Navbar(props) {
       setCustomerDisplayName(userDetails.companyName);
     }
     setInterval(() => {
-      // Alert Api here
     }, 1000);
   }, []);
 
@@ -120,18 +117,6 @@ function Navbar(props) {
           </Typography>
         </div>
         <div className="items">
-          <Tooltip title="Alerts" placement="bottom" TransitionComponent={Zoom} arrow>
-            <div className="item">
-              <NotificationsNoneOutlined
-                className="icon"
-                style={{
-                  cursor: 'pointer',
-                }}
-              />
-              <div className="counter">1</div>
-
-            </div>
-          </Tooltip>
           <Tooltip title="Notifications" placement="bottom" TransitionComponent={Zoom} arrow>
             <div className="item">
               <ChatBubbleOutlineOutlined
@@ -193,13 +178,22 @@ function Navbar(props) {
                   id, sensorTag, a_date, a_time, msg, alertType,
                 }) => (
                   <div key={id}>
-                    <ListSubheader sx={{ bgcolor: 'background.paper', height: '20px'}} style={{backgroundColor: '#e6f8ff', paddingTop: '0px', lineHeight: 'inherit' }}>
+                    <ListSubheader
+                      sx={{ bgcolor: 'background.paper', height: '20px' }}
+                      style={{ backgroundColor: '#e6f8ff', paddingTop: '0px', lineHeight: 'inherit' }}
+                    >
                       {a_date}
-                      <div style={{float: 'right', height: '20px'}}>
+                      <div style={{ float: 'right', height: '20px' }}>
                         {a_time}
                       </div>
                     </ListSubheader>
-                    <ListItem button onClick={handleClose} style={{ maxWidth: 500, minWidth: '300px', paddingTop: '0px', paddingBottom: '0px' }}>
+                    <ListItem
+                      button
+                      onClick={handleClose}
+                      style={{
+                        maxWidth: 500, minWidth: '300px', paddingTop: '0px', paddingBottom: '0px',
+                      }}
+                    >
                       <ListItemAvatar>
                         {alertType === 'Critical'
                           ? <ErrorOutlineOutlined sx={{ color: 'red', fontSize: 30 }} />
@@ -245,14 +239,16 @@ function Navbar(props) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            {isSystemSpecialist && 
-              <MenuItem onClick={()=>{
-                handleClose();
-                setOpen(oldValue => !oldValue);
-              }}>
-                Settings
-              </MenuItem>
-            }
+            {isSystemSpecialist
+              && (
+                <MenuItem onClick={() => {
+                  handleClose();
+                  setOpen((oldValue) => !oldValue);
+                }}
+                >
+                  Settings
+                </MenuItem>
+              )}
             <MenuItem onClick={logout}>Logout</MenuItem>
           </Menu>
           <div className="item">
@@ -260,8 +256,8 @@ function Navbar(props) {
           </div>
         </div>
       </div>
-      
-      <LogIntervalSetting 
+
+      <LogIntervalSetting
         open={open}
         setOpen={setOpen}
         setNotification={setNotification}

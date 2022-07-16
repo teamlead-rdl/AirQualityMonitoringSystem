@@ -7,6 +7,10 @@ import ApplicationStore from '../../../../utils/localStorageUtil';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable radix */
+/* eslint-disable array-callback-return */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable no-shadow */
 function FloorGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels,
   setBreadCrumbLabels, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages,
@@ -31,20 +35,20 @@ function FloorGridComponent({
       renderCell: ((params) => {
         let element = {
           alertLabel: 'Good',
-          alertColor : 'green',
-          alertPriority: 3
-        }
-        let alertObject = floorIdList?.filter((alert) => {
+          alertColor: 'green',
+          alertPriority: 3,
+        };
+        const alertObject = floorIdList?.filter((alert) => {
           return params.row.id === parseInt(alert.id);
         });
 
-        alertObject?.map((data)=>{
-          element = element.alertPriority < data.alertPriority ? element : 
-            { 
-              alertLabel: data.alertType === 'Critical'? 'Critical' : data.alertType === 'outOfRange'? 'Out Of Range' : 'Good',
-              alertColor : data.alertType === 'Critical'? 'red' : data.alertType === 'outOfRange'? 'orange' : 'green',
-              alertPriority: data.alertType === 'Critical'? 1 : data.alertType === 'outOfRange'? 2 : 3
-            }
+        alertObject?.map((data) => {
+          element = element.alertPriority < data.alertPriority ? element
+            : {
+              alertLabel: data.alertType === 'Critical' ? 'Critical' : data.alertType === 'outOfRange' ? 'Out Of Range' : 'Good',
+              alertColor: data.alertType === 'Critical' ? 'red' : data.alertType === 'outOfRange' ? 'orange' : 'green',
+              alertPriority: data.alertType === 'Critical' ? 1 : data.alertType === 'outOfRange' ? 2 : 3,
+            };
         });
 
         return (
@@ -104,30 +108,29 @@ function FloorGridComponent({
     );
   }
 
-  const setLocationlabel = () =>{
+  const setLocationlabel = (value) => {
     const { locationDetails } = ApplicationStore().getStorage('userDetails');
-    setProgressState((oldValue)=>{
-      let newValue = 0;
-      if(locationDetails.facility_id){
+    setProgressState((oldValue) => {
+      let newValue = value;
+      if (locationDetails.facility_id) {
         newValue = 2;
-      } 
-      else if(locationDetails.branch_id){
+      } else if (locationDetails.branch_id) {
         newValue = 1;
-      } 
+      }
       return newValue;
     });
-  }
+  };
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3
           onClick={() => {
-            setLocationlabel();
+            setLocationlabel(0);
             // setProgressState(0);
             setDeviceCoordsList([]);
-            setCenterLatitude(23.500);
-            setCenterLongitude(80.000);
+            // setCenterLatitude(23.500);
+            // setCenterLongitude(80.000);
             setIsGeoMap(true);
           }}
           style={{ cursor: 'pointer' }}
@@ -136,7 +139,7 @@ function FloorGridComponent({
         </h3>
         <h3
           onClick={() => {
-            setLocationlabel();
+            setLocationlabel(1);
             // setProgressState(1);
             setDeviceCoordsList([]);
             setIsGeoMap(true);
@@ -147,7 +150,7 @@ function FloorGridComponent({
         </h3>
         <h3
           onClick={() => {
-            setLocationlabel();
+            setLocationlabel(2);
             // setProgressState(2);
             setDeviceCoordsList([]);
             setIsGeoMap(true);

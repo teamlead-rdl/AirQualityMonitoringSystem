@@ -22,6 +22,8 @@ import { useUserAccess } from '../../../context/UserAccessProvider';
 import BumpTestComponentModal from './BumpTestComponentModal';
 import DeleteConfirmationDailog from '../../../utils/confirmDeletion';
 import ImageMarkerList from './imageMarkerList';
+/* eslint-disable no-shadow */
+/* eslint-disable no-useless-concat */
 
 function AddDeviceListResults(props) {
   const columns = [
@@ -119,13 +121,12 @@ function AddDeviceListResults(props) {
   const handleSuccess = (dataObject) => {
     setGridLoading(false);
     setDeviceList(dataObject.data);
-    let deviceCoordinationsList = dataObject.data.map((data, index)=>{
-      let coordination = data.floorCords;
-      let arrayList = coordination?.split(',');
-      return  arrayList && {top: arrayList[0], left: arrayList[1]}
+    const deviceCoordinationsList = dataObject.data.map((data) => {
+      const coordination = data.floorCords;
+      const arrayList = coordination?.split(',');
+      return arrayList && { top: arrayList[0], left: arrayList[1] };
     });
-    let filteredArray = deviceCoordinationsList.filter(x => x !=null);
-    console.log(filteredArray);
+    const filteredArray = deviceCoordinationsList.filter((x) => x != null);
     setDeviceCoordsList(filteredArray || []);
   };
 
@@ -146,43 +147,47 @@ function AddDeviceListResults(props) {
 
   /* eslint-disable-next-line */
   function ChangeModeAPI({id}, deviceMode){
-    ChangeDeviceMode({ id, deviceMode }, modeChangeHandleSuccess, modeChangeHandleException);
+    if (deviceMode !== 'bumpTest') {
+      ChangeDeviceMode({ id, deviceMode }, modeChangeHandleSuccess, modeChangeHandleException);
+    } else {
+      setDeviceId(id);
+      bumptestDeployedSensorsList(id);
+    }
   }
 
   /* eslint-disable-next-line */
   function ChangeMode(props) {
     return ((
-        <Select
-          sx={{
-            width: 180,
-            '&.Mui-root .MuiOutlinedInput-root': {
-              border: '0px solid #484850',
-              borderRadius: '5px 5px 0 0',
-            },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              border: '0px solid #484850',
-              borderRadius: '5px 5px 0 0',
-            },
-          }}
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={props.selectedRow.deviceMode}
-          disabled = {!moduleAccess.edit && true}
-          label="Mode"
-          fullWidth
-          onChange={(e) => {
-            // setModeChange(true);
-            ChangeModeAPI(props.selectedRow, e.target.value);
-          }}
-        >
-          <MenuItem value="enabled">Enable</MenuItem>
-          <MenuItem value="disabled">Disable</MenuItem>
-          <MenuItem value="bumpTest">Bump Test</MenuItem>
-          <MenuItem value="calibration">Calibration</MenuItem>
-          <MenuItem value="firmwareUpgradation">Firmware Upgradation</MenuItem>
-          <MenuItem value="config">Configuration</MenuItem>
-        </Select>
-      ));
+      <Select
+        sx={{
+          width: 180,
+          '&.Mui-root .MuiOutlinedInput-root': {
+            border: '0px solid #484850',
+            borderRadius: '5px 5px 0 0',
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            border: '0px solid #484850',
+            borderRadius: '5px 5px 0 0',
+          },
+        }}
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={props.selectedRow.deviceMode}
+        disabled={!moduleAccess.edit && true}
+        label="Mode"
+        fullWidth
+        onChange={(e) => {
+          ChangeModeAPI(props.selectedRow, e.target.value);
+        }}
+      >
+        <MenuItem value="enabled">Enable</MenuItem>
+        <MenuItem value="disabled">Disable</MenuItem>
+        <MenuItem value="bumpTest">Bump Test</MenuItem>
+        <MenuItem value="calibration">Calibration</MenuItem>
+        <MenuItem value="firmwareUpgradation">Firmware Upgradation</MenuItem>
+        <MenuItem value="config">Configuration</MenuItem>
+      </Select>
+    ));
   }
 
   /* eslint-disable-next-line */
@@ -304,12 +309,12 @@ function AddDeviceListResults(props) {
     SensorDeployFetchService({ ...props.locationDetails, device_id }, fetchSenosorListSuccess, fetchSenosorListException);
   };
 
-  useEffect(()=>{
-    if(device_id !== '0'){
+  useEffect(() => {
+    if (device_id !== '0') {
       fetchSensorList(device_id);
     }
   }, [sensorRefresh]);
-  
+
   const fetchSenosorListSuccess = (dataObject) => {
     setAnalogSensorList(dataObject.Analog.data || []);
     setDigitalSensorList(dataObject.Digital.data || []);
@@ -375,7 +380,8 @@ function AddDeviceListResults(props) {
   return (
     <div style={{ height: 300, width: '100%', padding: 0 }}>
       <Grid container spacing={1}>
-        <Grid item 
+        <Grid
+          item
           xs={12}
           sm={8}
           md={8}
@@ -383,59 +389,59 @@ function AddDeviceListResults(props) {
           xl={8}
         >
           <Box
-          sx={{
-            height: 400,
-            '& .super-app-theme--calibration': {
-              color: 'maroon',
-              bgcolor: (theme) => getBackgroundColor('#FAE8FA', theme.palette.mode),
-              '&:hover': {
-                bgcolor: (theme) => getHoverBackgroundColor('#FAE8FA', theme.palette.mode),
+            sx={{
+              height: 400,
+              '& .super-app-theme--calibration': {
+                color: 'maroon',
+                bgcolor: (theme) => getBackgroundColor('#FAE8FA', theme.palette.mode),
+                '&:hover': {
+                  bgcolor: (theme) => getHoverBackgroundColor('#FAE8FA', theme.palette.mode),
+                },
+                ':hover': { backgroundColor: '#FAE8FA' },
               },
-              ':hover': { backgroundColor: '#FAE8FA' },
-            },
-            '& .super-app-theme--firmwareUpgradation': {
-              color: 'purple',
-              bgcolor: (theme) => getBackgroundColor('#9fa8da', theme.palette.mode),
-              '&:hover': {
-                bgcolor: (theme) => getHoverBackgroundColor(
-                  '#9fa8da',
-                  theme.palette.mode,
-                ),
+              '& .super-app-theme--firmwareUpgradation': {
+                color: 'purple',
+                bgcolor: (theme) => getBackgroundColor('#9fa8da', theme.palette.mode),
+                '&:hover': {
+                  bgcolor: (theme) => getHoverBackgroundColor(
+                    '#9fa8da',
+                    theme.palette.mode,
+                  ),
+                },
               },
-            },
-            '& .super-app-theme--disabled': {
-              bgcolor: (theme) => getBackgroundColor('#ffcdd2', theme.palette.mode),
-              '&:hover': {
-                bgcolor: (theme) => getHoverBackgroundColor(
-                  '#ffcdd2',
-                  theme.palette.mode,
-                ),
+              '& .super-app-theme--disabled': {
+                bgcolor: (theme) => getBackgroundColor('#ffcdd2', theme.palette.mode),
+                '&:hover': {
+                  bgcolor: (theme) => getHoverBackgroundColor(
+                    '#ffcdd2',
+                    theme.palette.mode,
+                  ),
+                },
               },
-            },
-            '& .super-app-theme--enabled': {
-              bgcolor: (theme) => getBackgroundColor('#A5D6A7', theme.palette.mode),
-              '&:hover': {
-                bgcolor: (theme) => getHoverBackgroundColor(
-                  '#A5D6A7',
-                  theme.palette.mode,
-                ),
+              '& .super-app-theme--enabled': {
+                bgcolor: (theme) => getBackgroundColor('#A5D6A7', theme.palette.mode),
+                '&:hover': {
+                  bgcolor: (theme) => getHoverBackgroundColor(
+                    '#A5D6A7',
+                    theme.palette.mode,
+                  ),
+                },
               },
-            },
-            '& .super-app-theme--bumpTest': {
-              color: 'darkgoldenrod',
-              bgcolor: (theme) => getBackgroundColor('#FFFCE3', theme.palette.mode),
-              '&:hover': {
-                bgcolor: (theme) => getHoverBackgroundColor('#FFFCE3', theme.palette.mode),
+              '& .super-app-theme--bumpTest': {
+                color: 'darkgoldenrod',
+                bgcolor: (theme) => getBackgroundColor('#FFFCE3', theme.palette.mode),
+                '&:hover': {
+                  bgcolor: (theme) => getHoverBackgroundColor('#FFFCE3', theme.palette.mode),
+                },
               },
-            },
-            '& .super-app-theme--config': {
-              color: 'green',
-              bgcolor: (theme) => getBackgroundColor('#F2FFF2', theme.palette.mode),
-              '&:hover': {
-                bgcolor: (theme) => getHoverBackgroundColor('#F2FFF2', theme.palette.mode),
+              '& .super-app-theme--config': {
+                color: 'green',
+                bgcolor: (theme) => getBackgroundColor('#F2FFF2', theme.palette.mode),
+                '&:hover': {
+                  bgcolor: (theme) => getHoverBackgroundColor('#F2FFF2', theme.palette.mode),
+                },
               },
-            },
-          }}
+            }}
           >
             <DataGrid
               rows={deviceList}
@@ -448,7 +454,8 @@ function AddDeviceListResults(props) {
             />
           </Box>
         </Grid>
-        <Grid item
+        <Grid
+          item
           xs={12}
           sm={4}
           md={4}
@@ -458,22 +465,17 @@ function AddDeviceListResults(props) {
           <Box
             component={Grid}
             item
-            display={{
-              // xs: 'none', sm: 'block', md: 'block', lg: 'block', lx: 'block',
+            sx={{
+              width: '100%',
+              height: '97%',
             }}
-            sx={{ width: '100%',
-              height: '97%' }}
           >
             <div style={{
               width: `${99}%`, height: `${100}%`, borderColor: 'black', border: `${2}px` + ' solid' + ' black',
             }}
             >
-              {/* <img
-                src={'http://varmatrix.com/Aqms/blog/public/'+props.labMap}
-                style={{ width: `${100}%`, height: `${100}%` }}
-              /> */}
               <ImageMarkerList
-                labImage={'http://varmatrix.com/Aqms/blog/public/'+props.labMap}
+                labImage={`http://varmatrix.com/Aqms/blog/public/${props.labMap}`}
                 deviceCoordsList={deviceCoordsList}
               />
             </div>
@@ -506,6 +508,7 @@ function AddDeviceListResults(props) {
         deployedSensorTagList={deployedSensorTagList}
       />
       <BumpTestComponentModal
+        device_id={device_id}
         isAddButton={isAddButton}
         open={bumpTestOpen}
         setOpen={setBumpTestOpen}
