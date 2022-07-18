@@ -3,14 +3,16 @@ import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { LabfetchService } from '../../../../services/LoginPageService';
 import ApplicationStore from '../../../../utils/localStorageUtil';
-/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable radix */
+/* eslint-disable array-callback-return */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable no-shadow */
 function LabGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels,
-  setBreadCrumbLabels, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages,
-  setCenterLatitude, setCenterLongitude, setIsDashBoard,
+  setBreadCrumbLabels, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages, setIsDashBoard,
 }) {
   const { labIdList } = ApplicationStore().getStorage('alertDetails');
 
@@ -32,20 +34,20 @@ function LabGridComponent({
       renderCell: ((params) => {
         let element = {
           alertLabel: 'Good',
-          alertColor : 'green',
-          alertPriority: 3
-        }
-        let alertObject = labIdList?.filter((alert) => {
+          alertColor: 'green',
+          alertPriority: 3,
+        };
+        const alertObject = labIdList?.filter((alert) => {
           return params.row.id === parseInt(alert.id);
         });
 
-        alertObject?.map((data)=>{
-          element = element.alertPriority < data.alertPriority ? element : 
-            { 
-              alertLabel: data.alertType === 'Critical'? 'Critical' : data.alertType === 'outOfRange'? 'Out Of Range' : 'Good',
-              alertColor : data.alertType === 'Critical'? 'red' : data.alertType === 'outOfRange'? 'orange' : 'green',
-              alertPriority: data.alertType === 'Critical'? 1 : data.alertType === 'outOfRange'? 2 : 3
-            }
+        alertObject?.map((data) => {
+          element = element.alertPriority < data.alertPriority ? element
+            : {
+              alertLabel: data.alertType === 'Critical' ? 'Critical' : data.alertType === 'outOfRange' ? 'Out Of Range' : 'Good',
+              alertColor: data.alertType === 'Critical' ? 'red' : data.alertType === 'outOfRange' ? 'orange' : 'green',
+              alertPriority: data.alertType === 'Critical' ? 1 : data.alertType === 'outOfRange' ? 2 : 3,
+            };
         });
 
         return (
@@ -101,15 +103,27 @@ function LabGridComponent({
       </h3>
     );
   }
+
+  const setLocationlabel = (value) => {
+    const { locationDetails } = ApplicationStore().getStorage('userDetails');
+    setProgressState(() => {
+      let newValue = value;
+      if (locationDetails.facility_id) {
+        newValue = 2;
+      } else if (locationDetails.branch_id) {
+        newValue = 1;
+      }
+      return newValue;
+    });
+  };
+
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3
           onClick={() => {
-            setProgressState(0);
+            setLocationlabel(0);
             setDeviceCoordsList([]);
-            setCenterLatitude(23.500);
-            setCenterLongitude(80.000);
             setIsGeoMap(true);
           }}
           style={{ cursor: 'pointer' }}
@@ -118,7 +132,7 @@ function LabGridComponent({
         </h3>
         <h3
           onClick={() => {
-            setProgressState(1);
+            setLocationlabel(1);
             setDeviceCoordsList([]);
             setIsGeoMap(true);
           }}
@@ -128,7 +142,7 @@ function LabGridComponent({
         </h3>
         <h3
           onClick={() => {
-            setProgressState(2);
+            setLocationlabel(2);
             setDeviceCoordsList([]);
             setIsGeoMap(true);
           }}

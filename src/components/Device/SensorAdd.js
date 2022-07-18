@@ -9,6 +9,7 @@ import {
   Grid,
   Autocomplete,
   Box,
+  DialogTitle,
 } from '@mui/material';
 import {
   CategoryFetchService, DeviceFetchService, SensorCategoryFetchService, SensorDeployAddService, SensorDeployEditService, SensorFetchService,
@@ -24,7 +25,7 @@ import StelTWA from './sensorType/StelTWAComponent';
 import { useUserAccess } from '../../context/UserAccessProvider';
 
 function DeviceAdd({
-  locationDetails, setProgressStatus, editData, isUpdate,
+  locationDetails, setProgressStatus, editData, isUpdate, setSensorRefresh,
 }) {
   const moduleAccess = useUserAccess()('devicelocation');
   const id = editData?.id || '';
@@ -36,7 +37,7 @@ function DeviceAdd({
   const [deviceList, setDeviceList] = useState([]);
   const [sensorCategoryList, setSensorCategoryList] = useState([]);
   const [alerts, setAlert] = useState('');
-  const [sensorCategoryId, setSensorCategoryId] = useState(editData?.sensorCategoryId || '');
+  const [sensorCategoryId, setSensorCategoryId] = useState(editData?.sensorCategoryId || '0');
   const [sensorName, setSensorName] = useState(editData?.sensorName || '');
   const [sensorOutput, setSensorOutput] = useState(editData?.sensorOutput || 'Digital');
   // -- Digital --/
@@ -69,24 +70,29 @@ function DeviceAdd({
   const [criticalAlertType, setCriticalAlertType] = useState(editData?.criticalAlertType || '');
   const [criticalLowAlert, setCriticalLowAlert] = useState(editData?.criticalLowAlert || '');
   const [criticalHighAlert, setCriticalHighAlert] = useState(editData?.criticalHighAlert || '');
+  const [criticalRefMinValue, setRefCriticalMinValue] = useState(editData?.criticalMinValue || '');
+  const [criticalRefMaxValue, setRefCriticalMaxValue] = useState(editData?.criticalMaxValue || '');
   // --- Warning Alert --- //
   const [warningMinValue, setWarningMinValue] = useState(editData?.warningMinValue || '');
   const [warningMaxValue, setWarningMaxValue] = useState(editData?.warningMaxValue || '');
   const [warningAlertType, setWarningAlertType] = useState(editData?.warningAlertType || '');
   const [warningLowAlert, setWarningLowAlert] = useState(editData?.warningLowAlert || '');
   const [warningHighAlert, setWarningHighAlert] = useState(editData?.warningHighAlert || '');
+  const [warningRefMinValue, setRefWarningMinValue] = useState(editData?.warningMinValue || '');
+  const [warningRefMaxValue, setRefWarningMaxValue] = useState(editData?.warningMaxValue || '');
   // --- Out-of-Range Alert --- //
   const [outofrangeMinValue, setOutofrangeMinValue] = useState(editData?.outofrangeMinValue || '');
   const [outofrangeMaxValue, setOutofrangeMaxValue] = useState(editData?.outofrangeMaxValue || '');
   const [outofrangeAlertType, setOutofrangeAlertType] = useState(editData?.outofrangeAlertType || '');
   const [outofrangeLowAlert, setOutofrangeLowAlert] = useState(editData?.outofrangeLowAlert || '');
   const [outofrangeHighAlert, setOutofrangeHighAlert] = useState(editData?.outofrangeHighAlert || '');
-
+  const [outofrangeRefMinValue, setRefOutofrangeMinValue] = useState(editData?.outofrangeMinValue || '');
+  const [outofrangeRefMaxValue, setRefOutofrangeMaxValue] = useState(editData?.outofrangeMaxValue || '');
   // ---- STEL & TWA ----------//
   const [alarm, setAlarm] = useState(editData?.alarm || '');
 
-  const [isAQI, setIsAQI] = useState(editData?.isAQI || false);
-  const [isStel, setIsStel] = useState(editData?.isStel || false);
+  const [isAQI, setIsAQI] = useState(editData ? editData.isAQI === '1' : false);
+  const [isStel, setIsStel] = useState(editData ? editData.isStel === '1' : false);
   const [stelDuration, setStelDuration] = useState(editData?.stelDuration || '');
   const [stelType, setStelType] = useState(editData?.stelType || 'ppm');
   const [stelLimit, setStelLimit] = useState(editData?.stelLimit || 0);
@@ -127,7 +133,7 @@ function DeviceAdd({
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [editData]);
 
   const categoryHandleSuccess = (dataObject) => {
     setCategoryList(dataObject.data);
@@ -149,8 +155,7 @@ function DeviceAdd({
     CategoryFetchService(categoryHandleSuccess, handleException);
     SensorCategoryFetchService(sensorCategoryHandleSuccess, handleException);
     /* eslint-disable-next-line */
-    editData?.deviceId && DeviceFetchService({ ...locationDetails, sensorCategoryId }, deviceHandleSuccess, handleException);
-    SensorFetchService(sensorCategoryId, sensorHandleSuccess, handleException);
+    DeviceFetchService({ ...locationDetails, sensorCategoryId: categoryId }, deviceHandleSuccess, handleException);
   };
   /* eslint-disable-next-line */
   const deviceChanged = (sensorCategoryId) => {
@@ -310,6 +315,7 @@ function DeviceAdd({
       handleClose();
       setProgressStatus(1);
     }, 3000);
+    setSensorRefresh((oldvalue) => !oldvalue);
   };
 
   const senserAddException = (resErrorObject, errorMessage) => {
@@ -369,11 +375,17 @@ function DeviceAdd({
     setOutofrangeHighAlert('');
   };
   return (
-    <div className="w-full" style={{ marginTop: 0 , overflow: 'auto'}}>
+    <div className="w-full" style={{ marginTop: 0, overflow: 'auto' }}>
       <form className="mt-0 p-0 w-full" onSubmit={handleSubmit}>
-        <DialogContent sx={{ px: 0, p: 0 }} style={{
-          height: '78vh'
-        }} >
+        <DialogContent
+          sx={{ px: 0, p: 3 }}
+          style={{
+            height: '78vh',
+          }}
+        >
+          <DialogTitle style={{ float: 'left', padding: '0px', marginBottom: '10px' }}>
+            Edit Sensor
+          </DialogTitle>
           <Grid container spacing={1} sx={{ mt: 0 }}>
             <Grid
               sx={{ mt: 0, padding: 0 }}
@@ -554,8 +566,8 @@ function DeviceAdd({
                         setConversionType(data.conversionType);
                         // -- STEL&TWA -- //
                         setAlarm(data.alarm);
-                        setIsAQI(data.isAQI);
-                        setIsStel(data.isStel);
+                        setIsAQI(data.isAQI === '1');
+                        setIsStel(data.isStel === '1');
                         setStelDuration(data.stelDuration);
                         setStelType(data.stelType);
                         setStelLimit(data.stelLimit);
@@ -576,6 +588,19 @@ function DeviceAdd({
                         setParmVeryPoorMaxScale(data.parmVeryPoorMaxScale);
                         setParmSevereMinScale(data.parmSevereMinScale);
                         setParmSevereMaxScale(data.parmSevereMaxScale);
+                        // --MIN & Max Alert Range-- //
+                        setCriticalMinValue(data.criticalMinValue);
+                        setRefCriticalMinValue(data.criticalMinValue);
+                        setCriticalMaxValue(data.criticalMaxValue);
+                        setRefCriticalMaxValue(data.criticalMaxValue);
+                        setWarningMinValue(data.warningMinValue);
+                        setRefWarningMinValue(data.warningMinValue);
+                        setWarningMaxValue(data.warningMaxValue);
+                        setRefWarningMaxValue(data.warningMaxValue);
+                        setOutofrangeMinValue(data.outofrangeMinValue);
+                        setRefOutofrangeMinValue(data.outofrangeMinValue);
+                        setOutofrangeMaxValue(data.outofrangeMaxValue);
+                        setRefOutofrangeMaxValue(data.outofrangeMaxValue);
                       }}
                       renderInput={(params) => (
                         <TextField
@@ -770,8 +795,10 @@ function DeviceAdd({
                   pollingIntervalType={pollingIntervalType}
                   setPollingIntervalType={setPollingIntervalType}
                   criticalMinValue={criticalMinValue}
+                  criticalRefMinValue={criticalRefMinValue}
                   setCriticalMinValue={setCriticalMinValue}
                   criticalMaxValue={criticalMaxValue}
+                  criticalRefMaxValue={criticalRefMaxValue}
                   setCriticalMaxValue={setCriticalMaxValue}
                   criticalAlertType={criticalAlertType}
                   setCriticalAlertType={setCriticalAlertType}
@@ -780,8 +807,10 @@ function DeviceAdd({
                   criticalHighAlert={criticalHighAlert}
                   setCriticalHighAlert={setCriticalHighAlert}
                   warningMinValue={warningMinValue}
+                  warningRefMinValue={warningRefMinValue}
                   setWarningMinValue={setWarningMinValue}
                   warningMaxValue={warningMaxValue}
+                  warningRefMaxValue={warningRefMaxValue}
                   setWarningMaxValue={setWarningMaxValue}
                   warningAlertType={warningAlertType}
                   setWarningAlertType={setWarningAlertType}
@@ -790,8 +819,10 @@ function DeviceAdd({
                   warningHighAlert={warningHighAlert}
                   setWarningHighAlert={setWarningHighAlert}
                   outofrangeMinValue={outofrangeMinValue}
+                  outofrangeRefMinValue={outofrangeRefMinValue}
                   setOutofrangeMinValue={setOutofrangeMinValue}
                   outofrangeMaxValue={outofrangeMaxValue}
+                  outofrangeRefMaxValue={outofrangeRefMaxValue}
                   setOutofrangeMaxValue={setOutofrangeMaxValue}
                   outofrangeAlertType={outofrangeAlertType}
                   setOutofrangeAlertType={setOutofrangeAlertType}

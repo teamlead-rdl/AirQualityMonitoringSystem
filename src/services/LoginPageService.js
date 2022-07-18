@@ -295,3 +295,7 @@ export const FetchAlarmReportDetails = (data, successCallback, errorCallBack) =>
 // ---------- Alert Notification --------------------------//
 
 export const NotificationAlerts = (data, successCallback, errorCallBack) =>  _fetchService('getAlerts', 'POST', data, successCallback, errorCallBack);
+
+// ------------ Company Log Interval ---------------------//
+
+export const CompanyLogInterval = (data, successCallback, errorCallBack) => { return _fetchService(`updateCustomerSettings`, 'POST', data, successCallback, errorCallBack); };

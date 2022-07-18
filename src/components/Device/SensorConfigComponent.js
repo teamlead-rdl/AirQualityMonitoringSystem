@@ -23,6 +23,7 @@ import Modbus from './sensorType/ModbusComponent';
 import NotificationBar from '../notification/ServiceNotificationBar';
 import { AddCategoryValidate } from '../../validation/formValidation';
 import StelTWA from './sensorType/StelTWAComponent';
+import SensorAlertRange from './categoryManagement/addSensors/subComponent/SensorAlertRangeComponent';
 
 function SensorConfig({
   locationDetails, setOpen, editData, isAddButton, setRefreshData,
@@ -39,6 +40,7 @@ function SensorConfig({
   const [sensorType, setSensorType] = useState(editData.sensorType || '');
   const [units, setUnits] = useState(editData.units || '');
   const [relayOutput, setRelayOutput] = useState(editData?.relayOutput || 'ON');
+  const [bumpTestRequired, setBumpTestRequired] = useState(editData?.bumpTestRequired || 'ON');
   const [minRatedReading, setMinRatedReading] = useState(editData.minRatedReading || '');
   const [minRatedReadingChecked, setMinRatedReadingChecked] = useState(editData.minRatedReadingChecked || 0);
   const [minRatedReadingScale, setMinRatedReadingScale] = useState(editData.minRatedReadingScale || '');
@@ -58,8 +60,8 @@ function SensorConfig({
 
   // --- Alarm --- //
   const [alarm, setAlarm] = useState(editData.alarm || '');
-  const [isStel, setIsStel] = useState(editData.isStel || false);
-  const [isAQI, setIsAQI] = useState(editData.isAQI || false);
+  const [isStel, setIsStel] = useState(editData ? editData.isStel === '1' : false);
+  const [isAQI, setIsAQI] = useState(editData ? editData.isAQI === '1' : false);
   const [stelDuration, setStelDuration] = useState(editData.stelDuration || '');
   const [stelType, setStelType] = useState(editData.stelType || 'ppm');
   const [stelLimit, setStelLimit] = useState(editData.stelLimit || 0);
@@ -81,6 +83,18 @@ function SensorConfig({
   const [parmVeryPoorMaxScale, setParmVeryPoorMaxScale] = useState(editData.parmVeryPoorMaxScale || '');
   const [parmSevereMinScale, setParmSevereMinScale] = useState(editData.parmSevereMinScale || '');
   const [parmSevereMaxScale, setParmSevereMaxScale] = useState(editData.parmSevereMaxScale || '');
+
+  // --- Critical Alert --- //
+  const [criticalMinValue, setCriticalMinValue] = useState(editData?.criticalMinValue || '');
+  const [criticalMaxValue, setCriticalMaxValue] = useState(editData?.criticalMaxValue || '');
+
+  // --- Warning Alert --- //
+  const [warningMinValue, setWarningMinValue] = useState(editData?.warningMinValue || '');
+  const [warningMaxValue, setWarningMaxValue] = useState(editData?.warningMaxValue || '');
+
+  // --- Out-of-Range Alert --- //
+  const [outofrangeMinValue, setOutofrangeMinValue] = useState(editData?.outofrangeMinValue || '');
+  const [outofrangeMaxValue, setOutofrangeMaxValue] = useState(editData?.outofrangeMaxValue || '');
 
   const [openNotification, setNotification] = useState({
     status: false,
@@ -129,6 +143,7 @@ function SensorConfig({
         sensorType,
         units,
         relayOutput,
+        bumpTestRequired,
         minRatedReading,
         minRatedReadingChecked,
         minRatedReadingScale,
@@ -165,6 +180,12 @@ function SensorConfig({
         parmVeryPoorMaxScale,
         parmSevereMinScale,
         parmSevereMaxScale,
+        criticalMinValue,
+        criticalMaxValue,
+        warningMinValue,
+        warningMaxValue,
+        outofrangeMinValue,
+        outofrangeMaxValue,
       }, sensorAddSuccess, senserAddException)
       : SensorEditService({
         ...locationDetails,
@@ -177,6 +198,7 @@ function SensorConfig({
         sensorType,
         units,
         relayOutput,
+        bumpTestRequired,
         minRatedReading,
         minRatedReadingChecked,
         minRatedReadingScale,
@@ -213,6 +235,12 @@ function SensorConfig({
         parmVeryPoorMaxScale,
         parmSevereMinScale,
         parmSevereMaxScale,
+        criticalMinValue,
+        criticalMaxValue,
+        warningMinValue,
+        warningMaxValue,
+        outofrangeMinValue,
+        outofrangeMaxValue,
       }, sensorAddSuccess, senserAddException);
     }
   };
@@ -267,17 +295,12 @@ function SensorConfig({
                     lg={4}
                     xl={4}
                   >
-                    <Box sx={{ 
-                      // minWidth: 200 
-                      }}>
+                    <Box>
                       <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
                         <InputLabel id="demo-simple-select-label">
                           Sensor Category
                         </InputLabel>
                         <Select
-                          sx={{ 
-                            // minWidth: 250
-                          }}
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
                           value={sensorCategoryId}
@@ -286,8 +309,6 @@ function SensorConfig({
                           onChange={(e) => {
                             setSensorCategoryId(e.target.value);
                           }}
-                        // error={errorObject?.deviceName?.errorStatus}
-                        // helperText={errorObject?.deviceName?.helperText}
                         >
                           {sensorCategoryList.map((data) => {
                             return (
@@ -385,8 +406,8 @@ function SensorConfig({
                   <Grid
                     sx={{ mt: 0, padding: 0, alignSelf: 'center' }}
                     item
-                    xs={6}
-                    sm={4}
+                    xs={12}
+                    sm={6}
                     md={4}
                     lg={4}
                     xl={4}
@@ -403,8 +424,6 @@ function SensorConfig({
                         onChange={(e) => {
                           setAlarm(e.target.value);
                         }}
-                      // error={errorObject?.deviceName?.errorStatus}
-                      // helperText={errorObject?.deviceName?.helperText}
                       >
                         <MenuItem value="Latch">Latch</MenuItem>
                         <MenuItem value="UnLatch">UnLatch</MenuItem>
@@ -414,8 +433,8 @@ function SensorConfig({
                   <Grid
                     sx={{ mt: 0, padding: 0 }}
                     item
-                    xs={6}
-                    sm={4}
+                    xs={12}
+                    sm={6}
                     md={4}
                     lg={4}
                     xl={4}
@@ -441,22 +460,43 @@ function SensorConfig({
                     sx={{ mt: 0, padding: 0 }}
                     item
                     xs={12}
-                    sm={4}
+                    sm={6}
                     md={4}
                     lg={4}
                     xl={4}
                   >
-                    <Box sx={{ 
-                      // minWidth: 200
-                       }}>
+                    <div className="rounded-md -space-y-px">
+                      <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Bump Test</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          label="Bump Test"
+                          value={bumpTestRequired}
+                          onChange={(e) => {
+                            setBumpTestRequired(e.target.value);
+                          }}
+                        >
+                          <MenuItem value="ON">Required</MenuItem>
+                          <MenuItem value="OFF">Not required</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </div>
+                  </Grid>
+                  <Grid
+                    sx={{ mt: 0, padding: 0 }}
+                    item
+                    xs={12}
+                    sm={6}
+                    md={4}
+                    lg={4}
+                    xl={4}
+                  >
+                    <Box>
                       <FormControl fullWidth margin="normal" sx={{ marginTop: 0 }}>
                         <InputLabel id="demo-simple-select-label">
                           Sensor Output
                         </InputLabel>
                         <Select
-                          sx={{ 
-                            // minWidth: 250
-                           }}
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
                           value={sensorOutput}
@@ -464,8 +504,6 @@ function SensorConfig({
                           onChange={(e) => {
                             setSensorOutput(e.target.value);
                           }}
-                        // error={errorObject?.deviceName?.errorStatus}
-                        // helperText={errorObject?.deviceName?.helperText}
                         >
                           <MenuItem value="Digital">Digital</MenuItem>
                           <MenuItem value="Analog">Analog</MenuItem>
@@ -483,7 +521,9 @@ function SensorConfig({
                     units={units}
                     setUnits={setUnits}
                     relayOutput={relayOutput}
+                    bumpTestRequired={bumpTestRequired}
                     setRelayOutput={setRelayOutput}
+                    setBumpTestRequired={setBumpTestRequired}
                     sensorType={sensorType}
                     setSensorType={setSensorType}
                     minRatedReading={minRatedReading}
@@ -506,7 +546,9 @@ function SensorConfig({
                     units={units}
                     setUnits={setUnits}
                     relayOutput={relayOutput}
+                    bumpTestRequired={bumpTestRequired}
                     setRelayOutput={setRelayOutput}
+                    setBumpTestRequired={setBumpTestRequired}
                     sensorType={sensorType}
                     setSensorType={setSensorType}
                     minRatedReading={minRatedReading}
@@ -545,52 +587,72 @@ function SensorConfig({
           {nextPage === true
             ? ''
             : (
-              <StelTWA
-                isStel={isStel}
-                setIsStel={setIsStel}
-                isAQI={isAQI}
-                setIsAQI={setIsAQI}
-                stelDuration={stelDuration}
-                setStelDuration={setStelDuration}
-                stelType={stelType}
-                setStelType={setStelType}
-                stelLimit={stelLimit}
-                setStelLimit={setStelLimit}
-                stelAlert={stelAlert}
-                setStelAlert={setStelAlert}
-                twaDuration={twaDuration}
-                setTwaDuration={setTwaDuration}
-                twaType={twaType}
-                setTwaType={setTwaType}
-                twaLimit={twaLimit}
-                setTwaLimit={setTwaLimit}
-                twaAlert={twaAlert}
-                setTwaAlert={setTwaAlert}
-                parmGoodMinScale={parmGoodMinScale}
-                setParmGoodMinScale={setParmGoodMinScale}
-                parmGoodMaxScale={parmGoodMaxScale}
-                setParmGoodMaxScale={setParmGoodMaxScale}
-                parmSatisfactoryMinScale={parmSatisfactoryMinScale}
-                setParmSatisfactoryMinScale={setParmSatisfactoryMinScale}
-                parmSatisfactoryMaxScale={parmSatisfactoryMaxScale}
-                setParmSatisfactoryMaxScale={setParmSatisfactoryMaxScale}
-                parmModerateMinScale={parmModerateMinScale}
-                setParmModerateMinScale={setParmModerateMinScale}
-                parmModerateMaxScale={parmModerateMaxScale}
-                setParmModerateMaxScale={setParmModerateMaxScale}
-                parmPoorMinScale={parmPoorMinScale}
-                setParmPoorMinScale={setParmPoorMinScale}
-                parmPoorMaxScale={parmPoorMaxScale}
-                setParmPoorMaxScale={setParmPoorMaxScale}
-                parmVeryPoorMinScale={parmVeryPoorMinScale}
-                setParmVeryPoorMinScale={setParmVeryPoorMinScale}
-                parmVeryPoorMaxScale={parmVeryPoorMaxScale}
-                setParmVeryPoorMaxScale={setParmVeryPoorMaxScale}
-                parmSevereMinScale={parmSevereMinScale}
-                setParmSevereMinScale={setParmSevereMinScale}
-                parmSevereMaxScale={parmSevereMaxScale}
-                setParmSevereMaxScale={setParmSevereMaxScale}
-              />
+              <>
+                <StelTWA
+                  isStel={isStel}
+                  setIsStel={setIsStel}
+                  isAQI={isAQI}
+                  setIsAQI={setIsAQI}
+                  stelDuration={stelDuration}
+                  setStelDuration={setStelDuration}
+                  stelType={stelType}
+                  setStelType={setStelType}
+                  stelLimit={stelLimit}
+                  setStelLimit={setStelLimit}
+                  stelAlert={stelAlert}
+                  setStelAlert={setStelAlert}
+                  twaDuration={twaDuration}
+                  setTwaDuration={setTwaDuration}
+                  twaType={twaType}
+                  setTwaType={setTwaType}
+                  twaLimit={twaLimit}
+                  setTwaLimit={setTwaLimit}
+                  twaAlert={twaAlert}
+                  setTwaAlert={setTwaAlert}
+                  parmGoodMinScale={parmGoodMinScale}
+                  setParmGoodMinScale={setParmGoodMinScale}
+                  parmGoodMaxScale={parmGoodMaxScale}
+                  setParmGoodMaxScale={setParmGoodMaxScale}
+                  parmSatisfactoryMinScale={parmSatisfactoryMinScale}
+                  setParmSatisfactoryMinScale={setParmSatisfactoryMinScale}
+                  parmSatisfactoryMaxScale={parmSatisfactoryMaxScale}
+                  setParmSatisfactoryMaxScale={setParmSatisfactoryMaxScale}
+                  parmModerateMinScale={parmModerateMinScale}
+                  setParmModerateMinScale={setParmModerateMinScale}
+                  parmModerateMaxScale={parmModerateMaxScale}
+                  setParmModerateMaxScale={setParmModerateMaxScale}
+                  parmPoorMinScale={parmPoorMinScale}
+                  setParmPoorMinScale={setParmPoorMinScale}
+                  parmPoorMaxScale={parmPoorMaxScale}
+                  setParmPoorMaxScale={setParmPoorMaxScale}
+                  parmVeryPoorMinScale={parmVeryPoorMinScale}
+                  setParmVeryPoorMinScale={setParmVeryPoorMinScale}
+                  parmVeryPoorMaxScale={parmVeryPoorMaxScale}
+                  setParmVeryPoorMaxScale={setParmVeryPoorMaxScale}
+                  parmSevereMinScale={parmSevereMinScale}
+                  setParmSevereMinScale={setParmSevereMinScale}
+                  parmSevereMaxScale={parmSevereMaxScale}
+                  setParmSevereMaxScale={setParmSevereMaxScale}
+                />
+                {sensorOutput === 'Digital' ? '' : (
+                  <SensorAlertRange
+                    errorObject={errorObject}
+                    setErrorObject={setErrorObject}
+                    criticalMinValue={criticalMinValue}
+                    setCriticalMinValue={setCriticalMinValue}
+                    criticalMaxValue={criticalMaxValue}
+                    setCriticalMaxValue={setCriticalMaxValue}
+                    warningMinValue={warningMinValue}
+                    setWarningMinValue={setWarningMinValue}
+                    warningMaxValue={warningMaxValue}
+                    setWarningMaxValue={setWarningMaxValue}
+                    outofrangeMinValue={outofrangeMinValue}
+                    setOutofrangeMinValue={setOutofrangeMinValue}
+                    outofrangeMaxValue={outofrangeMaxValue}
+                    setOutofrangeMaxValue={setOutofrangeMaxValue}
+                  />
+                )}
+              </>
             )}
           <Grid
             container

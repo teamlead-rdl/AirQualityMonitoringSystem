@@ -2,7 +2,7 @@ import {
   FormControlLabel, Switch, Menu, MenuItem, Divider,
 } from '@mui/material';
 import { Delete } from '@mui/icons-material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 
 function SensorSettingsMenu(props) {
@@ -14,6 +14,11 @@ function SensorSettingsMenu(props) {
   const handleCloseSensorOptions = () => {
     props.setPopperOpen(false);
   };
+
+  useEffect(() => {       
+    setSensorStatus(props.sensorProperties.sensorStatus);
+    setSensorNotificationStatus(props.sensorProperties.sensorNotificationStatus);
+  },[props]);
 
   const updateSensorStatus = () => {
     setSensorStatus((oldValue) => {

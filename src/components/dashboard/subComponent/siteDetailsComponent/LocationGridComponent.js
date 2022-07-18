@@ -12,7 +12,7 @@ import ApplicationStore from '../../../../utils/localStorageUtil';
 function LocationGridComponent(props) {
   const {
     setLocationDetails, setProgressState, setBreadCrumbLabels, setLocationCoordinationList,
-    setZoomLevel, setCenterLatitude, setCenterLongitude, newNotification, notificationList, alertDetailsList
+    setZoomLevel, setCenterLatitude, setCenterLongitude
   } = props;
   const [dataList, setDataList] = useState([]);
   let { locationIdList } = ApplicationStore().getStorage('alertDetails');
@@ -66,11 +66,19 @@ function LocationGridComponent(props) {
 
   useEffect(() => {
     FetchLocationService(handleSuccess, handleException);
-  }, []);
+    const { locationDetails } = ApplicationStore().getStorage('userDetails');
 
-  useEffect(()=>{
-    setNotificationStatus(alertDetailsList);
-  }, [notificationList]);
+    setProgressState((oldValue)=>{
+      let newValue = 0;
+      if(locationDetails.facility_id){
+        newValue = 2;
+      } 
+      else if(locationDetails.branch_id){
+        newValue = 1;
+      } 
+      return newValue;
+    });
+  }, []);
 
   function LinkTo({ selectedRow }) {
     return (

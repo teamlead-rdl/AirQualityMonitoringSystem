@@ -5,28 +5,23 @@ import {
 import { DeviceFetchService } from '../../../../services/LoginPageService';
 import DeviceWidget from '../deviceCard/DeviceWidget';
 import NotificationWidget from '../deviceCard/NotificationWidget';
+import ApplicationStore from '../../../../utils/localStorageUtil';
 
-/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable no-shadow */
+
 function DeviceGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels, setBreadCrumbLabels,
-  setDeviceCoordsList, setIsDashBoard, setIsGeoMap, siteImages, setCenterLatitude, setCenterLongitude,
+  setDeviceCoordsList, setIsDashBoard, setIsGeoMap, siteImages,
 }) {
   const [deviceList, setDeviceList] = useState([]);
   const [deviceTotal, setDeviceTotal] = useState('0');
-  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
+    intervalCallFunction();
     const devicePolling = setInterval(() => {
-      DeviceFetchService({
-        location_id: locationDetails.location_id,
-        branch_id: locationDetails.branch_id,
-        facility_id: locationDetails.facility_id,
-        building_id: locationDetails.building_id,
-        floor_id: locationDetails.floor_id,
-        lab_id: locationDetails.lab_id,
-      }, handleSuccess, handleException);
+      intervalCallFunction();
     }, 5000);
 
     return () => {
@@ -34,9 +29,20 @@ function DeviceGridComponent({
     };
   }, [locationDetails]);
 
+  const intervalCallFunction = () => {
+    DeviceFetchService({
+      location_id: locationDetails.location_id,
+      branch_id: locationDetails.branch_id,
+      facility_id: locationDetails.facility_id,
+      building_id: locationDetails.building_id,
+      floor_id: locationDetails.floor_id,
+      lab_id: locationDetails.lab_id,
+    }, handleSuccess, handleException);
+  };
+
   const handleSuccess = (dataObject) => {
     setDeviceList(dataObject.data);
-    const deviceCoordinationsList = dataObject.data.map((data, index) => {
+    const deviceCoordinationsList = dataObject.data.map((data) => {
       const coordination = data.floorCords;
       const arrayList = coordination?.split(',');
       return arrayList && { top: arrayList[0], left: arrayList[1] };
@@ -48,9 +54,19 @@ function DeviceGridComponent({
 
   const handleException = () => { };
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
+  const setLocationlabel = (value) => {
+    const { locationDetails } = ApplicationStore().getStorage('userDetails');
+    setProgressState(() => {
+      let newValue = value;
+      if (locationDetails.facility_id) {
+        newValue = 2;
+      } else if (locationDetails.branch_id) {
+        newValue = 1;
+      }
+      return newValue;
+    });
   };
+
   return (
     <div style={{
       height: '98%', width: '100%', marginTop: 10, marginLeft: 10, paddingLeft: 5, paddingTop: 5,
@@ -59,11 +75,12 @@ function DeviceGridComponent({
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3
           onClick={() => {
-            setCenterLatitude(23.500);
-            setCenterLongitude(80.000);
+            // setCenterLatitude(23.500);
+            // setCenterLongitude(80.000);
             setDeviceCoordsList([]);
             setIsGeoMap(true);
-            setProgressState(0);
+            setLocationlabel(0);
+            // setProgressState(0);
             setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
@@ -74,7 +91,8 @@ function DeviceGridComponent({
           onClick={() => {
             setDeviceCoordsList([]);
             setIsGeoMap(true);
-            setProgressState(1);
+            setLocationlabel(1);
+            // setProgressState(1);
             setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
@@ -85,7 +103,8 @@ function DeviceGridComponent({
           onClick={() => {
             setDeviceCoordsList([]);
             setIsGeoMap(true);
-            setProgressState(2);
+            setLocationlabel(2);
+            // setProgressState(2);
             setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
