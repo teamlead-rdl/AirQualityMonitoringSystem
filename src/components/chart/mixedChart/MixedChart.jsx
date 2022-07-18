@@ -1,67 +1,81 @@
 import { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 
 function MixedChart({ data }) {
   const [labels, setLabels] = useState([]);
+  /* eslint-disable-next-line */
   const [avgData, setAvgData] = useState([]);
-  const [lastData, setLastData] = useState([]); 
-  const [warningLevel, setWarningLevel] = useState([]);
-  const [criticalLevel,setCriticalLevel] = useState([]);
-  const [alertColor,setAlertColor] = useState([]); 
+  const [lastData, setLastData] = useState([]);
+  const [warningLevelMin, setWarningLevelMin] = useState([]);
+  const [criticalLevelMin, setCriticalLevelMin] = useState([]);
+  const [warningLevelMax, setWarningLevelMax] = useState([]);
+  const [criticalLevelMax, setCriticalLevelMax] = useState([]);
+  const [alertColor, setAlertColor] = useState([]);
 
   useEffect(() => {
     setLabels(data.labels);
     setAvgData(data.avgData);
-    setLastData(data.lastData);    
-    setWarningLevel(data.warningLevel);
-    setCriticalLevel(data.criticalLevel);   
+    setLastData(data.lastData);
+    setWarningLevelMin(data.warningLevelMin);
+    setCriticalLevelMin(data.criticalLevelMin);
+    setWarningLevelMax(data.warningLevelMax);
+    setCriticalLevelMax(data.criticalLevelMax);
     setAlertColor(data.colors);
-
   }, [data]);
 
   const graphData = {
     labels,
     datasets: [
       {
-        label: 'Avg',
-        type: 'line',
-        borderColor: '#66a3ff',
-        backgroundColor: '#4d94ff',
-        data: avgData,
-        fill: false,
-      },
-      {
         label: 'Last',
-        type: 'bar',
-        borderColor: 'red',
-        backgroundColor:alertColor,
+        type: 'line',
+        borderColor: 'grey',
+        backgroundColor: alertColor,
         data: lastData,
         fillColor: 'blue',
-
-      },      
+        pointRadius: 3.8,
+      },
       {
-        label: 'Warning',
+        label: 'Warning Min',
         type: 'line',
         backgroundColor: '#ffeb3b',
         borderColor: '#ffeb3b',
-        data: warningLevel,
+        data: warningLevelMin,
         fill: false,
         pointRadius: 0,
       },
       {
-        label: 'Critical',
+        label: 'Warning Max',
+        type: 'line',
+        backgroundColor: '#ffeb3b',
+        borderColor: '#ffeb3b',
+        data: warningLevelMax,
+        fill: false,
+        pointRadius: 0,
+      },
+      {
+        label: 'Critical Min',
         type: 'line',
         backgroundColor: '#d50000',
         borderColor: '#d50000',
-        data: criticalLevel,
+        data: criticalLevelMin,
         fill: false,
         pointRadius: 0,
-      },         
+      },
+      {
+        label: 'Critical Max',
+        type: 'line',
+        backgroundColor: '#d50000',
+        borderColor: '#d50000',
+        data: criticalLevelMax,
+        fill: false,
+        pointRadius: 0,
+      },
     ],
   };
 
   return (
-    <Bar
+    <Line
       data={graphData}
       height={80}
     />

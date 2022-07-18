@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 import { CardActionArea } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import MachineCircularProgressbar from './MachineCircularProgressbar';
@@ -10,7 +11,7 @@ import MachineCircularProgressbar from './MachineCircularProgressbar';
 function MachineCard(props) {
   return (
     <Card
-      sx={{ minWidth: 200, boxShadow: 5 ,borderRadius: 2}}    
+      sx={{ minWidth: 200, boxShadow: 5, borderRadius: 2 }}
       onClick={() => {
         props.setSensorTagId(props.id);
         props.setSensorTag(props.sensorName);
@@ -18,20 +19,42 @@ function MachineCard(props) {
       }}
     >
       <CardActionArea>
-        <Grid item xs={12} style={{ backgroundColor: props.color || '#cce6ff' }}>
+        <Grid item xs={12} style={{ backgroundColor: props.lightColor || '#cce6ff', height: '50px' }}>
           <Stack
             direction="row"
             justifyContent="space-evenly"
             alignItems="center"
             spacing={1}
           >
-            <Typography style={{ color: '#004d99' }}>
-              {props.sensorNameUnit}
-
-            </Typography>
-            <Typography style={{ color: '#004d99' }}>
-              {props.sensorName}
-            </Typography>
+            <Tooltip title={props.sensorNameUnit}>
+              <Typography style={{
+                color: props.color || '#004d99',
+                marginTop: '15px',
+                whiteSpace: 'nowrap',
+                width: '100px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                fontWeight: '500',
+              }}
+              >
+                {props.sensorNameUnit}
+              </Typography>
+            </Tooltip>
+            <Tooltip title={props.sensorName}>
+              <Typography style={{
+                color: props.color || '#004d99',
+                marginTop: '15px',
+                whiteSpace: 'nowrap',
+                width: '100px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                fontWeight: '500',
+                fontSize: '20px',
+              }}
+              >
+                {props.sensorName}
+              </Typography>
+            </Tooltip>
           </Stack>
         </Grid>
         <Box sx={{ width: '100%', borderRadius: '8' }}>
@@ -65,7 +88,7 @@ function MachineCard(props) {
                 display="block"
                 gutterBottom
                 component="div"
-                style={{ fontWeight: 600, color: '#7F8487', marginLeft: 9 }}
+                style={{ fontWeight: 600, color: props.color || '#7F8487', marginLeft: 9 }}
               >
                 {props.min}
               </Typography>
@@ -79,7 +102,7 @@ function MachineCard(props) {
                 display="block"
                 gutterBottom
                 component="div"
-                style={{ fontWeight: 600, color: '#7F8487', marginLeft: 9 }}
+                style={{ fontWeight: 600, color: props.color || '#7F8487', marginLeft: 9 }}
               >
                 {props.max}
               </Typography>
@@ -93,7 +116,7 @@ function MachineCard(props) {
                 display="block"
                 gutterBottom
                 component="div"
-                style={{ fontWeight: 600, color: '#7F8487', marginLeft: 9 }}
+                style={{ fontWeight: 600, color: props.color || '#7F8487', marginLeft: 9 }}
               >
                 {props.avg}
               </Typography>

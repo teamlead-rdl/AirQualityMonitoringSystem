@@ -1,33 +1,91 @@
 import {
-  FormControlLabel, Switch, Menu, MenuItem, Divider,
+  FormControlLabel, Switch, Menu, MenuItem, Divider, Typography,
 } from '@mui/material';
 import { Delete } from '@mui/icons-material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Slider from '@mui/material/Slider';
+import VolumeDown from '@mui/icons-material/VolumeDown';
+import VolumeUp from '@mui/icons-material/VolumeUp';
 import { useUserAccess } from '../../../context/UserAccessProvider';
 
 function SensorSettingsMenu(props) {
   const moduleAccess = useUserAccess()('devicelocation');
   const sensorId = props.sensorProperties.id;
-  const [sensorStatus, setSensorStatus] = useState(props.sensorProperties.sensorStatus);
-  const [notificationStatus, setSensorNotificationStatus] = useState(props.sensorProperties.sensorNotificationStatus);
+  const [sensorStatus, setSensorStatus] = useState('0');
+  const [notificationStatus, setNotificationStatus] = useState('0');
+  const [hooterRelayStatus, setHooterRelayStatus] = useState('0');
+  const [audioDecibelLevel, setAudioDecibelLevel] = useState('65');
 
   const handleCloseSensorOptions = () => {
     props.setPopperOpen(false);
   };
 
+  useEffect(() => {
+    setSensorStatus(props.sensorProperties.sensorStatus_u);
+    setNotificationStatus(props.sensorProperties.notificationStatus_u);
+    setHooterRelayStatus(props.sensorProperties.hooterRelayStatus_u);
+    setAudioDecibelLevel(props.sensorProperties.audioDecibelLevel_u);
+  }, [props]);
+
   const updateSensorStatus = () => {
-    setSensorStatus(!sensorStatus);
+    props.setSensorStatus((oldValue) => {
+      const status = oldValue === '`0' ? '1' : '0';
+      return status;
+    });
+
+    setSensorStatus((oldValue) => {
+      const status = oldValue === '0' ? '1' : '0';
+      return status;
+    });
+
     props.updateService(sensorId, {
       ...props.sensorProperties,
-      sensorStatus: !sensorStatus,
+      sensorStatus: sensorStatus === '0' ? '1' : '0',
     });
   };
 
   const updateSensorNotification = () => {
-    setSensorNotificationStatus(!notificationStatus);
+    props.setNotificationStatus((oldValue) => {
+      const status = oldValue === '0' ? '1' : '0';
+      return status;
+    });
+
+    setNotificationStatus((oldValue) => {
+      const status = oldValue === '0' ? '1' : '0';
+      return status;
+    });
+
     props.updateService(sensorId, {
       ...props.sensorProperties,
-      notificationStatus: !notificationStatus,
+      notificationStatus: notificationStatus === '0' ? '1' : '0',
+    });
+  };
+
+  const updateHooterRelaystatus = () => {
+    props.setHooterRelayStatus((oldValue) => {
+      const status = oldValue === '0' ? '1' : '0';
+      return status;
+    });
+
+    setHooterRelayStatus((oldValue) => {
+      const status = oldValue === '0' ? '1' : '0';
+      return status;
+    });
+
+    props.updateService(sensorId, {
+      ...props.sensorProperties,
+      hooterRelayStatus: hooterRelayStatus === '0' ? '1' : '0',
+    });
+  };
+
+  const updateAudioDecibelLevel = (event) => {
+    props.setAudioDecibelLevel(event.target.value);
+    setAudioDecibelLevel(event.target.value);
+    props.updateService(sensorId, {
+      ...props.sensorProperties,
+      audioDecibelLevel: event.target.value,
     });
   };
 
@@ -36,7 +94,6 @@ function SensorSettingsMenu(props) {
       anchorEl={props.anchorEl}
       open={props.popperOpen}
       onClose={handleCloseSensorOptions}
-      // onClick={}
       PaperProps={{
         elevation: 0,
         sx: {
@@ -68,18 +125,44 @@ function SensorSettingsMenu(props) {
     >
       <MenuItem onClick={props.handleClose} disableRipple>
         <FormControlLabel
-          control={<Switch checked={sensorStatus} onChange={updateSensorStatus} color="warning" />}
+          control={<Switch checked={sensorStatus !== '0'} onChange={updateSensorStatus} color="warning" />}
           label="Enabled"
         />
       </MenuItem>
       <MenuItem onClick={props.handleClose} disableRipple>
         <FormControlLabel
-          control={<Switch checked={notificationStatus} onChange={updateSensorNotification} color="warning" />}
+          control={<Switch checked={notificationStatus !== '0'} onChange={updateSensorNotification} color="warning" />}
           label="Notification"
         />
       </MenuItem>
+      <MenuItem onClick={props.handleClose} disableRipple>
+        <FormControlLabel
+          control={<Switch checked={hooterRelayStatus !== '0'} onChange={updateHooterRelaystatus} color="warning" />}
+          label="HooterRelay"
+        />
+      </MenuItem>
+      <MenuItem onClick={props.handleClose} disableRipple>
+        <Box sx={{ width: 200 }}>
+          <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
+            <VolumeDown />
+            <Slider
+              size="small"
+              value={audioDecibelLevel}
+              aria-label="Small"
+              valueLabelDisplay="auto"
+              min={65}
+              max={120}
+              onChange={updateAudioDecibelLevel}
+            />
+            <VolumeUp />
+          </Stack>
+          <Typography sx={{ textAlign: 'center' }} id="input-slider" gutterBottom>
+            Decibel Level
+          </Typography>
+        </Box>
+      </MenuItem>
       <Divider sx={{ my: 0.5 }} />
-      <MenuItem disabled={moduleAccess.delete == false ?  true : false} onClick={() => props.deleteSensor(sensorId)} disableRipple>
+      <MenuItem disabled={moduleAccess.delete === false} onClick={() => props.deleteSensor(sensorId)} disableRipple>
         <Delete />
         {' '}
         Delete Sensor

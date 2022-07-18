@@ -14,7 +14,8 @@ import { DashboardIndividualSensorDetails } from '../../../../services/LoginPage
 function SensorGraphComponent({
   open, setOpen, sensorTagId, segretionInterval, setSegretionInterval, rangeInterval, setRangeInterval, sensorTag,
 }) {
-  const [data, setData] = useState([]); 
+  const [data, setData] = useState([]);
+  const [groupingIntervalList, setGroupingIntervalList] = useState([]);
 
   useEffect(() => {
     DashboardIndividualSensorDetails({ sensorTagId, segretionInterval, rangeInterval }, handleSuccess, handleException);
@@ -26,6 +27,32 @@ function SensorGraphComponent({
 
   const handleException = () => {};
 
+  const updateGroupingInterval = (e) => {
+    if (e.target.value === '15') {
+      setGroupingIntervalList([
+        { value: '1', text: '1 Minute' },
+      ]);
+    } else if (e.target.value === '60') {
+      setGroupingIntervalList([
+        { value: '1', text: '1 Minute' },
+        { value: '5', text: '5 Minutes' },
+      ]);
+    } else if (e.target.value === '24*60') {
+      setGroupingIntervalList([
+        { value: '30', text: '30 Minutes' },
+        { value: '60', text: '1 Hour' },
+      ]);
+    } else if (e.target.value === '7*24*60') {
+      setGroupingIntervalList([
+        { value: '15', text: '15 Minutes' },
+      ]);
+    } else if (e.target.value === '30*24*60') {
+      setGroupingIntervalList([
+        { value: '24*60', text: '1 Day' },
+      ]);
+    }
+  };
+
   return (
     <Dialog
       sx={{ '& .MuiDialog-paper': { minWidth: '95%', minHeight: '95%' } }}
@@ -33,7 +60,9 @@ function SensorGraphComponent({
       open={open}
     >
       <DialogTitle>
-        Trends of Sensor ({sensorTag})
+        Trends of Sensor (
+        {sensorTag}
+        )
       </DialogTitle>
       <DialogContent>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
@@ -57,6 +86,28 @@ function SensorGraphComponent({
           </Grid>
           <Grid item xs={2}>
             <FormControl fullWidth margin="normal" sx={{ marginTop: 1 }}>
+              <InputLabel id="demo-simple-select-label">Last </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={rangeInterval}
+                label="Last"
+                size="small"
+                onChange={(e) => {
+                  setRangeInterval(e.target.value);
+                  updateGroupingInterval(e);
+                }}
+              >
+                <MenuItem value="15">15 Min</MenuItem>
+                <MenuItem value="60">1 Hr</MenuItem>
+                <MenuItem value="24*60">24 Hr</MenuItem>
+                <MenuItem value="7*24*60">1 week</MenuItem>
+                <MenuItem value="30*24*60">1 Month</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={2}>
+            <FormControl fullWidth margin="normal" sx={{ marginTop: 1 }}>
               <InputLabel id="demo-simple-select-label">Grouping Interval</InputLabel>
               <Select
                 sx={{ marginTop: 0 }}
@@ -69,33 +120,10 @@ function SensorGraphComponent({
                 }}
                 size="small"
               >
-                <MenuItem value="1">1 Min</MenuItem>
-                <MenuItem value="15">15 Min</MenuItem>
-                <MenuItem value="30">30 Min</MenuItem>
-                <MenuItem value="60">1 Hr</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={2}>
-            <FormControl fullWidth margin="normal" sx={{ marginTop: 1 }}>
-              <InputLabel id="demo-simple-select-label">Last </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={rangeInterval}
-                label="Last"
-                size="small"
-                onChange={(e) => {
-                  setRangeInterval(e.target.value);
-                }}
-              >
-                <MenuItem value="10">10 Min</MenuItem>
-                <MenuItem value="30">30 Min</MenuItem>
-                <MenuItem value="1*60">1 Hr</MenuItem>
-                <MenuItem value="3*60">3 Hr</MenuItem>
-                <MenuItem value="6*60">6 Hr</MenuItem>
-                <MenuItem value="12*60">12 Hr</MenuItem>
-                <MenuItem value="24*60">24 Hr</MenuItem>
+                {
+                  /* eslint-disable-next-line */
+                  groupingIntervalList.map((groupingIntervalList, key) => <MenuItem key={key} value={groupingIntervalList.value}>{groupingIntervalList.text}</MenuItem>)
+                }
               </Select>
             </FormControl>
           </Grid>

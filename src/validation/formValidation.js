@@ -656,6 +656,44 @@ const AddCategoryValidate = (value, type, setErrorObject) => {
       };
     });
       break;
+    case 'unitMeasure': setErrorObject((oldErrorState) => {
+        let status = {};
+        if (!validate('categoryName', value)) {
+          status = {
+            errorStatus: true,
+            helperText: 'Enter valid unit Measure',
+          };
+        } else {
+          status = {
+            errorStatus: false,
+            helperText: '',
+          };
+        }
+        return {
+          ...oldErrorState,
+          unitMeasure: status,
+        };
+      });
+        break;
+    case 'unitLabel': setErrorObject((oldErrorState) => {
+          let status = {};
+          if (!validate('categoryName', value)) {
+            status = {
+              errorStatus: true,
+              helperText: 'Enter valid unit Label',
+            };
+          } else {
+            status = {
+              errorStatus: false,
+              helperText: '',
+            };
+          }
+          return {
+            ...oldErrorState,
+            unitLabel: status,
+          };
+        });
+          break;
     case 'sensorName': setErrorObject((oldErrorState) => {
       let status = {};
       if (!validate('address', value)) {

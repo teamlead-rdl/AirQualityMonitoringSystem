@@ -128,14 +128,13 @@ function CustomerModal({
 
   return (
     <Dialog
-      sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: '100%' } }}
-      maxWidth="sm"
+      sx={{ '& .MuiDialog-paper': { width: '72%', maxHeight: '100%' } }}
+      maxWidth="lg"
       open={open}
     >
       <DialogTitle>
         {isAddButton ? 'Add Customer' : 'Edit Customer'}
       </DialogTitle>
-
       <DialogContent>
         <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md  -space-y-px ">
@@ -301,7 +300,7 @@ function CustomerModal({
                       type="number"
                       value={sensorLogInterval}
                       variant="outlined"
-                      placeholder="Device Log Interval"
+                      placeholder="Sensor Log Interval"
                       /* eslint-disable-next-line */
                       className="mb-2 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500  sm:text-sm"
                       required
@@ -314,9 +313,7 @@ function CustomerModal({
                   </div>
                 </div>
               </Grid>
-            </Grid>
-            <div className="py-5 bg-white">
-              <div className="grid grid-cols-12 gap-6">
+              <Grid item xs={9}>
                 <div className="col-span-12 sm:col-span-8 lg:col-span-8">
                   <div className="mb-2 block">
                     <TextField
@@ -347,24 +344,25 @@ function CustomerModal({
                     />
                   </div>
                 </div>
+              </Grid>
+              <Grid item xs={3}>
                 <div className="col-span-12 sm:col-span-2 lg:col-span-2">
                   <div className="mb-2 block">
                     <Box
                       component="img"
                       sx={{
                         height: 100,
-                        width: 250,
+                        width: 100,
                         maxHeight: { xs: 233, md: 167 },
                         maxWidth: { xs: 150, md: 150 },
                       }}
                       alt="The Customer Buidling Image"
                       src={previewBuilding || previewImage}
                     />
-
                   </div>
                 </div>
-              </div>
-            </div>
+              </Grid>
+            </Grid>
             <div className="rounded-md -space-y-px float-right">
               {isAddButton ? ''
                 : (

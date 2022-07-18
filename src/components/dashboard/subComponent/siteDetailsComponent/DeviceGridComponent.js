@@ -5,6 +5,7 @@ import {
 import { DeviceFetchService } from '../../../../services/LoginPageService';
 import DeviceWidget from '../deviceCard/DeviceWidget';
 import NotificationWidget from '../deviceCard/NotificationWidget';
+import ApplicationStore from '../../../../utils/localStorageUtil';
 
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -16,9 +17,11 @@ function DeviceGridComponent({
   const [deviceList, setDeviceList] = useState([]);
   const [deviceTotal, setDeviceTotal] = useState('0');
   const [expanded, setExpanded] = useState(false);
+  const { intervalDetails } = ApplicationStore().getStorage('userDetails');
+  const intervalSec = intervalDetails.deviceLogInterval * 1000;
 
   useEffect(() => {
-    const devicePolling = setInterval(()=>{
+    const devicePolling = setInterval(() => {
       DeviceFetchService({
         location_id: locationDetails.location_id,
         branch_id: locationDetails.branch_id,
@@ -27,12 +30,10 @@ function DeviceGridComponent({
         floor_id: locationDetails.floor_id,
         lab_id: locationDetails.lab_id,
       }, handleSuccess, handleException);
-    }, 5000);
-
-    return () =>{
-      console.log('clearing interval');
+    }, intervalSec);
+    return () => {
       clearInterval(devicePolling);
-    }
+    };
   }, [locationDetails]);
 
   const handleSuccess = (dataObject) => {
