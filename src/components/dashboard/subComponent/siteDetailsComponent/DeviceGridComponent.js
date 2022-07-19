@@ -17,13 +17,15 @@ function DeviceGridComponent({
 }) {
   const [deviceList, setDeviceList] = useState([]);
   const [deviceTotal, setDeviceTotal] = useState('0');
+  const [expanded, setExpanded] = useState(false);
+  const { intervalDetails } = ApplicationStore().getStorage('userDetails');
+  const intervalSec = intervalDetails.deviceLogInterval * 1000;
 
   useEffect(() => {
     intervalCallFunction();
     const devicePolling = setInterval(() => {
       intervalCallFunction();
-    }, 5000);
-
+    }, intervalSec);
     return () => {
       clearInterval(devicePolling);
     };

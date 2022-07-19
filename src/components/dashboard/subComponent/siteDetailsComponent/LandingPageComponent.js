@@ -6,6 +6,7 @@ import LayoutMachine from '../landingPageComponents/LayoutMachine';
 import SensorGraphComponent from '../landingPageComponents/SensorGraphComponent';
 import { DashboardSensorListDetails } from '../../../../services/LoginPageService';
 import AlertModalComponent from '../landingPageComponents/AlertModalComponent';
+import ApplicationStore from '../../../../utils/localStorageUtil';
 
 function LandingPageComponent({ locationDetails, setIsDashBoard }) {
   const [open, setOpen] = useState(false);
@@ -15,14 +16,27 @@ function LandingPageComponent({ locationDetails, setIsDashBoard }) {
   const [modbusSensorList, setModbusSensorList] = useState([]);
   const [sensorTagId, setSensorTagId] = useState('');
   const [sensorTag, setSensorTag] = useState('');
-  const [segretionInterval, setSegretionInterval] = useState('15');
-  const [rangeInterval, setRangeInterval] = useState('200*60');
+  const [segretionInterval, setSegretionInterval] = useState('10');
+  const [rangeInterval, setRangeInterval] = useState('500*60');
   const [totalSensors, setTotalSensors] = useState(0);
   const [totalAlerts, setTotalALerts] = useState(0);
-
+  const { intervalDetails } = ApplicationStore().getStorage('userDetails');
+  const intervalSec = intervalDetails.sensorLogInterval * 1000;
+  const [initialLoad, setInitialLoad] = useState(true);
+  /* eslint-disable-next-line */
   useEffect(() => {
-    DashboardSensorListDetails({ device_id: locationDetails.device_id }, fetchSenosorListSuccess, fetchSenosorListException);
-  }, [locationDetails]);
+    if (open === true) { /* eslint-disable-next-line */
+    } if (initialLoad === true) {
+      DashboardSensorListDetails({ device_id: locationDetails.device_id }, fetchSenosorListSuccess, fetchSenosorListException);
+    } else {
+      const sensorDataLoadInterval = setInterval(() => {
+        DashboardSensorListDetails({ device_id: locationDetails.device_id }, fetchSenosorListSuccess, fetchSenosorListException);
+      }, intervalSec);
+      return () => {
+        clearInterval(sensorDataLoadInterval);
+      };
+    }
+  }, [locationDetails, open, initialLoad]);
 
   const fetchSenosorListSuccess = (dataObject) => {
     setTotalSensors(dataObject.sensorCount || '');
@@ -30,6 +44,7 @@ function LandingPageComponent({ locationDetails, setIsDashBoard }) {
     setAnalogSensorList(dataObject.Analog.data || []);
     setDigitalSensorList(dataObject.Digital.data || []);
     setModbusSensorList(dataObject.Modbus.data || []);
+    setInitialLoad(false);
   };
 
   const fetchSenosorListException = () => {
