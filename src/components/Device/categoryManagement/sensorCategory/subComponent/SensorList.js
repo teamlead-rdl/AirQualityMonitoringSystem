@@ -11,7 +11,7 @@ import NotificationBar from '../../../../notification/ServiceNotificationBar';
 import { useUserAccess } from '../../../../../context/UserAccessProvider';
 import DeleteConfirmationDailog from '../../../../../utils/confirmDeletion';
 
-export default function SensorList() {
+export function SensorList() {
   const columns = [
     {
       field: 'sensorName',

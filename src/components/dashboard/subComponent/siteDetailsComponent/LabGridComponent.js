@@ -1,37 +1,66 @@
-import { Breadcrumbs, Typography } from '@mui/material';
+import { Breadcrumbs, Chip, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { LabfetchService } from '../../../../services/LoginPageService';
-/* eslint-disable no-unused-vars */
+import ApplicationStore from '../../../../utils/localStorageUtil';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable radix */
+/* eslint-disable array-callback-return */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable no-shadow */
 function LabGridComponent({
   setImg, locationDetails, setLocationDetails, setProgressState, breadCrumbLabels,
-  setBreadCrumbLabels, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages,
-  setCenterLatitude, setCenterLongitude, setIsDashBoard,
+  setBreadCrumbLabels, setIsGeoMap, setDeviceCoordsList, siteImages, setSiteImages, setIsDashBoard,
 }) {
+  const { labIdList } = ApplicationStore().getStorage('alertDetails');
+
   const [dataList, setDataList] = useState([]);
   const dataColumns = [
     {
       field: 'labDepName',
-      headerName: 'Lab Name',
-      width: 170,
+      headerName: 'Zone Name',
+      width: 400,
       type: 'actions',
       getActions: (params) => [
         <LinkTo selectedRow={params.row} />,
       ],
     },
     {
-      field: 'totalLabs',
-      headerName: 'Total Labs',
-      width: 230,
-    },
-    {
-      field: 'totalAssets',
-      headerName: 'Total Assets',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 160,
+      field: 'id',
+      headerName: 'Status',
+      width: 170,
+      renderCell: ((params) => {
+        let element = {
+          alertLabel: 'Good',
+          alertColor: 'green',
+          alertPriority: 3,
+        };
+        const alertObject = labIdList?.filter((alert) => {
+          return params.row.id === parseInt(alert.id);
+        });
+
+        alertObject?.map((data) => {
+          element = element.alertPriority < data.alertPriority ? element
+            : {
+              alertLabel: data.alertType === 'Critical' ? 'Critical' : data.alertType === 'outOfRange' ? 'Out Of Range' : 'Good',
+              alertColor: data.alertType === 'Critical' ? 'red' : data.alertType === 'outOfRange' ? 'orange' : 'green',
+              alertPriority: data.alertType === 'Critical' ? 1 : data.alertType === 'outOfRange' ? 2 : 3,
+            };
+        });
+
+        return (
+          <Chip
+            variant="outlined"
+            label={element.alertLabel}
+            style={{
+              color: element.alertColor,
+              borderColor: element.alertColor,
+            }}
+          />
+        );
+      }),
     },
   ];
   useEffect(() => {
@@ -74,15 +103,27 @@ function LabGridComponent({
       </h3>
     );
   }
+
+  const setLocationlabel = (value) => {
+    const { locationDetails } = ApplicationStore().getStorage('userDetails');
+    setProgressState(() => {
+      let newValue = value;
+      if (locationDetails.facility_id) {
+        newValue = 2;
+      } else if (locationDetails.branch_id) {
+        newValue = 1;
+      }
+      return newValue;
+    });
+  };
+
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3
           onClick={() => {
-            setProgressState(0);
+            setLocationlabel(0);
             setDeviceCoordsList([]);
-            setCenterLatitude(23.500);
-            setCenterLongitude(80.000);
             setIsGeoMap(true);
           }}
           style={{ cursor: 'pointer' }}
@@ -91,7 +132,7 @@ function LabGridComponent({
         </h3>
         <h3
           onClick={() => {
-            setProgressState(1);
+            setLocationlabel(1);
             setDeviceCoordsList([]);
             setIsGeoMap(true);
           }}
@@ -101,7 +142,7 @@ function LabGridComponent({
         </h3>
         <h3
           onClick={() => {
-            setProgressState(2);
+            setLocationlabel(2);
             setDeviceCoordsList([]);
             setIsGeoMap(true);
           }}

@@ -7,9 +7,10 @@ import DialogActions from '@mui/material/DialogActions';
 import Grid from '@mui/material/Grid';
 import { DataGrid } from '@mui/x-data-grid';
 import { AddCategoryValidate } from '../../../validation/formValidation';
-import { BumpTestAddService, BumpTestFetchService } from '../../../services/LoginPageService';
+import { BumpTestAddService, BumpTestFetchService, ChangeDeviceMode } from '../../../services/LoginPageService';
 import { BumpTestData } from '../../../services/BumpTestServicePage';
 import NotificationBar from '../../notification/ServiceNotificationBar';
+/* eslint-disable no-plusplus */
 
 const columns = [
   {
@@ -48,7 +49,7 @@ const columns = [
 ];
 /* eslint-disable-next-line */
 function BumpTestComponentModal({
-  open, setOpen, isAddButton, setRefreshData, deployedSensorTagList,
+  open, setOpen, isAddButton, setRefreshData, deployedSensorTagList, device_id,
 }) {
   const [sensorTagName, setSensorTagName] = useState('');
   const [lastDueDate, setLastDueDate] = useState('');
@@ -61,6 +62,8 @@ function BumpTestComponentModal({
   const [result, setResult] = useState('');
   const [deployedSensorList, setDeployedSensorList] = useState([]);
   const [bumpTestData, setBumpTestData] = useState([]);
+  let i = 0;
+  let j = 0;
   /* eslint-disable-next-line */
   const [errorObject, setErrorObject] = useState({});
   const [bumpData, setBumpData] = useState([]);
@@ -99,46 +102,68 @@ function BumpTestComponentModal({
     e.preventDefault();
     setBumpData([]);
     setInputDisable(true);
+    ChangeDeviceMode({ id: device_id, deviceMode: 'bumpTest' }, modeChangeHandleSuccess, modeChangeHandleException);
+  };
+
+  const modeChangeHandleException = () => { };
+
+  const modeChangeHandleSuccess = () => {
+    setRefreshData((oldvalue) => !oldvalue);
     const DurationSec = durationPeriod;
     /* eslint-disable-next-line */
-    const myVar = setInterval(bumpTestDataCall, 2000);
+    const myVar = setInterval(()=>{
+      bumpTestDataCall();
+    }, 2000);
     /* eslint-disable-next-line */
     const callCount = parseInt(DurationSec / 2);
     let count = 0;
     let dataCount = 0;
+
     function bumpTestDataCall() {
-      BumpTestData({ sensorTagName }, getBumpTestDataSuccess, getBumpTestDataHandleException);
-      if (count === callCount) {
-        setInputDisable(false);
-        clearInterval(myVar);
-        /* eslint-disable-next-line */
-        const dataList = bumpData.length;
-        let tot = 0;
-        let pcgValPowOfTwo = 0;
-        /* eslint-disable-next-line */
-        for (let i = 0; i < dataList; i++) {
-          if (bumpData[i] !== 'NA') {
-            let pcgVal = 0;
-            /* eslint-disable-next-line */
-            pcgVal = parseInt(Number(percentageConcentrationGas)) - parseInt(bumpData[i]);
-            pcgValPowOfTwo = pcgVal * pcgVal;
-            tot += pcgValPowOfTwo;
-            /* eslint-disable-next-line */
-            dataCount++;
+      if (i === j) {
+        i++;
+        BumpTestData({ sensorTagName }, getBumpTestDataSuccess, getBumpTestDataHandleException);
+        if (count === callCount) {
+          setInputDisable(false);
+          clearInterval(myVar);
+          /* eslint-disable-next-line */
+          const dataList = bumpData.length;
+          let tot = 0;
+          let pcgValPowOfTwo = 0;
+          /* eslint-disable-next-line */
+          for (let i = 0; i < dataList; i++) {
+            if (bumpData[i] !== 'NA') {
+              let pcgVal = 0;
+              /* eslint-disable-next-line */
+              pcgVal = parseInt(Number(percentageConcentrationGas)) - parseInt(bumpData[i]);
+              pcgValPowOfTwo = pcgVal * pcgVal;
+              tot += pcgValPowOfTwo;
+              /* eslint-disable-next-line */
+              dataCount++;
+            }
           }
+          if (dataCount < 3) {
+            setPercentageDeviation('NA');
+          } else {
+            let avg = 0;
+            avg = tot / dataList;
+            setPercentageDeviation(Math.sqrt(avg));
+          }
+          enableDeviceMode(device_id);
         }
-        if (dataCount < 3) {
-          setPercentageDeviation('NA');
-        } else {
-          let avg = 0;
-          avg = tot / dataList;
-          setPercentageDeviation(Math.sqrt(avg));
-        }
+        /* eslint-disable-next-line */
+        count++;
       }
-      /* eslint-disable-next-line */
-      count++;
     }
   };
+
+  const enableDeviceMode = (id) => {
+    ChangeDeviceMode({ id, deviceMode: 'enabled' }, modeHandleSuccess, modeChangeHandleException);
+  };
+  const modeHandleSuccess = () => {
+    setRefreshData((oldvalue) => !oldvalue);
+  };
+
   /* eslint-disable-next-line */
   const getBumpTestResultData = (data) => {
     setLastDueDate('');
@@ -169,6 +194,7 @@ function BumpTestComponentModal({
   };
 
   const getBumpTestDataSuccess = (dataObject) => {
+    j++;
     setDisplayedValue(dataObject.data.LAST);
     bumpData.push(dataObject.data.LAST);
   };
@@ -216,6 +242,17 @@ function BumpTestComponentModal({
       message: '',
     });
   };
+
+  const onCancel = () => {
+    ChangeDeviceMode({ id: device_id, deviceMode: 'enabled' }, cancelHandleSuccess, modeChangeHandleException);
+  };
+  const cancelHandleSuccess = () => {
+    setRefreshData((oldvalue) => !oldvalue);
+    setOpen(false);
+    setErrorObject({});
+    loadData();
+    reset();
+  };
   return (
     <Dialog
       fullWidth
@@ -249,7 +286,6 @@ function BumpTestComponentModal({
                     onChange={(e) => {
                       setSensorTagName(e.target.value);
                       getBumpTestResultData(e.target.value);
-                      // Reset(e.target.value);
                     }}
                   >
                     {/* eslint-disable-next-line */}
@@ -257,8 +293,6 @@ function BumpTestComponentModal({
                       /* eslint-disable-next-line */
                       <MenuItem value={data.sensorTag} key={index}>{data.sensorTag}</MenuItem>
                     ))}
-                    {/* <MenuItem value="accessPoint">Sensor 1</MenuItem>
-                    <MenuItem value="FTP">Sensor 2</MenuItem> */}
                   </Select>
                 </FormControl>
               </Grid>
@@ -282,12 +316,8 @@ function BumpTestComponentModal({
                   disabled="true"
                   value={lastDueDate}
                   required
-                  // onBlur={() => validateForNullValue(categoryName, 'categoryName')}
                   onChange={(e) => { setLastDueDate(e.target.value); }}
                   autoComplete="off"
-                  // error={errorObject?.categoryName?.errorStatus}
-                  // helperText={errorObject?.categoryName?.helperText}
-                  // InputLabelProps={{shrink: true}}
                 />
               </Grid>
               <Grid
@@ -338,11 +368,8 @@ function BumpTestComponentModal({
                   disabled={typeCheck === 'zeroCheck'}
                   value={typeCheck === 'zeroCheck' ? 0 : percentageConcentrationGas}
                   required
-                  // onBlur={() => validateForNullValue(categoryName, 'categoryName')}
                   onChange={(e) => { setPercentrationConcentrationGas(e.target.value); }}
                   autoComplete="off"
-                  // error={errorObject?.categoryName?.errorStatus}
-                  // helperText={errorObject?.categoryName?.helperText}
                 />
               </Grid>
               <Grid
@@ -358,7 +385,6 @@ function BumpTestComponentModal({
                   sx={{ marginTop: 0 }}
                   value={durationPeriod}
                   type="text"
-                  // onBlur={() => validateForNullValue(pollingPriority, 'pollingPriority')}
                   onChange={(e) => {
                     setDurationPeriod(e.target.value);
                   }}
@@ -371,8 +397,6 @@ function BumpTestComponentModal({
                   label="Duration (sec)"
                   autoComplete="off"
                   fullWidth
-                  // error={errorObject?.pollingPriority?.errorStatus}
-                  // helperText={errorObject?.pollingPriority?.helperText}
                 />
               </Grid>
               <Grid
@@ -440,12 +464,9 @@ function BumpTestComponentModal({
                   disabled={inputDisable === true}
                   required
                   value={nextDueDate}
-                  // onBlur={() => validateForNullValue(categoryName, 'categoryName')}
                   onChange={(e) => { setNextDueDate(e.target.value); }}
                   autoComplete="off"
                   InputLabelProps={{ shrink: true }}
-                // error={errorObject?.categoryName?.errorStatus}
-                // helperText={errorObject?.categoryName?.helperText}
                 />
               </Grid>
               <Grid
@@ -462,12 +483,7 @@ function BumpTestComponentModal({
                     size="large"
                     autoFocus
                     /* eslint-disable-next-line */
-                    onClick={(e) => {
-                      setOpen(false);
-                      setErrorObject({});
-                      loadData();
-                      reset();
-                    }}
+                    onClick={onCancel}
                   >
                     Cancel
                   </Button>

@@ -35,6 +35,7 @@ function SensorModel({
   progressStatus,
   setProgressStatus,
   deployedSensorTagList,
+  setSensorRefresh,
 }) {
   const moduleAccess = useUserAccess()('devicelocation');
   const [editData, setEditData] = useState('');
@@ -202,6 +203,8 @@ function SensorModel({
 
   const successSensorUpdate = () => {
     setPopperOpen(false);
+    // Refresh sensor data
+    setSensorRefresh(oldvalue => !oldvalue);
   };
 
   const handleFailure = () => {};
@@ -210,13 +213,13 @@ function SensorModel({
     SensorPropertiesUpdateService({ ...id, ...sensorProperties }, successSensorUpdate, handleFailure);
   };
 
-  const setSensorIdForOptions = (sensorId) => {
+  const setSensorIdForOptions = (data) => {
     setPopperOpen(true);
-    setSensorUpdateId(sensorId.id);
-    setSensorStatus(sensorId.sensorStatus || '0');
-    setNotificationStatus(sensorId.notificationStatus || '0');
-    setHooterRelayStatus(sensorId.hooterRelayStatus || '0');
-    setAudioDecibelLevel(sensorId.audioDecibelLevel || '65');
+    setSensorUpdateId(data.id);
+    setSensorStatus(data.sensorStatus || '0');
+    setNotificationStatus(data.notificationStatus || '0');
+    setHooterRelayStatus(data.hooterRelayStatus || '0');
+    setAudioDecibelLevel(data.audioDecibelLevel || '65');
   };
 
   return (
@@ -228,9 +231,8 @@ function SensorModel({
     >
       {progressStatus === 1 && (
         <>
-          <DialogTitle>Sensors for device</DialogTitle>
-          <DialogContent>
-
+          <DialogTitle style={{padding: '0px', paddingLeft: '26px', paddingTop: '10px'}}>Sensors for device</DialogTitle>
+          <DialogContent style={{padding: '10px'}}>
             <SensorSettingsMenu
               anchorEl={anchorEl}
               popperOpen={popperOpen}
@@ -238,7 +240,7 @@ function SensorModel({
               sensorProperties={{
                 id: sensorUpdateId,
                 notificationStatus_u: notificationStatus,
-                sensorStatus_u: sensorStatus,
+                sensorStatus: sensorStatus,
                 hooterRelayStatus_u: hooterRelayStatus,
                 audioDecibelLevel_u: audioDecibelLevel,
               }}
@@ -408,7 +410,7 @@ function SensorModel({
                                         handleClose={handleClose}
                                       />
                                     )
-                                    : <></>
+                                    : ''
                                 }
                               </ListItemButton>
                             </ListItem>
@@ -453,7 +455,7 @@ function SensorModel({
       )}
       {progressStatus === 2 && (
         <div style={{ textAlign: 'center', padding: 5 }}>
-          <SensorAdd isUpdate editData={editData} locationDetails={locationDetails} setProgressStatus={setProgressStatus} />
+          <SensorAdd isUpdate editData={editData} locationDetails={locationDetails} setProgressStatus={setProgressStatus} setSensorRefresh={setSensorRefresh} />
         </div>
       )}
       {progressStatus === 3 && (

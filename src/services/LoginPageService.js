@@ -282,6 +282,20 @@ export const DashboardSensorListDetails = (data, successCallback, errorCallBack)
 
 export const DashboardIndividualSensorDetails = (data, successCallback, errorCallBack) => _fetchService('sensorTagIdData', 'POST', data, successCallback, errorCallBack);
 
-export const DeviceIdAlerts = (data, successCallback, errorCallBack) =>  _fetchService('alertData', 'POST', data, successCallback, errorCallBack);
+export const DeviceIdAlerts = (data, successCallback, errorCallBack) => _fetchService('alertData', 'POST', data, successCallback, errorCallBack);
 
-export const SensorIdAlertUpdate = (data, successCallback, errorCallBack) =>  _fetchService('alertDataUpdate', 'POST', data, successCallback, errorCallBack);
+export const SensorIdAlertUpdate = (data, successCallback, errorCallBack) => _fetchService('alertDataUpdate', 'POST', data, successCallback, errorCallBack);
+
+//-------------- Reports API-------------------------------//
+
+export const FetchBumpTestReportDetails = (data, successCallback, errorCallBack) => _fetchService('reportBumpTest', 'POST', data, successCallback, errorCallBack);
+
+export const FetchAlarmReportDetails = (data, successCallback, errorCallBack) => _fetchService('alarmReport', 'POST', data, successCallback, errorCallBack);
+
+// ---------- Alert Notification --------------------------//
+
+export const NotificationAlerts = (data, successCallback, errorCallBack) =>  _fetchService('getAlerts', 'POST', data, successCallback, errorCallBack);
+
+// ------------ Company Log Interval ---------------------//
+
+export const CompanyLogInterval = (data, successCallback, errorCallBack) => { return _fetchService(`updateCustomerSettings`, 'POST', data, successCallback, errorCallBack); };

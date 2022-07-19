@@ -1,6 +1,7 @@
 export const sidebarConfig = {
   superadmin: ['Dashboard', 'CustomerManagement', 'UserManagement', 'ChangePassword', 'AddDevice', 'DeviceLocation'],
-  systemspecialist: ['Dashboard', 'Location', 'UserManagement', 'Vendor', 'ChangePassword', 'Device', 'AddDevice', 'DeviceLocation'],
+  systemspecialist: ['Dashboard', 'Location', 'UserManagement', 'Vendor', 'Report', 'ChangePassword',
+    'Device', 'AddDevice', 'DeviceLocation'],
   admin: ['Dashboard', 'Location', 'UserManagement', 'Vendor', 'Report', 'ChangePassword', 'AddDevice', 'DeviceLocation'],
   manager: ['Dashboard', 'Location', 'UserManagement', 'Vendor', 'ChangePassword', 'AddDevice', 'DeviceLocation'],
   user: ['Dashboard', 'Location', 'ChangePassword', 'AddDevice', 'DeviceLocation'],
@@ -187,12 +188,36 @@ export const crudConfig = {
       delete: false,
     },
   },
-  Report: {
-    Admin: {
-      view: false,
+  report: {
+    superadmin: {
+      view: true,
       add: true,
       edit: true,
       delete: true,
+    },
+    systemspecialist: {
+      view: true,
+      add: true,
+      edit: true,
+      delete: true,
+    },
+    admin: {
+      view: true,
+      add: false,
+      edit: true,
+      delete: true,
+    },
+    manager: {
+      view: true,
+      add: true,
+      edit: true,
+      delete: false,
+    },
+    user: {
+      view: true,
+      add: false,
+      edit: false,
+      delete: false,
     },
   },
   devicelocation: {

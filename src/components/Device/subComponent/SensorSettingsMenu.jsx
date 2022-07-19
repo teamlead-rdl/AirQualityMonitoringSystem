@@ -23,7 +23,7 @@ function SensorSettingsMenu(props) {
   };
 
   useEffect(() => {
-    setSensorStatus(props.sensorProperties.sensorStatus_u);
+    setSensorStatus(props.sensorProperties.sensorStatus);
     setNotificationStatus(props.sensorProperties.notificationStatus_u);
     setHooterRelayStatus(props.sensorProperties.hooterRelayStatus_u);
     setAudioDecibelLevel(props.sensorProperties.audioDecibelLevel_u);
@@ -39,7 +39,6 @@ function SensorSettingsMenu(props) {
       const status = oldValue === '0' ? '1' : '0';
       return status;
     });
-
     props.updateService(sensorId, {
       ...props.sensorProperties,
       sensorStatus: sensorStatus === '0' ? '1' : '0',
@@ -125,7 +124,7 @@ function SensorSettingsMenu(props) {
     >
       <MenuItem onClick={props.handleClose} disableRipple>
         <FormControlLabel
-          control={<Switch checked={sensorStatus !== '0'} onChange={updateSensorStatus} color="warning" />}
+          control={<Switch checked={sensorStatus === '1'} onChange={updateSensorStatus} color="warning" />}
           label="Enabled"
         />
       </MenuItem>

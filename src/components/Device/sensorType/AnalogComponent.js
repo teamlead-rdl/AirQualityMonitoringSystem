@@ -145,15 +145,15 @@ function Analog({
           sx={{ mt: 0, padding: 0, alignSelf: 'center' }}
           item
           xs={12}
-          sm={0.5}
+          sm={1}
           md={0.5}
           lg={0.5}
-          xl={1}
+          xl={0.5}
         >
           <div className="rounded-md -space-y-px flex">
             <Checkbox
               checked={minRatedReadingChecked != 0}
-              disabled={moduleAccess.edit === false && true}
+              disabled={moduleAccess.edit === false && true || disable}
               onChange={(e) => {
                 setMinRatedReadingChecked(e.target.checked);
               }}
@@ -164,7 +164,7 @@ function Analog({
           sx={{ mt: 0, padding: 0 }}
           item
           xs={6}
-          sm={3}
+          sm={2.5}
           md={3}
           lg={3}
           xl={3}
@@ -199,7 +199,7 @@ function Analog({
           lg={3}
           xl={3}
         >
-          <div className="rounded-md -space-y-px">
+          {/* <div className="rounded-md -space-y-px">
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Relay Output</InputLabel>
               <Select
@@ -215,7 +215,7 @@ function Analog({
                 <MenuItem value="OFF">Off</MenuItem>
               </Select>
             </FormControl>
-          </div>
+          </div> */}
         </Grid>
         <Grid
           sx={{ mt: 0, padding: 0 }}
@@ -251,15 +251,15 @@ function Analog({
           sx={{ mt: 0, padding: 0, alignSelf: 'center' }}
           item
           xs={12}
-          sm={0.5}
+          sm={1}
           md={0.5}
           lg={0.5}
-          xl={1}
+          xl={0.5}
         >
           <div className="rounded-md -space-y-px flex">
             <Checkbox
               checked={maxRatedReadingChecked != 0}
-              disabled={moduleAccess.edit === false && true}
+              disabled={moduleAccess.edit === false && true || disable}
               onChange={(e) => {
                 setMaxRatedReadingChecked(e.target.checked);
               }}
@@ -270,7 +270,7 @@ function Analog({
           sx={{ mt: 0, padding: 0 }}
           item
           xs={6}
-          sm={3}
+          sm={2.5}
           md={3}
           lg={3}
           xl={3}

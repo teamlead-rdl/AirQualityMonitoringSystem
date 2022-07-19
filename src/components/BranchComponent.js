@@ -13,33 +13,40 @@ function Branch() {
   const [centerLng, setCenterLng] = useState(72.91655655);
   const { locationId } = useParams();
   useEffect(() => {
-    let coordinates = centerCoordination ? centerCoordination.replaceAll('"', '').split(',') : [];
+    const coordinates = centerCoordination ? centerCoordination.replaceAll('"', '').split(',') : [];
     setCenterLat(parseFloat(coordinates[0]) || '');
     setCenterLng(parseFloat(coordinates[1]) || '');
   }, [locationCoordinationList]);
   return (
-    <Container maxWidth={false} style={{ marginTop: 0 }}>
-      <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
-        <BranchListResults
-          locationId={locationId}
-          locationCoordinationList={locationCoordinationList}
-          setLocationCoordinationList={setLocationCoordinationList}
-          centerLat={centerLat}
-          centerLng={centerLng}
-        />
-      </Grid>
-      <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
-        {locationCoordinationList.length !== 0
-          ? (
-            <MapsMultiplePoints
-              width="100%"
-              height="50vh"
-              markers={locationCoordinationList}
-              zoom={6}
-              center={{ lat: locationCoordinationList[0].position.lat || centerLat, lng: locationCoordinationList[0].position.lng || centerLng }}
-            />
-          )
-          : ''}
+    <Container maxWidth={false} style={{ marginTop: 0, height: '77%', width: '100%' }}>
+      <Grid container style={{ overflow: 'auto', height: '100%', width: '100%' }}>
+        <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
+          <BranchListResults
+            locationId={locationId}
+            locationCoordinationList={locationCoordinationList}
+            setLocationCoordinationList={setLocationCoordinationList}
+            centerLat={centerLat}
+            centerLng={centerLng}
+          />
+        </Grid>
+        <Grid sx={{ mt: 1 }} xs={12} sm={12} md={12} lg={12} xl={12}>
+          {locationCoordinationList.length !== 0
+            ? (
+              <MapsMultiplePoints
+                width="100%"
+                height="50vh"
+                markers={locationCoordinationList}
+                zoom={6}
+                center={{
+                  lat: locationCoordinationList[0].position.lat
+                  || centerLat,
+                  lng: locationCoordinationList[0].position.lng
+                  || centerLng,
+                }}
+              />
+            )
+            : ''}
+        </Grid>
       </Grid>
     </Container>
   );
