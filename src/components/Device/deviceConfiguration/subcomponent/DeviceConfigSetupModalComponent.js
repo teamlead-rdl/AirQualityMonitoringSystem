@@ -316,8 +316,7 @@ function DeviceConfigSetupModal({
               id="outlined-basic"
               label="Account Name"
               variant="outlined"
-              fullWidth
-              required
+              fullWidth              
               // onBlur={() =>validateForNullValue(ftpAccountName, 'ftpAccountName')}
               onChange={(e) => { setFtpAccountName(e.target.value); }}
               autoComplete="off"
@@ -330,8 +329,7 @@ function DeviceConfigSetupModal({
               margin="dense"
               id="outlined-basic"
               label="User name"
-              variant="outlined"
-              required
+              variant="outlined"            
               //  onBlur={() =>validateForNullValue(userName, 'userName')}
               onChange={(e) => { setUserName(e.target.value); }}
               autoComplete="off"
@@ -347,8 +345,7 @@ function DeviceConfigSetupModal({
               type="password"
               label="password"
               variant="outlined"
-              fullWidth
-              required
+              fullWidth             
               //  onBlur={() =>validateForNullValue(ftpPassword, 'ftpPassword')}
               onChange={(e) => { setFtpPassword(e.target.value); }}
               autoComplete="off"
@@ -361,8 +358,7 @@ function DeviceConfigSetupModal({
               id="outlined-basic"
               label="Port"
               variant="outlined"
-              fullWidth
-              required
+              fullWidth             
               //  onBlur={() =>validateForNullValue(port, 'port')}
               onChange={(e) => { setPort(e.target.value); }}
               autoComplete="off"

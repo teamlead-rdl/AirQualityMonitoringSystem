@@ -12,6 +12,7 @@
     "@mui/lab": "^5.0.0-alpha.72",
     "@mui/material": "^5.2.8",
     "@mui/styled-engine-sc": "^5.1.0",
+    "@mui/styles": "^5.8.4",
     "@mui/x-data-grid": "^5.5.1",
     "@react-google-maps/api": "^2.7.0",
     "@testing-library/jest-dom": "^5.16.1",

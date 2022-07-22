@@ -1,16 +1,16 @@
 import { Delete } from '@mui/icons-material';
 import {
-  Button, Dialog, DialogContent, DialogTitle, TextField, Typography,
+  Button, Dialog, DialogContent, DialogTitle, TextField, Typography, Stack,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import React, { useState, useEffect } from 'react';
-import { SensorIdAlertUpdate } from "../../../services/LoginPageService";
+import React, { useState } from 'react';
+import { SensorIdAlertUpdate } from '../../../services/LoginPageService';
 import NotificationBar from '../../notification/ServiceNotificationBar';
 
 /* eslint-disable no-unused-vars */
-function AlertWidget({dataList, setRefreshData }) { 
+function AlertWidget({ dataList, setRefreshData }) {
   const [clearAlert, setClearAlert] = useState(false);
-  const [clearAlertReason, setAlertReason] = useState('');  
+  const [clearAlertReason, setAlertReason] = useState('');
   const [sensorId, setSensorId] = useState('');
   const [errorObject, setErrorObject] = useState({});
   const [openNotification, setNotification] = useState({
@@ -19,33 +19,32 @@ function AlertWidget({dataList, setRefreshData }) {
     message: '',
   });
 
-
   const columns = [
     {
       field: 'a_date',
-      headerName:'Date',
-      width: 100
+      headerName: 'Date',
+      width: 100,
     },
     {
       field: 'a_time',
       headerName: 'Time',
-      width: 100
+      width: 100,
     },
     {
       field: 'sensorTag',
       headerName: 'Sensor Tag',
-      width: 100
-    },    
+      width: 100,
+    },
     {
       field: 'value',
       headerName: 'Value',
-      width: 100
+      width: 100,
     },
     {
       field: 'msg',
       headerName: 'Message',
       width: 300,
-    },    
+    },
     {
       field: 'statusMessage',
       headerName: 'statusMessage',
@@ -88,13 +87,12 @@ function AlertWidget({dataList, setRefreshData }) {
     e.preventDefault();
 
     await SensorIdAlertUpdate({
-      sensor_id:sensorId, clearAlertReason,
+      sensor_id: sensorId, clearAlertReason,
     }, handleSuccess, handleException);
 
     setClearAlert(false);
     setAlertReason('');
   };
-
 
   const handleSuccess = (dataObject) => {
     setNotification({
@@ -102,13 +100,14 @@ function AlertWidget({dataList, setRefreshData }) {
       type: 'success',
       message: dataObject.message,
     });
-    setRefreshData((oldvalue) => !oldvalue); 
+    setRefreshData((oldvalue) => !oldvalue);
     setTimeout(() => {
-      handleClose();     
+      handleClose();
       setErrorObject({});
     }, 5000);
   };
 
+  /* eslint-disable-next-line */
   const handleException = (errorObject, errorMessage) => {
     setNotification({
       status: true,
@@ -144,7 +143,7 @@ function AlertWidget({dataList, setRefreshData }) {
         style={{ maxHeight: `${250}px` }}
       />
       <Dialog
-        sx={{ '& .MuiDialog-paper': { minWidth: '30%' } }}
+        sx={{ '& .MuiDialog-paper': { minWidth: '40%' } }}
         maxWidth="sm"
         open={clearAlert}
       >
@@ -154,56 +153,39 @@ function AlertWidget({dataList, setRefreshData }) {
         <DialogContent>
           <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
             <div className="rounded-md -space-y-px " style={{ textAlign: '-webkit-center' }}>
-              <div className="container mx-auto outline-black ">
-                <div className="inline ">
-                  <div className="w-1/3  lg:w-3/5  pr-3 pl-3">
-                    {/* <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">Select reason</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={clearAlertReason}
-                        label="Select reason"
-                        onChange={(e) => {
-                          setAlertReason(e.target.value);
-                        }}
-                      >
-                        <MenuItem value="Reason 1">Reason 1</MenuItem>
-                        <MenuItem value="Reason 2">Reason 2</MenuItem>
-                        <MenuItem value="Reason 3">Reason 3</MenuItem>
-                      </Select>
-                    </FormControl> */}
-                    <TextField
-                      id="outlined-name"
-                      label="Reason"
-                      value={clearAlertReason}
-                      required
-                      multiline
-                      rows={3}
-                      onChange={(e) => {
-                        setAlertReason(e.target.value);
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="float-right">
-                <div className="rounded-md -space-y-px">
-                  <Button
-                    type="submit"
-                  >
-                    Clear
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setClearAlert(false);
-                      setAlertReason('');
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
+              <TextField
+                id="outlined-name"
+                label="Reason"
+                value={clearAlertReason}
+                fullWidth
+                required
+                multiline
+                rows={5}
+                onChange={(e) => {
+                  setAlertReason(e.target.value);
+                }}
+              />
+              <Stack
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+                spacing={3}
+                style={{ marginTop: '30px' }}
+              >
+                <Button
+                  type="submit"
+                >
+                  Clear
+                </Button>
+                <Button
+                  onClick={() => {
+                    setClearAlert(false);
+                    setAlertReason('');
+                  }}
+                >
+                  Cancel
+                </Button>
+              </Stack>
             </div>
           </form>
         </DialogContent>
@@ -211,7 +193,6 @@ function AlertWidget({dataList, setRefreshData }) {
           handleClose={handleClose}
           notificationContent={openNotification.message}
           openNotification={openNotification.status}
-          // openNotification={true}
           type={openNotification.type}
         />
       </Dialog>

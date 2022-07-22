@@ -42,10 +42,10 @@ function SensorConfig({
   const [relayOutput, setRelayOutput] = useState(editData?.relayOutput || 'ON');
   const [bumpTestRequired, setBumpTestRequired] = useState(editData?.bumpTestRequired || 'ON');
   const [minRatedReading, setMinRatedReading] = useState(editData.minRatedReading || '');
-  const [minRatedReadingChecked, setMinRatedReadingChecked] = useState(editData.minRatedReadingChecked || 0);
+  const [minRatedReadingChecked, setMinRatedReadingChecked] = useState(editData.minRatedReadingChecked || '0');
   const [minRatedReadingScale, setMinRatedReadingScale] = useState(editData.minRatedReadingScale || '');
   const [maxRatedReading, setMaxRatedReading] = useState(editData.maxRatedReading || '');
-  const [maxRatedReadingChecked, setMaxRatedReadingChecked] = useState(editData.maxRatedReadingChecked || 0);
+  const [maxRatedReadingChecked, setMaxRatedReadingChecked] = useState(editData.maxRatedReadingChecked || '0');
   const [maxRatedReadingScale, setMaxRatedReadingScale] = useState(editData.maxRatedReadingScale || '');
   // -Modbus--------//
   const [slaveId, setSlaveId] = useState(editData.slaveId || '');

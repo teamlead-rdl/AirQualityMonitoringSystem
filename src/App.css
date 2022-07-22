@@ -50,3 +50,54 @@ span.otpSeparator {
   height: 100%;
   margin: auto;
 }
+
+.todo-container {
+  background: rgb(255, 255, 255);
+  width: 40vw;
+  border-radius: 15px;
+  padding: 10px 10px;
+  color: rgb(0, 0, 0);
+  border: 3px solid rgb(36, 110, 194);
+}
+
+.task {
+  /* border: 1px solid white; */
+  border-radius: 5px;
+  padding: 0.1em;
+  margin: 0.3em; 
+  width:100%;
+  display: inline-block;
+  align-items: center;
+}
+.measureUnit{
+   display: inline-block;
+   text-align: center;
+   margin:0.5em;
+}
+
+
+.measureUnitBody{
+  float:right;
+}
+
+.task button{
+  background: rgb(12, 124, 251);
+  border-radius: 5px;
+  margin: 0px 5px;
+  padding: 3px 5px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  float: right;
+}
+
+.header {
+  margin: 0.1em;
+  font-size: 1.0em;
+  text-align: center;
+}
+
+
+
+
+

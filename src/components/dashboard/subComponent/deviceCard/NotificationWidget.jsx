@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from 'react';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-function NotificationWidget({ type, deviceTotal }) {
+function NotificationWidget({ type, figure }) {
   let data;
   const [dateTime, setDateTime] = useState({
     time: '',
@@ -51,7 +51,7 @@ function NotificationWidget({ type, deviceTotal }) {
   case 'devices':
     data = {
       title: 'Total Devices',
-      figure: deviceTotal,
+      figure: figure,
       icon: (
         <Sensors
           className="icon"
@@ -63,7 +63,7 @@ function NotificationWidget({ type, deviceTotal }) {
   case 'alerts':
     data = {
       title: 'Active Alerts',
-      figure: 45,
+      figure: figure,
       icon: (
         <NotificationsActiveOutlined
           className="icon"

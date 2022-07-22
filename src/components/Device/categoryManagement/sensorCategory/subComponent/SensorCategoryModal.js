@@ -8,6 +8,7 @@ import {
   SensorCategoryAddService, SensorCategoryEditService,
 } from '../../../../../services/LoginPageService';
 import NotificationBar from '../../../../notification/ServiceNotificationBar';
+import MeasureUnit from './MeasureUnit';
 
 function SensorCategoryModal({
   open, setOpen, isAddButton, categoryData, setRefreshData,
@@ -16,6 +17,11 @@ function SensorCategoryModal({
   const [sensorName, setCategoryName] = useState('');
   const [sensorDescriptions, setCategoryDescription] = useState('');
   const [errorObject, setErrorObject] = useState({});
+  const [unitId, setUnitId] = useState('');
+  const [unitLabel, setUnitLabel] = useState('');
+  const [unitMeasure, setUnitMeasure] = useState('');
+  const [measureUnits, setMeasureUnits] = useState([]);
+  const [isAddUnit, setIsAddUnit] = useState(true);
 
   const [openNotification, setNotification] = useState({
     status: false,
@@ -31,6 +37,9 @@ function SensorCategoryModal({
     setId(categoryData.id || '');
     setCategoryName(categoryData.sensorName || '');
     setCategoryDescription(categoryData.sensorDescriptions || '');
+    if(categoryData.measureUnitList){
+      setMeasureUnits(JSON.parse(categoryData?.measureUnitList?.replace(/\\/g, '').replace(/(^"|"$)/g, '')) || []);
+    }
   };
 
   const validateForNullValue = (value, type) => {
@@ -47,8 +56,10 @@ function SensorCategoryModal({
     setTimeout(() => {
       setOpen(false);
     }, 5000);
+    setMeasureUnits([]);
   };
 
+  /* eslint-disable-next-line */
   const handleException = (errorObject, errorMessage) => {
     setNotification({
       status: true,
@@ -60,9 +71,10 @@ function SensorCategoryModal({
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isAddButton) {
-      SensorCategoryAddService({ sensorName, sensorDescriptions }, handleSuccess, handleException);
+      /* eslint-disable-next-line */
+      SensorCategoryAddService({ sensorName, sensorDescriptions, measureUnitList: JSON.stringify(measureUnits) }, handleSuccess, handleException);
     } else {
-      SensorCategoryEditService({ id, sensorName, sensorDescriptions }, handleSuccess, handleException);
+      SensorCategoryEditService({ id, sensorName, sensorDescriptions, measureUnitList: JSON.stringify(measureUnits) }, handleSuccess, handleException);
     }
   };
 
@@ -73,10 +85,70 @@ function SensorCategoryModal({
       message: '',
     });
   };
+
+  const addMeasureUnits = () => {
+    if (unitLabel === '') {
+      setErrorObject((oldData) => {
+        const status = {
+          errorStatus: true,
+          helperText: 'Enter valid unit Label',
+        };
+        return {
+          ...oldData,
+          unitLabel: status,
+        };
+      });
+    } else if (measureUnits === '') {
+      setErrorObject((oldData) => {
+        const status = {
+          errorStatus: true,
+          helperText: 'Enter valid unit Measure',
+        };
+        return {
+          ...oldData,
+          unitMeasure: status,
+        };
+      });
+    } else if (unitId === '') {
+      const newMeasureUnits = [...measureUnits, { unitLabel, unitMeasure }];
+      setMeasureUnits(newMeasureUnits);
+      setUnitMeasure('');
+      setUnitLabel('');
+    } else {
+      const newMeasureUnits = [...measureUnits];
+      newMeasureUnits[unitId].unitLabel = unitLabel;
+      newMeasureUnits[unitId].unitMeasure = unitMeasure;
+      setMeasureUnits(newMeasureUnits);
+      setUnitMeasure('');
+      setUnitLabel('');
+      setIsAddUnit(true);
+      setUnitId('');
+    }
+  };
+
+  const updateMeasureUnits = (index) => {
+    setUnitId(index);
+    setUnitLabel(measureUnits[index].unitLabel);
+    setUnitMeasure(measureUnits[index].unitMeasure);
+    setIsAddUnit(false);
+  };
+
+  const removeMeasureUnits = (index) => {
+    const newMeasureUnits = [...measureUnits];
+    newMeasureUnits.splice(index, 1);
+    setMeasureUnits(newMeasureUnits);
+  };
+
+  const clearMeasureUnits = () => {
+    setUnitMeasure('');
+    setUnitLabel('');
+    setErrorObject('');
+  };
+
   return (
     <Dialog
       fullWidth
-      maxWidth="sm"
+      maxWidth="md"
       sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: '100%' } }}
       open={open}
     >
@@ -115,14 +187,81 @@ function SensorCategoryModal({
             helperText={errorObject?.categoryDescription?.helperText}
           />
         </DialogContent>
+        <DialogContent>
+          <div className="flex items-center justify-between gap-2">
+            <TextField
+              id="dense"
+              label="Units label"
+              multiline
+              margin="dense"
+              maxRows={4}
+              fullWidth
+              value={unitLabel}
+              /* eslint-disable-next-line */
+              onBlur={() => validateForNullValue(unitLabel, 'unitLabel')}
+              onChange={(e) => { setUnitLabel(e.target.value); }}
+              autoComplete="off"
+              error={errorObject?.unitLabel?.errorStatus}
+              helperText={errorObject?.unitLabel?.helperText}
+            />
+            <TextField
+              id="dense"
+              multiline
+              label="Units Measure"
+              margin="dense"
+              maxRows={4}
+              fullWidth
+              value={unitMeasure}
+              onBlur={() => validateForNullValue(unitMeasure, 'unitMeasure')}
+              onChange={(e) => { setUnitMeasure(e.target.value); }}
+              autoComplete="off"
+              error={errorObject?.unitMeasure?.errorStatus}
+              helperText={errorObject?.unitMeasure?.helperText}
+            />
+            <Button
+              size="large"
+              autoFocus
+              disabled={errorObject?.unitLabel?.errorStatus || errorObject?.unitMeasure?.errorStatus}
+              onClick={addMeasureUnits}
+            >
+              {isAddUnit ? 'Add Unit' : 'Update Unit'}
+            </Button>
+            <Button
+              size="large"
+              autoFocus
+              onClick={clearMeasureUnits}
+            >
+              Cancel
+            </Button>
+          </div>
+          <div className="flex items-center justify-between gap-3 mt-5">
+            <div className="todo-container">
+              <div className="header">Units Label and Measures</div>
+              <div className="tasks">
+                {
+                  measureUnits.length > 0
+                    ? measureUnits?.map((measureUnit, index) => (
+                      /* eslint-disable-next-line */
+                      <MeasureUnit  measureUnit={measureUnit} index={index}   key={index}
+                        removeMeasureUnits={removeMeasureUnits}
+                        updateMeasureUnits={updateMeasureUnits}
+                      />
+                    )) : ''
+                }
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+
         <DialogActions sx={{ margin: '10px' }}>
           <Button
             size="large"
             autoFocus
-            onClick={(e) => {
+            onClick={() => {
               setOpen(false);
               setErrorObject({});
               loadData();
+              setMeasureUnits([]);
             }}
           >
             Cancel

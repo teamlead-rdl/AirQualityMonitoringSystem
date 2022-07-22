@@ -390,10 +390,13 @@ function Modbus({
         >
           <div className="rounded-md -space-y-px flex">
             <Checkbox
-              checked={minRatedReadingChecked !== '0' || (moduleAccess.edit === false && true)}
+              checked={minRatedReadingChecked !== '0'}
+              //  || (moduleAccess.edit === false && true)}
               disabled={(moduleAccess.edit === false && true) || disable}
               onChange={(e) => {
-                setMinRatedReadingChecked(e.target.checked);
+                setMinRatedReadingChecked(()=>{
+                return e.target.checked === true ? '1' : '0'
+                });
               }}
             />
           </div>
@@ -481,9 +484,11 @@ function Modbus({
         >
           <div className="rounded-md -space-y-px flex">
             <Checkbox
-              checked={maxRatedReadingChecked !== '0' || (moduleAccess.edit === false && true)}
+              checked={maxRatedReadingChecked !== '0'}
               disabled={(moduleAccess.edit === false && true) || disable}
-              onChange={(e) => { setMaxRatedReadingChecked(e.target.checked); }}
+              onChange={(e) => { setMaxRatedReadingChecked(()=>{
+                return e.target.checked === true ? '1' : '0'
+              }); }}
             />
           </div>
         </Grid>

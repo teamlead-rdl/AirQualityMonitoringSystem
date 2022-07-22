@@ -34,7 +34,6 @@ function HomePageComponent() {
     location_id, branch_id, facility_id,
   } = locationDetails;
 
-  // const [notificationList, setNotificationList] = useState([]);
   const {  locationIdList, branchIdList, facilityIdList, buildingIdList, floorIdList,
     labIdList, deviceIdList, sensorIdList, } = ApplicationStore().getStorage('alertDetails');
 
@@ -50,9 +49,6 @@ function HomePageComponent() {
     });
     const notifierInterval = setInterval(() => {
       NotificationAlerts({ location_id, branch_id, facility_id }, handleNotificationSuccess, handleNotificationException);
-      // setNotifierState((oldValue) => {
-      //   return { ...oldValue, open: true, color: '#4caf50' };
-      // });
     }, 10000); // pick data from 'userDetails'(sessionData)
   
     return () => {
@@ -100,12 +96,12 @@ function HomePageComponent() {
         newNotificationValue = !oldValue;
         return !oldValue;
       });
-      let colorCode = setAlertColor(arraySet);
+      var colorObject = setAlertColor(arraySet);
       setNotifierState((oldValue) => {
         return {
           ...oldValue,
           open: true,
-          color: colorCode.color,
+          color: colorObject.color,
         };
       });
       ApplicationStore().setStorage('notificationDetails', {notificationList: newDataObject, newNotification: newNotificationValue});

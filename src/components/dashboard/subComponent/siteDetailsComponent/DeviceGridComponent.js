@@ -17,13 +17,16 @@ function DeviceGridComponent({
 }) {
   const [deviceList, setDeviceList] = useState([]);
   const [deviceTotal, setDeviceTotal] = useState('0');
+  const [deviceAlert, setAlertTotal] = useState('0');
+  const [expanded, setExpanded] = useState(false);
+  const { intervalDetails } = ApplicationStore().getStorage('userDetails');
+  const intervalSec = intervalDetails.deviceLogInterval * 1000;
 
   useEffect(() => {
     intervalCallFunction();
     const devicePolling = setInterval(() => {
       intervalCallFunction();
-    }, 5000);
-
+    }, intervalSec);
     return () => {
       clearInterval(devicePolling);
     };
@@ -50,6 +53,7 @@ function DeviceGridComponent({
     const filteredArray = deviceCoordinationsList.filter((x) => x != null);
     setDeviceCoordsList(filteredArray || []);
     setDeviceTotal(dataObject.totalData);
+    setAlertTotal(dataObject.alertCount);
   };
 
   const handleException = () => { };
@@ -75,12 +79,9 @@ function DeviceGridComponent({
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3
           onClick={() => {
-            // setCenterLatitude(23.500);
-            // setCenterLongitude(80.000);
             setDeviceCoordsList([]);
             setIsGeoMap(true);
             setLocationlabel(0);
-            // setProgressState(0);
             setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
@@ -92,7 +93,6 @@ function DeviceGridComponent({
             setDeviceCoordsList([]);
             setIsGeoMap(true);
             setLocationlabel(1);
-            // setProgressState(1);
             setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
@@ -104,7 +104,6 @@ function DeviceGridComponent({
             setDeviceCoordsList([]);
             setIsGeoMap(true);
             setLocationlabel(2);
-            // setProgressState(2);
             setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
@@ -156,8 +155,8 @@ function DeviceGridComponent({
       <div className="widgets" style={{ height: 'auto', backgroundColor: '#fafafa', padding: 10 }}>
         <NotificationWidget type="user" />
         <NotificationWidget type="labs" />
-        <NotificationWidget type="devices" deviceTotal={deviceTotal} />
-        <NotificationWidget type="alerts" />
+        <NotificationWidget type="devices" figure={deviceTotal} />
+        <NotificationWidget type="alerts" figure={deviceAlert}/>
         <NotificationWidget type="time" />
       </div>
       <div

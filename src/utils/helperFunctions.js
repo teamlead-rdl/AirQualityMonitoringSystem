@@ -18,18 +18,17 @@ export function alertSeverityCode(alertType){
 }
 
 export function setAlertColor(newNotificationStack){
-  let colorCode = {
-    priority: 3,
-    color: '#4CAF50'
-  };
-  if (newNotificationStack.length !== 0) {
-    for(let i = 0; i <= newNotificationStack.length; i++) {
+  if (newNotificationStack.length > 0) {
+    let colorCode = {
+      priority: 3,
+      color: '#ab47bc'
+    };
+    for(let i = 0; i < newNotificationStack.length; i++) {
       if (newNotificationStack[i].alertType === 'Critical') {
         colorCode = {
           priority: 1,
           color: '#E53935'
         };
-        break;
       } else if(newNotificationStack[i].alertType === 'outOfRange') {
         colorCode = {
           priority: 2,
@@ -37,6 +36,6 @@ export function setAlertColor(newNotificationStack){
         }
       }
     }
+    return colorCode;
   }
-  return colorCode;
 }
