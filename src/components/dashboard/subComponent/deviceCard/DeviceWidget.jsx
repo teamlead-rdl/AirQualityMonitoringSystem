@@ -55,7 +55,7 @@ function DeviceWidget({
       <div
         className="left"
         style={{
-          backgroundColor: data.deviceMode === 'disabled' ? '#9e9e9e': data.deviceCategory === 'AQMII' ? '#dcedc8' : data.deviceCategory === 'AQMO' ? '#fff9c4' : '#b3e5fc',
+          backgroundColor: data.deviceMode === 'disabled' ? '#9e9e9e': '#dcedc8',
           borderTopRightRadius: '10px',
           borderTopLeftRadius: '10px',
           alignContent: 'space-between',
@@ -80,7 +80,7 @@ function DeviceWidget({
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 width: '120px',
-                color: data.deviceMode === 'disabled' ? '#212121' : data.deviceCategory === 'AQMII' ? '#388e3c' : data.deviceCategory === 'AQMO' ? '#ffa000' : '#01579b',
+                color: data.deviceMode === 'disabled' ? '#212121' : '#388e3c',
               }}
             >
               {data.deviceName}
@@ -93,7 +93,7 @@ function DeviceWidget({
                 float: 'right',
                 marginRight: 5,
                 fontWeight: 500,
-                color: data.deviceMode === 'disabled' ? '#212121' : data.deviceCategory === 'AQMII' ? '#388e3c' : data.deviceCategory === 'AQMO' ? '#ffa000' : '#01579b',
+                color: data.deviceMode === 'disabled' ? '#212121' : '#388e3c',
               }}
             >
               {data.deviceCategory}
@@ -129,10 +129,7 @@ function DeviceWidget({
                 }}
                 >
                   <div style={{ width: '100%', alignContent: 'center', color: 'black' }}>
-                    {data.deviceCategory === 'AQMII' ? <WifiOutlined color="success" style={{ fontSize: '40px' }} /> :
-                      data.deviceCategory === 'AQM0' ? <WifiOffOutlined style={{ fontSize: '70px', color: '#757575' }} /> :
-                      <WifiOffOutlined style={{ fontSize: '70px', color: '#303030' }} />}
-
+                      <WifiOffOutlined style={{ fontSize: '70px', color: '#707070' }} />
                   </div>
                 </div>
               )
@@ -159,8 +156,7 @@ function DeviceWidget({
                       <NotificationsActiveOutlined
                         style={{ fontSize: '40px' }}
                         sx={{
-                          color: data.deviceCategory === 'AQMII' ? '#388e3c'
-                            : data.deviceCategory === 'AQMO' ? '#ffa000' : '#757575',
+                          color: '#ffa000'
                         }}
                       />
                     </Badge>

@@ -118,101 +118,104 @@ function Navbar(props) {
           </Typography>
         </div>
         <div className="items">
-          <Tooltip title="Notifications" placement="bottom" TransitionComponent={Zoom} arrow>
-            <div className="item">
-              <ChatBubbleOutlineOutlined
-                className="icon"
-                onClick={handleNotificationMenu}
-                style={{
-                  cursor: 'pointer',
-                }}
-              />
-              <div className="counter">{props.notificationList.length}</div>
-            </div>
-          </Tooltip>
-          <Menu
-            id="menu-appbar1"
-            anchorEl={props.anchorElNotification}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
-            open={Boolean(props.anchorElNotification)}
-            onClose={handleClose}
-            sx={{ height: 'auto', maxHeight: '60vh', width: '100%' }}
-            style={{ overflow: 'none', marginTop: 28 }}
-            PaperProps={{
-              elevation: 0,
-              sx: {
-                overflow: 'visible',
-                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                mt: 1.5,
-                '& .MuiAvatar-root': {
-                  width: 32,
-                  height: 32,
-                  ml: -0.5,
-                  mr: 1,
+          {userDetails.userRole !== 'superAdmin' &&
+          <>
+            <Tooltip title="Notifications" placement="bottom" TransitionComponent={Zoom} arrow>
+              <div className="item">
+                <ChatBubbleOutlineOutlined
+                  className="icon"
+                  onClick={handleNotificationMenu}
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                />
+                <div className="counter">{props.notificationList.length}</div>
+              </div>
+            </Tooltip>
+            <Menu
+              id="menu-appbar1"
+              anchorEl={props.anchorElNotification}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(props.anchorElNotification)}
+              onClose={handleClose}
+              sx={{ height: 'auto', maxHeight: '60vh', width: '100%' }}
+              style={{ overflow: 'none', marginTop: 28 }}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: 'visible',
+                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                  mt: 1.5,
+                  '& .MuiAvatar-root': {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  '&:before': {
+                    content: '""',
+                    display: 'block',
+                    position: 'absolute',
+                    top: 0,
+                    right: 145,
+                    width: 10,
+                    height: 10,
+                    bgcolor: 'background.paper',
+                    transform: 'translateY(-50%) rotate(45deg)',
+                    zIndex: 0,
+                  },
                 },
-                '&:before': {
-                  content: '""',
-                  display: 'block',
-                  position: 'absolute',
-                  top: 0,
-                  right: 145,
-                  width: 10,
-                  height: 10,
-                  bgcolor: 'background.paper',
-                  transform: 'translateY(-50%) rotate(45deg)',
-                  zIndex: 0,
-                },
-              },
-            }}
-          >
-            <div style={{ overflow: 'auto', maxHeight: '50vh' }}>
-              {props.notificationList?.length !== 0
-                ? props.notificationList?.map(({
-                  id, sensorTag, a_date, a_time, msg, alertType,
-                }) => (
-                  <div key={id}>
-                    <ListSubheader
-                      sx={{ bgcolor: 'background.paper', height: '20px' }}
-                      style={{ backgroundColor: '#e6f8ff', paddingTop: '0px', lineHeight: 'inherit' }}
-                    >
-                      {a_date}
-                      <div style={{ float: 'right', height: '20px' }}>
-                        {a_time}
-                      </div>
-                    </ListSubheader>
-                    <ListItem
-                      button
-                      onClick={handleClose}
-                      style={{
-                        maxWidth: 500, minWidth: '300px', paddingTop: '0px', paddingBottom: '0px',
-                      }}
-                    >
-                      <ListItemAvatar>
-                        {alertType === 'Critical' ? <ErrorOutlineOutlined sx={{ color: 'red', fontSize: 30 }} /> :
-                         alertType === 'Warning' ?  <PriorityHigh style={{ color: 'ba68c8', fontSize: 30 }}/> :
-                         <WarningAmber sx={{ color: 'yellow', fontSize: 30 }} />}
-                      </ListItemAvatar>
-                      <ListItemText primary={sensorTag} secondary={msg} />
-                    </ListItem>
-                  </div>
-                ))
-                : (
-                  <div>
-                    <ListItem button onClick={handleClose} style={{ maxWidth: 500, minWidth: '300px', textAlign: 'center' }}>
-                      <ListItemText primary="" secondary="No Notifications found" />
-                    </ListItem>
-                  </div>
-                )}
-            </div>
-          </Menu>
+              }}
+            >
+              <div style={{ overflow: 'auto', maxHeight: '50vh' }}>
+                {props.notificationList?.length !== 0
+                  ? props.notificationList?.map(({
+                    id, sensorTag, a_date, a_time, msg, alertType,
+                  }) => (
+                    <div key={id}>
+                      <ListSubheader
+                        sx={{ bgcolor: 'background.paper', height: '20px' }}
+                        style={{ backgroundColor: '#e6f8ff', paddingTop: '0px', lineHeight: 'inherit' }}
+                      >
+                        {a_date}
+                        <div style={{ float: 'right', height: '20px' }}>
+                          {a_time}
+                        </div>
+                      </ListSubheader>
+                      <ListItem
+                        button
+                        onClick={handleClose}
+                        style={{
+                          maxWidth: 500, minWidth: '300px', paddingTop: '0px', paddingBottom: '0px',
+                        }}
+                      >
+                        <ListItemAvatar>
+                          {alertType === 'Critical' ? <ErrorOutlineOutlined sx={{ color: 'red', fontSize: 30 }} /> :
+                          alertType === 'Warning' ?  <PriorityHigh style={{ color: 'ba68c8', fontSize: 30 }}/> :
+                          <WarningAmber sx={{ color: 'yellow', fontSize: 30 }} />}
+                        </ListItemAvatar>
+                        <ListItemText primary={sensorTag} secondary={msg} />
+                      </ListItem>
+                    </div>
+                  ))
+                  : (
+                    <div>
+                      <ListItem button onClick={handleClose} style={{ maxWidth: 500, minWidth: '300px', textAlign: 'center' }}>
+                        <ListItemText primary="" secondary="No Notifications found" />
+                      </ListItem>
+                    </div>
+                  )}
+              </div>
+            </Menu>
+          </>}
           <IconButton
             size="small"
             aria-label="account of current user"

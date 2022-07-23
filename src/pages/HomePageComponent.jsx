@@ -29,7 +29,7 @@ function HomePageComponent() {
   const [newNotification, setNewNotification] = useState(false);
   const [anchorElNotification, setAnchorElNotification] = useState(null);
   const { notificationList } = ApplicationStore().getStorage('notificationDetails');
-  const { locationDetails } = ApplicationStore().getStorage('userDetails');
+  const { locationDetails, userDetails } = ApplicationStore().getStorage('userDetails');
   const {
     location_id, branch_id, facility_id,
   } = locationDetails;
@@ -38,22 +38,26 @@ function HomePageComponent() {
     labIdList, deviceIdList, sensorIdList, } = ApplicationStore().getStorage('alertDetails');
 
   useEffect(() => {
-    FetchLocationService(handleSuccess, handleException);
-    FetchBranchService({ location_id }, handleBranchSuccess, handleException);
-    FetchFacilitiyService({ location_id, branch_id }, handleFacilitySuccess, handleException);
+    if(userDetails.userRole !== 'superAdmin'){
+      FetchLocationService(handleSuccess, handleException);
+      FetchBranchService({ location_id }, handleBranchSuccess, handleException);
+      FetchFacilitiyService({ location_id, branch_id }, handleFacilitySuccess, handleException);
+    }
   },[]);
   
   useEffect(()=>{
-    ApplicationStore().setStorage('siteDetails', {
-      locationLabel, branchLabel, facilityLabel,
-    });
-    const notifierInterval = setInterval(() => {
-      NotificationAlerts({ location_id, branch_id, facility_id }, handleNotificationSuccess, handleNotificationException);
-    }, 10000); // pick data from 'userDetails'(sessionData)
-  
-    return () => {
-      clearInterval(notifierInterval);
-    };
+    if(userDetails.userRole !== 'superAdmin'){
+      ApplicationStore().setStorage('siteDetails', {
+        locationLabel, branchLabel, facilityLabel,
+      });
+      const notifierInterval = setInterval(() => {
+        NotificationAlerts({ location_id, branch_id, facility_id }, handleNotificationSuccess, handleNotificationException);
+      }, 10000); // pick data from 'userDetails'(sessionData)
+    
+      return () => {
+        clearInterval(notifierInterval);
+      };
+    }
   })
 
   const handleSuccess = (dataObject) => {

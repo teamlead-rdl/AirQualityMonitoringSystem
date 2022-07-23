@@ -14,7 +14,7 @@ export function getFullTime(date) {
 }
 
 export function alertSeverityCode(alertType){
-  return alertType === 'Critical'? 1 : alertType === 'outOfRange'? 2 : 3;
+  return alertType === 'Critical'? 1 : alertType === 'outOfRange'? 2 : alertType === 'Warning'? 3 : 4;
 }
 
 export function setAlertColor(newNotificationStack){
@@ -29,6 +29,7 @@ export function setAlertColor(newNotificationStack){
           priority: 1,
           color: '#E53935'
         };
+        break;
       } else if(newNotificationStack[i].alertType === 'outOfRange') {
         colorCode = {
           priority: 2,

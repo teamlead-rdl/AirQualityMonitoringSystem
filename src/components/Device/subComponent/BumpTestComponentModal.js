@@ -210,7 +210,7 @@ function BumpTestComponentModal({
     e.preventDefault();
     if (isAddButton) {
       await BumpTestAddService({
-        sensorTagName, lastDueDate, typeCheck, percentageConcentrationGas, durationPeriod, displayedValue, nextDueDate, result,
+        sensorTagName, lastDueDate, typeCheck, percentageConcentrationGas, durationPeriod, displayedValue, nextDueDate, result, percentageDeviation, device_id
       }, handleSuccess, handleException);
     }
   };

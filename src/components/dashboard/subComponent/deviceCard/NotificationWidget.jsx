@@ -1,6 +1,6 @@
 import './notificationWidget.scss';
 import {
-  Groups,
+  VolumeUp,
   Sensors,
   AccessTime,
   NotificationsActiveOutlined,
@@ -18,24 +18,26 @@ function NotificationWidget({ type, figure }) {
   switch (type) {
   case 'user':
     data = {
-      title: 'AQMS Users',
-      figure: 45,
-      link: 'See all users',
-      diff: '20%',
-      icon: (
-        <Groups
-          className="icon"
-          style={{
-            color: 'goldenrod',
-            backgroundColor: 'rgba(218, 165, 32, 0.2)',
-          }}
-        />
-      ),
+      title: 'Hooter',
+      figure: (<VolumeUp style={{fontSize: '70px', color : '#808080'}}/>),
+      link: '',
+      icon: ''
+      // (
+      //   <Groups
+      //     className="icon"
+      //     style={{
+      //       color: 'goldenrod',
+      //       backgroundColor: 'rgba(218, 165, 32, 0.2)',
+      //     }}
+      //   />
+      // )
+      ,
     };
     break;
   case 'labs':
     data = {
       title: 'Disconnected Devices',
+      link: '',
       figure: 3,
       icon: (
         <SensorsOff
@@ -51,6 +53,7 @@ function NotificationWidget({ type, figure }) {
   case 'devices':
     data = {
       title: 'Total Devices',
+      link: '',
       figure: figure,
       icon: (
         <Sensors
@@ -63,6 +66,7 @@ function NotificationWidget({ type, figure }) {
   case 'alerts':
     data = {
       title: 'Active Alerts',
+      link: '',
       figure: figure,
       icon: (
         <NotificationsActiveOutlined
@@ -80,7 +84,6 @@ function NotificationWidget({ type, figure }) {
       title: 'Time',
       link: '',
       figure: dateTime.time,
-      diff: '',
       icon: (
         <AccessTime
           className="icon"
@@ -114,7 +117,7 @@ function NotificationWidget({ type, figure }) {
         type === 'alerts'
         && console.log(data); // remove console once you started to implement the click functionality
       }}
-      style={{ cursor: type === 'alerts' && 'pointer' }}
+      style={{ cursor: type === 'alerts' && 'pointer', justifyContent: type === 'user' && 'center' }}
     >
       <div className="left">
         <span className="title">{data.title}</span>
@@ -123,12 +126,13 @@ function NotificationWidget({ type, figure }) {
         </span>
         <span className="link">{data.link}</span>
       </div>
+      {type !== 'user' && 
       <div className="right">
         <div className="percentage positive">
-          {data.diff}
         </div>
         {data.icon}
       </div>
+      }
     </div>
   );
 }
