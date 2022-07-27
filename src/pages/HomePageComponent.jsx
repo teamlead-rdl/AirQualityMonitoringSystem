@@ -29,35 +29,36 @@ function HomePageComponent() {
   const [newNotification, setNewNotification] = useState(false);
   const [anchorElNotification, setAnchorElNotification] = useState(null);
   const { notificationList } = ApplicationStore().getStorage('notificationDetails');
-  const { locationDetails } = ApplicationStore().getStorage('userDetails');
+  const { locationDetails, userDetails, intervalDetails } = ApplicationStore().getStorage('userDetails');
   const {
     location_id, branch_id, facility_id,
   } = locationDetails;
 
-  // const [notificationList, setNotificationList] = useState([]);
   const {  locationIdList, branchIdList, facilityIdList, buildingIdList, floorIdList,
     labIdList, deviceIdList, sensorIdList, } = ApplicationStore().getStorage('alertDetails');
+  const intervalSec = intervalDetails.alertLogInterval * 1000 || 10000;
 
   useEffect(() => {
-    FetchLocationService(handleSuccess, handleException);
-    FetchBranchService({ location_id }, handleBranchSuccess, handleException);
-    FetchFacilitiyService({ location_id, branch_id }, handleFacilitySuccess, handleException);
+    if(userDetails.userRole !== 'superAdmin'){
+      FetchLocationService(handleSuccess, handleException);
+      FetchBranchService({ location_id }, handleBranchSuccess, handleException);
+      FetchFacilitiyService({ location_id, branch_id }, handleFacilitySuccess, handleException);
+    }
   },[]);
   
   useEffect(()=>{
-    ApplicationStore().setStorage('siteDetails', {
-      locationLabel, branchLabel, facilityLabel,
-    });
-    const notifierInterval = setInterval(() => {
-      NotificationAlerts({ location_id, branch_id, facility_id }, handleNotificationSuccess, handleNotificationException);
-      // setNotifierState((oldValue) => {
-      //   return { ...oldValue, open: true, color: '#4caf50' };
-      // });
-    }, 10000); // pick data from 'userDetails'(sessionData)
-  
-    return () => {
-      clearInterval(notifierInterval);
-    };
+    if(userDetails.userRole !== 'superAdmin'){
+      ApplicationStore().setStorage('siteDetails', {
+        locationLabel, branchLabel, facilityLabel,
+      });
+      const notifierInterval = setInterval(() => {
+        NotificationAlerts({ location_id, branch_id, facility_id }, handleNotificationSuccess, handleNotificationException);
+      }, intervalSec); // set to 'intervalSec' after testing alert call
+    
+      return () => {
+        clearInterval(notifierInterval);
+      };
+    }
   })
 
   const handleSuccess = (dataObject) => {
@@ -100,12 +101,12 @@ function HomePageComponent() {
         newNotificationValue = !oldValue;
         return !oldValue;
       });
-      let colorCode = setAlertColor(arraySet);
+      var colorObject = setAlertColor(arraySet);
       setNotifierState((oldValue) => {
         return {
           ...oldValue,
           open: true,
-          color: colorCode.color,
+          color: colorObject.color,
         };
       });
       ApplicationStore().setStorage('notificationDetails', {notificationList: newDataObject, newNotification: newNotificationValue});

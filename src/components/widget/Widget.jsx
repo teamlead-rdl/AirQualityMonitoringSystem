@@ -6,6 +6,7 @@ import {
   Science,
   Sensors,
   AccessTime,
+  NotificationsActiveOutlined,
 } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 
@@ -18,27 +19,27 @@ function Widget({ type , setAlertOpen, totalSensors, totalAlerts }) {
     date: '',
   });
   switch (type) {
-  case 'user':
-    data = {
-      title: 'AQMS Users',
-      figure: 45,
-      link: 'See all users',
-      diff: '20%',
-      icon: (
-        <Groups
-          className="icon"
-          style={{
-            color: 'crimson',
-            backgroundColor: 'rgba(255, 0, 0, 0.2)',
-          }}
-        />
-      ),
-    };
-    break;
+  // case 'user':
+  //   data = {
+  //     title: 'AQMS Users',
+  //     figure: 45,
+  //     link: 'See all users',
+  //     diff: '20%',
+  //     icon: (
+  //       <Groups
+  //         className="icon"
+  //         style={{
+  //           color: 'crimson',
+  //           backgroundColor: 'rgba(255, 0, 0, 0.2)',
+  //         }}
+  //       />
+  //     ),
+  //   };
+  //   break;
   case 'labs':
     data = {
       title: 'Labs under your location',
-      link: 'View Details',
+      link: '',
       figure: 8,
       diff: '30%',
       icon: (
@@ -55,11 +56,11 @@ function Widget({ type , setAlertOpen, totalSensors, totalAlerts }) {
   case 'devices':
     data = {
       title: 'Total Sensors',
-      link: 'View Details',
+      link: '',
       figure: totalSensors,
       diff: '40%',
       icon: (
-        <DeviceThermostat
+        <Sensors
           className="icon"
           style={{ backgroundColor: 'rgba(0, 128, 0, 0.2)', color: 'green' }}
         />
@@ -69,11 +70,11 @@ function Widget({ type , setAlertOpen, totalSensors, totalAlerts }) {
   case 'alerts':
     data = {
       title: 'Active Alerts',
-      link: 'See details',
+      link: '',
       figure: totalAlerts,
       diff: '50%',
       icon: (
-        <Sensors
+        <NotificationsActiveOutlined
           className="icon"
           style={{
             backgroundColor: 'rgba(128, 0, 128, 0.2)',
@@ -93,8 +94,8 @@ function Widget({ type , setAlertOpen, totalSensors, totalAlerts }) {
         <AccessTime
           className="icon"
           style={{
-            backgroundColor: 'rgba(128, 0, 128, 0.2)',
-            color: 'purple',
+            backgroundColor: '#e1f5fe',
+            color: '#0288d1'
           }}
         />
       ),
@@ -120,21 +121,25 @@ function Widget({ type , setAlertOpen, totalSensors, totalAlerts }) {
         type === 'alerts' &&        
         setAlertOpen(true);
       }}
-      style={{ cursor: type === 'alerts' && 'pointer' }}
+      style={{ cursor: type === 'alerts' && 'pointer', display: 'inline-block' }}
     >
-      <div className="left" >
+      <div>
         <span className="title">{data.title}</span>
-        <span className="counter">
-          {data.figure}
-        </span>
-        <span className="link">{data.link}</span>
       </div>
-      <div className="right">
-        <div className="percentage positive">
-          {data.diff && <KeyboardArrowUp /> }
-          {data.diff}
+      <div>
+        <div className="left" >
+          <span className="counter">
+            {data.figure}
+          </span>
+          <span className="link">{data.link}</span>
         </div>
-        {data.icon}
+        <div className="right">
+          <div className="percentage positive">
+            {/* {data.diff && <KeyboardArrowUp /> }
+            {data.diff} */}
+          </div>
+          {data.icon}
+        </div>
       </div>
     </div>
   );

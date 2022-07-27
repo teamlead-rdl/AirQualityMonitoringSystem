@@ -37,20 +37,9 @@ function SensorCategoryModal({
     setId(categoryData.id || '');
     setCategoryName(categoryData.sensorName || '');
     setCategoryDescription(categoryData.sensorDescriptions || '');
-    // console.log(categoryData?.measureUnitList);
-    // console.log(categoryData?.measureUnitList?.replaceAll('"', ''));
-    // if(categoryData.measureUnitList){
-    //   console.log(JSON.parse(categoryData.measureUnitList));
-    // }
-    // console.log(categoryData.measureUnitList !== null ?
-    // JSON.parse(categoryData?.measureUnitList !== null ?
-    // categoryData.measureUnitList : '') : '');
-
-    // if(stringified === null){
-    //   setMeasureUnits([]);
-    // }else{
-    //   setMeasureUnits(JSON.parse(stringified));
-    // }
+    if(categoryData.measureUnitList){
+      setMeasureUnits(JSON.parse(categoryData?.measureUnitList?.replace(/\\/g, '').replace(/(^"|"$)/g, '')) || []);
+    }
   };
 
   const validateForNullValue = (value, type) => {
@@ -85,7 +74,7 @@ function SensorCategoryModal({
       /* eslint-disable-next-line */
       SensorCategoryAddService({ sensorName, sensorDescriptions, measureUnitList: JSON.stringify(measureUnits) }, handleSuccess, handleException);
     } else {
-      SensorCategoryEditService({ id, sensorName, sensorDescriptions }, handleSuccess, handleException);
+      SensorCategoryEditService({ id, sensorName, sensorDescriptions, measureUnitList: JSON.stringify(measureUnits) }, handleSuccess, handleException);
     }
   };
 
@@ -159,7 +148,7 @@ function SensorCategoryModal({
   return (
     <Dialog
       fullWidth
-      maxWidth="sm"
+      maxWidth="md"
       sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: '100%' } }}
       open={open}
     >
@@ -235,7 +224,7 @@ function SensorCategoryModal({
               disabled={errorObject?.unitLabel?.errorStatus || errorObject?.unitMeasure?.errorStatus}
               onClick={addMeasureUnits}
             >
-              {isAddUnit ? 'Add' : 'Update'}
+              {isAddUnit ? 'Add Unit' : 'Update Unit'}
             </Button>
             <Button
               size="large"
@@ -251,7 +240,7 @@ function SensorCategoryModal({
               <div className="tasks">
                 {
                   measureUnits.length > 0
-                    ? measureUnits.map((measureUnit, index) => (
+                    ? measureUnits?.map((measureUnit, index) => (
                       /* eslint-disable-next-line */
                       <MeasureUnit  measureUnit={measureUnit} index={index}   key={index}
                         removeMeasureUnits={removeMeasureUnits}

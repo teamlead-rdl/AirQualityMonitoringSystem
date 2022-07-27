@@ -1,42 +1,47 @@
 import './notificationWidget.scss';
 import {
-  Groups,
+  VolumeUp,
   Sensors,
   AccessTime,
   NotificationsActiveOutlined,
   SensorsOff,
+  VolumeOff,
 } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-function NotificationWidget({ type, deviceTotal }) {
+function NotificationWidget({ type, figure, handleClick }) {
   let data;
   const [dateTime, setDateTime] = useState({
     time: '',
     date: '',
   });
   switch (type) {
-  case 'user':
+  case 'hooterStatus':
     data = {
-      title: 'AQMS Users',
-      figure: 45,
-      link: 'See all users',
-      diff: '20%',
-      icon: (
-        <Groups
-          className="icon"
-          style={{
-            color: 'goldenrod',
-            backgroundColor: 'rgba(218, 165, 32, 0.2)',
-          }}
-        />
-      ),
+      title: 'Hooter',
+      figure: figure !== 1 ? 
+      (<VolumeOff style={{fontSize: '70px', color : '#808080'}}/>) :
+      (<VolumeUp style={{fontSize: '70px', color : 'goldenrod', animation: 'flash 1s infinite '}}/>) , 
+      link: '',
+      icon: ''
+      // (
+      //   <Groups
+      //     className="icon"
+      //     style={{
+      //       color: 'goldenrod',
+      //       backgroundColor: 'rgba(218, 165, 32, 0.2)',
+      //     }}
+      //   />
+      // )
+      ,
     };
     break;
-  case 'labs':
+  case 'disconnectedDevice':
     data = {
       title: 'Disconnected Devices',
-      figure: 3,
+      link: '',
+      figure: figure || 3,
       icon: (
         <SensorsOff
           className="icon"
@@ -51,7 +56,8 @@ function NotificationWidget({ type, deviceTotal }) {
   case 'devices':
     data = {
       title: 'Total Devices',
-      figure: deviceTotal,
+      link: '',
+      figure: figure,
       icon: (
         <Sensors
           className="icon"
@@ -63,7 +69,8 @@ function NotificationWidget({ type, deviceTotal }) {
   case 'alerts':
     data = {
       title: 'Active Alerts',
-      figure: 45,
+      link: '',
+      figure: figure,
       icon: (
         <NotificationsActiveOutlined
           className="icon"
@@ -80,7 +87,6 @@ function NotificationWidget({ type, deviceTotal }) {
       title: 'Time',
       link: '',
       figure: dateTime.time,
-      diff: '',
       icon: (
         <AccessTime
           className="icon"
@@ -107,14 +113,23 @@ function NotificationWidget({ type, deviceTotal }) {
       });
     });
   }, []);
+
   return (
     <div
       className="widget"
       onClick={() => {
-        type === 'alerts'
-        && console.log(data); // remove console once you started to implement the click functionality
+        // switch(type){
+        //   case 'alerts' : 
+        //     handleAlert();
+        //     break;
+        //   case 'hooterStatus' :
+        //     handleHooter();
+        //     break;
+        //   default : break;
+        // }
+        handleClick();
       }}
-      style={{ cursor: type === 'alerts' && 'pointer' }}
+      style={{ cursor: type === 'alerts' && 'pointer', justifyContent: type === 'hooterStatus' && 'center' }}
     >
       <div className="left">
         <span className="title">{data.title}</span>
@@ -123,12 +138,13 @@ function NotificationWidget({ type, deviceTotal }) {
         </span>
         <span className="link">{data.link}</span>
       </div>
+      {type !== 'hooterStatus' && 
       <div className="right">
         <div className="percentage positive">
-          {data.diff}
         </div>
         {data.icon}
       </div>
+      }
     </div>
   );
 }

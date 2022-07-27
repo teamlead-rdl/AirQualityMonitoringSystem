@@ -390,10 +390,13 @@ function Modbus({
         >
           <div className="rounded-md -space-y-px flex">
             <Checkbox
-              checked={minRatedReadingChecked !== '0' || (moduleAccess.edit === false && true)}
+              checked={minRatedReadingChecked !== '0'}
+              //  || (moduleAccess.edit === false && true)}
               disabled={(moduleAccess.edit === false && true) || disable}
               onChange={(e) => {
-                setMinRatedReadingChecked(e.target.checked);
+                setMinRatedReadingChecked(()=>{
+                return e.target.checked === true ? '1' : '0'
+                });
               }}
             />
           </div>
@@ -411,7 +414,7 @@ function Modbus({
             <TextField
               sx={{ marginTop: 0 }}
               value={minRatedReadingScale}
-              disabled={minRatedReadingChecked === '0' || (moduleAccess.edit === false && true)}
+              disabled={minRatedReadingChecked === '0' || (moduleAccess.edit === false && true) || disable}
               type="number"
               onBlur={() => validateForNullValue(minRatedReadingScale, 'minRatedReadingScale')}
               onChange={(e) => {
@@ -481,9 +484,11 @@ function Modbus({
         >
           <div className="rounded-md -space-y-px flex">
             <Checkbox
-              checked={maxRatedReadingChecked !== '0' || (moduleAccess.edit === false && true)}
+              checked={maxRatedReadingChecked !== '0'}
               disabled={(moduleAccess.edit === false && true) || disable}
-              onChange={(e) => { setMaxRatedReadingChecked(e.target.checked); }}
+              onChange={(e) => { setMaxRatedReadingChecked(()=>{
+                return e.target.checked === true ? '1' : '0'
+              }); }}
             />
           </div>
         </Grid>
@@ -500,7 +505,7 @@ function Modbus({
             <TextField
               sx={{ marginTop: 0 }}
               value={maxRatedReadingScale}
-              disabled={maxRatedReadingChecked === '0' || (moduleAccess.edit === false && true)}
+              disabled={maxRatedReadingChecked === '0' || (moduleAccess.edit === false && true) || disable}
               onBlur={() => validateForNullValue(maxRatedReadingScale, 'maxRatedReadingScale')}
               onChange={(e) => {
                 setMaxRatedReadingScale(e.target.value);

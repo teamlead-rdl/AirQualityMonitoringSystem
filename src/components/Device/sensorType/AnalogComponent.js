@@ -152,10 +152,12 @@ function Analog({
         >
           <div className="rounded-md -space-y-px flex">
             <Checkbox
-              checked={minRatedReadingChecked != 0}
+              checked={minRatedReadingChecked !== '0'}
               disabled={moduleAccess.edit === false && true || disable}
               onChange={(e) => {
-                setMinRatedReadingChecked(e.target.checked);
+                setMinRatedReadingChecked(()=>{
+                  return e.target.checked === true ? '1' : '0'
+                });
               }}
             />
           </div>
@@ -173,7 +175,7 @@ function Analog({
             <TextField
               sx={{ marginTop: 0 }}
               value={minRatedReadingScale}
-              disabled={minRatedReadingChecked == 0 || moduleAccess.edit === false && true}
+              disabled={minRatedReadingChecked == 0 || moduleAccess.edit === false && true || disable}
               type="number"
               onBlur={() => validateForNullValue(minRatedReadingScale, 'minRatedReadingScale')}
               onChange={(e) => {
@@ -258,10 +260,12 @@ function Analog({
         >
           <div className="rounded-md -space-y-px flex">
             <Checkbox
-              checked={maxRatedReadingChecked != 0}
+              checked={maxRatedReadingChecked !== '0'}
               disabled={moduleAccess.edit === false && true || disable}
               onChange={(e) => {
-                setMaxRatedReadingChecked(e.target.checked);
+                setMaxRatedReadingChecked(()=>{
+                  return e.target.checked === true ? '1' : '0'
+                });
               }}
             />
           </div>
@@ -279,7 +283,7 @@ function Analog({
             <TextField
               sx={{ marginTop: 0 }}
               value={maxRatedReadingScale}
-              disabled={maxRatedReadingChecked == 0 || moduleAccess.edit === false && true}
+              disabled={maxRatedReadingChecked == 0 || moduleAccess.edit === false && true || disable}
               type="number"
               onBlur={() => validateForNullValue(maxRatedReadingScale, 'maxRatedReadingScale')}
               onChange={(e) => {

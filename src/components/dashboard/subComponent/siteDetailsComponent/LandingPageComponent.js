@@ -9,6 +9,7 @@ import AlertModalComponent from '../landingPageComponents/AlertModalComponent';
 import ApplicationStore from '../../../../utils/localStorageUtil';
 
 function LandingPageComponent({ locationDetails, setIsDashBoard }) {
+  
   const [open, setOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [analogSensorList, setAnalogSensorList] = useState([]);
@@ -25,19 +26,30 @@ function LandingPageComponent({ locationDetails, setIsDashBoard }) {
   const [initialLoad, setInitialLoad] = useState(true);
   /* eslint-disable-next-line */
   useEffect(() => {
-    if (open === true) { /* eslint-disable-next-line */
-    } if (initialLoad === true) {
-      DashboardSensorListDetails({ device_id: locationDetails.device_id }, fetchSenosorListSuccess, fetchSenosorListException);
-    } else {
-      const sensorDataLoadInterval = setInterval(() => {
-        DashboardSensorListDetails({ device_id: locationDetails.device_id }, fetchSenosorListSuccess, fetchSenosorListException);
-      }, intervalSec);
-      return () => {
-        clearInterval(sensorDataLoadInterval);
-      };
-    }
-  }, [locationDetails, open, initialLoad]);
+    // if (open === true) { /* eslint-disable-next-line */
+    // } if (initialLoad === true) {
+    //   DashboardSensorListDetails({ device_id: locationDetails.device_id }, fetchSenosorListSuccess, fetchSenosorListException);
+    // } else {
+    //   const sensorDataLoadInterval = setInterval(() => {
+    //     DashboardSensorListDetails({ device_id: locationDetails.device_id }, fetchSenosorListSuccess, fetchSenosorListException);
+    //   }, intervalSec);
+    //   return () => {
+    //     clearInterval(sensorDataLoadInterval);
+    //   };
+    // }
 
+    intervalCallFunction();
+    const devicePolling = setInterval(() => {
+      intervalCallFunction();
+    }, intervalSec);
+    return () => {
+      clearInterval(devicePolling);
+    };
+  }, [locationDetails]);
+
+  const intervalCallFunction = () => {
+    DashboardSensorListDetails({ device_id: locationDetails.device_id }, fetchSenosorListSuccess, fetchSenosorListException);
+  };
   const fetchSenosorListSuccess = (dataObject) => {
     setTotalSensors(dataObject.sensorCount || '');
     setTotalALerts(dataObject.alertCount || '');
@@ -63,7 +75,7 @@ function LandingPageComponent({ locationDetails, setIsDashBoard }) {
         Back to Data Logger
       </Button>
       <div className="widgets" style={{ textAlignLast: 'auto', paddingLeft: '10px', paddingTop: '5px' }}>
-        <Widget type="user" />
+        {/* <Widget type="user" /> */}
         <Widget type="labs" />
         <Widget type="devices" totalSensors={totalSensors} />
         <Widget type="alerts" setAlertOpen={setAlertOpen} totalAlerts={totalAlerts} />
@@ -77,6 +89,7 @@ function LandingPageComponent({ locationDetails, setIsDashBoard }) {
         setSensorTagId={setSensorTagId}
         setSensorTag={setSensorTag}
       />
+      
       <SensorGraphComponent
         open={open}
         setOpen={setOpen}

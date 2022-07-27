@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import {
   Breadcrumbs, Typography, Grid,
 } from '@mui/material';
-import { DeviceFetchService } from '../../../../services/LoginPageService';
+import { DeviceFetchService, HooterRelayService } from '../../../../services/LoginPageService';
 import DeviceWidget from '../deviceCard/DeviceWidget';
 import NotificationWidget from '../deviceCard/NotificationWidget';
 import ApplicationStore from '../../../../utils/localStorageUtil';
+import NotificationBar from '../../../notification/ServiceNotificationBar';
 
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -17,9 +18,18 @@ function DeviceGridComponent({
 }) {
   const [deviceList, setDeviceList] = useState([]);
   const [deviceTotal, setDeviceTotal] = useState('0');
+  const [deviceAlert, setAlertTotal] = useState('0');
+  const [disconnectedDevices, setDisconnectedDevices] = useState('0');
+  const [labHooterStatus, setLabHooterStatus] = useState('0');
   const [expanded, setExpanded] = useState(false);
   const { intervalDetails } = ApplicationStore().getStorage('userDetails');
   const intervalSec = intervalDetails.deviceLogInterval * 1000;
+  const [pollingStatus, setPollingStatus] = useState(false);
+  const [openNotification, setNotification] = useState({
+    status: false,
+    type: 'error',
+    message: '',
+  });
 
   useEffect(() => {
     intervalCallFunction();
@@ -52,6 +62,9 @@ function DeviceGridComponent({
     const filteredArray = deviceCoordinationsList.filter((x) => x != null);
     setDeviceCoordsList(filteredArray || []);
     setDeviceTotal(dataObject.totalData);
+    setAlertTotal(dataObject.alertCount);
+    setDisconnectedDevices(dataObject.disconnectedDevices);
+    setLabHooterStatus(dataObject.labHooterStatus);
   };
 
   const handleException = () => { };
@@ -69,6 +82,40 @@ function DeviceGridComponent({
     });
   };
 
+  const handleHooter = () =>{
+    HooterRelayService({lab_id: locationDetails.lab_id}, handleHooterSuccess, handleHooterException);
+  }
+  
+  const handleHooterSuccess = (dataObject) =>{
+    console.log(dataObject.message);
+    setLabHooterStatus('0');
+    setNotification({
+      status: true,
+      type: 'success',
+      message: 'Disabled Successfully...!',
+    });
+  }
+
+  const handleHooterException = () =>{
+    setNotification({
+      status: false,
+      type: 'error',
+      message: 'Unable to disable the hooter...!',
+    });
+  }
+
+  const handleAlert = () =>{
+    console.log(locationDetails.lab_id); 
+  }
+
+  const handleClose = () => {
+    setNotification({
+      status: false,
+      type: '',
+      message: '',
+    });
+  };
+
   return (
     <div style={{
       height: '98%', width: '100%', marginTop: 10, marginLeft: 10, paddingLeft: 5, paddingTop: 5,
@@ -77,12 +124,9 @@ function DeviceGridComponent({
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         <h3
           onClick={() => {
-            // setCenterLatitude(23.500);
-            // setCenterLongitude(80.000);
             setDeviceCoordsList([]);
             setIsGeoMap(true);
             setLocationlabel(0);
-            // setProgressState(0);
             setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
@@ -94,7 +138,6 @@ function DeviceGridComponent({
             setDeviceCoordsList([]);
             setIsGeoMap(true);
             setLocationlabel(1);
-            // setProgressState(1);
             setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
@@ -106,7 +149,6 @@ function DeviceGridComponent({
             setDeviceCoordsList([]);
             setIsGeoMap(true);
             setLocationlabel(2);
-            // setProgressState(2);
             setIsDashBoard(0);
           }}
           style={{ cursor: 'pointer' }}
@@ -156,10 +198,10 @@ function DeviceGridComponent({
         </Typography>
       </Breadcrumbs>
       <div className="widgets" style={{ height: 'auto', backgroundColor: '#fafafa', padding: 10 }}>
-        <NotificationWidget type="user" />
-        <NotificationWidget type="labs" />
-        <NotificationWidget type="devices" deviceTotal={deviceTotal} />
-        <NotificationWidget type="alerts" />
+        <NotificationWidget type="hooterStatus" figure={labHooterStatus} handleClick={handleHooter}/>
+        <NotificationWidget type="disconnectedDevice" figure={disconnectedDevices}/>
+        <NotificationWidget type="devices" figure={deviceTotal} />
+        <NotificationWidget type="alerts" figure={deviceAlert} handleClick={handleAlert}/>
         <NotificationWidget type="time" />
       </div>
       <div
@@ -197,6 +239,12 @@ function DeviceGridComponent({
           })}
         </Grid>
       </div>
+      <NotificationBar
+        handleClose={handleClose}
+        notificationContent={openNotification.message}
+        openNotification={openNotification.status}
+        type={openNotification.type}
+      />
     </div>
   );
 }

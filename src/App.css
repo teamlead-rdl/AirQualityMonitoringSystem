@@ -97,7 +97,23 @@ span.otpSeparator {
   text-align: center;
 }
 
-
+@keyframes flash {
+  0% {
+    color:rgb(57, 108, 167);
+  }
+  25% {
+    color:rgb(50, 96, 126);
+  }
+  50% {
+    color:rgb(74, 107, 167);
+  }
+  75% {
+    color:rgb(57, 87, 143);
+  }
+  100% {
+    color:rgb(6, 25, 136);
+  }
+}
 
 
 

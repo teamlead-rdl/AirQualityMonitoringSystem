@@ -14,16 +14,16 @@ export function getFullTime(date) {
 }
 
 export function alertSeverityCode(alertType){
-  return alertType === 'Critical'? 1 : alertType === 'outOfRange'? 2 : 3;
+  return alertType === 'Critical'? 1 : alertType === 'outOfRange'? 2 : alertType === 'Warning'? 3 : 4;
 }
 
 export function setAlertColor(newNotificationStack){
-  let colorCode = {
-    priority: 3,
-    color: '#4CAF50'
-  };
-  if (newNotificationStack.length !== 0) {
-    for(let i = 0; i <= newNotificationStack.length; i++) {
+  if (newNotificationStack.length > 0) {
+    let colorCode = {
+      priority: 3,
+      color: '#ab47bc'
+    };
+    for(let i = 0; i < newNotificationStack.length; i++) {
       if (newNotificationStack[i].alertType === 'Critical') {
         colorCode = {
           priority: 1,
@@ -37,6 +37,6 @@ export function setAlertColor(newNotificationStack){
         }
       }
     }
+    return colorCode;
   }
-  return colorCode;
 }
