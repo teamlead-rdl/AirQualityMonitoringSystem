@@ -29,13 +29,14 @@ function HomePageComponent() {
   const [newNotification, setNewNotification] = useState(false);
   const [anchorElNotification, setAnchorElNotification] = useState(null);
   const { notificationList } = ApplicationStore().getStorage('notificationDetails');
-  const { locationDetails, userDetails } = ApplicationStore().getStorage('userDetails');
+  const { locationDetails, userDetails, intervalDetails } = ApplicationStore().getStorage('userDetails');
   const {
     location_id, branch_id, facility_id,
   } = locationDetails;
 
   const {  locationIdList, branchIdList, facilityIdList, buildingIdList, floorIdList,
     labIdList, deviceIdList, sensorIdList, } = ApplicationStore().getStorage('alertDetails');
+  const intervalSec = intervalDetails.alertLogInterval * 1000 || 10000;
 
   useEffect(() => {
     if(userDetails.userRole !== 'superAdmin'){
@@ -52,7 +53,7 @@ function HomePageComponent() {
       });
       const notifierInterval = setInterval(() => {
         NotificationAlerts({ location_id, branch_id, facility_id }, handleNotificationSuccess, handleNotificationException);
-      }, 10000); // pick data from 'userDetails'(sessionData)
+      }, intervalSec); // set to 'intervalSec' after testing alert call
     
       return () => {
         clearInterval(notifierInterval);

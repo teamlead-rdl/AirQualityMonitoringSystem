@@ -146,11 +146,12 @@ function DeviceWidget({
                   }}
                   >
                     <Badge
-                      badgeContent={data.deviceMode === 'disabled' ? '' : data.id}
+                      badgeContent={data.deviceMode === 'disabled' ? '' : data.alertDataCount}
                       style={{
-                        color: data.deviceMode === 'disabled' ? '#757575' : '#f44336',
+                        // color: data.deviceMode === 'disabled' ? '#757575' : '#f44336',
+                        color: 'green',
                       }}
-                      color={data.deviceMode === 'disabled' ? 'info' : 'error'}
+                      color={data.alertDataCount === '0' ? 'success' : 'error'}
                       max={999}
                     >
                       <NotificationsActiveOutlined

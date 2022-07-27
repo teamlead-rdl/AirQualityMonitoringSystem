@@ -5,21 +5,24 @@ import {
   AccessTime,
   NotificationsActiveOutlined,
   SensorsOff,
+  VolumeOff,
 } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-function NotificationWidget({ type, figure }) {
+function NotificationWidget({ type, figure, handleClick }) {
   let data;
   const [dateTime, setDateTime] = useState({
     time: '',
     date: '',
   });
   switch (type) {
-  case 'user':
+  case 'hooterStatus':
     data = {
       title: 'Hooter',
-      figure: (<VolumeUp style={{fontSize: '70px', color : '#808080'}}/>),
+      figure: figure !== 1 ? 
+      (<VolumeOff style={{fontSize: '70px', color : '#808080'}}/>) :
+      (<VolumeUp style={{fontSize: '70px', color : 'goldenrod', animation: 'flash 1s infinite '}}/>) , 
       link: '',
       icon: ''
       // (
@@ -34,11 +37,11 @@ function NotificationWidget({ type, figure }) {
       ,
     };
     break;
-  case 'labs':
+  case 'disconnectedDevice':
     data = {
       title: 'Disconnected Devices',
       link: '',
-      figure: 3,
+      figure: figure || 3,
       icon: (
         <SensorsOff
           className="icon"
@@ -110,14 +113,23 @@ function NotificationWidget({ type, figure }) {
       });
     });
   }, []);
+
   return (
     <div
       className="widget"
       onClick={() => {
-        type === 'alerts'
-        && console.log(data); // remove console once you started to implement the click functionality
+        // switch(type){
+        //   case 'alerts' : 
+        //     handleAlert();
+        //     break;
+        //   case 'hooterStatus' :
+        //     handleHooter();
+        //     break;
+        //   default : break;
+        // }
+        handleClick();
       }}
-      style={{ cursor: type === 'alerts' && 'pointer', justifyContent: type === 'user' && 'center' }}
+      style={{ cursor: type === 'alerts' && 'pointer', justifyContent: type === 'hooterStatus' && 'center' }}
     >
       <div className="left">
         <span className="title">{data.title}</span>
@@ -126,7 +138,7 @@ function NotificationWidget({ type, figure }) {
         </span>
         <span className="link">{data.link}</span>
       </div>
-      {type !== 'user' && 
+      {type !== 'hooterStatus' && 
       <div className="right">
         <div className="percentage positive">
         </div>

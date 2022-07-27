@@ -299,3 +299,7 @@ export const NotificationAlerts = (data, successCallback, errorCallBack) =>  _fe
 // ------------ Company Log Interval ---------------------//
 
 export const CompanyLogInterval = (data, successCallback, errorCallBack) => { return _fetchService(`updateCustomerSettings`, 'POST', data, successCallback, errorCallBack); };
+
+// ----------- Hooter Relay -----------------------------//
+
+export const HooterRelayService = (data, successCallback, errorCallBack) => { return _fetchService(`labHooterRelay`, 'POST', data, successCallback, errorCallBack); };

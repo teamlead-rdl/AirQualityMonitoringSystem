@@ -414,7 +414,7 @@ function Modbus({
             <TextField
               sx={{ marginTop: 0 }}
               value={minRatedReadingScale}
-              disabled={minRatedReadingChecked === '0' || (moduleAccess.edit === false && true)}
+              disabled={minRatedReadingChecked === '0' || (moduleAccess.edit === false && true) || disable}
               type="number"
               onBlur={() => validateForNullValue(minRatedReadingScale, 'minRatedReadingScale')}
               onChange={(e) => {
@@ -505,7 +505,7 @@ function Modbus({
             <TextField
               sx={{ marginTop: 0 }}
               value={maxRatedReadingScale}
-              disabled={maxRatedReadingChecked === '0' || (moduleAccess.edit === false && true)}
+              disabled={maxRatedReadingChecked === '0' || (moduleAccess.edit === false && true) || disable}
               onBlur={() => validateForNullValue(maxRatedReadingScale, 'maxRatedReadingScale')}
               onChange={(e) => {
                 setMaxRatedReadingScale(e.target.value);
